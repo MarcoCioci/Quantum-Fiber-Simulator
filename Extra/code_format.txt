@@ -1,0 +1,52 @@
+function [out1, out2] = function_name(in1, in2)
+% FUNCTION_NAME  One-line concise description
+%
+% Objective:
+%   Clear statement of what the function computes or verifies.
+%
+% Input:
+%   in1 - description
+%   in2 - description
+%
+% Output:
+%   out1 - description
+%   out2 - description
+%
+% Notes:
+%   Optional remarks (usage, assumptions, context in simulator)
+
+    % =========================
+    % Robustness checks
+    % =========================
+
+    % (Only comment if not obvious)
+    if nargin < 2
+        error('function_name:InvalidNumInputs', ...
+              'Expected 2 input arguments.');
+    end
+
+    if ~isnumeric(in1)
+        error('function_name:InvalidType', ...
+              'in1 must be numeric.');
+    end
+
+    if size(in1,1) ~= size(in1,2)
+        error('function_name:InvalidSize', ...
+              'in1 must be square.');
+    end
+
+
+    % =========================
+    % Main computation
+    % =========================
+
+    % Step 1: compute intermediate quantity
+    temp = in1 * in2;
+
+    % Step 2: final result
+    out1 = temp;
+
+    % Optional additional output
+    out2 = norm(temp);
+
+end
