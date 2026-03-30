@@ -538,9 +538,180 @@ These observables constitute the primary diagnostic outputs of the simulator and
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{../Images/correlation_observables_theta.png}
-    \caption{Correlation observables \(c_{xx}, c_{yy}, c_{zz}\) as a function of \(\theta\).}
-    \label{fig:correlations}
+    \caption{
+Numerical evaluation of the two-qubit correlation observables 
+$c_{xx}$, $c_{yy}$, and $c_{zz}$ as functions of the relative phase $\theta$ 
+introduced by the optical fiber.
+The results are obtained by applying the fiber-induced unitary evolution to the initial Bell state 
+and computing the expectation values of the corresponding Pauli operators.}
+    \label{fig:correlations_numerical}
 \end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{../Images/experiment_1_theory_vs_experiment.png}
+    \caption{
+Comparison between numerical simulation and analytical predictions for the two-qubit correlation observables 
+$c_{xx}$, $c_{yy}$, and $c_{zz}$ as functions of $\theta$.
+Starting from the evolved state 
+$\frac{1}{\sqrt{2}} (|01\rangle + e^{i\theta} |10\rangle)$, 
+the analytical model predicts 
+$c_{xx} = c_{yy} = \cos(\theta)$ and $c_{zz} = -1$. 
+The numerical results are in full agreement with these expressions. 
+Solid lines denote theoretical predictions, while markers correspond to simulated values.}
+    \label{fig:correlations_validation}
+\end{figure}
+
+\section{Numerical Experiments and Results}
+
+\subsection{Experiment 1: Deterministic Phase Sweep}
+
+\subsubsection{Objective}
+
+The first experiment investigates the effect of a controlled relative phase $\theta$ on a maximally entangled two-qubit state. The goal is to characterize how the correlation observables evolve under a unitary phase shift induced by the fiber.
+
+\subsubsection{Model}
+
+The initial Bell state is taken as
+\[
+|\psi_+\rangle = \frac{1}{\sqrt{2}} \left( |01\rangle + |10\rangle \right).
+\]
+
+After propagation through the fiber, the system evolves into
+\[
+|\psi(\theta)\rangle = \frac{1}{\sqrt{2}} \left( |01\rangle + e^{i\theta} |10\rangle \right).
+\]
+
+The following correlation observables are evaluated:
+\[
+c_{xx} = \langle \sigma_x \otimes \sigma_x \rangle, \quad
+c_{yy} = \langle \sigma_y \otimes \sigma_y \rangle, \quad
+c_{zz} = \langle \sigma_z \otimes \sigma_z \rangle.
+\]
+
+\subsubsection{Analytical Predictions}
+
+A direct calculation yields:
+\[
+c_{xx} = \cos(\theta), \quad
+c_{yy} = \cos(\theta), \quad
+c_{zz} = -1.
+\]
+
+This result highlights that the phase $\theta$ only affects correlations in the transverse ($x,y$) planes, while the $z$-correlation remains invariant.
+
+\subsubsection{Numerical Results}
+
+The simulation performs a sweep over $\theta \in [0, 2\pi]$, computing the correlation observables for each value.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/correlation_observables_theta.png}
+    \caption{Correlation observables $c_{xx}, c_{yy}, c_{zz}$ as functions of the relative phase $\theta$.}
+\end{figure}
+
+\subsubsection{Discussion}
+
+The numerical results perfectly match the analytical predictions. In particular:
+
+\begin{itemize}
+    \item $c_{xx}$ and $c_{yy}$ exhibit a cosine dependence on $\theta$
+    \item $c_{zz}$ remains constant at $-1$
+\end{itemize}
+
+This confirms that the fiber, under the simplified model, acts as a relative phase shifter that preserves maximal entanglement.
+
+\bigskip
+
+\subsection{Experiment 2: Random Phase Ensemble}
+
+\subsubsection{Objective}
+
+The second experiment extends the model by introducing randomness in the phase $\theta$, simulating realistic fiber conditions where birefringence fluctuations induce stochastic phase shifts.
+
+Instead of a single pure state, the system is described by an ensemble of states:
+\[
+\{ |\psi(\theta_k)\rangle \}_{k=1}^{N}
+\]
+
+The goal is to evaluate how statistical averaging affects observable correlations.
+
+\subsubsection{Ensemble Model}
+
+Each realization is given by
+\[
+|\psi(\theta_k)\rangle = \frac{1}{\sqrt{2}} \left( |01\rangle + e^{i\theta_k} |10\rangle \right),
+\]
+
+and the ensemble density matrix is defined as
+\[
+\rho_{\text{ensemble}} = \frac{1}{N} \sum_{k=1}^{N} |\psi(\theta_k)\rangle \langle \psi(\theta_k)|.
+\]
+
+\subsubsection{Analytical Predictions}
+
+The ensemble-averaged correlations are given by:
+\[
+c_{xx} = \langle \cos(\theta) \rangle, \quad
+c_{yy} = \langle \cos(\theta) \rangle, \quad
+c_{zz} = -1,
+\]
+
+where the average is taken over the phase distribution.
+
+\subsubsection{Numerical Results}
+
+Three different distributions for $\theta$ are considered:
+
+\begin{itemize}
+    \item Constant phase
+    \item Uniform distribution
+    \item Gaussian distribution
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_constant_distribution.png}
+    \caption{Experiment 2 results for constant phase distribution.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_uniform_distribution.png}
+    \caption{Experiment 2 results for uniform phase distribution.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_normal_distribution.png}
+    \caption{Experiment 2 results for Gaussian phase distribution.}
+\end{figure}
+
+\subsubsection{Discussion}
+
+The results show a clear transition from coherent to partially decohered behavior:
+
+\begin{itemize}
+    \item For constant $\theta$, the system behaves identically to Experiment 1
+    \item For distributed $\theta$, $c_{xx}$ and $c_{yy}$ decrease in magnitude
+    \item For broad distributions, $\langle \cos(\theta) \rangle \to 0$, leading to vanishing transverse correlations
+\end{itemize}
+
+This effect corresponds to a loss of phase coherence induced by the fiber.
+
+\subsubsection{Physical Interpretation}
+
+Although each realization remains a pure maximally entangled state, the ensemble average produces a mixed state. This reflects the physical situation where phase fluctuations occur on timescales shorter than the measurement resolution.
+
+Importantly:
+
+\begin{itemize}
+    \item Entanglement is not necessarily destroyed at the single-shot level
+    \item However, observable correlations are reduced due to phase averaging
+\end{itemize}
+
+This behavior represents the first step toward modeling decoherence effects in optical fibers.
+
 
 %========================================================
 \section{References}
