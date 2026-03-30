@@ -51,7 +51,7 @@ function U = phase_unitary(theta)
 
     
     % =========================
-    % Main computation
+    % Main computations
     % =========================
 
     U = [1, 0;

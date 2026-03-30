@@ -61,16 +61,12 @@ function exp_val = expectation_value(psi, O)
 
     
     % =========================
-    % Main computation
+    % Main computations
     % =========================
 
     exp_val = psi' * O * psi;
 
-
-    % =========================
     % Post-processing
-    % =========================
-
     tol = 1e-10;
 
     if norm(O - O', 'fro') <= tol

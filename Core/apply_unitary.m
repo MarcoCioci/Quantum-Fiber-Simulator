@@ -99,7 +99,7 @@ function psi_out = apply_unitary(U_A, U_B, psi_in)
 
     
     % =========================
-    % Main computation
+    % Main computations
     % =========================
 
     U_global = kron(U_A, U_B);

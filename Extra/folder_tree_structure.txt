@@ -1,0 +1,4 @@
+Core      = reusable quantum primitives
+Models    = physical/channel models
+Experiments = one concrete scientific instance
+Utils     = support functions, plotting, validation

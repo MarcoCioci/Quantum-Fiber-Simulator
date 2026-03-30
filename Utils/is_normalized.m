@@ -44,7 +44,7 @@ function flag = is_normalized(psi, tol)
 
     
     % =========================
-    % Main computation
+    % Main computations
     % =========================
 
     psi = psi(:);

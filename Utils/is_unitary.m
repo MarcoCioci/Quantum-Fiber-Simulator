@@ -51,7 +51,7 @@ function flag = is_unitary(U, tol)
 
     
     % =========================
-    % Main computation
+    % Main computations
     % =========================
 
     I = eye(m);

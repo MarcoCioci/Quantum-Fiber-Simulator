@@ -32,7 +32,7 @@ function [sigma_x, sigma_y, sigma_z] = pauli_matrices()
 %       [sigma_i, sigma_j] = 2i · epsilon_ijk · sigma_k
 
     % =========================
-    % Main computation
+    % Main computations
     % =========================
 
     sigma_x = [0 1;

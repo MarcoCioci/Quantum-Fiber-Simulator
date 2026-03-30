@@ -1,2 +1,2 @@
-psi = bell_states('psi_plus')
+% Script for routines quick testing
 

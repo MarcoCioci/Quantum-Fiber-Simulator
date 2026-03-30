@@ -25,13 +25,13 @@ function plot_correlations(results_struct, correlations_to_plot)
             'correlations_to_plot must be a non-empty cell array.');
     end
 
-    if ~isfield(results_struct, 'theta')
+    if ~isfield(results_struct, 'theta_values')
         error('plot_correlations:MissingTheta', ...
             'results_struct must contain ''theta''.');
     end
 
-    theta = results_struct.theta(:);
-    n = numel(theta);
+    theta_values = results_struct.theta_values(:);
+    n = numel(theta_values);
 
 
     % =========================
@@ -92,7 +92,7 @@ function plot_correlations(results_struct, correlations_to_plot)
             end
         end
 
-        plot(theta, y_plot, ...
+        plot(theta_values, y_plot, ...
             'Color', color, ...
             'LineStyle', style, ...
             'LineWidth', 1.5, ...

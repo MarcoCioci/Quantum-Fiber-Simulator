@@ -49,7 +49,7 @@ function T = tensor_product(A, B)
 
     
     % =========================
-    % Main computation
+    % Main computations
     % =========================
 
     T = kron(A, B);

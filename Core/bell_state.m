@@ -38,7 +38,7 @@ function psi = bell_state(type)
     type = char(type);  % normalize input
 
     % =========================
-    % Main computation
+    % Main computations
     % =========================
 
     switch type
@@ -61,10 +61,10 @@ function psi = bell_state(type)
                  'psi_plus, psi_minus, phi_plus, phi_minus.']);
     end
 
-    % Normalize explicitly 
+    % Explicit normalization
     psi = psi / sqrt(2);
 
-    % Force complex type for consistency across simulator
+    % Forcing complex type for consistency across simulator
     psi = complex(psi);
 
 end
