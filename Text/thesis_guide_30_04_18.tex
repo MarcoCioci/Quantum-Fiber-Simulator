@@ -14,6 +14,7 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{graphicx}
+\usepackage[section]{placeins}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
@@ -46,7 +47,7 @@ This text is not intended to appear directly in the final thesis manuscript. Ins
 The central objective is to organize the physical assumptions, mathematical formalism, and simulation strategy into a reproducible structure, so that each computational step can be traced back to a precise theoretical element. In this way, the simulator is not developed as an isolated numerical tool, but as a direct operational translation of the underlying quantum model.
 
 \paragraph{Simulation notes.}
-At the MATLAB level, this document should be treated as the reference specification for notation, model hierarchy, and implementation priorities. The simulator should therefore be organized into clearly identifiable modules, each corresponding to a specific theoretical block. This modular structure is essential both for step-by-step validation of intermediate results and for future extensions of the model, such as the inclusion of mixed states, decoherence mechanisms, and more realistic fiber-channel descriptions.
+At the MATLAB level, this document should be treated as the reference specification for notation, model hierarchy, and implementation priorities. The simulator should therefore be organized into clearly identifiable modules, each corresponding to a specific theoretical block. This modular structure is essential both for step-by-step validation of intermediate results and for future extensions of the model.
 
 \subsection{Theoretical Formalism and Notation}
 
@@ -96,6 +97,7 @@ U_B = I,
 \]
 so that the full state evolution depends on a single phase parameter \(\theta\). This configuration defines the first validation scenario of the simulator, allowing direct comparison between analytical predictions and numerical results for correlation observables.
 
+%========================================================
 \section{Modeling Strategy}
 
 \subsection{Progressive Modeling Approach}
@@ -105,9 +107,6 @@ The modeling approach follows a progressive refinement strategy, in which the sy
 Each stage introduces additional physical effects while remaining consistent with the previous ones. This ensures analytical transparency and preserves continuity between simplified and refined models.
 
 From a theoretical perspective, this approach isolates the contribution of individual mechanisms. From a computational perspective, it enables a layered simulator structure, where each refinement corresponds to a well-defined extension of the existing codebase.
-
-\paragraph{Simulation notes.}
-The MATLAB implementation must be developed incrementally. A minimal working simulator should be established first, and subsequent levels should extend it rather than replace it. This guarantees that different models can be compared under controlled conditions and allows one to identify precisely when each physical effect becomes relevant.
 
 %--------------------------------------------------------
 
@@ -245,8 +244,6 @@ The theoretical structure is directly reflected in the computational architectur
 The implementation distinguishes clearly between reusable computational kernels and higher-level experiment scripts, allowing the simulator to evolve into a structured and reusable research tool.
 
 \paragraph{Simulation notes.}
-The architecture should remain explicitly modular: separate components for state preparation, channel evolution, observables, diagnostics, and post-processing.
-
 At the current stage, this modular design is reflected in the directory structure:
 \begin{itemize}
     \item \texttt{Core}: state vectors, operators, expectation values, correlation routines;
@@ -257,6 +254,7 @@ At the current stage, this modular design is reflected in the directory structur
 
 This separation enforces a strict distinction between general mathematical operations and physically specific modeling choices.
 
+%========================================================
 \section{Physical and Mathematical Representation}
 
 \subsection{Quantum System and Hilbert Space Structure}
@@ -521,12 +519,6 @@ Given a pure two-qubit state \( |\psi\rangle \), the expectation values are defi
 |\psi\rangle,
 \qquad i\in\{x,y,z\}.
 \]
-For mixed states described by a density operator \(\rho\), the expectation value generalizes to
-\[
-\langle O \rangle = \mathrm{Tr}(\rho O).
-\]
-
-This formulation is essential when dealing with ensemble descriptions, where the system cannot be represented by a single state vector.
 
 \paragraph{Analytical behavior under the reduced phase model.}
 
@@ -578,10 +570,241 @@ In this regime, the appropriate mathematical description is given by a density o
 \rho = \mathbb{E}_{\theta}\left[ |\psi(\theta)\rangle\langle \psi(\theta)| \right].
 \]
 
-This transition marks the passage from a deterministic unitary model to an effective mixed-state description, and provides the conceptual foundation for the second numerical experiment.
+This transition marks the passage from a deterministic unitary description at the level of each phase realization to an effective mixed-state description obtained after averaging over unresolved phase fluctuations. It provides the conceptual foundation for the second numerical experiment.
+For mixed states described by a density operator \(\rho\), the expectation value generalizes to
+\[
+\langle O \rangle = \mathrm{Tr}(\rho O).
+\]
+
+This formulation is essential when dealing with ensemble descriptions, where the system cannot be represented by a single state vector.
+
+%========================================================
+\section{Quantitative Characterization of Bipartite States}
+
+\subsection{Reduced Density Operators}
+
+In bipartite quantum systems, the state of an individual subsystem is generally described by a density operator obtained through a partial trace over the complementary subsystem. This formalism accounts for correlations that may be present at the global level.
+
+Let the composite system be defined on the Hilbert space
+\[
+\mathcal{H}_{AB} = \mathcal{H}_A \otimes \mathcal{H}_B,
+\]
+with $\mathcal{H}_A \cong \mathbb{C}^2$ and $\mathcal{H}_B \cong \mathbb{C}^2$. A generic global state is described by a density operator
+\[
+\rho_{AB} \in \mathbb{C}^{4 \times 4}.
+\]
+
+The reduced density operators are defined as
+\[
+\rho_A = \mathrm{Tr}_B(\rho_{AB}), \qquad
+\rho_B = \mathrm{Tr}_A(\rho_{AB}).
+\]
+
+These operators reproduce all expectation values of observables acting locally on the subsystem. For any observable $O_A$ acting on subsystem $A$,
+\[
+\langle O_A \rangle = \mathrm{Tr}(\rho_{AB}(O_A \otimes I_B)) = \mathrm{Tr}(\rho_A O_A).
+\]
+
+An explicit construction can be written as
+\[
+\rho_A = \sum_{j=0}^{1} (I_A \otimes \langle j|)\,\rho_{AB}\,(I_A \otimes |j\rangle),
+\]
+which shows that the partial trace eliminates the degrees of freedom associated with the unobserved subsystem.
+
+For maximally entangled Bell states, such as
+\[
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}},
+\]
+one obtains
+\[
+\rho_A = \rho_B = \frac{I}{2},
+\]
+indicating that each subsystem is locally maximally mixed despite the global state being pure.
+
+The same result holds for the phase-evolved state
+\[
+|\psi(\theta)\rangle = \frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}},
+\]
+where the relative phase modifies global coherence but leaves local states unchanged:
+\[
+\rho_A(\theta) = \rho_B(\theta) = \frac{I}{2}.
+\]
+
+A detailed derivation of this result, including the explicit matrix representation and term-by-term partial trace, is provided in Appendix~A.
+
+By linearity of the partial trace, this property is preserved under convex combinations. Thus, for the ensemble state
+\[
+\rho_{AB}^{(\mathrm{ens})}
+=
+\frac{1}{N}
+\sum_{k=1}^{N}
+|\psi(\theta_k)\rangle\langle\psi(\theta_k)|,
+\]
+one finds
+\[
+\rho_A^{(\mathrm{ens})} = \rho_B^{(\mathrm{ens})} = \frac{I}{2}.
+\]
+
+This leads to an important conceptual point: the same reduced density operator
+\[
+\rho_A = \frac{I}{2}
+\]
+can arise from physically distinct global states.
+
+On one hand, it may describe a classical ensemble
+\[
+\rho^{(\mathrm{class})}
+=
+\frac{1}{2}|0\rangle\langle 0|
++
+\frac{1}{2}|1\rangle\langle 1|,
+\]
+where the system is in a definite state but the observer lacks knowledge.
+
+On the other hand, it may result from entanglement:
+\[
+\rho_A^{(\mathrm{ent})}
+=
+\mathrm{Tr}_B\big(|\Psi^+\rangle\langle\Psi^+|\big)
+=
+\frac{I}{2}.
+\]
+
+Since both cases yield identical expectation values for all local observables,
+\[
+\mathrm{Tr}(\rho^{(\mathrm{class})} O_A)
+=
+\mathrm{Tr}(\rho_A^{(\mathrm{ent})} O_A),
+\]
+they are indistinguishable by local measurements alone.
+
+The distinction emerges only at the global level, where coherence and correlations must be analyzed through quantities such as purity and bipartite correlation functions (see Appendix~A for an explicit comparison).
+
+Finally, the reduced density operator directly determines measurable local quantities. For Pauli observables,
+\[
+\langle \sigma_x \rangle = \mathrm{Tr}(\rho_A \sigma_x), \quad
+\langle \sigma_y \rangle = \mathrm{Tr}(\rho_A \sigma_y), \quad
+\langle \sigma_z \rangle = \mathrm{Tr}(\rho_A \sigma_z),
+\]
+and for $\rho_A = I/2$ all expectation values vanish, indicating complete local depolarization.
+
+\subsection{Purity and Mixedness of Quantum States}
+
+Having introduced reduced density operators in Section 4.1, we now require a quantitative criterion to distinguish whether a quantum state is pure or mixed. This distinction is essential for interpreting the physical effects of fiber propagation, especially when extending the model beyond deterministic unitary evolution.
+
+A quantum state described by a density operator $\rho$ is said to be \emph{pure} if it can be written as
+\[
+\rho = |\psi\rangle \langle \psi|,
+\]
+for some normalized state vector $|\psi\rangle$. Otherwise, the state is said to be \emph{mixed}, meaning that it cannot be represented by a single state vector but only as a statistical ensemble
+\[
+\rho = \sum_k p_k |\psi_k\rangle \langle \psi_k|, \qquad p_k \ge 0, \quad \sum_k p_k = 1.
+\]
+
+A convenient and operational way to distinguish between these two cases is provided by the \emph{purity}, defined as
+\[
+\gamma(\rho) = \operatorname{Tr}(\rho^2).
+\]
+
+This quantity satisfies the fundamental properties
+\[
+\gamma(\rho) = 1 \quad \Longleftrightarrow \quad \rho \text{ is pure},
+\]
+\[
+\gamma(\rho) < 1 \quad \Longleftrightarrow \quad \rho \text{ is mixed}.
+\]
+
+This follows directly from the spectral decomposition of $\rho$. If
+\[
+\rho = \sum_i \lambda_i |i\rangle \langle i|,
+\]
+with $\lambda_i \ge 0$ and $\sum_i \lambda_i = 1$, then
+\[
+\operatorname{Tr}(\rho^2) = \sum_i \lambda_i^2.
+\]
+The purity reaches its maximum value $1$ only when a single eigenvalue is equal to $1$ and all others vanish, corresponding to a pure state. Otherwise, the sum of squares is strictly smaller than $1$.
+
+More generally, for a system with Hilbert space dimension $d$, the purity is bounded by
+\[
+\frac{1}{d} \le \operatorname{Tr}(\rho^2) \le 1,
+\]
+where the lower bound is attained by the maximally mixed state $\rho = I/d$.
+
+\medskip
+
+For single-qubit systems, purity admits a particularly transparent interpretation in terms of the Bloch vector representation introduced in Section 4.1. Any qubit density operator can be written as
+\[
+\rho = \frac{1}{2}\left(I + \vec{r} \cdot \vec{\sigma}\right),
+\]
+where $\vec{r} \in \mathbb{R}^3$ is the Bloch vector and $\vec{\sigma} = (\sigma_x, \sigma_y, \sigma_z)$ is the vector of Pauli matrices. In this representation, one finds
+\[
+\operatorname{Tr}(\rho^2) = \frac{1 + \|\vec{r}\|^2}{2}.
+\]
+Therefore,
+\[
+\|\vec{r}\| = 1 \;\Rightarrow\; \rho \text{ is pure},
+\qquad
+\|\vec{r}\| = 0 \;\Rightarrow\; \rho = \frac{I}{2} \text{ is maximally mixed}.
+\]
+
+This result provides a direct connection between the Bloch/Stokes parameters computed in the simulator and the degree of mixedness of the state.
+
+\medskip
+
+As already emphasized in Section 4.1, mixedness does not necessarily imply classical noise. A state may be mixed either because it belongs to a classical statistical ensemble or because it arises as the reduced state of a larger entangled system. In the present context, the latter mechanism is especially important.
+
+A paradigmatic example is provided by the Bell state
+\[
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}}.
+\]
+Its global density operator
+\[
+\rho_{AB} = |\Psi^+\rangle \langle \Psi^+|
+\]
+is pure, and therefore satisfies
+\[
+\operatorname{Tr}(\rho_{AB}^2) = 1.
+\]
+However, its reduced density operators are
+\[
+\rho_A = \rho_B = \frac{I}{2},
+\]
+which are maximally mixed and satisfy
+\[
+\operatorname{Tr}(\rho_A^2) = \operatorname{Tr}(\rho_B^2) = \frac{1}{2}.
+\]
+
+Thus, a globally pure entangled state may generate locally mixed subsystem states. This distinction between global purity and local mixedness is central to the interpretation of bipartite entangled systems.
+
+\medskip
+
+In the context of the present model, this distinction plays a crucial role. For the phase-evolved Bell-like state
+\[
+|\psi(\theta)\rangle = \frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}},
+\]
+the evolution is generated by local unitary transformations, and therefore the global state remains pure for all values of $\theta$:
+\[
+\operatorname{Tr}(\rho(\theta)^2) = 1.
+\]
+At the same time, as shown in Section 4.1, the reduced states remain
+\[
+\rho_A(\theta) = \rho_B(\theta) = \frac{I}{2},
+\]
+so that their purity is constant and minimal:
+\[
+\operatorname{Tr}(\rho_A(\theta)^2) = \operatorname{Tr}(\rho_B(\theta)^2) = \frac{1}{2}.
+\]
+
+Therefore, the introduction of a relative phase modifies the correlation observables without affecting either global purity or local mixedness.
+
+\medskip
+
+The notion of purity becomes particularly relevant when extending the model to include more realistic physical effects. While deterministic unitary evolution preserves purity, ensemble averaging over random parameters or the inclusion of frequency-dependent propagation effects, such as polarization mode dispersion, can lead to genuine mixed states. In such cases, the purity provides a quantitative indicator of the loss of coherence and the onset of depolarization.
+
+For this reason, purity will serve as a fundamental diagnostic tool in the numerical simulator, complementing correlation observables and preparing the ground for more advanced quantities such as fidelity and entanglement measures.
 
 
-
+%========================================================
 \section{Numerical Experiments and Results}
 
 \subsection{Experiment 1: Deterministic Phase Sweep}
@@ -773,6 +996,235 @@ It is important to distinguish between the loss of observable correlations and t
 
 A full characterization of entanglement in this regime requires the evaluation of appropriate measures such as concurrence or Bell-inequality violations, which are not included in the present stage but can be incorporated in future extensions of the simulator.
 
+%========================================================
+%========================================================
+\appendix
+{\section{Explicit Derivation of Reduced Density Operators and Comparison of Global States}}
+
+This appendix provides an explicit derivation of the reduced density operators for the phase-evolved Bell-like state and illustrates, through a concrete comparison, why identical local reduced states may correspond to different global physical situations.
+
+We consider the two-qubit state
+\[
+|\psi(\theta)\rangle = \frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}},
+\]
+written in the computational basis
+\[
+\{|00\rangle, |01\rangle, |10\rangle, |11\rangle\}.
+\]
+
+Its vector representation is
+\[
+|\psi(\theta)\rangle =
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+0 \\
+1 \\
+e^{i\theta} \\
+0
+\end{pmatrix}.
+\]
+
+The associated density operator is
+\[
+\rho_{AB}(\theta) = |\psi(\theta)\rangle\langle\psi(\theta)|,
+\]
+which expands as
+\[
+\rho_{AB}(\theta)
+=
+\frac{1}{2}
+\Big(
+|01\rangle\langle 01|
++
+e^{-i\theta}|01\rangle\langle 10|
++
+e^{i\theta}|10\rangle\langle 01|
++
+|10\rangle\langle 10|
+\Big).
+\]
+
+In matrix form,
+\[
+\rho_{AB}(\theta)
+=
+\frac{1}{2}
+\begin{pmatrix}
+0 & 0 & 0 & 0 \\
+0 & 1 & e^{-i\theta} & 0 \\
+0 & e^{i\theta} & 1 & 0 \\
+0 & 0 & 0 & 0
+\end{pmatrix}.
+\]
+
+We now compute the reduced density operator of subsystem $A$ by taking the partial trace over subsystem $B$:
+\[
+\rho_A(\theta) = \mathrm{Tr}_B(\rho_{AB}(\theta)).
+\]
+
+Using the explicit formula
+\[
+\rho_A(\theta)
+=
+\sum_{b=0}^{1}
+(I_A \otimes \langle b|)\,\rho_{AB}(\theta)\,(I_A \otimes |b\rangle),
+\]
+we evaluate the contribution of each term in $\rho_{AB}(\theta)$ separately.
+
+For the diagonal term $|01\rangle\langle 01|$, with
+\[
+|01\rangle = |0\rangle_A \otimes |1\rangle_B,
+\]
+one obtains
+\[
+\mathrm{Tr}_B(|01\rangle\langle 01|) = |0\rangle\langle 0|.
+\]
+
+For the coherence term
+\[
+|01\rangle\langle 10|
+=
+(|0\rangle\langle 1|)\otimes(|1\rangle\langle 0|),
+\]
+one finds
+\[
+\mathrm{Tr}_B(|01\rangle\langle 10|)
+=
+|0\rangle\langle 1|\,\mathrm{Tr}(|1\rangle\langle 0|)
+=
+0,
+\]
+since
+\[
+\mathrm{Tr}(|1\rangle\langle 0|)=\langle 0|1\rangle = 0.
+\]
+The same argument gives
+\[
+\mathrm{Tr}_B(|10\rangle\langle 01|) = 0.
+\]
+
+Finally, for the second diagonal term $|10\rangle\langle 10|$, with
+\[
+|10\rangle = |1\rangle_A \otimes |0\rangle_B,
+\]
+one obtains
+\[
+\mathrm{Tr}_B(|10\rangle\langle 10|) = |1\rangle\langle 1|.
+\]
+
+Summing all contributions, the reduced density operator of subsystem $A$ is
+\[
+\rho_A(\theta)
+=
+\frac{1}{2}|0\rangle\langle 0|
++
+\frac{1}{2}|1\rangle\langle 1|
+=
+\frac{I}{2}.
+\]
+
+By symmetry, the same result holds for subsystem $B$:
+\[
+\rho_B(\theta) = \frac{I}{2}.
+\]
+
+Therefore, although the global density operator depends explicitly on the phase $\theta$, the reduced density operators do not. The phase appears only in off-diagonal coherence terms, and these are eliminated by the partial trace because of the orthogonality relations in the traced subsystem.
+
+\medskip
+
+Setting $\theta = 0$ recovers the Bell state
+\[
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}},
+\]
+which gives the same reduced density operators
+\[
+\rho_A = \rho_B = \frac{I}{2}.
+\]
+
+This shows explicitly that each subsystem is locally maximally mixed even though the global state is pure.
+
+\medskip
+
+To understand why this does not imply classical ignorance, consider the single-qubit mixed state
+\[
+\rho^{(\mathrm{class})}
+=
+\frac{1}{2}|0\rangle\langle 0|
++
+\frac{1}{2}|1\rangle\langle 1|
+=
+\frac{I}{2}.
+\]
+
+At the level of subsystem $A$, the reduced state obtained from the entangled two-qubit state coincides with this classical mixture:
+\[
+\rho_A^{(\mathrm{ent})} = \rho^{(\mathrm{class})}.
+\]
+
+Consequently, for any local observable $O_A$,
+\[
+\mathrm{Tr}(\rho^{(\mathrm{class})} O_A)
+=
+\mathrm{Tr}(\rho_A^{(\mathrm{ent})} O_A).
+\]
+
+Thus, no measurement acting only on subsystem $A$ can distinguish whether the local mixedness arises from a classical mixture or from entanglement with subsystem $B$.
+
+\medskip
+
+At the global level, however, the distinction becomes manifest. Consider the separable mixed state
+\[
+\rho_{AB}^{(\mathrm{sep})}
+=
+\frac{1}{2}|01\rangle\langle 01|
++
+\frac{1}{2}|10\rangle\langle 10|.
+\]
+
+This state has the same reduced density operators as the entangled state,
+\[
+\mathrm{Tr}_B(\rho_{AB}^{(\mathrm{sep})}) = \frac{I}{2},
+\qquad
+\mathrm{Tr}_A(\rho_{AB}^{(\mathrm{sep})}) = \frac{I}{2},
+\]
+but it does not contain the off-diagonal coherence terms
+\[
+e^{-i\theta}|01\rangle\langle 10|,
+\qquad
+e^{i\theta}|10\rangle\langle 01|.
+\]
+
+One immediate indicator of this difference is the purity
+\[
+\mathrm{Tr}(\rho^2).
+\]
+
+For the entangled pure state,
+\[
+\mathrm{Tr}(\rho_{AB}(\theta)^2) = 1,
+\]
+while for the separable mixed state,
+\[
+\mathrm{Tr}\big((\rho_{AB}^{(\mathrm{sep})})^2\big) = \frac{1}{2}.
+\]
+
+A second distinction appears in the bipartite correlation observables. For the phase-evolved state,
+\[
+\langle \sigma_x \otimes \sigma_x \rangle = \cos\theta, \qquad
+\langle \sigma_y \otimes \sigma_y \rangle = \cos\theta, \qquad
+\langle \sigma_z \otimes \sigma_z \rangle = -1,
+\]
+whereas for the separable mixed state one obtains
+\[
+\langle \sigma_x \otimes \sigma_x \rangle = 0, \qquad
+\langle \sigma_y \otimes \sigma_y \rangle = 0, \qquad
+\langle \sigma_z \otimes \sigma_z \rangle = -1.
+\]
+
+Thus, the two states are identical from the local point of view but differ at the global level in both purity and correlation structure. This confirms explicitly that reduced density operators encode all locally accessible information, but do not in general capture global quantum coherence or bipartite entanglement.
+
+%========================================================
+%========================================================
 %========================================================
 \section{References}
 

@@ -65,6 +65,7 @@ function O = correlation_operator(A, B)
             'B must be a square matrix.');
     end
 
+    
     % =========================
     % Main computations
     % =========================

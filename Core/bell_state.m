@@ -37,23 +37,30 @@ function psi = bell_state(type)
 
     type = char(type);  % normalize input
 
+    
     % =========================
     % Main computations
     % =========================
 
+    % Computational basis states
+    ket_00 = computational_basis('00');
+    ket_01 = computational_basis('01');
+    ket_10 = computational_basis('10');
+    ket_11 = computational_basis('11');
+
     switch type
 
         case 'psi_plus'
-            psi = [0; 1; 1; 0];
+            psi = ket_01 + ket_10;
 
         case 'psi_minus'
-            psi = [0; 1; -1; 0];
+            psi = ket_01 - ket_10;
 
         case 'phi_plus'
-            psi = [1; 0; 0; 1];
+            psi = ket_00 + ket_11;
 
         case 'phi_minus'
-            psi = [1; 0; 0; -1];
+            psi = ket_00 - ket_11;
 
         otherwise
             error('bell_state:InvalidState', ...
@@ -61,10 +68,7 @@ function psi = bell_state(type)
                  'psi_plus, psi_minus, phi_plus, phi_minus.']);
     end
 
-    % Explicit normalization
-    psi = psi / sqrt(2);
-
-    % Forcing complex type for consistency across simulator
-    psi = complex(psi);
+    psi = psi / sqrt(2);   % normalization
+    psi = complex(psi);    % enforce complex type
 
 end

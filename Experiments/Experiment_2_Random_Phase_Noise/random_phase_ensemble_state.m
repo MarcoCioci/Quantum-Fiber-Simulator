@@ -79,10 +79,9 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
     % =========================
     for idx = 1:N
         theta = theta_samples(idx);
-
+        
         U_A = phase_unitary(theta);
         U_B = eye(2, 2);
-
         psi = apply_unitary(U_A, U_B, psi0);
         rho_k = state_to_density_matrix(psi);
 

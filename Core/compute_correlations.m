@@ -59,6 +59,7 @@ function corr = compute_correlations(psi)
              'Returned expectation values may not correspond to a valid quantum state.']);
     end
 
+    
     % =========================
     % Main computations
     % =========================
