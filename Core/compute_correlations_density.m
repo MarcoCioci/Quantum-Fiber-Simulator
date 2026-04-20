@@ -69,7 +69,7 @@ function correlations = compute_correlations_density(rho)
 
 
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     [sigma_x, sigma_y, sigma_z] = pauli_matrices();

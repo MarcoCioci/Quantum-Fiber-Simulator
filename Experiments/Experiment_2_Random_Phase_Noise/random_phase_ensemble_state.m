@@ -5,7 +5,7 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %   Compute the ensemble-averaged two-qubit density matrix associated with
 %   the random-phase noise model used in Experiment 2.
 %
-%   Starting from the fixed Bell input state |psi_plus>, this function:
+%   Starting from the fixed Bell input state |Psi+>, this function:
 %       - applies a sampled relative phase to each realization
 %       - converts each pure output state into a density operator
 %       - averages all realizations into a single ensemble state
@@ -22,7 +22,7 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %   is intentionally limited to that scenario.
 %
 %   The input state is fixed to:
-%       |psi_plus>
+%       |Psi+>
 %
 %   The local evolution for each sampled realization is:
 %       U_A = phase_unitary(theta_k)
@@ -34,12 +34,13 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %   where:
 %       rho_k = |psi(theta_k)><psi(theta_k)|
 %
-%   Plotting and correlation analysis are intentionally excluded from this
+%   Plotting and observable analysis are intentionally excluded from this
 %   function. Those tasks should be handled by experiment-level routines.
 
     % =========================
     % Robustness checks
     % =========================
+
     if nargin ~= 1
         error('random_phase_ensemble_state:InvalidNumInputs', ...
             'Expected exactly 1 input argument: theta_samples.');
@@ -65,23 +66,28 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
             'theta_samples must contain only finite values.');
     end
 
-    theta_samples = theta_samples(:).';   % force row vector
+    theta_samples = theta_samples(:).';
     N = numel(theta_samples);
+
 
     % =========================
     % Initialization
     % =========================
+
     psi0 = bell_state('psi_plus');
-    rho_sum = zeros(4, 4);
+    rho_sum = zeros(4, 4, 'like', state_to_density_matrix(psi0));
+
 
     % =========================
     % Main ensemble construction
     % =========================
+
     for idx = 1:N
         theta = theta_samples(idx);
-        
+
         U_A = phase_unitary(theta);
-        U_B = eye(2, 2);
+        U_B = eye(2);
+
         psi = apply_unitary(U_A, U_B, psi0);
         rho_k = state_to_density_matrix(psi);
 

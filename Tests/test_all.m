@@ -15,6 +15,8 @@ test_density_matrix();
 test_partial_trace();
 test_correlations();
 test_bloch_vector();
+test_purity();
+test_fidelity();
 
 disp('======================================');
 disp('All tests passed successfully.');

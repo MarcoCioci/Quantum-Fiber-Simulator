@@ -39,7 +39,7 @@ function psi = bell_state(type)
 
     
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     % Computational basis states

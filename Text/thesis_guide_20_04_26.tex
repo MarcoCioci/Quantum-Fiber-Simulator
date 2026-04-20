@@ -579,6 +579,7 @@ For mixed states described by a density operator \(\rho\), the expectation value
 This formulation is essential when dealing with ensemble descriptions, where the system cannot be represented by a single state vector.
 
 %========================================================
+%========================================================
 \section{Quantitative Characterization of Bipartite States}
 
 \subsection{Reduced Density Operators}
@@ -799,11 +800,166 @@ Therefore, the introduction of a relative phase modifies the correlation observa
 
 \medskip
 
-The notion of purity becomes particularly relevant when extending the model to include more realistic physical effects. While deterministic unitary evolution preserves purity, ensemble averaging over random parameters or the inclusion of frequency-dependent propagation effects, such as polarization mode dispersion, can lead to genuine mixed states. In such cases, the purity provides a quantitative indicator of the loss of coherence and the onset of depolarization.
+The notion of purity becomes particularly relevant when extending the model to include more realistic physical effects. 
+While deterministic unitary evolution preserves purity, ensemble averaging over random parameters or the inclusion of frequency-dependent propagation effects, such as polarization mode dispersion, can lead to genuine mixed states. 
+
+In particular, for the random-phase ensemble introduced above, the global density operator depends on the ensemble coherence
+\[
+\mu = \langle e^{i\theta} \rangle,
+\]
+and its purity is given by
+\[
+\operatorname{Tr}(\rho_{AB}^{(\mathrm{ens})\,2})
+=
+\frac{1 + |\mu|^2}{2}.
+\]
+Equivalently,
+\[
+\operatorname{Tr}(\rho_{AB}^{(\mathrm{ens})\,2})
+=
+\frac{1 + \langle \cos\theta \rangle^2 + \langle \sin\theta \rangle^2}{2}.
+\]
+
+This shows that the loss of purity is directly governed by the reduction of phase coherence in the ensemble. When $|\mu|=1$, the state remains pure, while for $|\mu|<1$ the ensemble becomes mixed.
 
 For this reason, purity will serve as a fundamental diagnostic tool in the numerical simulator, complementing correlation observables and preparing the ground for more advanced quantities such as fidelity and entanglement measures.
 
+\subsection{Fidelity with Respect to Bell States}
 
+Having introduced reduced density operators and purity as measures of local information and mixedness, we now require a quantitative tool to evaluate how close a given quantum state is to a reference target state. This role is fulfilled by the notion of fidelity.
+
+In general, the fidelity between two quantum states described by density operators $\rho$ and $\sigma$ is defined as
+\[
+F(\rho,\sigma)
+=
+\left(\operatorname{Tr}\sqrt{\sqrt{\rho}\,\sigma\,\sqrt{\rho}}\right)^2.
+\]
+
+This quantity satisfies
+\[
+0 \le F(\rho,\sigma) \le 1,
+\]
+with $F=1$ if and only if $\rho = \sigma$, and $F=0$ for perfectly distinguishable (orthogonal) states. Fidelity therefore provides a measure of similarity between quantum states.
+
+\medskip
+
+In the present context, the reference state is a pure Bell state, and the fidelity simplifies considerably. Let
+\[
+\sigma = |\phi\rangle\langle\phi|,
+\]
+with $|\phi\rangle$ a normalized state vector. Then one obtains (see Appendix~B for a detailed derivation)
+\[
+F(\rho, |\phi\rangle)
+=
+\langle \phi | \rho | \phi \rangle.
+\]
+
+This expression admits a direct physical interpretation: it corresponds to the probability that the state $\rho$ is found in the state $|\phi\rangle$ upon measurement.
+
+\medskip
+
+In this work, we focus on the Bell state
+\[
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}},
+\]
+and define the fidelity of a generic state $\rho$ with respect to this target as
+\[
+F_{\Psi^+}(\rho)
+=
+\langle \Psi^+ | \rho | \Psi^+ \rangle.
+\]
+
+\medskip
+
+We now analyze this quantity for the phase-evolved Bell-like state introduced in Section 3.4:
+\[
+|\psi(\theta)\rangle = \frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}},
+\]
+with associated density operator
+\[
+\rho(\theta) = |\psi(\theta)\rangle\langle\psi(\theta)|.
+\]
+
+The fidelity with respect to $|\Psi^+\rangle$ is given by
+\[
+F_{\Psi^+}(\rho(\theta))
+=
+|\langle \Psi^+ | \psi(\theta) \rangle|^2.
+\]
+
+A direct computation yields
+\[
+\langle \Psi^+ | \psi(\theta) \rangle
+=
+\frac{1}{2}(1 + e^{i\theta}),
+\]
+and therefore
+\[
+F_{\Psi^+}(\rho(\theta))
+=
+\frac{1 + \cos\theta}{2}.
+\]
+
+\medskip
+
+This result shows that the relative phase $\theta$ modifies the overlap with the reference Bell state, even though the global state remains pure for all values of $\theta$. In particular,
+\[
+F_{\Psi^+} = 1 \quad \text{for } \theta = 0,
+\qquad
+F_{\Psi^+} = 0 \quad \text{for } \theta = \pi.
+\]
+
+Thus, fidelity captures variations in global coherence that are not reflected in the purity or in the reduced density operators.
+
+\medskip
+For ensemble states arising from random phase fluctuations, described by
+\[
+\rho_{AB}^{(\mathrm{ens})}
+=
+\frac{1}{N}\sum_{k=1}^{N}
+|\psi(\theta_k)\rangle\langle\psi(\theta_k)|,
+\]
+the fidelity can be computed using the linearity of the expectation value:
+\[
+F_{\Psi^+}(\rho_{AB}^{(\mathrm{ens})})
+=
+\frac{1}{N}
+\sum_{k=1}^{N}
+F_{\Psi^+}(\rho(\theta_k)).
+\]
+
+Introducing the ensemble coherence parameter
+\[
+\mu = \langle e^{i\theta} \rangle,
+\]
+one finds
+\[
+F_{\Psi^+}
+=
+\frac{1}{2}\left(1 + \mathrm{Re}(\mu)\right)
+=
+\frac{1}{2}\left(1 + \langle \cos\theta \rangle\right).
+\]
+
+\medskip
+
+This shows that fidelity directly quantifies the loss of coherence induced by phase fluctuations. In particular, for a uniform distribution over $[0,2\pi]$, one has $\langle \cos\theta \rangle = 0$, leading to
+\[
+F_{\Psi^+} = \frac{1}{2}.
+\]
+
+\medskip
+
+In summary, fidelity provides a quantitative measure of how closely a given state approximates the target Bell state. Unlike purity, which characterizes mixedness, fidelity is sensitive to coherent deformations of the state and therefore plays a central role in the validation and interpretation of the numerical simulations.
+
+\paragraph{Simulation notes.}
+Within the simulator architecture, fidelity is introduced as a general-purpose quantitative tool for comparing quantum states in a basis-independent manner. Given a numerically generated state—either in pure vector form or as a density operator—fidelity provides a scalar measure of proximity to a chosen reference state, typically a Bell state in the present framework. 
+
+From an implementation standpoint, this requires supporting both pure-state overlaps and density-matrix evaluations, allowing the same routine to be applied uniformly across different modeling regimes (deterministic evolution, ensemble averaging, or noisy channels). 
+
+Unlike correlation observables, which probe specific measurement directions, fidelity captures a global property of the state and therefore serves as a compact diagnostic for validating transformations, monitoring deviations from ideal entanglement, and benchmarking different physical models within the simulator pipeline.
+
+%========================================================
 %========================================================
 \section{Numerical Experiments and Results}
 
@@ -811,7 +967,7 @@ For this reason, purity will serve as a fundamental diagnostic tool in the numer
 
 \subsubsection{Objective}
 
-The first experiment investigates the effect of a controlled relative phase \(\theta\) on a maximally entangled two-qubit state. The objective is to characterize how the implemented correlation observables evolve under the reduced unitary fiber model.
+The first experiment investigates the effect of a controlled relative phase \(\theta\) on a maximally entangled two-qubit state. The objective is to characterize how both correlation observables and state-based quantities evolve under the reduced unitary fiber model.
 
 \subsubsection{Model}
 
@@ -851,11 +1007,27 @@ c_{yy} = \cos\theta,\qquad
 c_{zz} = -1.
 \]
 
-Thus, the relative phase \(\theta\) modifies only the transverse correlations in the \(x\)- and \(y\)-directions, while the \(z\)-correlation remains invariant.
+Since the evolution is generated by local unitary transformations, the global state remains pure:
+\[
+\operatorname{Tr}(\rho(\theta)^2)=1.
+\]
+
+The reduced density operators remain maximally mixed:
+\[
+\rho_A(\theta)=\rho_B(\theta)=\frac{I}{2}, \qquad
+\operatorname{Tr}(\rho_A^2)=\operatorname{Tr}(\rho_B^2)=\frac{1}{2}.
+\]
+
+The fidelity with respect to the reference Bell state \( |\Psi^+\rangle \) is
+\[
+F_{\Psi^+}(\rho(\theta))
+=
+\frac{1+\cos\theta}{2}.
+\]
 
 \subsubsection{Numerical Results}
 
-The numerical experiment performs a sweep over \(\theta \in [0,2\pi]\), computing the correlation observables for each sampled value.
+The numerical experiment performs a sweep over \(\theta \in [0,2\pi]\), computing both correlation observables and state-characterization quantities.
 
 \begin{figure}[h]
     \centering
@@ -871,36 +1043,48 @@ The numerical experiment performs a sweep over \(\theta \in [0,2\pi]\), computin
     \centering
     \includegraphics[width=0.75\linewidth]{../Images/Experiment_1/experiment_1_theory_vs_experiment.png}
     \caption{
-    Comparison between numerical simulation and analytical predictions for the correlation observables \(c_{xx}\), \(c_{yy}\), and \(c_{zz}\) as functions of \(\theta\).
-    The analytical model predicts \(c_{xx} = c_{yy} = \cos\theta\) and \(c_{zz} = -1\), in full agreement with the numerical results.
+    Comparison between numerical simulation and analytical predictions for the correlation observables.
     }
     \label{fig:experiment1_validation}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/Experiment_1/experiment_1_state_metrics.png}
+    \caption{
+    Validation of global purity, reduced purities, and fidelity with respect to \( |\Psi^+\rangle \).
+    }
+    \label{fig:experiment1_state_metrics}
+\end{figure}
+
 \subsubsection{Discussion}
 
-The numerical results are in full agreement with the analytical predictions. In particular,
+The numerical results are in full agreement with the analytical predictions:
 \begin{itemize}
-    \item \(c_{xx}\) and \(c_{yy}\) exhibit the expected cosine dependence on \(\theta\),
-    \item \(c_{zz}\) remains fixed at \(-1\) over the entire sweep.
+    \item \(c_{xx}\) and \(c_{yy}\) follow the expected cosine dependence,
+    \item \(c_{zz}\) remains constant at \(-1\),
+    \item the global purity remains equal to \(1\),
+    \item the reduced purities remain equal to \(1/2\),
+    \item the fidelity follows \(F_{\Psi^+}=(1+\cos\theta)/2\).
 \end{itemize}
 
-This confirms that, within the reduced model, the fiber acts as an effective relative phase shifter. The state remains pure and maximally entangled for every fixed value of \(\theta\), while its measurable two-photon correlations vary continuously with the phase.
-
-%--------------------------------------------------------
+These results confirm that the fiber acts as an effective relative phase shifter. While the global state remains pure and maximally entangled, both the observable correlations and the fidelity with respect to a fixed Bell reference vary continuously with the phase. This demonstrates that purity alone is insufficient to characterize the physical transformation induced by the propagation.
+%========================================================
+%========================================================
 
 \subsection{Experiment 2: Random Phase Ensemble}
 
 \subsubsection{Objective}
 
-The second experiment extends the deterministic phase model by introducing random phase realizations \(\theta_k\), motivated by the fact that in realistic fibers birefringence fluctuations can produce stochastic phase shifts.
+The second experiment extends the deterministic phase model by introducing random phase realizations \(\theta_k\), modeling stochastic birefringence effects in realistic optical fibers.
 
-Instead of a single pure state, the system is described by an ensemble of phase-dependent states
+Instead of a single pure state, the system is described by an ensemble
 \[
-\{ |\psi(\theta_k)\rangle \}_{k=1}^{N}.
+\{ |\psi(\theta_k)\rangle \}_{k=1}^{N},
 \]
+and by the corresponding averaged density operator.
 
-The objective is to determine how ensemble averaging modifies the observable correlation structure.
+The objective is to characterize how ensemble averaging modifies global coherence, correlation observables, purity, and fidelity.
 
 \subsubsection{Ensemble Model}
 
@@ -913,7 +1097,7 @@ Each realization is given by
 |01\rangle + e^{i\theta_k}|10\rangle
 \right),
 \]
-and the ensemble density matrix is defined as
+and the ensemble state is
 \[
 \rho_{\mathrm{ensemble}}
 =
@@ -922,19 +1106,50 @@ and the ensemble density matrix is defined as
 |\psi(\theta_k)\rangle\langle \psi(\theta_k)|.
 \]
 
-This construction represents the effective state obtained when the phase fluctuates across realizations and the measurement probes only the statistical average.
+\subsubsection{Analytical Predictions}
 
 \subsubsection{Analytical Predictions}
 
-The ensemble-averaged correlation observables satisfy
+For the ensemble state, it is convenient to introduce the ensemble coherence parameter
 \[
-c_{xx} = \langle \cos\theta \rangle,\qquad
-c_{yy} = \langle \cos\theta \rangle,\qquad
-c_{zz} = -1,
+\mu = \langle e^{i\theta} \rangle
+=
+\langle \cos\theta \rangle + i \langle \sin\theta \rangle.
 \]
-where the average is taken over the adopted phase distribution.
 
-Thus, the longitudinal correlation remains unchanged, while the transverse correlations are reduced according to the statistical phase coherence retained by the ensemble.
+The ensemble-averaged correlations satisfy
+\[
+c_{xx} = \mathrm{Re}(\mu) = \langle \cos\theta \rangle,\qquad
+c_{yy} = \mathrm{Re}(\mu) = \langle \cos\theta \rangle,\qquad
+c_{zz} = -1.
+\]
+
+The global purity is
+\[
+\operatorname{Tr}(\rho_{\mathrm{ensemble}}^2)
+=
+\frac{1 + |\mu|^2}{2}
+=
+\frac{1 + \langle \cos\theta \rangle^2 + \langle \sin\theta \rangle^2}{2}.
+\]
+
+The reduced states remain maximally mixed:
+\[
+\rho_A = \rho_B = \frac{I}{2},
+\]
+and therefore
+\[
+\operatorname{Tr}(\rho_A^2)=\operatorname{Tr}(\rho_B^2)=\frac{1}{2}.
+\]
+
+The fidelity with respect to \( |\Psi^+\rangle \) is
+\[
+F_{\Psi^+}
+=
+\frac{1 + \mathrm{Re}(\mu)}{2}
+=
+\frac{1 + \langle \cos\theta \rangle}{2}.
+\]
 
 \subsubsection{Numerical Results}
 
@@ -945,12 +1160,19 @@ Three representative phase distributions are considered:
     \item Gaussian distribution.
 \end{itemize}
 
+Each case is summarized in a single figure combining:
+\begin{itemize}
+    \item sampled phase statistics,
+    \item pure-state correlation trend,
+    \item ensemble correlations,
+    \item purity and fidelity metrics.
+\end{itemize}
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_constant_distribution.png}
     \caption{
-    Experiment 2 results for a constant phase distribution.
-    In this case, the ensemble reduces to a single deterministic phase realization.
+    Summary of Experiment 2 for a constant phase distribution. The ensemble reduces to a single deterministic realization.
     }
     \label{fig:experiment2_constant}
 \end{figure}
@@ -959,47 +1181,48 @@ Three representative phase distributions are considered:
     \centering
     \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_uniform_distribution.png}
     \caption{
-    Experiment 2 results for a uniform phase distribution.
-    The transverse correlations are reduced by phase averaging, while \(c_{zz}\) remains fixed.
+    Summary of Experiment 2 for a uniform phase distribution. Phase averaging suppresses transverse correlations and reduces fidelity.
     }
     \label{fig:experiment2_uniform}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_normal_distribution.png}
+    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_gaussian_distribution.png}
     \caption{
-    Experiment 2 results for a Gaussian phase distribution.
-    The amount of residual transverse correlation depends on the concentration of the sampled phases.
+    Summary of Experiment 2 for a Gaussian phase distribution. Residual coherence depends on the phase variance.
     }
     \label{fig:experiment2_gaussian}
 \end{figure}
 
 \subsubsection{Discussion}
 
-The numerical results show a clear transition from coherent deterministic behavior to ensemble-averaged mixed-state behavior:
+The results show a transition from coherent deterministic behavior to mixed-state ensemble behavior:
 \begin{itemize}
-    \item for constant \(\theta\), the model reproduces the deterministic behavior of Experiment 1,
-    \item for distributed \(\theta\), the magnitudes of \(c_{xx}\) and \(c_{yy}\) are reduced,
-    \item for sufficiently broad phase distributions, \(\langle \cos\theta \rangle \to 0\), leading to vanishing transverse correlations.
+    \item for constant \(\theta\), the system reproduces Experiment 1,
+    \item for distributed \(\theta\), transverse correlations are reduced,
+    \item for broad phase distributions, \( |\langle e^{i\theta}\rangle| \to 0 \), leading to vanishing ensemble coherence.
 \end{itemize}
 
-This behavior reflects a loss of observable phase coherence caused by statistical averaging over different phase realizations.
+At the same time:
+\begin{itemize}
+    \item the global purity decreases from \(1\),
+    \item the reduced purities remain fixed at \(1/2\),
+    \item the fidelity with respect to \( |\Psi^+\rangle \) decreases.
+\end{itemize}
 
 \subsubsection{Physical Interpretation}
 
-Each individual realization \( |\psi(\theta_k)\rangle \) remains a pure maximally entangled state. However, the ensemble average produces a mixed state described by \(\rho_{\mathrm{ensemble}}\). The reduction of transverse correlations is therefore not due to the loss of entanglement within a single realization, but to the averaging process itself.
+Each realization remains a pure maximally entangled state. The mixedness of the ensemble arises exclusively from statistical averaging over unresolved phase fluctuations.
 
-This corresponds to a physical regime in which the relative phase fluctuates on timescales or across realizations that are not resolved by the measurement process. The experiment therefore provides the first operational transition from a pure-state description to an effective mixed-state description within the simulator.
+This demonstrates the transition from a pure-state description to an effective mixed-state description, where coherence is progressively lost at the observable level.
 
-It is important to distinguish between the loss of observable correlations and the loss of entanglement. While phase averaging reduces the magnitude of measurable correlations, the resulting mixed state may still retain non-classical correlations depending on the underlying distribution.
-
-A full characterization of entanglement in this regime requires the evaluation of appropriate measures such as concurrence or Bell-inequality violations, which are not included in the present stage but can be incorporated in future extensions of the simulator.
+Importantly, the reduction of correlations and fidelity does not necessarily imply complete loss of entanglement, but rather a reduction of ensemble phase coherence accessible through the chosen observables.
 
 %========================================================
 %========================================================
 \appendix
-{\section{Explicit Derivation of Reduced Density Operators and Comparison of Global States}}
+\section{Explicit Derivation of Reduced Density Operators and Comparison of Global States}
 
 This appendix provides an explicit derivation of the reduced density operators for the phase-evolved Bell-like state and illustrates, through a concrete comparison, why identical local reduced states may correspond to different global physical situations.
 
@@ -1223,6 +1446,130 @@ whereas for the separable mixed state one obtains
 
 Thus, the two states are identical from the local point of view but differ at the global level in both purity and correlation structure. This confirms explicitly that reduced density operators encode all locally accessible information, but do not in general capture global quantum coherence or bipartite entanglement.
 
+%==============================================================
+\section{Derivation of Fidelity for a Pure Reference State}
+
+We derive the simplified expression for the fidelity when one of the states is pure, and justify the algebraic properties used in the reduction.
+
+\medskip
+
+Let $\rho$ be a density operator on a finite-dimensional Hilbert space, and let
+\[
+\sigma = |\psi\rangle\langle\psi|
+\]
+be a pure-state density operator, with $|\psi\rangle$ normalized:
+\[
+\langle \psi | \psi \rangle = 1.
+\]
+
+By construction, $\sigma$ is Hermitian,
+\[
+\sigma^\dagger = \sigma,
+\]
+positive semidefinite,
+\[
+\langle \chi | \sigma | \chi \rangle \ge 0
+\quad \text{for all } |\chi\rangle,
+\]
+and satisfies
+\[
+\operatorname{Tr}(\sigma) = 1.
+\]
+Moreover, it is a rank-one operator, since it projects onto the one-dimensional subspace spanned by $|\psi\rangle$.
+
+\medskip
+
+The general definition of fidelity is
+\[
+F(\rho,\sigma)
+=
+\left(\operatorname{Tr}\sqrt{\sqrt{\rho}\,\sigma\,\sqrt{\rho}}\right)^2.
+\]
+
+Substituting $\sigma = |\psi\rangle\langle\psi|$, one obtains
+\[
+\sqrt{\rho}\,\sigma\,\sqrt{\rho}
+=
+\sqrt{\rho}\,|\psi\rangle\langle\psi|\,\sqrt{\rho}.
+\]
+
+Define the vector
+\[
+|\phi\rangle = \sqrt{\rho}\,|\psi\rangle.
+\]
+Then the operator becomes
+\[
+\sqrt{\rho}\,\sigma\,\sqrt{\rho}
+=
+|\phi\rangle\langle\phi|.
+\]
+
+This is again a rank-one operator, provided $|\phi\rangle \neq 0$.
+
+\medskip
+
+We now compute the square root of this operator. Since
+\[
+|\phi\rangle\langle\phi|
+\]
+is positive semidefinite and rank one, its only nonzero eigenvalue is
+\[
+\lambda = \langle \phi | \phi \rangle.
+\]
+
+Thus, its spectral decomposition is
+\[
+|\phi\rangle\langle\phi|
+=
+\lambda\,|\hat{\phi}\rangle\langle\hat{\phi}|,
+\]
+where
+\[
+|\hat{\phi}\rangle = \frac{|\phi\rangle}{\|\phi\|}.
+\]
+
+The square root is then
+\[
+\sqrt{|\phi\rangle\langle\phi|}
+=
+\sqrt{\lambda}\,|\hat{\phi}\rangle\langle\hat{\phi}|.
+\]
+
+Taking the trace,
+\[
+\operatorname{Tr}\sqrt{|\phi\rangle\langle\phi|}
+=
+\sqrt{\lambda}.
+\]
+
+Therefore,
+\[
+F(\rho,\sigma)
+=
+\lambda
+=
+\langle \phi | \phi \rangle.
+\]
+
+Recalling the definition of $|\phi\rangle$,
+\[
+\lambda
+=
+\langle \psi | \rho | \psi \rangle.
+\]
+
+\medskip
+
+We conclude that when $\sigma = |\psi\rangle\langle\psi|$ is a pure state, the fidelity reduces to
+\[
+F(\rho,|\psi\rangle\langle\psi|)
+=
+\langle \psi | \rho | \psi \rangle.
+\]
+
+\medskip
+
+This result justifies the simplified expression used in Section 4.3. It also shows that the fidelity corresponds to the expectation value of the projector onto $|\psi\rangle$, providing a direct probabilistic interpretation as the probability of obtaining the outcome $|\psi\rangle$ in a projective measurement.
 %========================================================
 %========================================================
 %========================================================

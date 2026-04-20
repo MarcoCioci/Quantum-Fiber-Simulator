@@ -10,7 +10,7 @@ function flag = is_normalized(psi, tol)
 %
 % Input:
 %   psi - numeric state vector (row or column)
-%   tol - numerical tolerance (optional, default = 1e-10)
+%   tol - numerical tolerance (optional, default = 1e-12)
 %
 % Output:
 %   flag - logical value (true if normalized)
@@ -34,7 +34,7 @@ function flag = is_normalized(psi, tol)
     end
 
     if nargin < 2
-        tol = 1e-10;
+        tol = 1e-12;
     end
 
     if ~isnumeric(psi) || ~isvector(psi)
@@ -44,7 +44,7 @@ function flag = is_normalized(psi, tol)
 
     
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     psi = psi(:);

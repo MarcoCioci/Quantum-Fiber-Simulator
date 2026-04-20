@@ -1,25 +1,21 @@
 function rho = state_to_density_matrix(psi)
-% STATE_TO_DENSITY_MATRIX  Convert a pure two-qubit state vector into a density matrix.
+% STATE_TO_DENSITY_MATRIX  Convert a normalized pure state vector into a density matrix.
 %
 % Objective:
-%   Given a normalized pure state |psi> represented as a 4x1 complex column
-%   vector in the two-qubit computational basis, construct the corresponding
-%   density operator
+%   Given a normalized pure state |psi> represented as an Nx1 complex column
+%   vector, construct the corresponding density operator
 %
 %       rho = |psi><psi|
 %
-%   This is the first fundamental step needed to move from the pure-state
-%   simulator used in Experiment 1 to the mixed-state / ensemble description
-%   required in Experiment 2.
+%   This function is used to move from a pure-state vector description to a
+%   density-matrix description, which is required for reduced states,
+%   purity, fidelity, ensemble averages, and later entanglement diagnostics.
 %
 % Input:
-%   psi - 4x1 complex column vector representing a normalized two-qubit
-%         pure state in the computational basis:
-%
-%         {|00>, |01>, |10>, |11>}
+%   psi - Nx1 complex column vector representing a normalized pure quantum state
 %
 % Output:
-%   rho - 4x4 complex density matrix associated with psi
+%   rho - NxN complex density matrix associated with psi
 %
 % Notes:
 %   The returned operator should satisfy the standard properties of a pure
@@ -29,13 +25,23 @@ function rho = state_to_density_matrix(psi)
 %       - Unit trace: trace(rho) = 1
 %       - Rank one, if psi is normalized and valid
 %
-%   This function is intentionally specialized to the current simulator stage,
-%   where the system of interest is a two-qubit bipartite state.
+%   This function is intentionally dimension-independent. In the current
+%   simulator it will mainly be used for:
 %
-%   In Experiment 2, this function will be used repeatedly to convert each
-%   random-phase realization |psi(theta_k)> into rho_k before performing
-%   ensemble averaging.
+%       - single-qubit test states (2x1),
+%       - two-qubit bipartite states (4x1).
 %
+%   In ensemble-based simulations, this function may be called repeatedly to
+%   convert each pure-state realization into a density matrix before
+%   averaging.
+%
+% Example:
+%   psi = [0; 1; 1; 0] / sqrt(2);
+%   rho = state_to_density_matrix(psi);
+%
+%   psi = [1; 0];
+%   rho = state_to_density_matrix(psi);
+
     % =========================
     % Robustness checks
     % =========================
@@ -55,36 +61,33 @@ function rho = state_to_density_matrix(psi)
             'psi cannot be an empty vector.');
     end
 
-    % Enforce column vector structure
     if ~isvector(psi) || size(psi,2) ~= 1
         error('state_to_density_matrix:InvalidShape', ...
-            'psi must be a column vector (4x1).');
+            'psi must be a column vector (Nx1).');
     end
 
-    % Check dimension (two-qubit system)
-    if size(psi,1) ~= 4
+    if size(psi,1) < 2
         error('state_to_density_matrix:InvalidSize', ...
-            'psi must be a 4x1 vector.');
+            'psi must contain at least two components.');
     end
 
-    % Check finite values
     if any(~isfinite(psi))
         error('state_to_density_matrix:InvalidValues', ...
             'psi contains NaN or Inf values.');
     end
 
-    % Check normalization
-    tol = 1e-10;
-    if abs(norm(psi,2) - 1) > tol
+    tol = 1e-12;
+
+    if abs(norm(psi, 2) - 1) > tol
         error('state_to_density_matrix:NotNormalized', ...
             'psi must be a normalized state vector.');
     end
 
 
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
-    rho = psi * psi';   % |psi><psi|, where ' is conjugate transpose
+    rho = psi * psi';   % |psi><psi|, where '' is conjugate transpose
 
 end

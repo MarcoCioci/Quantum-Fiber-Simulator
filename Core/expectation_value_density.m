@@ -1,38 +1,36 @@
 function expectation_value_density = expectation_value_density(rho, O)
 % EXPECTATION_VALUE_DENSITY  Compute the expectation value of an observable
-% for a two-qubit state represented by a density matrix.
+% for a quantum state represented by a density matrix.
 %
 % Objective:
-%   Given a 4x4 density operator rho and a 4x4 observable O, compute the
-%   corresponding expectation value using the density-matrix formula
+%   Given a density operator rho and an observable O acting on the same
+%   Hilbert space, compute the expectation value using
 %
 %       <O> = Tr(rho * O)
 %
-%   This function is the density-operator counterpart of the pure-state
-%   expectation value function used in Experiment 1.
+%   This function is the density-matrix counterpart of the pure-state
+%   expectation value formula.
 %
 % Input:
-%   rho - 4x4 complex density matrix representing a two-qubit quantum state
-%         in the computational basis:
+%   rho - square complex density matrix representing a quantum state
 %
-%         {|00>, |01>, |10>, |11>}
-%
-%   O   - 4x4 complex matrix representing a two-qubit observable operator
+%   O   - square complex matrix representing an observable operator acting
+%         on the same Hilbert space as rho
 %
 % Output:
-%   expectation_value_density - scalar expectation value associated with the observable O
+%   expectation_value_density - scalar expectation value associated with O
 %
 % Notes:
-%   This function is intended for Experiment 2 and later stages of the
-%   simulator, where the state may be mixed due to ensemble averaging,
-%   decoherence, or noisy-channel effects.
+%   This function is dimension-agnostic:
+%     - 2x2 for single-qubit states
+%     - 4x4 for two-qubit states
+%     - in general, dxd for any finite-dimensional system
 %
 %   If rho corresponds to a pure state, i.e.
 %
 %       rho = |psi><psi|,
 %
-%   then this formula is equivalent to the standard pure-state expectation
-%   value
+%   then this formula is equivalent to
 %
 %       <O> = <psi|O|psi>.
 %
@@ -68,14 +66,29 @@ function expectation_value_density = expectation_value_density(rho, O)
               'O must be non-empty.');
     end
 
-    if ~isequal(size(rho), [4, 4])
-        error('expectation_value_density:InvalidSizeRho', ...
-              'rho must be a 4x4 matrix.');
+    if ndims(rho) ~= 2
+        error('expectation_value_density:InvalidDimensionsRho', ...
+              'rho must be a 2-D matrix.');
     end
 
-    if ~isequal(size(O), [4, 4])
-        error('expectation_value_density:InvalidSizeObservable', ...
-              'O must be a 4x4 matrix.');
+    if ndims(O) ~= 2
+        error('expectation_value_density:InvalidDimensionsObservable', ...
+              'O must be a 2-D matrix.');
+    end
+
+    if size(rho, 1) ~= size(rho, 2)
+        error('expectation_value_density:NonSquareRho', ...
+              'rho must be square.');
+    end
+
+    if size(O, 1) ~= size(O, 2)
+        error('expectation_value_density:NonSquareObservable', ...
+              'O must be square.');
+    end
+
+    if ~isequal(size(rho), size(O))
+        error('expectation_value_density:DimensionMismatch', ...
+              'rho and O must have the same dimensions.');
     end
 
     if any(~isfinite(rho), 'all')
@@ -88,7 +101,7 @@ function expectation_value_density = expectation_value_density(rho, O)
               'O must contain only finite values.');
     end
 
-    tol = 1e-10;
+    tol = 1e-12;
 
     if norm(rho - rho', 'fro') > tol
         error('expectation_value_density:NonHermitianRho', ...
@@ -106,6 +119,7 @@ function expectation_value_density = expectation_value_density(rho, O)
     end
 
     rho_eigenvalues = eig(rho);
+
     if any(real(rho_eigenvalues) < -tol)
         error('expectation_value_density:NonPositiveRho', ...
               'rho must be positive semidefinite within numerical tolerance.');
@@ -118,7 +132,7 @@ function expectation_value_density = expectation_value_density(rho, O)
 
 
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     expectation_value_density = trace(rho * O);

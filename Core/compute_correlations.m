@@ -61,7 +61,7 @@ function corr = compute_correlations(psi)
 
     
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     [sigma_x, sigma_y, sigma_z] = pauli_matrices();

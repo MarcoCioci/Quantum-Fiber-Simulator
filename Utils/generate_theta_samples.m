@@ -60,7 +60,7 @@ function theta_samples = generate_theta_samples(distribution_type, num_samples, 
 
 
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     switch distribution_type

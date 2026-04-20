@@ -67,7 +67,7 @@ function O = correlation_operator(A, B)
 
     
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     O = tensor_product(A, B);

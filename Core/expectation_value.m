@@ -61,13 +61,13 @@ function exp_val = expectation_value(psi, O)
 
     
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     exp_val = psi' * O * psi;
 
     % Post-processing
-    tol = 1e-10;
+    tol = 1e-12;
 
     if norm(O - O', 'fro') <= tol
         if abs(imag(exp_val)) > tol

@@ -10,7 +10,7 @@ function flag = is_unitary(U, tol)
 %
 % Input:
 %   U   - square numeric matrix
-%   tol - numerical tolerance (optional, default = 1e-10)
+%   tol - numerical tolerance (optional, default = 1e-12)
 %
 % Output:
 %   flag - logical value (true if U is unitary)
@@ -34,7 +34,7 @@ function flag = is_unitary(U, tol)
     end
 
     if nargin < 2
-        tol = 1e-10;
+        tol = 1e-12;
     end
 
     if ~isnumeric(U) || ~ismatrix(U)
@@ -51,7 +51,7 @@ function flag = is_unitary(U, tol)
 
     
     % =========================
-    % Main computations
+    % Main computation
     % =========================
 
     I = eye(m);
