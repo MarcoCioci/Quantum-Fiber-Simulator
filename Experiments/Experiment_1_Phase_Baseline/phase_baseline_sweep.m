@@ -11,6 +11,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %       - computes the aligned two-qubit Pauli correlations
 %       - computes global and reduced purities
 %       - computes fidelity with respect to the reference Bell state |Psi+>
+%       - computes concurrence of the propagated pure state
 %
 % Input:
 %   theta_values - numeric vector of phase values in radians
@@ -26,13 +27,14 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %       .purity_A
 %       .purity_B
 %       .fidelity_psi_plus
+%       .concurrence
 %
 % Notes:
 %   This function provides the numerical data for Experiment 1 and is
 %   intentionally limited to that scenario.
 %
 %   The input state is fixed to:
-%       |Psi+＞
+%       |Psi+>
 %
 %   The local evolution is:
 %       U_A = phase_unitary(theta)
@@ -93,6 +95,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
     results_phase_baseline.purity_B = zeros(1, N);
 
     results_phase_baseline.fidelity_psi_plus = zeros(1, N);
+    results_phase_baseline.concurrence = zeros(1, N);
 
     for idx = 1:N
         theta = theta_values(idx);
@@ -117,6 +120,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
         results_phase_baseline.purity_B(idx) = compute_purity(rho_B);
 
         results_phase_baseline.fidelity_psi_plus(idx) = compute_fidelity(rho, psi_ref);
+        results_phase_baseline.concurrence(idx) = concurrence_pure_state(psi);
     end
 
 end

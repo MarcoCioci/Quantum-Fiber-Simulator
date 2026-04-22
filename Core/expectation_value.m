@@ -67,10 +67,10 @@ function exp_val = expectation_value(psi, O)
     exp_val = psi' * O * psi;
 
     % Post-processing
-    tol = 1e-12;
+    tolerance = 1e-12;
 
-    if norm(O - O', 'fro') <= tol
-        if abs(imag(exp_val)) > tol
+    if norm(O - O', 'fro') <= tolerance
+        if abs(imag(exp_val)) > tolerance
             warning('expectation_value:NonRealResidual', ...
                 ['Expectation value has a non-negligible imaginary part ', ...
                  'despite O being numerically Hermitian.']);

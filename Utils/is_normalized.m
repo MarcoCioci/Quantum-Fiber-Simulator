@@ -1,4 +1,4 @@
-function flag = is_normalized(psi, tol)
+function flag = is_normalized(psi, tolerance)
 % IS_NORMALIZED  Check normalization of a quantum state vector.
 %
 % Objective:
@@ -10,7 +10,7 @@ function flag = is_normalized(psi, tol)
 %
 % Input:
 %   psi - numeric state vector (row or column)
-%   tol - numerical tolerance (optional, default = 1e-12)
+%   tolerance - numerical tolerance (optional, default = 1e-12)
 %
 % Output:
 %   flag - logical value (true if normalized)
@@ -34,7 +34,7 @@ function flag = is_normalized(psi, tol)
     end
 
     if nargin < 2
-        tol = 1e-12;
+        tolerance = 1e-12;
     end
 
     if ~isnumeric(psi) || ~isvector(psi)
@@ -52,6 +52,6 @@ function flag = is_normalized(psi, tol)
     norm_sq = psi' * psi;
     err = abs(norm_sq - 1);
 
-    flag = (err < tol);
+    flag = (err < tolerance);
 
 end

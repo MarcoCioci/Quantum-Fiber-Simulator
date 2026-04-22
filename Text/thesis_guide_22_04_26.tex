@@ -30,6 +30,8 @@ Student ID: 10694772\\
 \texttt{marco.cioci@mail.polimi.it}}
 \date{}
 
+\setlength{\parindent}{0pt}
+
 \begin{document}
 \maketitle
 
@@ -82,21 +84,15 @@ After compensation of global polarization rotations, the dominant residual effec
 The objective at this stage is therefore not to reproduce the full electromagnetic propagation in optical fibers, but to construct an effective quantum model that captures the relevant impact of fiber propagation on entanglement and measurable correlations.
 
 \paragraph{Simulation notes.}
-At the simulator level, the physical scenario is reduced to the minimal set of elements required for computation: an initial entangled two-qubit state, two labeled channels \(A\) and \(B\), and one local transformation per channel.
+At the simulator level, the physical scenario is reduced to the minimal set of elements required for computation: an initial bipartite quantum state, two labeled channels \(A\) and \(B\), and one local transformation acting on each subsystem.
 
-In the first implementation, unnecessary optical detail is neglected and each fiber is described exclusively through its effective action on polarization. This corresponds to a local unitary model of the form
+In the first modeling stage, unnecessary optical detail is neglected and each fiber is described exclusively through its effective action on polarization. This leads to a local unitary representation of the form
 \[
-U_A \otimes U_B.
+U_A \otimes U_B,
 \]
+where \(U_A, U_B \in \mathbb{C}^{2 \times 2}\) are unitary operators.
 
-In the currently implemented baseline experiment, the evolution is further simplified to
-\[
-U_A = U(\theta),
-\qquad
-U_B = I,
-\]
-so that the full state evolution depends on a single phase parameter \(\theta\). This configuration defines the first validation scenario of the simulator, allowing direct comparison between analytical predictions and numerical results for correlation observables.
-
+This abstraction defines the fundamental interface between the physical system and the simulator, and will later allow the introduction of more refined models, including stochastic phase evolution and non-unitary effects.
 %========================================================
 \section{Modeling Strategy}
 
@@ -166,34 +162,26 @@ The main objective is to analyze how these phase shifts affect measurable two-ph
 \]
 as well as operators corresponding to arbitrary measurement directions on the Bloch sphere.
 
-This baseline model is the natural entry point because it allows explicit analytical expressions, direct visualization of state evolution, and immediate comparison between analytical predictions and numerical results.
+This baseline model constitutes the simplest regime in which entanglement is preserved and can be probed exclusively through correlation observables. It provides a controlled setting for deriving analytical expressions and validating the numerical implementation.
 
 \paragraph{Simulation notes.}
-At this level, the simulator operates entirely on pure two-qubit states represented as \(4 \times 1\) complex vectors. The core tasks are: generation of the Bell state, application of local operators \(U_A\) and \(U_B\), and evaluation of expectation values.
+At this level, the simulator operates on pure two-qubit states represented as \(4 \times 1\) complex vectors. The core tasks are: generation of the Bell state, application of local operators \(U_A\) and \(U_B\), and evaluation of expectation values.
 
-In the current implementation, the standard aligned correlations
-\[
-\langle \sigma_x \otimes \sigma_x \rangle,\qquad
-\langle \sigma_y \otimes \sigma_y \rangle,\qquad
-\langle \sigma_z \otimes \sigma_z \rangle
-\]
-are computed and analyzed as functions of the phase parameter \(\theta\). This constitutes the first validation stage of the simulator.
+In this regime, the simulator enables direct comparison between analytical predictions and numerical results for correlation functions, establishing a first level of validation that will be extended in Chapter~4 through quantitative state characterization.
 
 %--------------------------------------------------------
 \subsection{Extension to Mixed-State Formalism}
 
 At the next level, the model incorporates statistical effects and decoherence. In this regime, the pure-state description is no longer sufficient and must be replaced by a density-operator formalism.
 
-This framework enables the description of:
+This extension enables the description of:
 \begin{itemize}
     \item reduced states of individual photons,
     \item loss of coherence due to unresolved degrees of freedom,
     \item effective non-unitary dynamics arising from environmental interactions or statistical averaging.
 \end{itemize}
 
-It also allows the computation of physically relevant quantities such as fidelity, concurrence, and other entanglement measures.
-
-The introduction of density operators is therefore required whenever the system is described as an ensemble or when partial information about the system is available.
+Within this framework, physically relevant quantities such as purity, fidelity, and concurrence can be defined and computed, allowing a quantitative characterization of mixedness and entanglement (see Chapter~4).
 
 An important derived quantity is the reduced density operator of a subsystem, obtained via partial trace. For instance, the reduced state of subsystem \(A\) is
 \[
@@ -205,19 +193,20 @@ For maximally entangled states such as \( |\Psi^+\rangle \), the reduced density
 \rho_A = \rho_B = \frac{1}{2} I.
 \]
 
-This property reflects the fact that each individual photon carries no definite polarization, even though the joint state exhibits strong correlations. It provides a direct connection between entanglement and the absence of local information, and plays a central role in the interpretation of both deterministic and ensemble-based simulations.
+This property reflects the absence of local information despite strong nonlocal correlations, and provides the conceptual link between entanglement and mixedness that will be explored quantitatively in later sections.
 
 Expectation values in the density-operator formalism are computed as
 \[
 \langle O \rangle = \mathrm{Tr}(\rho O),
 \]
-which generalizes the pure-state expression \( \langle \psi | O | \psi \rangle \). This formulation is essential when describing ensemble-averaged systems.
+which generalizes the pure-state expression \( \langle \psi | O | \psi \rangle \).
 
 \paragraph{Simulation notes.}
-The simulator must be extended so that all relevant routines operate on density matrices. This includes \(4 \times 4\) matrix representations, partial trace operations, quantum channel application, and metric evaluation.
+The simulator must be extended so that all routines operate on density matrices, including \(4 \times 4\) representations, partial trace operations, and observable evaluation.
 
-The pure-state implementation should be preserved as a special case of this more general framework, ensuring consistency between deterministic and ensemble-based simulations.
+This generalized framework enables the transition from deterministic evolution to ensemble-based descriptions, and supports the computation of state metrics used for validation and physical interpretation.
 
+The pure-state implementation is preserved as a special case, ensuring consistency across all modeling levels.
 %--------------------------------------------------------
 
 \subsection{Simulator Design and Architecture}
@@ -557,30 +546,35 @@ Additional helper routines verify normalization of input state vectors and unita
 
 These observables constitute the primary diagnostic outputs of the simulator and provide the most direct bridge between analytical predictions and numerical results. Their dependence on \(\theta\) defines the first validation pipeline of the code.
 
+%------------------------------------------------------------
 \subsection{From Deterministic Evolution to Ensemble Description}
 
 The reduced phase model introduced in the previous sections describes a deterministic unitary evolution of a pure entangled state, parametrized by a single phase \(\theta\).
 
-However, in realistic physical conditions, this phase is not constant but fluctuates due to environmental effects such as birefringence variations and thermal instability in the fiber.
+In realistic fiber propagation, however, this phase is not constant but fluctuates due to environmental effects such as birefringence variations and thermal instability. As a consequence, each photon pair experiences a different phase shift.
 
-If these fluctuations occur on timescales shorter than the measurement resolution, the system is no longer described by a single pure state, but by an ensemble of states corresponding to different phase realizations.
+When these fluctuations occur on timescales shorter than the measurement resolution, individual realizations cannot be resolved experimentally. The observed system is therefore not described by a single pure state, but by an ensemble of states corresponding to different phase realizations.
 
-In this regime, the appropriate mathematical description is given by a density operator obtained by averaging over the ensemble:
+In this regime, the effective description is obtained by averaging over the phase distribution:
 \[
 \rho = \mathbb{E}_{\theta}\left[ |\psi(\theta)\rangle\langle \psi(\theta)| \right].
 \]
 
-This transition marks the passage from a deterministic unitary description at the level of each phase realization to an effective mixed-state description obtained after averaging over unresolved phase fluctuations. It provides the conceptual foundation for the second numerical experiment.
-For mixed states described by a density operator \(\rho\), the expectation value generalizes to
+This transition does not introduce new dynamics at the level of individual realizations, which remain unitary, but reflects a loss of accessible phase information. The resulting state is mixed, even though each underlying realization is pure.
+
+This mechanism provides the physical origin of mixed-state descriptions in the present model and establishes the connection between fiber-induced phase fluctuations and decoherence.
+
+Expectation values are therefore computed using the density-operator formalism:
 \[
-\langle O \rangle = \mathrm{Tr}(\rho O).
+\langle O \rangle = \mathrm{Tr}(\rho O),
 \]
+which accounts for the statistical nature of the ensemble.
 
-This formulation is essential when dealing with ensemble descriptions, where the system cannot be represented by a single state vector.
-
+This framework forms the basis for the modeling and analysis of phase-noise effects, which will be investigated quantitatively in Chapter~4.
 %========================================================
 %========================================================
-\section{Quantitative Characterization of Bipartite States}
+%========================================================
+\section{Quantitative Characterization of Bipartite Quantum States}
 
 \subsection{Reduced Density Operators}
 
@@ -689,7 +683,8 @@ Finally, the reduced density operator directly determines measurable local quant
 \]
 and for $\rho_A = I/2$ all expectation values vanish, indicating complete local depolarization.
 
-\subsection{Purity and Mixedness of Quantum States}
+%-------------------------------------------------------------------
+\subsection{Purity and Mixedness}
 
 Having introduced reduced density operators in Section 4.1, we now require a quantitative criterion to distinguish whether a quantum state is pure or mixed. This distinction is essential for interpreting the physical effects of fiber propagation, especially when extending the model beyond deterministic unitary evolution.
 
@@ -721,13 +716,13 @@ This follows directly from the spectral decomposition of $\rho$. If
 \]
 with $\lambda_i \ge 0$ and $\sum_i \lambda_i = 1$, then
 \[
-\operatorname{Tr}(\rho^2) = \sum_i \lambda_i^2.
+\gamma(\rho) = \sum_i \lambda_i^2.
 \]
 The purity reaches its maximum value $1$ only when a single eigenvalue is equal to $1$ and all others vanish, corresponding to a pure state. Otherwise, the sum of squares is strictly smaller than $1$.
 
 More generally, for a system with Hilbert space dimension $d$, the purity is bounded by
 \[
-\frac{1}{d} \le \operatorname{Tr}(\rho^2) \le 1,
+\frac{1}{d} \le \gamma(\rho) \le 1,
 \]
 where the lower bound is attained by the maximally mixed state $\rho = I/d$.
 
@@ -739,7 +734,7 @@ For single-qubit systems, purity admits a particularly transparent interpretatio
 \]
 where $\vec{r} \in \mathbb{R}^3$ is the Bloch vector and $\vec{\sigma} = (\sigma_x, \sigma_y, \sigma_z)$ is the vector of Pauli matrices. In this representation, one finds
 \[
-\operatorname{Tr}(\rho^2) = \frac{1 + \|\vec{r}\|^2}{2}.
+\gamma(\rho) = \frac{1 + \|\vec{r}\|^2}{2}.
 \]
 Therefore,
 \[
@@ -752,9 +747,16 @@ This result provides a direct connection between the Bloch/Stokes parameters com
 
 \medskip
 
-As already emphasized in Section 4.1, mixedness does not necessarily imply classical noise. A state may be mixed either because it belongs to a classical statistical ensemble or because it arises as the reduced state of a larger entangled system. In the present context, the latter mechanism is especially important.
+As already emphasized in Section 4.1, mixedness does not necessarily imply classical noise. A state
+may be mixed either because it belongs to a classical statistical ensemble or because it arises as
+the reduced state of a larger entangled system.
 
-A paradigmatic example is provided by the Bell state
+In the present context, both mechanisms are relevant but play distinct roles. Mixedness induced by
+entanglement is intrinsic to the bipartite structure of the system and is already present for pure
+global states. By contrast, ensemble-induced mixedness arises from averaging over random parameters,
+such as phase fluctuations in fiber propagation, and leads to a genuine loss of global coherence.
+
+To illustrate the first mechanism, we consider a paradigmatic example provided by the Bell state
 \[
 |\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}}.
 \]
@@ -764,7 +766,7 @@ Its global density operator
 \]
 is pure, and therefore satisfies
 \[
-\operatorname{Tr}(\rho_{AB}^2) = 1.
+\gamma(\rho_{AB}) = 1.
 \]
 However, its reduced density operators are
 \[
@@ -772,7 +774,7 @@ However, its reduced density operators are
 \]
 which are maximally mixed and satisfy
 \[
-\operatorname{Tr}(\rho_A^2) = \operatorname{Tr}(\rho_B^2) = \frac{1}{2}.
+\gamma(\rho_A) = \gamma(\rho_B) = \frac{1}{2}.
 \]
 
 Thus, a globally pure entangled state may generate locally mixed subsystem states. This distinction between global purity and local mixedness is central to the interpretation of bipartite entangled systems.
@@ -785,7 +787,7 @@ In the context of the present model, this distinction plays a crucial role. For 
 \]
 the evolution is generated by local unitary transformations, and therefore the global state remains pure for all values of $\theta$:
 \[
-\operatorname{Tr}(\rho(\theta)^2) = 1.
+\gamma(\rho(\theta)) = 1.
 \]
 At the same time, as shown in Section 4.1, the reduced states remain
 \[
@@ -793,7 +795,7 @@ At the same time, as shown in Section 4.1, the reduced states remain
 \]
 so that their purity is constant and minimal:
 \[
-\operatorname{Tr}(\rho_A(\theta)^2) = \operatorname{Tr}(\rho_B(\theta)^2) = \frac{1}{2}.
+\gamma(\rho_A(\theta)) = \gamma(\rho_B(\theta)) = \frac{1}{2}.
 \]
 
 Therefore, the introduction of a relative phase modifies the correlation observables without affecting either global purity or local mixedness.
@@ -809,13 +811,13 @@ In particular, for the random-phase ensemble introduced above, the global densit
 \]
 and its purity is given by
 \[
-\operatorname{Tr}(\rho_{AB}^{(\mathrm{ens})\,2})
+\gamma\!\left(\rho_{AB}^{(\mathrm{ens})}\right)
 =
 \frac{1 + |\mu|^2}{2}.
 \]
 Equivalently,
 \[
-\operatorname{Tr}(\rho_{AB}^{(\mathrm{ens})\,2})
+\gamma\!\left(\rho_{AB}^{(\mathrm{ens})}\right)
 =
 \frac{1 + \langle \cos\theta \rangle^2 + \langle \sin\theta \rangle^2}{2}.
 \]
@@ -824,6 +826,7 @@ This shows that the loss of purity is directly governed by the reduction of phas
 
 For this reason, purity will serve as a fundamental diagnostic tool in the numerical simulator, complementing correlation observables and preparing the ground for more advanced quantities such as fidelity and entanglement measures.
 
+%========================================================
 \subsection{Fidelity with Respect to Bell States}
 
 Having introduced reduced density operators and purity as measures of local information and mixedness, we now require a quantitative tool to evaluate how close a given quantum state is to a reference target state. This role is fulfilled by the notion of fidelity.
@@ -961,6 +964,291 @@ Unlike correlation observables, which probe specific measurement directions, fid
 
 %========================================================
 %========================================================
+\subsection{Concurrence as an Entanglement Measure}
+
+Reduced density operators, purity, and fidelity provide complementary information about a bipartite quantum state. Reduced states describe locally accessible information, purity quantifies mixedness, and fidelity measures proximity to a chosen reference state. However, none of these quantities alone provides a direct measure of bipartite entanglement. In particular, fidelity with respect to a Bell state may change under local unitary evolution even when the amount of entanglement remains unchanged. For this reason, a genuine entanglement measure is required.
+
+For two-qubit systems, one of the most widely used entanglement measures is the \emph{concurrence}. It is specifically designed to quantify bipartite entanglement and satisfies the fundamental bounds
+\[
+0 \le C \le 1,
+\]
+where
+\[
+C = 0
+\]
+corresponds to a separable state, while
+\[
+C = 1
+\]
+corresponds to a maximally entangled two-qubit state.
+
+\medskip
+
+We first consider the case of a pure two-qubit state
+\[
+|\psi\rangle
+=
+a|00\rangle + b|01\rangle + c|10\rangle + d|11\rangle,
+\]
+with complex coefficients satisfying
+\[
+|a|^2 + |b|^2 + |c|^2 + |d|^2 = 1.
+\]
+For such a state, the concurrence is given by
+\[
+C(|\psi\rangle) = 2|ad - bc|.
+\]
+
+This expression immediately distinguishes separable from entangled states. Indeed, if
+\[
+|\psi\rangle = |\phi_A\rangle \otimes |\phi_B\rangle,
+\]
+then the coefficients satisfy
+\[
+ad - bc = 0,
+\]
+and therefore
+\[
+C(|\psi\rangle)=0.
+\]
+Conversely, for maximally entangled Bell states the concurrence is equal to one.
+
+\medskip
+
+For example, for the Bell state
+\[
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}},
+\]
+one has
+\[
+a=0,\qquad b=\frac{1}{\sqrt{2}},\qquad c=\frac{1}{\sqrt{2}},\qquad d=0,
+\]
+and thus
+\[
+C(|\Psi^+\rangle)
+=
+2\left|0 - \frac{1}{2}\right|
+=
+1.
+\]
+
+The same conclusion holds for the phase-evolved Bell-like state
+\[
+|\psi(\theta)\rangle
+=
+\frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}}.
+\]
+In this case,
+\[
+a=0,\qquad b=\frac{1}{\sqrt{2}},\qquad c=\frac{e^{i\theta}}{\sqrt{2}},\qquad d=0,
+\]
+so that
+\[
+C(|\psi(\theta)\rangle)
+=
+2\left|-\frac{e^{i\theta}}{2}\right|
+=
+1.
+\]
+
+This is an important result for the present model. The relative phase \(\theta\) changes the overlap with the reference Bell state \( |\Psi^+\rangle \), and therefore modifies the fidelity introduced in Section 4.3. However, it does \emph{not} change the amount of entanglement. The state remains maximally entangled for all values of \(\theta\). This reflects the fact that the phase evolution considered in the reduced model is generated by local unitary transformations, and bipartite entanglement is invariant under local unitaries.
+
+\medskip
+
+For pure bipartite states, concurrence is also directly connected to the reduced density operators introduced in Section 4.1 and to the purity discussed in Section 4.2. In particular, if
+\[
+\rho_A = \mathrm{Tr}_B(|\psi\rangle\langle\psi|),
+\qquad
+\rho_B = \mathrm{Tr}_A(|\psi\rangle\langle\psi|),
+\]
+then one may write
+\[
+C(|\psi\rangle)
+=
+2\sqrt{\det(\rho_A)}
+=
+2\sqrt{\det(\rho_B)},
+\]
+or equivalently,
+\[
+C(|\psi\rangle)
+=
+\sqrt{2\left(1-\gamma(\rho_A)\right)}
+=
+\sqrt{2\left(1-\gamma(\rho_B)\right)}.
+\]
+
+This relation shows that, for pure two-qubit states, entanglement is directly reflected in the mixedness of the reduced states. In particular, if a pure bipartite state is separable, then the reduced states are pure and
+\[
+\gamma(\rho_A)=\gamma(\rho_B)=1,
+\]
+which implies
+\[
+C=0.
+\]
+By contrast, for a maximally entangled Bell state,
+\[
+\rho_A=\rho_B=\frac{I}{2},
+\]
+and therefore
+\[
+\gamma(\rho_A)=\gamma(\rho_B)=\frac{1}{2},
+\]
+which yields
+\[
+C=1.
+\]
+
+Thus, Sections 4.1 and 4.2 naturally prepare the ground for concurrence: reduced mixedness of a subsystem, when the global state is pure, is a direct signature of bipartite entanglement.
+
+\medskip
+
+We now turn to the more general case of mixed two-qubit states, described by a density operator
+\[
+\rho \in \mathbb{C}^{4\times 4}.
+\]
+For mixed states, concurrence is defined through the \emph{spin-flipped} matrix
+\[
+\tilde{\rho}
+=
+(\sigma_y \otimes \sigma_y)\,\rho^*\,(\sigma_y \otimes \sigma_y),
+\]
+where \(\rho^*\) denotes the complex conjugate of \(\rho\) in the computational basis. One then considers the eigenvalues of the matrix
+\[
+\rho \tilde{\rho}.
+\]
+Let \(\lambda_1,\lambda_2,\lambda_3,\lambda_4\) denote the square roots of these eigenvalues, ordered such that
+\[
+\lambda_1 \ge \lambda_2 \ge \lambda_3 \ge \lambda_4 \ge 0.
+\]
+The concurrence of \(\rho\) is then defined as
+\[
+C(\rho)
+=
+\max\!\left(0,\lambda_1-\lambda_2-\lambda_3-\lambda_4\right).
+\]
+
+This formula provides a complete entanglement measure for arbitrary two-qubit states, both pure and mixed. In the pure-state limit, it reduces to the simpler expression
+\[
+C(|\psi\rangle)=2|ad-bc|.
+\]
+
+\medskip
+
+In the present simulator, this mixed-state formulation becomes essential when the global state is no longer described by a single state vector. This occurs, for example, when one introduces ensemble averaging over random phases,
+\[
+\rho_{AB}^{(\mathrm{ens})}
+=
+\frac{1}{N}
+\sum_{k=1}^{N}
+|\psi(\theta_k)\rangle\langle\psi(\theta_k)|,
+\]
+or more generally when propagation effects lead to decoherence and partial loss of phase information.
+
+For the random-phase ensemble considered in this work, the density operator depends on the coherence parameter
+\[
+\mu = \langle e^{i\theta}\rangle,
+\]
+introduced in Sections 4.2 and 4.3. In the computational basis, the ensemble state has the form
+\[
+\rho_{AB}^{(\mathrm{ens})}
+=
+\frac{1}{2}|01\rangle\langle 01|
++
+\frac{1}{2}|10\rangle\langle 10|
++
+\frac{\mu}{2}|10\rangle\langle 01|
++
+\frac{\mu^*}{2}|01\rangle\langle 10|.
+\]
+
+For this family of states, the concurrence can be computed analytically and is found to be
+\[
+C\!\left(\rho_{AB}^{(\mathrm{ens})}\right) = |\mu|.
+\]
+
+This result is particularly significant because it reveals that the same coherence parameter controlling mixedness and Bell-state fidelity also controls entanglement degradation in the reduced random-phase model. Indeed, from the previous sections we already found that
+\[
+\gamma\!\left(\rho_{AB}^{(\mathrm{ens})}\right)
+=
+\frac{1+|\mu|^2}{2},
+\qquad
+F_{\Psi^+}
+=
+\frac{1+\operatorname{Re}(\mu)}{2}.
+\]
+
+%========================================================
+%========================================================
+\subsection{Interplay Between Purity, Fidelity, and Concurrence}
+
+The previous sections introduced three quantitative descriptors of bipartite quantum states: purity, fidelity, and concurrence. Each of these quantities captures a different physical aspect of the state. Purity, defined as \(\gamma(\rho)=\operatorname{Tr}(\rho^2)\), characterizes mixedness, fidelity measures similarity to a chosen reference state, and concurrence provides a direct quantification of bipartite entanglement.
+
+In general, these quantities are independent. However, within the random-phase ensemble model considered in this work, they become closely related through a single complex parameter, namely the ensemble coherence
+\[
+\mu = \langle e^{i\theta} \rangle
+=
+\langle \cos\theta \rangle + i \langle \sin\theta \rangle.
+\]
+This parameter encapsulates the effect of phase fluctuations on the global quantum state.
+
+\medskip
+
+For the family of ensemble states introduced in Section 4.4, the relevant quantities
+(purity, concurrence, and Bell-state fidelity) are all functions of the same coherence
+parameter \(\mu\), but depend on it in qualitatively different ways.
+
+\medskip
+
+Purity depends on the squared magnitude \( |\mu|^2 \), and therefore quantifies the overall degree of coherence retained after ensemble averaging through
+\[
+\gamma(\rho) = \frac{1 + |\mu|^2}{2}.
+\]
+Concurrence depends linearly on \( |\mu| \), and directly measures the amount of bipartite entanglement present in the state. By contrast, the fidelity with respect to the Bell state \( |\Psi^+\rangle \) depends only on the real part \( \operatorname{Re}(\mu) \), reflecting the overlap with a specific reference state rather than the total coherence or entanglement.
+
+\medskip
+
+This distinction has important consequences. Since fidelity depends on the projection of \(\mu\) onto the real axis, it does not provide a complete characterization of entanglement. In particular, states with the same concurrence may exhibit different fidelities with respect to \( |\Psi^+\rangle \). This behavior is clearly observed in the deterministic phase model of Experiment 1, where the parameter \(\mu\) lies on the unit circle. In that case, the magnitude \( |\mu| = 1 \) remains constant, and therefore the concurrence is equal to one for all values of \(\theta\), while the fidelity varies as a function of the phase.
+
+\medskip
+
+In contrast, the random-phase ensemble of Experiment 2 leads to a reduction of the magnitude \( |\mu| \), reflecting the loss of phase coherence under statistical averaging. As a consequence, both purity and concurrence decrease, with purity quantified by \(\gamma(\rho)\). In this regime, the reduction of fidelity is associated with a genuine loss of entanglement, rather than a simple change of phase relative to a fixed reference state.
+
+\medskip
+
+A useful geometric interpretation can be obtained by representing \(\mu\) as a point in the complex plane. The concurrence is proportional to the distance of this point from the origin, while the fidelity depends on its projection onto the real axis. Under deterministic phase evolution, \(\mu\) moves along the unit circle, preserving its magnitude but changing its real part. Under ensemble averaging, \(\mu\) contracts toward the origin, leading to a simultaneous reduction of coherence, purity (as measured by \(\gamma(\rho)\)), and entanglement.
+
+\medskip
+
+The limiting cases illustrate these behaviors clearly. When
+\[
+|\mu| = 1,
+\]
+the ensemble retains full phase coherence, the global state is pure, and therefore
+\[
+\gamma(\rho) = 1,
+\]
+while the concurrence attains its maximal value. When instead
+\[
+|\mu| = 0,
+\]
+all off-diagonal coherence terms vanish, the state reduces to a classical mixture, for which
+\[
+\gamma(\rho) = \frac{1}{2},
+\]
+and the concurrence becomes zero. Intermediate values \(0 < |\mu| < 1\) correspond to partially coherent ensembles, characterized by mixed states with reduced but non-vanishing entanglement.
+
+\medskip
+
+It is important to emphasize that, while purity, fidelity, and concurrence are general concepts in quantum information theory, the simple relations above arise from the specific structure of the random-phase ensemble considered here. In more general situations, these quantities are not necessarily determined by a single parameter.
+
+\medskip
+
+In summary, the coherence parameter \(\mu\) provides a unifying description of the ensemble states studied in this work. Its magnitude controls both mixedness and entanglement, while its phase determines the observable correlations and the overlap with a chosen reference state. This interplay clarifies the distinct roles of purity, fidelity, and concurrence, and highlights the necessity of using a genuine entanglement measure to fully characterize bipartite quantum states.
+
+%========================================================
+%========================================================
+%========================================================
 \section{Numerical Experiments and Results}
 
 \subsection{Experiment 1: Deterministic Phase Sweep}
@@ -1007,15 +1295,15 @@ c_{yy} = \cos\theta,\qquad
 c_{zz} = -1.
 \]
 
-Since the evolution is generated by local unitary transformations, the global state remains pure:
+Since the evolution is generated by local unitary transformations, the global state remains pure, i.e.
 \[
-\operatorname{Tr}(\rho(\theta)^2)=1.
+\gamma(\rho(\theta)) = \operatorname{Tr}(\rho(\theta)^2)=1.
 \]
 
 The reduced density operators remain maximally mixed:
 \[
 \rho_A(\theta)=\rho_B(\theta)=\frac{I}{2}, \qquad
-\operatorname{Tr}(\rho_A^2)=\operatorname{Tr}(\rho_B^2)=\frac{1}{2}.
+\gamma(\rho_A)=\gamma(\rho_B)=\operatorname{Tr}(\rho_A^2)=\operatorname{Tr}(\rho_B^2)=\frac{1}{2}.
 \]
 
 The fidelity with respect to the reference Bell state \( |\Psi^+\rangle \) is
@@ -1025,25 +1313,23 @@ F_{\Psi^+}(\rho(\theta))
 \frac{1+\cos\theta}{2}.
 \]
 
+Finally, the concurrence of the state is constant and equal to
+\[
+C(\rho(\theta)) = 1,
+\]
+reflecting the fact that bipartite entanglement is invariant under local unitary transformations.
+
 \subsubsection{Numerical Results}
 
 The numerical experiment performs a sweep over \(\theta \in [0,2\pi]\), computing both correlation observables and state-characterization quantities.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75\linewidth]
-    {../Images/Experiment_1/correlation_observables_theta.png}
+    \includegraphics[width=0.75\linewidth]{../Images/Experiment_1/experiment_1_correlations_validation.png}
     \caption{
-    Numerical evaluation of the correlation observables \(c_{xx}\), \(c_{yy}\), and \(c_{zz}\) as functions of the relative phase \(\theta\).
-    }
-    \label{fig:experiment1_correlations}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\linewidth]{../Images/Experiment_1/experiment_1_theory_vs_experiment.png}
-    \caption{
-    Comparison between numerical simulation and analytical predictions for the correlation observables.
+    Comparison between numerical simulation and analytical predictions for the correlation observables 
+    \(c_{xx}\), \(c_{yy}\), and \(c_{zz}\) as functions of the relative phase \(\theta\). 
+    The agreement confirms the correctness of the reduced phase model implementation.
     }
     \label{fig:experiment1_validation}
 \end{figure}
@@ -1052,7 +1338,9 @@ The numerical experiment performs a sweep over \(\theta \in [0,2\pi]\), computin
     \centering
     \includegraphics[width=0.75\linewidth]{../Images/Experiment_1/experiment_1_state_metrics.png}
     \caption{
-    Validation of global purity, reduced purities, and fidelity with respect to \( |\Psi^+\rangle \).
+    Numerical and analytical comparison of state-characterization quantities for the phase-evolved state.
+    The figure shows global purity \(\gamma(\rho_{AB})\), reduced purities \(\gamma(\rho_A)\) and \(\gamma(\rho_B)\), fidelity with respect to \( |\Psi^+\rangle \), and concurrence.
+    While fidelity varies with \(\theta\), concurrence remains constant and equal to one.
     }
     \label{fig:experiment1_state_metrics}
 \end{figure}
@@ -1063,15 +1351,20 @@ The numerical results are in full agreement with the analytical predictions:
 \begin{itemize}
     \item \(c_{xx}\) and \(c_{yy}\) follow the expected cosine dependence,
     \item \(c_{zz}\) remains constant at \(-1\),
-    \item the global purity remains equal to \(1\),
-    \item the reduced purities remain equal to \(1/2\),
-    \item the fidelity follows \(F_{\Psi^+}=(1+\cos\theta)/2\).
+    \item the global purity remains equal to \(\gamma(\rho_{AB})=1\),
+    \item the reduced purities remain equal to \(\gamma(\rho_A)=\gamma(\rho_B)=1/2\),
+    \item the fidelity follows \(F_{\Psi^+}=(1+\cos\theta)/2\),
+    \item the concurrence remains constant at \(C=1\).
 \end{itemize}
 
-These results confirm that the fiber acts as an effective relative phase shifter. While the global state remains pure and maximally entangled, both the observable correlations and the fidelity with respect to a fixed Bell reference vary continuously with the phase. This demonstrates that purity alone is insufficient to characterize the physical transformation induced by the propagation.
-%========================================================
-%========================================================
+These results confirm that the fiber acts as an effective relative phase shifter. While the global state remains pure and maximally entangled, both the observable correlations and the fidelity with respect to a fixed Bell reference vary continuously with the phase.
 
+A key observation is that fidelity and concurrence exhibit fundamentally different behaviors. The fidelity depends explicitly on the phase \(\theta\), reflecting the overlap with a fixed reference state, whereas the concurrence remains invariant. This highlights that fidelity does not provide a direct measure of entanglement.
+
+Therefore, although the phase evolution modifies observable correlations and the apparent similarity to a chosen Bell state, it does not alter the underlying entanglement structure. This demonstrates that purity (quantified by \(\gamma(\rho)\)) and fidelity alone are insufficient to characterize bipartite entanglement, and motivates the introduction of concurrence as a genuine entanglement measure.
+
+%========================================================
+%========================================================
 \subsection{Experiment 2: Random Phase Ensemble}
 
 \subsubsection{Objective}
@@ -1084,7 +1377,7 @@ Instead of a single pure state, the system is described by an ensemble
 \]
 and by the corresponding averaged density operator.
 
-The objective is to characterize how ensemble averaging modifies global coherence, correlation observables, purity, and fidelity.
+The objective is to characterize how ensemble averaging modifies global coherence, correlation observables, purity, fidelity, and entanglement.
 
 \subsubsection{Ensemble Model}
 
@@ -1108,8 +1401,6 @@ and the ensemble state is
 
 \subsubsection{Analytical Predictions}
 
-\subsubsection{Analytical Predictions}
-
 For the ensemble state, it is convenient to introduce the ensemble coherence parameter
 \[
 \mu = \langle e^{i\theta} \rangle
@@ -1126,6 +1417,8 @@ c_{zz} = -1.
 
 The global purity is
 \[
+\gamma(\rho_{\mathrm{ensemble}})
+=
 \operatorname{Tr}(\rho_{\mathrm{ensemble}}^2)
 =
 \frac{1 + |\mu|^2}{2}
@@ -1139,6 +1432,8 @@ The reduced states remain maximally mixed:
 \]
 and therefore
 \[
+\gamma(\rho_A)=\gamma(\rho_B)
+=
 \operatorname{Tr}(\rho_A^2)=\operatorname{Tr}(\rho_B^2)=\frac{1}{2}.
 \]
 
@@ -1150,6 +1445,12 @@ F_{\Psi^+}
 =
 \frac{1 + \langle \cos\theta \rangle}{2}.
 \]
+
+Finally, the concurrence of the ensemble state is
+\[
+C(\rho_{\mathrm{ensemble}}) = |\mu|,
+\]
+showing that entanglement is directly controlled by the magnitude of the ensemble coherence parameter.
 
 \subsubsection{Numerical Results}
 
@@ -1165,14 +1466,14 @@ Each case is summarized in a single figure combining:
     \item sampled phase statistics,
     \item pure-state correlation trend,
     \item ensemble correlations,
-    \item purity and fidelity metrics.
+    \item purity, fidelity, and concurrence metrics.
 \end{itemize}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_constant_distribution.png}
     \caption{
-    Summary of Experiment 2 for a constant phase distribution. The ensemble reduces to a single deterministic realization.
+    Summary of Experiment 2 for a constant phase distribution. The ensemble reduces to a single deterministic realization, and concurrence remains equal to one.
     }
     \label{fig:experiment2_constant}
 \end{figure}
@@ -1181,7 +1482,7 @@ Each case is summarized in a single figure combining:
     \centering
     \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_uniform_distribution.png}
     \caption{
-    Summary of Experiment 2 for a uniform phase distribution. Phase averaging suppresses transverse correlations and reduces fidelity.
+    Summary of Experiment 2 for a uniform phase distribution. Phase averaging suppresses transverse correlations, reduces fidelity, and drives concurrence to zero.
     }
     \label{fig:experiment2_uniform}
 \end{figure}
@@ -1190,7 +1491,7 @@ Each case is summarized in a single figure combining:
     \centering
     \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_gaussian_distribution.png}
     \caption{
-    Summary of Experiment 2 for a Gaussian phase distribution. Residual coherence depends on the phase variance.
+    Summary of Experiment 2 for a Gaussian phase distribution. Residual coherence depends on the phase variance, leading to intermediate values of concurrence.
     }
     \label{fig:experiment2_gaussian}
 \end{figure}
@@ -1206,19 +1507,25 @@ The results show a transition from coherent deterministic behavior to mixed-stat
 
 At the same time:
 \begin{itemize}
-    \item the global purity decreases from \(1\),
-    \item the reduced purities remain fixed at \(1/2\),
-    \item the fidelity with respect to \( |\Psi^+\rangle \) decreases.
+    \item the global purity decreases from \(\gamma(\rho_{\mathrm{ensemble}})=1\),
+    \item the reduced purities remain fixed at \(\gamma(\rho_A)=\gamma(\rho_B)=1/2\),
+    \item the fidelity with respect to \( |\Psi^+\rangle \) decreases,
+    \item the concurrence decreases from \(1\) to \(0\).
 \end{itemize}
+
+This behavior highlights a fundamental difference with respect to Experiment 1. In the deterministic case, variations in fidelity were not associated with changes in entanglement. Here, instead, the decrease of fidelity is accompanied by a genuine loss of entanglement, as quantified by concurrence.
 
 \subsubsection{Physical Interpretation}
 
 Each realization remains a pure maximally entangled state. The mixedness of the ensemble arises exclusively from statistical averaging over unresolved phase fluctuations.
 
-This demonstrates the transition from a pure-state description to an effective mixed-state description, where coherence is progressively lost at the observable level.
+The coherence parameter \(\mu = \langle e^{i\theta} \rangle\) plays a central role: its real part determines observable correlations and fidelity, while its magnitude controls the amount of entanglement.
 
-Importantly, the reduction of correlations and fidelity does not necessarily imply complete loss of entanglement, but rather a reduction of ensemble phase coherence accessible through the chosen observables.
+This demonstrates the transition from a pure-state description to an effective mixed-state description, where coherence is progressively lost at the observable level and entanglement is gradually degraded.
 
+In contrast to the deterministic case, where local unitary transformations preserve entanglement, the ensemble averaging process leads to a genuine reduction of entanglement, reflecting the loss of phase information in realistic propagation scenarios.
+
+%========================================================
 %========================================================
 %========================================================
 \appendix
@@ -1419,16 +1726,16 @@ e^{i\theta}|10\rangle\langle 01|.
 
 One immediate indicator of this difference is the purity
 \[
-\mathrm{Tr}(\rho^2).
+\gamma(\rho) = \operatorname{Tr}(\rho^2).
 \]
 
 For the entangled pure state,
 \[
-\mathrm{Tr}(\rho_{AB}(\theta)^2) = 1,
+\gamma(\rho_{AB}(\theta)) = \operatorname{Tr}(\rho_{AB}(\theta)^2) = 1,
 \]
 while for the separable mixed state,
 \[
-\mathrm{Tr}\big((\rho_{AB}^{(\mathrm{sep})})^2\big) = \frac{1}{2}.
+\gamma(\rho_{AB}^{(\mathrm{sep})}) = \operatorname{Tr}\big((\rho_{AB}^{(\mathrm{sep})})^2\big) = \frac{1}{2}.
 \]
 
 A second distinction appears in the bipartite correlation observables. For the phase-evolved state,
@@ -1445,7 +1752,6 @@ whereas for the separable mixed state one obtains
 \]
 
 Thus, the two states are identical from the local point of view but differ at the global level in both purity and correlation structure. This confirms explicitly that reduced density operators encode all locally accessible information, but do not in general capture global quantum coherence or bipartite entanglement.
-
 %==============================================================
 \section{Derivation of Fidelity for a Pure Reference State}
 
@@ -1570,6 +1876,246 @@ F(\rho,|\psi\rangle\langle\psi|)
 \medskip
 
 This result justifies the simplified expression used in Section 4.3. It also shows that the fidelity corresponds to the expectation value of the projector onto $|\psi\rangle$, providing a direct probabilistic interpretation as the probability of obtaining the outcome $|\psi\rangle$ in a projective measurement.
+%========================================================
+%========================================================
+\section{Appendix: Derivations for Concurrence and Reduced Density Operators}
+
+This appendix collects the main algebraic derivations leading to the compact expressions for concurrence and its relation to reduced density operators.
+
+Let
+\[
+|\psi\rangle
+=
+a|00\rangle + b|01\rangle + c|10\rangle + d|11\rangle
+\]
+be a normalized pure two-qubit state.
+
+It is convenient to introduce the associated coefficient matrix
+\[
+A_\psi =
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix},
+\]
+such that
+\[
+|\psi\rangle
+=
+\sum_{i,j=0}^{1} (A_\psi)_{ij}\,|i\rangle \otimes |j\rangle.
+\]
+
+This representation allows one to rewrite bipartite operations in matrix form.
+
+The global density operator is
+\[
+\rho_{AB} = |\psi\rangle\langle\psi|.
+\]
+
+Expanding in the computational basis,
+\[
+\rho_{AB}
+=
+\sum_{i,j,k,l}
+(A_\psi)_{ij}(A_\psi)^*_{kl}
+\;
+|i\rangle\langle k|
+\otimes
+|j\rangle\langle l|.
+\]
+
+The reduced density operator on subsystem \(A\) is
+\[
+\rho_A = \operatorname{Tr}_B(\rho_{AB})
+=
+\sum_v
+\bigl(I_A \otimes \langle v|\bigr)
+\rho_{AB}
+\bigl(I_A \otimes |v\rangle\bigr),
+\]
+where \(\{|v\rangle\}\) is an orthonormal basis of \(\mathcal{H}_B\).
+
+Applying this to the expansion above,
+\[
+\rho_A
+=
+\sum_{i,j,k,l}
+(A_\psi)_{ij}(A_\psi)^*_{kl}
+\left(
+\sum_v \langle v|j\rangle \langle l|v\rangle
+\right)
+|i\rangle\langle k|.
+\]
+
+Using the completeness relation
+\[
+\sum_v |v\rangle\langle v| = I,
+\]
+one obtains
+\[
+\sum_v \langle v|j\rangle \langle l|v\rangle = \delta_{jl}.
+\]
+
+Therefore,
+\[
+\rho_A
+=
+\sum_{i,k,j}
+(A_\psi)_{ij}(A_\psi)^*_{kj}
+\,|i\rangle\langle k|.
+\]
+
+In matrix form, this corresponds to
+\[
+\rho_A = A_\psi A_\psi^\dagger.
+\]
+
+Similarly,
+\[
+\rho_B = \operatorname{Tr}_A(\rho_{AB})
+=
+\sum_{j,\ell,i}
+(A_\psi)_{ij}(A_\psi)^*_{i\ell}
+\,|j\rangle\langle \ell|,
+\]
+which gives
+\[
+\rho_B = A_\psi^\dagger A_\psi.
+\]
+
+
+The concurrence of a pure two-qubit state is defined as
+\[
+C(|\psi\rangle)
+=
+\left|
+\langle \psi | (\sigma_y \otimes \sigma_y)\,|\psi^*\rangle
+\right|.
+\]
+
+Let
+\[
+|\psi\rangle =
+\begin{pmatrix}
+a\\
+b\\
+c\\
+d
+\end{pmatrix},
+\qquad
+|\psi^*\rangle =
+\begin{pmatrix}
+a^*\\
+b^*\\
+c^*\\
+d^*
+\end{pmatrix}.
+\]
+
+Using the matrix representation
+\[
+\sigma_y \otimes \sigma_y =
+\begin{pmatrix}
+0 & 0 & 0 & -1\\
+0 & 0 & 1 & 0\\
+0 & 1 & 0 & 0\\
+-1 & 0 & 0 & 0
+\end{pmatrix},
+\]
+one finds
+\[
+(\sigma_y \otimes \sigma_y)|\psi^*\rangle
+=
+\begin{pmatrix}
+- d^*\\
+c^*\\
+b^*\\
+- a^*
+\end{pmatrix}.
+\]
+
+Taking the inner product with \(\langle \psi|\),
+\[
+\langle \psi | (\sigma_y \otimes \sigma_y)|\psi^*\rangle
+=
+- a^* d^* + b^* c^* + c^* b^* - d^* a^*.
+\]
+
+Using commutativity of scalar multiplication,
+\[
+=
+2(b^*c^* - a^*d^*)
+=
+2(ad - bc)^*.
+\]
+
+Taking the modulus,
+\[
+C(|\psi\rangle)=2|ad-bc|.
+\]
+
+Introducing the coefficient matrix \(A_\psi\),
+\[
+\det(A_\psi) = ad - bc,
+\]
+so that
+\[
+C(|\psi\rangle)=2|\det(A_\psi)|.
+\]
+
+
+Using
+\[
+\rho_A = A_\psi A_\psi^\dagger,
+\]
+one obtains
+\[
+\det(\rho_A)
+=
+\det(A_\psi)\det(A_\psi^\dagger).
+\]
+
+Since
+\[
+\det(A_\psi^\dagger) = (\det A_\psi)^*,
+\]
+it follows that
+\[
+\det(\rho_A)=|\det(A_\psi)|^2.
+\]
+
+Therefore,
+\[
+C(|\psi\rangle)=2\sqrt{\det(\rho_A)}.
+\]
+
+An identical relation holds for \(\rho_B\).
+
+
+Since $\rho$ is a density operator, it is positive semidefinite and normalized,
+\[
+\operatorname{Tr}(\rho) = 1.
+\]
+For any $2\times2$ Hermitian matrix with unit trace, the determinant can be expressed in terms of the purity
+\[
+\gamma(\rho) = \operatorname{Tr}(\rho^2)
+\]
+as
+\[
+\det(\rho)
+=
+\frac{1 - \gamma(\rho)}{2}.
+\]
+
+Substituting into the previous result,
+\[
+C(|\psi\rangle)
+=
+\sqrt{2\left(1 - \gamma(\rho_A)\right)}.
+\]
+
+This shows explicitly that, for pure bipartite states, entanglement is directly encoded in the mixedness of the reduced subsystems.
+%========================================================
 %========================================================
 %========================================================
 %========================================================

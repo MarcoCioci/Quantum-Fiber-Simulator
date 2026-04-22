@@ -17,6 +17,8 @@ test_correlations();
 test_bloch_vector();
 test_purity();
 test_fidelity();
+test_concurrence_pure_state();
+test_concurrence_density_matrix();
 
 disp('======================================');
 disp('All tests passed successfully.');

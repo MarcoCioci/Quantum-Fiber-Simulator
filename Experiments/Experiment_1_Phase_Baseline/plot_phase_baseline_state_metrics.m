@@ -9,6 +9,7 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
 %       purity_A(theta)         = 1/2
 %       purity_B(theta)         = 1/2
 %       fidelity_PsiPlus(theta) = (1 + cos(theta)) / 2
+%       concurrence(theta)      = 1
 %
 % Input:
 %   results_phase_baseline - structure containing:
@@ -17,6 +18,7 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
 %       .purity_A
 %       .purity_B
 %       .fidelity_psi_plus
+%       .concurrence
 %
 % Output:
 %   None
@@ -24,9 +26,10 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
 % Notes:
 %   - Theory: continuous colored line
 %   - Numerics: black markers
-%   - Four stacked panels with shared x-axis
+%   - Five stacked panels with shared x-axis
 %   - This function is intentionally separate from the correlation plot,
-%     since purity and fidelity play a different interpretive role.
+%     since purity, fidelity, and concurrence play a different
+%     interpretive role.
 
     % =========================
     % Robustness checks
@@ -36,7 +39,8 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
                        'purity_global', ...
                        'purity_A', ...
                        'purity_B', ...
-                       'fidelity_psi_plus'};
+                       'fidelity_psi_plus', ...
+                       'concurrence'};
 
     for k = 1:length(required_fields)
         if ~isfield(results_phase_baseline, required_fields{k})
@@ -56,21 +60,24 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     purity_A = real(results_phase_baseline.purity_A(:).');
     purity_B = real(results_phase_baseline.purity_B(:).');
     fidelity_psi_plus = real(results_phase_baseline.fidelity_psi_plus(:).');
+    concurrence = real(results_phase_baseline.concurrence(:).');
 
     if numel(theta) ~= numel(purity_global) || ...
        numel(theta) ~= numel(purity_A) || ...
        numel(theta) ~= numel(purity_B) || ...
-       numel(theta) ~= numel(fidelity_psi_plus)
+       numel(theta) ~= numel(fidelity_psi_plus) || ...
+       numel(theta) ~= numel(concurrence)
         error('plot_phase_baseline_state_metrics:InconsistentLengths', ...
-            ['theta_values, purity_global, purity_A, purity_B, and ', ...
-             'fidelity_psi_plus must have the same length.']);
+            ['theta_values, purity_global, purity_A, purity_B, ', ...
+             'fidelity_psi_plus, and concurrence must have the same length.']);
     end
 
     if any(~isfinite(theta)) || ...
        any(~isfinite(purity_global)) || ...
        any(~isfinite(purity_A)) || ...
        any(~isfinite(purity_B)) || ...
-       any(~isfinite(fidelity_psi_plus))
+       any(~isfinite(fidelity_psi_plus)) || ...
+       any(~isfinite(concurrence))
         error('plot_phase_baseline_state_metrics:InvalidValues', ...
             'Input data must not contain NaN or Inf values.');
     end
@@ -84,6 +91,7 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     purity_A_th = 0.5 * ones(size(theta));
     purity_B_th = 0.5 * ones(size(theta));
     fidelity_psi_plus_th = (1 + cos(theta)) / 2;
+    concurrence_th = ones(size(theta));
 
 
     % =========================
@@ -102,8 +110,8 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     % figure_description = [ ...
     %     'Experiment 1 state-metric analysis. ' ...
     %     'The figure compares numerical and analytical values of global purity, ' ...
-    %     'reduced purities, and fidelity with respect to the Bell state |Psi+> ' ...
-    %     'in the deterministic phase model.' ...
+    %     'reduced purities, fidelity with respect to the Bell state |Psi+>, ' ...
+    %     'and concurrence in the deterministic phase model.' ...
     % ];
 
 
@@ -111,10 +119,10 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     % Figure
     % =========================
 
-    fig = figure('Name', 'Experiment 1: purity and fidelity validation', ...
+    fig = figure('Name', 'Experiment 1: purity, fidelity, and concurrence validation', ...
                  'NumberTitle', 'off');
 
-    tiledlayout(4,1, 'TileSpacing','compact', 'Padding','compact');
+    tiledlayout(5,1, 'TileSpacing','compact', 'Padding','compact');
 
 
     % =========================
@@ -173,8 +181,22 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     plot(theta, fidelity_psi_plus_th, 'm', 'LineWidth', 1.8);
     plot(theta, fidelity_psi_plus, 'ko', 'MarkerSize', 4);
 
-    xlabel('$\theta$', 'Interpreter','latex');
     ylabel('$F_{\Psi^+}$', 'Interpreter','latex');
+    ylim([y_min y_max]);
+
+
+    % =========================
+    % Concurrence
+    % =========================
+
+    nexttile;
+    hold on; grid on; box on;
+
+    plot(theta, concurrence_th, 'c', 'LineWidth', 1.8);
+    plot(theta, concurrence, 'ko', 'MarkerSize', 4);
+
+    xlabel('$\theta$', 'Interpreter','latex');
+    ylabel('$C$', 'Interpreter','latex');
     ylim([y_min y_max]);
 
 
@@ -182,7 +204,7 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     % Global title
     % =========================
 
-    sgtitle('Experiment 1: purity and fidelity validation', ...
+    sgtitle('Experiment 1: purity, fidelity, and concurrence validation', ...
             'FontWeight','bold');
 
 

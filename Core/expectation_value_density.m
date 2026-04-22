@@ -101,31 +101,31 @@ function expectation_value_density = expectation_value_density(rho, O)
               'O must contain only finite values.');
     end
 
-    tol = 1e-12;
+    tolerance = 1e-12;
 
-    if norm(rho - rho', 'fro') > tol
+    if norm(rho - rho', 'fro') > tolerance
         error('expectation_value_density:NonHermitianRho', ...
               'rho must be Hermitian within numerical tolerance.');
     end
 
-    if abs(trace(rho) - 1) > tol
+    if abs(trace(rho) - 1) > tolerance
         error('expectation_value_density:InvalidTraceRho', ...
               'rho must have unit trace within numerical tolerance.');
     end
 
-    if norm(O - O', 'fro') > tol
+    if norm(O - O', 'fro') > tolerance
         error('expectation_value_density:NonHermitianObservable', ...
               'O must be Hermitian within numerical tolerance.');
     end
 
     rho_eigenvalues = eig(rho);
 
-    if any(real(rho_eigenvalues) < -tol)
+    if any(real(rho_eigenvalues) < -tolerance)
         error('expectation_value_density:NonPositiveRho', ...
               'rho must be positive semidefinite within numerical tolerance.');
     end
 
-    if max(abs(imag(rho_eigenvalues))) > tol
+    if max(abs(imag(rho_eigenvalues))) > tolerance
         error('expectation_value_density:ComplexEigenvaluesRho', ...
               'rho has eigenvalues with non-negligible imaginary part.');
     end
@@ -137,7 +137,7 @@ function expectation_value_density = expectation_value_density(rho, O)
 
     expectation_value_density = trace(rho * O);
 
-    if abs(imag(expectation_value_density)) < tol
+    if abs(imag(expectation_value_density)) < tolerance
         expectation_value_density = real(expectation_value_density);
     else
         error('expectation_value_density:ComplexExpectationValue', ...

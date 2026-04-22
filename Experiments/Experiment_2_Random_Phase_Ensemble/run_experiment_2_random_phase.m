@@ -9,7 +9,7 @@ function results_experiment_2_all = run_experiment_2_random_phase(experiment_2_c
 %       - defines default experiment cases if none are provided
 %       - generates phase samples for each case
 %       - builds the ensemble-averaged state
-%       - computes reduced states, correlations, purity, and fidelity
+%       - computes reduced states, correlations, purity, fidelity, and concurrence
 %       - assembles all results into a cell array of structures
 %       - optionally generates one compact summary figure per case
 %
@@ -38,6 +38,14 @@ function results_experiment_2_all = run_experiment_2_random_phase(experiment_2_c
 %
 %   together with reduced density operators, correlation observables, and
 %   state-quality metrics relative to |psi_plus>.
+%
+%   In the reduced random-phase model, the coherence parameter is
+%
+%       mu = <exp(i theta)>,
+%
+%   and the corresponding analytical concurrence is
+%
+%       C = |mu|.
 
     % =========================
     % Default input handling
@@ -190,7 +198,7 @@ function results_experiment_2_all = run_experiment_2_random_phase(experiment_2_c
         rho_B = partial_trace_A(rho_ensemble);
 
 
-         % =========================
+        % =========================
         % Correlations and metrics
         % =========================
 
@@ -201,9 +209,11 @@ function results_experiment_2_all = run_experiment_2_random_phase(experiment_2_c
         purity_A = compute_purity(rho_A);
         purity_B = compute_purity(rho_B);
         fidelity_psi_plus = compute_fidelity(rho_ensemble, psi_ref);
+        concurrence = concurrence_density_matrix(rho_ensemble);
 
         sample_mean_cos_theta = mean(cos(theta_samples));
         sample_mean_sin_theta = mean(sin(theta_samples));
+        sample_mean_exp_i_theta = mean(exp(1i * theta_samples));
 
         theory_c_xx = sample_mean_cos_theta;
         theory_c_yy = sample_mean_cos_theta;
@@ -214,6 +224,7 @@ function results_experiment_2_all = run_experiment_2_random_phase(experiment_2_c
         theory_purity_A = 0.5;
         theory_purity_B = 0.5;
         theory_fidelity_psi_plus = (1 + sample_mean_cos_theta) / 2;
+        theory_concurrence = abs(sample_mean_exp_i_theta);
 
         fprintf('Monitoring quantities of interest:\n');
         fprintf('  theta stats   : N = %d, mean(theta) = %.6f, std(theta) = %.6f\n', ...
@@ -239,8 +250,12 @@ function results_experiment_2_all = run_experiment_2_random_phase(experiment_2_c
         fprintf('  fidelity_Psi+ : num = %.6f, theory = %.6f, |err| = %.3e\n', ...
             fidelity_psi_plus, theory_fidelity_psi_plus, ...
             abs(fidelity_psi_plus - theory_fidelity_psi_plus));
+        fprintf('  concurrence   : num = %.6f, theory = %.6f, |err| = %.3e\n', ...
+            concurrence, theory_concurrence, ...
+            abs(concurrence - theory_concurrence));
 
-                % =========================
+
+        % =========================
         % Assemble output structure
         % =========================
 
@@ -266,9 +281,11 @@ function results_experiment_2_all = run_experiment_2_random_phase(experiment_2_c
         results_current.purity_A                 = purity_A;
         results_current.purity_B                 = purity_B;
         results_current.fidelity_psi_plus        = fidelity_psi_plus;
+        results_current.concurrence              = concurrence;
 
         results_current.sample_mean_cos_theta    = sample_mean_cos_theta;
         results_current.sample_mean_sin_theta    = sample_mean_sin_theta;
+        results_current.sample_mean_exp_i_theta  = sample_mean_exp_i_theta;
 
         results_current.theory_c_xx              = theory_c_xx;
         results_current.theory_c_yy              = theory_c_yy;
@@ -278,8 +295,10 @@ function results_experiment_2_all = run_experiment_2_random_phase(experiment_2_c
         results_current.theory_purity_A          = theory_purity_A;
         results_current.theory_purity_B          = theory_purity_B;
         results_current.theory_fidelity_psi_plus = theory_fidelity_psi_plus;
+        results_current.theory_concurrence       = theory_concurrence;
 
         results_experiment_2_all{case_idx} = results_current;
+
 
         % =========================
         % Optional plotting

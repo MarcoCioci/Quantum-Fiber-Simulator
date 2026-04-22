@@ -76,9 +76,9 @@ function rho = state_to_density_matrix(psi)
             'psi contains NaN or Inf values.');
     end
 
-    tol = 1e-12;
+    tolerance = 1e-12;
 
-    if abs(norm(psi, 2) - 1) > tol
+    if abs(norm(psi, 2) - 1) > tolerance
         error('state_to_density_matrix:NotNormalized', ...
             'psi must be a normalized state vector.');
     end

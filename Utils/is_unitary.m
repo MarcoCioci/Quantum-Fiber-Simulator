@@ -1,4 +1,4 @@
-function flag = is_unitary(U, tol)
+function flag = is_unitary(U, tolerance)
 % IS_UNITARY  Check whether a matrix is unitary within a tolerance.
 %
 % Objective:
@@ -10,7 +10,7 @@ function flag = is_unitary(U, tol)
 %
 % Input:
 %   U   - square numeric matrix
-%   tol - numerical tolerance (optional, default = 1e-12)
+%   tolerance - numerical tolerance (optional, default = 1e-12)
 %
 % Output:
 %   flag - logical value (true if U is unitary)
@@ -34,7 +34,7 @@ function flag = is_unitary(U, tol)
     end
 
     if nargin < 2
-        tol = 1e-12;
+        tolerance = 1e-12;
     end
 
     if ~isnumeric(U) || ~ismatrix(U)
@@ -59,6 +59,6 @@ function flag = is_unitary(U, tol)
     err1 = norm(U' * U - I, 'fro');
     err2 = norm(U * U' - I, 'fro');
 
-    flag = (err1 < tol) && (err2 < tol);
+    flag = (err1 < tolerance) && (err2 < tolerance);
 
 end

@@ -35,10 +35,11 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
 %       c_zz(theta) = -1
 %
 %   In the extended state-characterization layer, the expected quantities are:
-%       purity_global(theta) = 1
-%       purity_A(theta)      = 1/2
-%       purity_B(theta)      = 1/2
-%       fidelity_psi_plus(theta) = (1 + cos(theta)) / 2
+%       purity_global(theta)    = 1
+%       purity_A(theta)         = 1/2
+%       purity_B(theta)         = 1/2
+%       fidelity_psi_plus(theta)= (1 + cos(theta)) / 2
+%       concurrence(theta)      = 1
 
     % =========================
     % Default input handling
@@ -101,6 +102,7 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
     purity_A_num = real(results_experiment_1.purity_A(:).');
     purity_B_num = real(results_experiment_1.purity_B(:).');
     fidelity_num = real(results_experiment_1.fidelity_psi_plus(:).');
+    concurrence_num = real(results_experiment_1.concurrence(:).');
 
     c_xx_theory = cos(theta_values_out);
     c_yy_theory = cos(theta_values_out);
@@ -110,20 +112,22 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
     purity_A_theory = 0.5 * ones(size(theta_values_out));
     purity_B_theory = 0.5 * ones(size(theta_values_out));
     fidelity_theory = (1 + cos(theta_values_out)) / 2;
+    concurrence_theory = ones(size(theta_values_out));
 
     fprintf('\n');
     fprintf('==========================================\n');
     fprintf('Experiment 1 - Monitoring summary\n');
     fprintf('==========================================\n');
-    fprintf('theta sweep     : N = %d, min = %.6f, max = %.6f\n', ...
+    fprintf('theta sweep       : N = %d, min = %.6f, max = %.6f\n', ...
         numel(theta_values_out), min(theta_values_out), max(theta_values_out));
-    fprintf('c_xx max |err|  : %.3e\n', max(abs(c_xx_num - c_xx_theory)));
-    fprintf('c_yy max |err|  : %.3e\n', max(abs(c_yy_num - c_yy_theory)));
-    fprintf('c_zz max |err|  : %.3e\n', max(abs(c_zz_num - c_zz_theory)));
+    fprintf('c_xx max |err|    : %.3e\n', max(abs(c_xx_num - c_xx_theory)));
+    fprintf('c_yy max |err|    : %.3e\n', max(abs(c_yy_num - c_yy_theory)));
+    fprintf('c_zz max |err|    : %.3e\n', max(abs(c_zz_num - c_zz_theory)));
     fprintf('gamma_AB max |err|: %.3e\n', max(abs(purity_global_num - purity_global_theory)));
     fprintf('gamma_A max |err| : %.3e\n', max(abs(purity_A_num - purity_A_theory)));
     fprintf('gamma_B max |err| : %.3e\n', max(abs(purity_B_num - purity_B_theory)));
     fprintf('F_Psi+ max |err|  : %.3e\n', max(abs(fidelity_num - fidelity_theory)));
+    fprintf('C max |err|       : %.3e\n', max(abs(concurrence_num - concurrence_theory)));
 
 
     % =========================

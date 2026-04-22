@@ -55,14 +55,14 @@ function purity = compute_purity(rho)
               'Input rho must be square.');
     end
 
-    tol = 1e-12;  % Tolerance for structural quantum-state checks
+    tolerance = 1e-12;  % Tolerance for structural quantum-state checks
 
-    if norm(rho - rho', 'fro') > tol
+    if norm(rho - rho', 'fro') > tolerance
         error('compute_purity:NonHermitianInput', ...
               'Input rho must be Hermitian up to numerical tolerance.');
     end
 
-    if abs(trace(rho) - 1) > tol
+    if abs(trace(rho) - 1) > tolerance
         error('compute_purity:InvalidTrace', ...
               'Input rho must have trace equal to 1 up to numerical tolerance.');
     end
@@ -75,7 +75,7 @@ function purity = compute_purity(rho)
     rho_squared = rho * rho;
     purity = trace(rho_squared);
 
-    if abs(imag(purity)) > tol
+    if abs(imag(purity)) > tolerance
         error('compute_purity:NonRealOutput', ...
               'Computed purity has a non-negligible imaginary part.');
     end
