@@ -18,6 +18,9 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
+\usepackage{titlesec}
+\newcommand{\sectionbreak}{\clearpage}
+
 %% Table packages
 \usepackage{array}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
@@ -28,7 +31,7 @@
 Politecnico di Milano\\
 Student ID: 10694772\\
 \texttt{marco.cioci@mail.polimi.it}}
-\date{}
+\date{\today}
 
 \setlength{\parindent}{0pt}
 
@@ -387,6 +390,7 @@ This abstraction is already present in the implementation, where local single-qu
 
 %--------------------------------------------------------
 
+%========================================================
 \subsection{Reduced Phase Model}
 
 Although a general fiber transformation may involve arbitrary polarization rotations, birefringence, and mode-coupling effects, the first approximation adopted here is simpler and directly motivated by the experimental control scheme. After partial compensation of polarization drifts, the dominant residual effect is modeled as a relative phase shift between the horizontal and vertical components, corresponding to an effective rotation around the \(Z\)-axis of the Bloch sphere.
@@ -428,28 +432,22 @@ By factoring out a global phase, which has no effect on measurement statistics, 
 +
 e^{i\theta}|10\rangle
 \right),
-\]
-where
-\[
+\qquad
 \theta = \theta_A - \theta_B.
 \]
 
-Thus, in the reduced model, the physically relevant fiber action is encoded in a single parameter: the relative phase \(\theta\) between the two components of the entangled state. This parameter depends on propagation conditions such as birefringence, path length, and environmental fluctuations, and it becomes the main control variable in the first stage of the simulator.
+\paragraph{Interpretation of the model.}
+In this reduced description, the physically relevant fiber action is encoded in a single parameter: the relative phase \(\theta\) between the two components of the entangled state. This parameter depends on propagation conditions such as birefringence, path length, and environmental fluctuations.
 
-This reduced description is useful because it isolates the dominant effect of interest while preserving the full two-qubit entangled structure.
+This model isolates the dominant effect affecting two-photon correlations while preserving a pure-state description. As a consequence, it provides an analytically transparent framework in which entanglement is maintained and all modifications arise solely from phase-induced coherence changes.
 
-\paragraph{Simulation notes.}
-This is the first concrete propagation model to implement. The simulator should allow \(\theta_A\) and \(\theta_B\) as input parameters, while also recognizing that the observable behavior depends only on \(\theta=\theta_A-\theta_B\). In practice, both forms are useful: the two-phase form for physical interpretation, and the reduced one-parameter form for analytical checks and parameter sweeps.
+\paragraph{Role in the modeling hierarchy.}
+The reduced phase model plays a central role as the first nontrivial propagation model. It provides the natural starting point for the simulator, allowing one to derive explicit analytical predictions and to validate the numerical implementation in a controlled setting.
 
-At the current implementation stage, the reduced model is realized through a dedicated single-qubit phase-unitary routine and is used operationally in the first complete experiment by fixing one arm to the identity and sweeping the phase in the other arm.
+At the same time, it constitutes the reference point for subsequent extensions. More general unitary transformations, ensemble descriptions, and effective non-unitary evolutions can all be understood as refinements of this baseline model.
 
-%--------------------------------------------------------
-
-\subsection{Interpretation and Role of the Reduced Model}
-
-The reduced phase model is particularly useful for three reasons. First, it preserves a pure-state description, keeping the initial implementation analytically transparent. Second, it isolates the effect most directly relevant for the first experimental analysis, namely the deformation of two-photon correlations induced by a relative phase. Third, it provides the natural starting point for later extensions to density operators and noisy channels without changing the basic bipartite structure of the problem.
-
-For this reason, the first stage of the simulator is built around the family of states
+\paragraph{Operational use in the simulator.}
+The first stage of the simulator is therefore built around the family of states
 \[
 |\psi(\theta)\rangle
 =
@@ -460,13 +458,10 @@ For this reason, the first stage of the simulator is built around the family of 
 \]
 from which one computes expectation values of local and nonlocal observables, correlation functions, and Bell-type quantities as functions of \(\theta\).
 
-The reduced model therefore plays a dual role: it is both a physically motivated approximation to fiber propagation and the minimal operational model from which one can derive clean and testable predictions.
-
 \paragraph{Simulation notes.}
-The first validated MATLAB study should therefore consist of a parameter sweep in \(\theta\), with numerical evaluation of state vectors, expectation values, and correlation quantities. This provides a minimal but complete simulator: one input family of states, one effective propagation parameter, and a set of measurable outputs that can be directly plotted and compared with theory.
+At implementation level, the simulator should allow \(\theta_A\) and \(\theta_B\) as input parameters, while recognizing that all observable quantities depend only on the relative phase \(\theta=\theta_A-\theta_B\). In practice, both parametrizations are useful: the two-phase form for physical interpretation, and the reduced one-parameter form for analytical checks and parameter sweeps.
 
-At the current stage, this is implemented through a sweep routine that returns a structured collection of sampled phase values and corresponding correlation outputs, together with a plotting utility for visualizing selected correlations as functions of \(\theta\).
-
+The first validated MATLAB study consists of a parameter sweep in \(\theta\), with numerical evaluation of state vectors, expectation values, and correlation quantities. This provides a minimal but complete simulation pipeline, forming the basis for all subsequent developments.
 %--------------------------------------------------------
 
 \subsection{Correlation Observables: Theory and Implementation}
@@ -547,6 +542,7 @@ Additional helper routines verify normalization of input state vectors and unita
 These observables constitute the primary diagnostic outputs of the simulator and provide the most direct bridge between analytical predictions and numerical results. Their dependence on \(\theta\) defines the first validation pipeline of the code.
 
 %------------------------------------------------------------
+%========================================================
 \subsection{From Deterministic Evolution to Ensemble Description}
 
 The reduced phase model introduced in the previous sections describes a deterministic unitary evolution of a pure entangled state, parametrized by a single phase \(\theta\).
@@ -555,22 +551,138 @@ In realistic fiber propagation, however, this phase is not constant but fluctuat
 
 When these fluctuations occur on timescales shorter than the measurement resolution, individual realizations cannot be resolved experimentally. The observed system is therefore not described by a single pure state, but by an ensemble of states corresponding to different phase realizations.
 
-In this regime, the effective description is obtained by averaging over the phase distribution:
+\medskip
+
+In order to describe such situations, it is necessary to introduce the density operator formalism. A quantum state is represented not only by a state vector, but more generally by an operator \(\rho\), defined as
+\[
+\rho = \sum_k p_k \, |\psi_k\rangle\langle \psi_k|,
+\]
+where \(\{p_k\}\) is a probability distribution and \(|\psi_k\rangle\) are normalized pure states. This representation captures both classical statistical uncertainty and loss of coherence arising from unresolved degrees of freedom.
+
+\medskip
+
+In the present context, the effective description is obtained by averaging over the phase distribution:
 \[
 \rho = \mathbb{E}_{\theta}\left[ |\psi(\theta)\rangle\langle \psi(\theta)| \right].
 \]
 
-This transition does not introduce new dynamics at the level of individual realizations, which remain unitary, but reflects a loss of accessible phase information. The resulting state is mixed, even though each underlying realization is pure.
+This transition does not introduce new dynamics at the level of individual realizations, which remain unitary, but reflects a loss of accessible phase information. The resulting state is said to be \emph{mixed}, even though each underlying realization is pure.
 
-This mechanism provides the physical origin of mixed-state descriptions in the present model and establishes the connection between fiber-induced phase fluctuations and decoherence.
+\medskip
 
-Expectation values are therefore computed using the density-operator formalism:
+The density operator \(\rho\) satisfies the following fundamental properties:
+\[
+\rho^\dagger = \rho, 
+\qquad
+\rho \ge 0, 
+\qquad
+\mathrm{Tr}(\rho) = 1.
+\]
+These conditions ensure that \(\rho\) provides a complete and physically consistent description of the quantum state.
+
+\medskip
+
+Expectation values of observables are computed in this formalism as
 \[
 \langle O \rangle = \mathrm{Tr}(\rho O),
 \]
-which accounts for the statistical nature of the ensemble.
+which generalizes the pure-state expression \(\langle \psi | O | \psi \rangle\).
 
-This framework forms the basis for the modeling and analysis of phase-noise effects, which will be investigated quantitatively in Chapter~4.
+\medskip
+
+This framework forms the basis for the modeling of phase-noise effects and, more generally, for the description of non-deterministic or partially coherent quantum evolutions. In the following sections, it will be extended to include more general transformations acting directly on density operators, and in Chapter~4 it will be used to introduce quantitative measures of mixedness and entanglement.
+
+%========================================================
+\subsection{Quantum Channels and Effective Depolarization}
+
+The ensemble description introduced in the previous section accounts for statistical fluctuations of the relative phase parameter by averaging over a family of pure states. In that setting, each individual realization is still described by a unitary transformation, and the resulting mixed state arises from classical uncertainty over these realizations.
+
+However, in realistic fiber propagation, the loss of coherence may originate not only from classical fluctuations of a control parameter, but also from the coupling between polarization and additional physical degrees of freedom that are not directly observed, such as frequency or temporal modes. In such cases, the effective evolution of the polarization state can no longer be described as an average over unitary transformations acting on a closed system. Instead, it must be formulated as a more general transformation acting directly on the density operator.
+
+\medskip
+
+This motivates the introduction of the concept of a \emph{quantum channel}, which provides the appropriate mathematical framework for describing effective non-unitary evolution.
+
+\paragraph{Quantum channels as effective evolution maps}
+
+A quantum channel is defined as a linear map
+\[
+\mathcal{E} : \rho \mapsto \mathcal{E}(\rho),
+\]
+acting on density operators, such that it is completely positive and trace preserving. These properties ensure that the output state remains a valid physical density operator.
+
+A general representation of such maps is given by the operator-sum (Kraus) form:
+\[
+\mathcal{E}(\rho)
+=
+\sum_{\mu} K_{\mu} \rho K_{\mu}^\dagger,
+\qquad
+\sum_{\mu} K_{\mu}^\dagger K_{\mu} = I,
+\]
+where the operators \(K_{\mu}\) encode the effective action of the physical process on the system.
+
+\medskip
+
+In the present context, the channel formalism provides a natural extension of the unitary model of fiber propagation. While ideal fibers are described by local unitary operators of the form \(U_A \otimes U_B\), realistic propagation may involve mechanisms that effectively couple polarization to unobserved degrees of freedom. The resulting polarization state is then obtained by tracing out these auxiliary variables, leading to a non-unitary evolution at the level of the reduced system.
+
+\paragraph{Physical origin of effective depolarization}
+
+One of the main mechanisms responsible for such non-unitary behavior in optical fibers is the frequency dependence of the polarization transformation. When the input photons are described by finite-duration wave packets, their spectral components may experience different polarization-dependent phase shifts.
+
+As a consequence, distinct polarization components can acquire different group delays and become partially or completely separated in time. When the temporal separation exceeds the coherence time of the detection process, the interference between these components is lost. The system is therefore no longer described by a coherent superposition, but by a statistical mixture.
+
+\medskip
+
+From the point of view of the polarization degree of freedom alone, this loss of temporal overlap manifests as a loss of coherence, leading to an effective depolarization of the state. This provides a direct physical interpretation of the transition from a pure-state description to a mixed-state one.
+
+\paragraph{Depolarizing channel model}
+
+As a first effective model of this behavior, we introduce the depolarizing channel. In the bipartite two-qubit setting, its action on a density operator \(\rho\) can be written as
+\[
+\mathcal{E}(\rho)
+=
+(1 - p)\,\rho
++
+\frac{p}{4}\, I_4,
+\]
+where \(I_4\) denotes the identity operator on the four-dimensional Hilbert space and \(p \in [0,1]\) is a parameter quantifying the strength of the depolarization.
+
+\medskip
+
+This model interpolates between two limiting cases:
+
+\begin{itemize}
+    \item for \(p = 0\), the evolution is trivial and the input state is preserved;
+    \item for \(p = 1\), the output state is completely mixed, corresponding to a total loss of polarization information.
+\end{itemize}
+
+The depolarizing channel is isotropic, in the sense that it does not privilege any particular basis. For this reason, it provides a natural first approximation to situations in which polarization information is uniformly degraded.
+
+\paragraph{Application to Bell states}
+
+When the input state is the Bell state
+\[
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}},
+\]
+with associated density operator \(\rho_0 = |\Psi^+\rangle\langle\Psi^+|\), the action of the depolarizing channel produces the family of states
+\[
+\rho(p)
+=
+(1 - p)\,\rho_0
++
+\frac{p}{4}\, I_4.
+\]
+
+These states provide a simple yet nontrivial model for the degradation of entanglement under fiber propagation. In particular, they allow one to study the transition from a maximally entangled pure state to a mixed state with reduced or vanishing entanglement.
+
+\paragraph{Connection with state characterization}
+
+The introduction of quantum channels completes the modeling of the dynamical evolution of the system. The resulting states are, in general, mixed and must therefore be analyzed using the density-operator formalism.
+
+In the following chapter, quantitative measures such as purity, fidelity, and concurrence will be used to characterize the effects of depolarization on mixed bipartite states, providing a detailed assessment of coherence loss and entanglement degradation.
+
+
+
 %========================================================
 %========================================================
 %========================================================
@@ -1363,6 +1475,17 @@ A key observation is that fidelity and concurrence exhibit fundamentally differe
 
 Therefore, although the phase evolution modifies observable correlations and the apparent similarity to a chosen Bell state, it does not alter the underlying entanglement structure. This demonstrates that purity (quantified by \(\gamma(\rho)\)) and fidelity alone are insufficient to characterize bipartite entanglement, and motivates the introduction of concurrence as a genuine entanglement measure.
 
+\subsubsection{Physical Interpretation}
+
+The results obtained in this experiment admit a direct physical interpretation in terms of fiber-induced birefringence. In optical fibers, the horizontal and vertical polarization components generally propagate with different effective refractive indices, leading to a relative phase accumulation.
+
+After compensation of global polarization rotations, the dominant residual effect is a differential phase shift between the two polarization modes. In the quantum description, this corresponds to a local unitary transformation equivalent to a rotation around the Z-axis of the Bloch sphere.
+
+As a consequence, the initial Bell state evolves into a phase-dependent superposition while preserving its entangled nature. The invariance of the concurrence reflects the fact that no information is lost during propagation, and the system remains in a pure state.
+
+At the same time, the phase dependence of the transverse correlations \(c_{xx}\) and \(c_{yy}\) demonstrates that measurable quantities are sensitive to this relative phase. This highlights the operational relevance of the phase parameter \(\theta\), which becomes the key variable controlling observable correlations in the absence of noise.
+
+This experiment therefore establishes the minimal physical model of fiber propagation: a deterministic unitary transformation that modifies observable correlations without degrading entanglement.
 %========================================================
 %========================================================
 \subsection{Experiment 2: Random Phase Ensemble}
@@ -1524,6 +1647,126 @@ The coherence parameter \(\mu = \langle e^{i\theta} \rangle\) plays a central ro
 This demonstrates the transition from a pure-state description to an effective mixed-state description, where coherence is progressively lost at the observable level and entanglement is gradually degraded.
 
 In contrast to the deterministic case, where local unitary transformations preserve entanglement, the ensemble averaging process leads to a genuine reduction of entanglement, reflecting the loss of phase information in realistic propagation scenarios.
+
+%========================================================
+%========================================================
+\subsection{Experiment 3: Depolarizing Channel}
+
+\subsubsection{Objective}
+
+The purpose of this experiment is to study the degradation of a maximally entangled Bell state under the action of an effective two-qubit depolarizing channel. Unlike the previous experiments, where the dynamics was generated by deterministic or ensemble-averaged unitary phase evolution, the present model introduces a genuinely non-unitary transformation at the level of the density operator.
+
+The main objectives are:
+\begin{itemize}
+    \item to validate the implementation of the depolarizing channel introduced in Section 3.8;
+    \item to quantify the effect of depolarization on global purity, reduced purities, fidelity with respect to \(|\Psi^+\rangle\), concurrence, and Pauli correlations;
+    \item to compare numerical results against the corresponding analytical predictions over the full range \(p \in [0,1]\).
+\end{itemize}
+
+This experiment therefore represents the first explicit implementation of effective noisy quantum evolution in the simulator.
+
+\subsubsection{Model}
+
+The reference input state is the Bell state
+\[
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}},
+\]
+with associated density operator
+\[
+\rho_0 = |\Psi^+\rangle\langle\Psi^+|.
+\]
+
+The depolarizing model is defined by the map
+\[
+\rho(p) = (1-p)\rho_0 + \frac{p}{4}I_4,
+\qquad p \in [0,1],
+\]
+where \(I_4\) is the identity operator on the two-qubit Hilbert space. The parameter \(p\) quantifies the strength of the depolarizing contribution.
+
+This model interpolates between two limiting regimes:
+\[
+\rho(0)=\rho_0,
+\qquad
+\rho(1)=\frac{I_4}{4}.
+\]
+Thus, for \(p=0\) the output state is the initial Bell state, while for \(p=1\) the output is the maximally mixed two-qubit state.
+
+At the MATLAB level, the experiment is implemented by sweeping a set of values \(p_1,\dots,p_N\), applying the function \texttt{depolarizing\_channel\_two\_qubits} to \(\rho_0\), and evaluating for each output state:
+\begin{itemize}
+    \item the global purity \(\gamma_{AB} = \operatorname{Tr}(\rho^2)\),
+    \item the reduced purities \(\gamma_A\) and \(\gamma_B\),
+    \item the fidelity \(F_{\Psi^+}\) with respect to the reference Bell state,
+    \item the concurrence \(C\),
+    \item the Pauli correlations \(c_{xx}\), \(c_{yy}\), and \(c_{zz}\).
+\end{itemize}
+
+\subsubsection{Analytical Predictions}
+
+For the family of states
+\[
+\rho(p) = (1-p)|\Psi^+\rangle\langle\Psi^+| + \frac{p}{4}I_4,
+\]
+the analytical predictions used for validation are:
+\[
+\gamma_{AB}(p)=1-\frac{3}{2}p+\frac{3}{4}p^2,
+\]
+\[
+\gamma_A(p)=\gamma_B(p)=\frac{1}{2},
+\]
+\[
+F_{\Psi^+}(p)=1-\frac{3}{4}p,
+\]
+\[
+C(p)=\max\left(0,\,1-\frac{3}{2}p\right),
+\]
+and
+\[
+c_{xx}(p)=1-p,\qquad
+c_{yy}(p)=1-p,\qquad
+c_{zz}(p)=-(1-p).
+\]
+
+These expressions show that the depolarizing channel affects the different state descriptors in qualitatively distinct ways. The global purity decreases quadratically, the fidelity decreases linearly, and the concurrence exhibits threshold behavior, vanishing at
+\[
+p=\frac{2}{3}.
+\]
+By contrast, the reduced purities remain constant at \(1/2\), reflecting the fact that the reduced states remain maximally mixed throughout the entire family.
+
+\subsubsection{Numerical Results}
+
+The experiment was executed by sampling the depolarization parameter uniformly over the interval \([0,1]\). For each sampled value, the simulator constructed the output density matrix, computed all target observables, and compared the numerical values with the analytical ones.
+
+The console-monitoring summary reported maximum absolute errors at machine-precision level for all tested quantities, confirming exact numerical agreement with theory up to floating-point tolerance. In particular, the comparison showed negligible discrepancies for:
+\begin{itemize}
+    \item global purity \(\gamma_{AB}\),
+    \item reduced purities \(\gamma_A\) and \(\gamma_B\),
+    \item fidelity \(F_{\Psi^+}\),
+    \item concurrence \(C\),
+    \item correlations \(c_{xx}\), \(c_{yy}\), and \(c_{zz}\).
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../Images/Experiment_3/experiment_3_depolarizing_channel_summary.png}
+    \caption{Experiment 3: numerical and analytical behavior of state metrics and Pauli correlations under the two-qubit depolarizing channel applied to the Bell state \(|\Psi^+\rangle\). The agreement is exact up to numerical precision.}
+    \label{fig:experiment3_depolarizing_summary}
+\end{figure}
+
+\subsubsection{Discussion}
+
+This experiment validates the first non-unitary extension of the simulator. In the previous experiments, mixed states arose from averaging over unresolved unitary realizations. Here, instead, the state is evolved directly through an effective quantum channel.
+
+The results confirm several physically important points. First, depolarization reduces global coherence and entanglement while preserving the maximally mixed character of the local reduced states. Second, concurrence and purity do not encode the same information: while the global purity decreases smoothly over the entire interval, concurrence vanishes already at \(p=2/3\), after which the state remains mixed but separable. Third, the correlation observables decay linearly in magnitude, providing a direct operational signature of the channel action.
+
+From the point of view of simulator development, Experiment 3 is a crucial milestone because it verifies that the code correctly handles channel-based evolution, mixed-state metrics, and analytical benchmarking within a unified framework.
+
+\subsubsection{Physical Interpretation}
+
+The depolarizing channel introduced here is not intended as a complete microscopic fiber model. Rather, it serves as a first effective description of coherence loss when polarization becomes partially inaccessible due to unresolved physical mechanisms such as frequency dependence, temporal walk-off, or polarization-mode dispersion.
+
+In this sense, the channel provides a compact phenomenological model of entanglement degradation. Its action drives the initially pure Bell state toward the maximally mixed state, while progressively suppressing both nonlocal correlations and entanglement.
+
+This makes the experiment especially valuable as a bridge between the abstract theory of quantum channels and the future development of more physically detailed fiber models. In particular, it establishes a baseline against which more refined descriptions---for example segmented random-unitary models or frequency-dependent propagation models---can later be compared.
 
 %========================================================
 %========================================================
@@ -1752,6 +1995,7 @@ whereas for the separable mixed state one obtains
 \]
 
 Thus, the two states are identical from the local point of view but differ at the global level in both purity and correlation structure. This confirms explicitly that reduced density operators encode all locally accessible information, but do not in general capture global quantum coherence or bipartite entanglement.
+
 %==============================================================
 \section{Derivation of Fidelity for a Pure Reference State}
 
@@ -1878,7 +2122,7 @@ F(\rho,|\psi\rangle\langle\psi|)
 This result justifies the simplified expression used in Section 4.3. It also shows that the fidelity corresponds to the expectation value of the projector onto $|\psi\rangle$, providing a direct probabilistic interpretation as the probability of obtaining the outcome $|\psi\rangle$ in a projective measurement.
 %========================================================
 %========================================================
-\section{Appendix: Derivations for Concurrence and Reduced Density Operators}
+\section{Derivations for Concurrence and Reduced Density Operators}
 
 This appendix collects the main algebraic derivations leading to the compact expressions for concurrence and its relation to reduced density operators.
 
@@ -2116,6 +2360,292 @@ C(|\psi\rangle)
 
 This shows explicitly that, for pure bipartite states, entanglement is directly encoded in the mixedness of the reduced subsystems.
 %========================================================
+%========================================================
+\section{Analytical Derivations for Experiment 3: Depolarizing Channel}
+
+This appendix derives the analytical expressions used in Experiment 3 for the family of two-qubit states obtained by applying the depolarizing channel to the Bell state \(|\Psi^+\rangle\).
+
+We consider the reference Bell state
+\[
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}},
+\]
+with density operator
+\[
+\rho_0 = |\Psi^+\rangle\langle\Psi^+|.
+\]
+
+The depolarized family is defined as
+\[
+\rho(p) = (1-p)\rho_0 + \frac{p}{4}I_4,
+\qquad p \in [0,1].
+\]
+
+\subsection*{Density matrix form}
+
+In the computational basis
+\[
+\{|00\rangle, |01\rangle, |10\rangle, |11\rangle\},
+\]
+the projector onto \(|\Psi^+\rangle\) is
+\[
+\rho_0
+=
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & \frac12 & \frac12 & 0\\
+0 & \frac12 & \frac12 & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}.
+\]
+
+Therefore,
+\[
+\rho(p)
+=
+(1-p)
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & \frac12 & \frac12 & 0\\
+0 & \frac12 & \frac12 & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}
++
+\frac{p}{4}
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{pmatrix},
+\]
+that is,
+\[
+\rho(p)
+=
+\begin{pmatrix}
+\frac p4 & 0 & 0 & 0\\
+0 & \frac12-\frac p4 & \frac{1-p}{2} & 0\\
+0 & \frac{1-p}{2} & \frac12-\frac p4 & 0\\
+0 & 0 & 0 & \frac p4
+\end{pmatrix}.
+\]
+
+\subsection*{Global purity}
+
+The global purity is
+\[
+\gamma_{AB}(p) = \operatorname{Tr}(\rho(p)^2).
+\]
+
+A convenient way to compute it is through the eigenvalues of \(\rho(p)\). Since \(\rho_0\) is a rank-one projector and \(I_4/4\) is proportional to the identity, the Bell-state direction remains an eigenvector of \(\rho(p)\), with eigenvalue
+\[
+\lambda_1 = (1-p)\cdot 1 + \frac p4 = 1-\frac{3p}{4}.
+\]
+All three orthogonal directions have eigenvalue
+\[
+\lambda_2=\lambda_3=\lambda_4=\frac p4.
+\]
+
+Hence
+\[
+\gamma_{AB}(p)
+=
+\left(1-\frac{3p}{4}\right)^2 + 3\left(\frac p4\right)^2.
+\]
+Expanding,
+\[
+\gamma_{AB}(p)
+=
+1-\frac{3}{2}p+\frac{3}{4}p^2.
+\]
+
+This is the analytical formula used in the experiment:
+\[
+\gamma_{AB}(p)=1-\frac{3}{2}p+\frac{3}{4}p^2.
+\]
+
+\subsection*{Reduced density operators and reduced purities}
+
+We now compute the reduced states of subsystems \(A\) and \(B\).
+
+For the Bell state,
+\[
+\operatorname{Tr}_B(\rho_0)=\operatorname{Tr}_A(\rho_0)=\frac{I_2}{2}.
+\]
+Moreover,
+\[
+\operatorname{Tr}_B\!\left(\frac{I_4}{4}\right)=\frac{I_2}{2},
+\qquad
+\operatorname{Tr}_A\!\left(\frac{I_4}{4}\right)=\frac{I_2}{2}.
+\]
+
+Therefore
+\[
+\rho_A(p)=\operatorname{Tr}_B(\rho(p))
+=
+(1-p)\frac{I_2}{2}+p\frac{I_2}{2}
+=
+\frac{I_2}{2},
+\]
+and similarly
+\[
+\rho_B(p)=\frac{I_2}{2}.
+\]
+
+Thus the reduced states are independent of \(p\), and their purities are
+\[
+\gamma_A(p)=\operatorname{Tr}(\rho_A(p)^2)
+=
+\operatorname{Tr}\left[\left(\frac{I_2}{2}\right)^2\right]
+=
+\operatorname{Tr}\left(\frac{I_2}{4}\right)
+=
+\frac{1}{2},
+\]
+\[
+\gamma_B(p)=\frac{1}{2}.
+\]
+
+Hence
+\[
+\gamma_A(p)=\gamma_B(p)=\frac12.
+\]
+
+\subsection*{Fidelity with respect to \texorpdfstring{$|\Psi^+\rangle$}{|Psi+>}}
+
+Since the reference state is pure, the fidelity reduces to
+\[
+F_{\Psi^+}(p)
+=
+\langle\Psi^+|\rho(p)|\Psi^+\rangle.
+\]
+
+Substituting the expression for \(\rho(p)\),
+\[
+F_{\Psi^+}(p)
+=
+(1-p)\langle\Psi^+|\rho_0|\Psi^+\rangle
++
+\frac p4 \langle\Psi^+|I_4|\Psi^+\rangle.
+\]
+Now
+\[
+\langle\Psi^+|\rho_0|\Psi^+\rangle = 1,
+\qquad
+\langle\Psi^+|I_4|\Psi^+\rangle = 1,
+\]
+so
+\[
+F_{\Psi^+}(p)
+=
+(1-p)+\frac p4
+=
+1-\frac{3p}{4}.
+\]
+
+Therefore
+\[
+F_{\Psi^+}(p)=1-\frac{3}{4}p.
+\]
+
+\subsection*{Concurrence}
+
+The family \(\rho(p)\) is a Bell-diagonal Werner-type family, and its concurrence is
+\[
+C(p)=\max\left(0,\,2\lambda_{\max}-1\right),
+\]
+where \(\lambda_{\max}\) is the largest Bell-basis eigenvalue. In the present case,
+\[
+\lambda_{\max}=1-\frac{3p}{4},
+\]
+hence
+\[
+C(p)
+=
+\max\left(0,\,2\left(1-\frac{3p}{4}\right)-1\right)
+=
+\max\left(0,\,1-\frac{3p}{2}\right).
+\]
+
+Thus
+\[
+C(p)=\max\left(0,\,1-\frac{3}{2}p\right).
+\]
+
+The concurrence vanishes when
+\[
+1-\frac{3p}{2}=0
+\quad\Longrightarrow\quad
+p=\frac{2}{3}.
+\]
+This identifies the separability threshold for the depolarized family.
+
+\subsection*{Pauli correlations}
+
+We now compute the aligned Pauli correlations
+\[
+c_{ii}(p)=\operatorname{Tr}\bigl[\rho(p)(\sigma_i\otimes\sigma_i)\bigr],
+\qquad i\in\{x,y,z\}.
+\]
+
+Using the linearity of the trace,
+\[
+c_{ii}(p)
+=
+(1-p)\operatorname{Tr}\bigl[\rho_0(\sigma_i\otimes\sigma_i)\bigr]
++
+\frac p4 \operatorname{Tr}\bigl[I_4(\sigma_i\otimes\sigma_i)\bigr].
+\]
+
+Since \(\sigma_i\otimes\sigma_i\) is traceless,
+\[
+\operatorname{Tr}\bigl[I_4(\sigma_i\otimes\sigma_i)\bigr]
+=
+\operatorname{Tr}(\sigma_i\otimes\sigma_i)=0.
+\]
+Therefore
+\[
+c_{ii}(p)=(1-p)c_{ii}(0).
+\]
+
+For the Bell state \(|\Psi^+\rangle\), one has
+\[
+\langle\Psi^+|\sigma_x\otimes\sigma_x|\Psi^+\rangle = 1,
+\]
+\[
+\langle\Psi^+|\sigma_y\otimes\sigma_y|\Psi^+\rangle = 1,
+\]
+\[
+\langle\Psi^+|\sigma_z\otimes\sigma_z|\Psi^+\rangle = -1.
+\]
+
+Hence
+\[
+c_{xx}(p)=1-p,
+\qquad
+c_{yy}(p)=1-p,
+\qquad
+c_{zz}(p)=-(1-p).
+\]
+
+
+\subsection*{Summary of analytical expressions}
+
+Collecting all results, the depolarized Bell-state family satisfies
+\[
+\boxed{
+\begin{aligned}
+\gamma_{AB}(p) &= 1-\frac{3}{2}p+\frac{3}{4}p^2, \\
+\gamma_A(p) &= \gamma_B(p)=\frac12, \\
+F_{\Psi^+}(p) &= 1-\frac34 p, \\
+C(p) &= \max\left(0,\,1-\frac32 p\right), \\
+c_{xx}(p) &= 1-p,\qquad c_{yy}(p)=1-p,\qquad c_{zz}(p)=-(1-p).
+\end{aligned}
+}
+\]
+
+These are exactly the expressions implemented in the analytical branch of Experiment 3 and used as reference for numerical validation.
+
 %========================================================
 %========================================================
 %========================================================
