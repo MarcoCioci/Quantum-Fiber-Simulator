@@ -1,27 +1,26 @@
-function test_purity()
-% TEST_PURITY  Validate purity computations for pure, mixed, and reduced states.
+function test_depolarizing_channel_two_qubits()
+% TEST_DEPOLARIZING_CHANNEL_TWO_QUBITS  Validate the two-qubit depolarizing channel.
 %
 % Objective:
-%   Verify that compute_purity correctly reproduces the theoretical purity
-%   values introduced in Section 4.2 of the thesis guide.
+%   Verify that depolarizing_channel_two_qubits correctly implements the
+%   effective global depolarizing map introduced in Chapter 3.
 %
 %   The following cases are tested:
 %
-%       1. Pure single-qubit state:
-%          Tr(rho^2) = 1
+%       1. Identity limit (p = 0):
+%          rho_out = rho
 %
-%       2. Maximally mixed single-qubit state:
-%          Tr(rho^2) = 1/2
+%       2. Maximally mixed limit (p = 1):
+%          rho_out = I_4 / 4
 %
-%       3. Global Bell state:
-%          Tr(rho_AB^2) = 1
+%       3. Trace preservation:
+%          Tr(rho_out) = 1
 %
-%       4. Reduced Bell-state marginals:
-%          Tr(rho_A^2) = Tr(rho_B^2) = 1/2
+%       4. Hermiticity preservation:
+%          rho_out = rho_out^dagger
 %
-%       5. Phase-evolved Bell-like state:
-%          global purity remains 1
-%          reduced purities remain 1/2
+%       5. Bell-state analytical behavior:
+%          rho(p) = (1 - p) rho_0 + (p/4) I_4
 %
 % Input:
 %   None
@@ -33,108 +32,78 @@ function test_purity()
 %   The test raises an error if any expected value is not matched within
 %   numerical tolerance. If all checks pass, a success message is printed.
 
+
     % =========================
     % Test configuration
     % =========================
 
     tolerance = 1e-12;
 
-    fprintf('Running test_purity...\n');
+    fprintf('Running test_depolarizing_channel_two_qubits...\n');
 
 
     % =========================
-    % Test 1: Pure single-qubit state
-    % =========================
-
-    psi_pure = [1; 0];
-    rho_pure = state_to_density_matrix(psi_pure);
-    purity_pure = compute_purity(rho_pure);
-
-    assert(abs(purity_pure - 1.0) < tolerance, ...
-        'test_purity:PureStateFailed', ...
-        'Purity of a pure single-qubit state should be 1.');
-
-
-    % =========================
-    % Test 2: Maximally mixed single-qubit state
-    % =========================
-
-    rho_mixed_qubit = eye(2) / 2;
-    purity_mixed_qubit = compute_purity(rho_mixed_qubit);
-
-    assert(abs(purity_mixed_qubit - 0.5) < tolerance, ...
-        'test_purity:MaximallyMixedQubitFailed', ...
-        'Purity of I/2 should be 1/2.');
-
-
-    % =========================
-    % Test 3: Global Bell-state purity
+    % Test 1: Identity limit (p = 0)
     % =========================
 
     psi_bell = bell_state('psi_plus');
-    rho_bell = state_to_density_matrix(psi_bell);
-    purity_bell_global = compute_purity(rho_bell);
+    rho_in = state_to_density_matrix(psi_bell);
 
-    assert(abs(purity_bell_global - 1.0) < tolerance, ...
-        'test_purity:BellGlobalFailed', ...
-        'Global Bell state should have purity 1.');
+    rho_out = depolarizing_channel_two_qubits(rho_in, 0.0);
 
-
-    % =========================
-    % Test 4: Reduced Bell-state purities
-    % =========================
-
-    rho_A_bell = partial_trace_B(rho_bell);
-    rho_B_bell = partial_trace_A(rho_bell);
-
-    purity_A_bell = compute_purity(rho_A_bell);
-    purity_B_bell = compute_purity(rho_B_bell);
-
-    assert(abs(purity_A_bell - 0.5) < tolerance, ...
-        'test_purity:BellReducedAFailed', ...
-        'Reduced state rho_A of a Bell state should have purity 1/2.');
-
-    assert(abs(purity_B_bell - 0.5) < tolerance, ...
-        'test_purity:BellReducedBFailed', ...
-        'Reduced state rho_B of a Bell state should have purity 1/2.');
+    assert(norm(rho_out - rho_in, 'fro') < tolerance, ...
+        'test_depolarizing_channel:IdentityFailed', ...
+        'For p = 0, the output state should equal the input state.');
 
 
     % =========================
-    % Test 5: Phase-evolved Bell-like state
+    % Test 2: Maximally mixed limit (p = 1)
     % =========================
 
-    theta = pi / 3;
+    rho_expected = eye(4) / 4;
+    rho_out = depolarizing_channel_two_qubits(rho_in, 1.0);
 
-    U_A = eye(2);
-    U_B = phase_unitary(theta);
+    assert(norm(rho_out - rho_expected, 'fro') < tolerance, ...
+        'test_depolarizing_channel:MaxMixedFailed', ...
+        'For p = 1, the output state should be I_4 / 4.');
 
-    psi_phase = apply_unitary(U_A, U_B, psi_bell);
-    rho_phase = state_to_density_matrix(psi_phase);
 
-    purity_phase_global = compute_purity(rho_phase);
-    rho_A_phase = partial_trace_B(rho_phase);
-    rho_B_phase = partial_trace_A(rho_phase);
+    % =========================
+    % Test 3: Trace preservation
+    % =========================
 
-    purity_A_phase = compute_purity(rho_A_phase);
-    purity_B_phase = compute_purity(rho_B_phase);
+    p_test = 0.37;
+    rho_out = depolarizing_channel_two_qubits(rho_in, p_test);
 
-    assert(abs(purity_phase_global - 1.0) < tolerance, ...
-        'test_purity:PhaseGlobalFailed', ...
-        'Phase-evolved Bell-like state should remain globally pure.');
+    assert(abs(trace(rho_out) - 1) < tolerance, ...
+        'test_depolarizing_channel:TraceFailed', ...
+        'The output state must have unit trace.');
 
-    assert(abs(purity_A_phase - 0.5) < tolerance, ...
-        'test_purity:PhaseReducedAFailed', ...
-        'Reduced state rho_A(theta) should have purity 1/2.');
 
-    assert(abs(purity_B_phase - 0.5) < tolerance, ...
-        'test_purity:PhaseReducedBFailed', ...
-        'Reduced state rho_B(theta) should have purity 1/2.');
+    % =========================
+    % Test 4: Hermiticity preservation
+    % =========================
+
+    assert(norm(rho_out - rho_out', 'fro') < tolerance, ...
+        'test_depolarizing_channel:HermiticityFailed', ...
+        'The output state must be Hermitian.');
+
+
+    % =========================
+    % Test 5: Bell-state analytical behavior
+    % =========================
+
+    rho_expected = (1 - p_test) * rho_in + (p_test / 4) * eye(4);
+
+    assert(norm(rho_out - rho_expected, 'fro') < tolerance, ...
+        'test_depolarizing_channel:AnalyticalMismatch', ...
+        'The output state does not match the analytical depolarizing formula.');
 
 
     % =========================
     % Success message
     % =========================
 
-    fprintf('test_purity passed successfully.\n');
+    fprintf('test_depolarizing_channel_two_qubits passed.\n');
 
 end

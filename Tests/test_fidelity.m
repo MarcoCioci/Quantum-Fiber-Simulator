@@ -139,6 +139,6 @@ function test_fidelity()
     % Success message
     % =========================
 
-    fprintf('test_fidelity passed successfully.\n');
+    fprintf('test_fidelity passed.\n');
 
 end

@@ -1,9 +1,9 @@
-function plot_random_phase_summary(results_experiment_2)
+function plot_random_phase_summary(results_case)
 % PLOT_RANDOM_PHASE_SUMMARY  Complete and compact summary plot for Experiment 2.
 %
 % Objective:
 %   Provide a single manageable figure that summarizes the essential
-%   components of Experiment 2:
+%   components of one random-phase ensemble case of Experiment 2:
 %
 %       1) sampled phase distribution
 %       2) pure-state trend cos(theta) and sampled realizations
@@ -11,7 +11,7 @@ function plot_random_phase_summary(results_experiment_2)
 %       4) purity, fidelity, and concurrence metrics
 %
 % Input:
-%   results_experiment_2 - structure containing:
+%   results_case - structure containing:
 %       .theta_samples
 %       .case_label
 %       .distribution_type
@@ -25,14 +25,14 @@ function plot_random_phase_summary(results_experiment_2)
 %       .concurrence
 %       .sample_mean_cos_theta
 %       .sample_mean_sin_theta
-%       .theory_c_xx
-%       .theory_c_yy
-%       .theory_c_zz
-%       .theory_purity_global
-%       .theory_purity_A
-%       .theory_purity_B
-%       .theory_fidelity_psi_plus
-%       .theory_concurrence
+%       .analytical.c_xx
+%       .analytical.c_yy
+%       .analytical.c_zz
+%       .analytical.purity_global
+%       .analytical.purity_A
+%       .analytical.purity_B
+%       .analytical.fidelity_psi_plus
+%       .analytical.concurrence
 %
 % Output:
 %   None
@@ -45,6 +45,11 @@ function plot_random_phase_summary(results_experiment_2)
     % =========================
     % Robustness checks
     % =========================
+
+    if ~isstruct(results_case)
+        error('plot_random_phase_summary:InvalidInputType', ...
+            'results_case must be a structure.');
+    end
 
     required_fields = { ...
         'theta_samples', ...
@@ -60,20 +65,36 @@ function plot_random_phase_summary(results_experiment_2)
         'concurrence', ...
         'sample_mean_cos_theta', ...
         'sample_mean_sin_theta', ...
-        'theory_c_xx', ...
-        'theory_c_yy', ...
-        'theory_c_zz', ...
-        'theory_purity_global', ...
-        'theory_purity_A', ...
-        'theory_purity_B', ...
-        'theory_fidelity_psi_plus', ...
-        'theory_concurrence' ...
+        'analytical' ...
     };
 
     for k = 1:numel(required_fields)
-        if ~isfield(results_experiment_2, required_fields{k})
+        if ~isfield(results_case, required_fields{k})
             error('plot_random_phase_summary:MissingField', ...
                 'Field "%s" not found.', required_fields{k});
+        end
+    end
+
+    required_analytical_fields = { ...
+        'c_xx', ...
+        'c_yy', ...
+        'c_zz', ...
+        'purity_global', ...
+        'purity_A', ...
+        'purity_B', ...
+        'fidelity_psi_plus', ...
+        'concurrence' ...
+    };
+
+    if ~isstruct(results_case.analytical)
+        error('plot_random_phase_summary:InvalidAnalyticalType', ...
+            'Field "analytical" must be a structure.');
+    end
+
+    for k = 1:numel(required_analytical_fields)
+        if ~isfield(results_case.analytical, required_analytical_fields{k})
+            error('plot_random_phase_summary:MissingAnalyticalField', ...
+                'Analytical field "%s" not found.', required_analytical_fields{k});
         end
     end
 
@@ -82,32 +103,32 @@ function plot_random_phase_summary(results_experiment_2)
     % Extract and validate data
     % =========================
 
-    theta_samples = results_experiment_2.theta_samples(:).';
-    case_label = char(results_experiment_2.case_label);
-    distribution_type = char(results_experiment_2.distribution_type);
+    theta_samples = results_case.theta_samples(:).';
+    case_label = char(results_case.case_label);
+    distribution_type = char(results_case.distribution_type);
 
-    c_xx_num = real(results_experiment_2.c_xx);
-    c_yy_num = real(results_experiment_2.c_yy);
-    c_zz_num = real(results_experiment_2.c_zz);
+    c_xx_num = real(results_case.c_xx);
+    c_yy_num = real(results_case.c_yy);
+    c_zz_num = real(results_case.c_zz);
 
-    purity_global_num = real(results_experiment_2.purity_global);
-    purity_A_num = real(results_experiment_2.purity_A);
-    purity_B_num = real(results_experiment_2.purity_B);
-    fidelity_psi_plus_num = real(results_experiment_2.fidelity_psi_plus);
-    concurrence_num = real(results_experiment_2.concurrence);
+    purity_global_num = real(results_case.purity_global);
+    purity_A_num = real(results_case.purity_A);
+    purity_B_num = real(results_case.purity_B);
+    fidelity_psi_plus_num = real(results_case.fidelity_psi_plus);
+    concurrence_num = real(results_case.concurrence);
 
-    sample_mean_cos_theta = real(results_experiment_2.sample_mean_cos_theta);
-    sample_mean_sin_theta = real(results_experiment_2.sample_mean_sin_theta);
+    sample_mean_cos_theta = real(results_case.sample_mean_cos_theta);
+    sample_mean_sin_theta = real(results_case.sample_mean_sin_theta);
 
-    c_xx_theory = real(results_experiment_2.theory_c_xx);
-    c_yy_theory = real(results_experiment_2.theory_c_yy);
-    c_zz_theory = real(results_experiment_2.theory_c_zz);
+    c_xx_theory = real(results_case.analytical.c_xx);
+    c_yy_theory = real(results_case.analytical.c_yy);
+    c_zz_theory = real(results_case.analytical.c_zz);
 
-    purity_global_theory = real(results_experiment_2.theory_purity_global);
-    purity_A_theory = real(results_experiment_2.theory_purity_A);
-    purity_B_theory = real(results_experiment_2.theory_purity_B);
-    fidelity_psi_plus_theory = real(results_experiment_2.theory_fidelity_psi_plus);
-    concurrence_theory = real(results_experiment_2.theory_concurrence);
+    purity_global_theory = real(results_case.analytical.purity_global);
+    purity_A_theory = real(results_case.analytical.purity_A);
+    purity_B_theory = real(results_case.analytical.purity_B);
+    fidelity_psi_plus_theory = real(results_case.analytical.fidelity_psi_plus);
+    concurrence_theory = real(results_case.analytical.concurrence);
 
     if ~isnumeric(theta_samples) || ~isvector(theta_samples)
         error('plot_random_phase_summary:InvalidThetaSamplesType', ...
@@ -129,14 +150,14 @@ function plot_random_phase_summary(results_experiment_2)
             'theta_samples must contain only finite values.');
     end
 
-    if ~(ischar(results_experiment_2.case_label) || ...
-            (isstring(results_experiment_2.case_label) && isscalar(results_experiment_2.case_label)))
+    if ~(ischar(results_case.case_label) || ...
+            (isstring(results_case.case_label) && isscalar(results_case.case_label)))
         error('plot_random_phase_summary:InvalidCaseLabel', ...
             'case_label must be a character vector or a scalar string.');
     end
 
-    if ~(ischar(results_experiment_2.distribution_type) || ...
-            (isstring(results_experiment_2.distribution_type) && isscalar(results_experiment_2.distribution_type)))
+    if ~(ischar(results_case.distribution_type) || ...
+            (isstring(results_case.distribution_type) && isscalar(results_case.distribution_type)))
         error('plot_random_phase_summary:InvalidDistributionType', ...
             'distribution_type must be a character vector or a scalar string.');
     end

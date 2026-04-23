@@ -17,8 +17,8 @@ test_correlations();
 test_bloch_vector();
 test_purity();
 test_fidelity();
-test_concurrence_pure_state();
-test_concurrence_density_matrix();
+test_concurrence();
+test_depolarizing_channel_two_qubits();
 
 disp('======================================');
 disp('All tests passed successfully.');

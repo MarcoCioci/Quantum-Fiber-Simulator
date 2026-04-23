@@ -1,12 +1,9 @@
 function plot_phase_baseline_comparison(results_phase_baseline)
-% PLOT_PHASE_BASELINE_COMPARISON  Experiment 1 validation vs analytical model.
+% PLOT_PHASE_BASELINE_COMPARISON  Plot Experiment 1 correlations vs analytical expectations.
 %
 % Objective:
-%   Compare numerical correlations with analytical predictions:
-%
-%       c_xx = cos(theta)
-%       c_yy = cos(theta)
-%       c_zz = -1
+%   Compare the numerical correlation observables of Experiment 1 with the
+%   analytical predictions stored in the experiment results structure.
 %
 % Input:
 %   results_phase_baseline - structure containing:
@@ -14,6 +11,9 @@ function plot_phase_baseline_comparison(results_phase_baseline)
 %       .c_xx
 %       .c_yy
 %       .c_zz
+%       .analytical.c_xx
+%       .analytical.c_yy
+%       .analytical.c_zz
 %
 % Output:
 %   None
@@ -27,13 +27,20 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     % Robustness checks
     % =========================
 
-    required_fields = {'theta_values', 'c_xx', 'c_yy', 'c_zz'};
+    required_fields = {'theta_values', 'c_xx', 'c_yy', 'c_zz', 'analytical'};
 
     for k = 1:length(required_fields)
         if ~isfield(results_phase_baseline, required_fields{k})
             error('plot_phase_baseline_comparison:MissingField', ...
                 'Field "%s" not found.', required_fields{k});
         end
+    end
+
+    if ~isfield(results_phase_baseline.analytical, 'c_xx') || ...
+       ~isfield(results_phase_baseline.analytical, 'c_yy') || ...
+       ~isfield(results_phase_baseline.analytical, 'c_zz')
+        error('plot_phase_baseline_comparison:MissingAnalyticalField', ...
+            'Analytical correlation fields c_xx, c_yy, c_zz must be present.');
     end
 
 
@@ -47,29 +54,31 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     c_yy = real(results_phase_baseline.c_yy(:).');
     c_zz = real(results_phase_baseline.c_zz(:).');
 
+    c_xx_th = real(results_phase_baseline.analytical.c_xx(:).');
+    c_yy_th = real(results_phase_baseline.analytical.c_yy(:).');
+    c_zz_th = real(results_phase_baseline.analytical.c_zz(:).');
+
     if numel(theta) ~= numel(c_xx) || ...
        numel(theta) ~= numel(c_yy) || ...
-       numel(theta) ~= numel(c_zz)
+       numel(theta) ~= numel(c_zz) || ...
+       numel(theta) ~= numel(c_xx_th) || ...
+       numel(theta) ~= numel(c_yy_th) || ...
+       numel(theta) ~= numel(c_zz_th)
         error('plot_phase_baseline_comparison:InconsistentLengths', ...
-            'theta_values, c_xx, c_yy, and c_zz must have the same length.');
+            ['theta_values, numerical correlations, and analytical ', ...
+             'correlations must have the same length.']);
     end
 
     if any(~isfinite(theta)) || ...
        any(~isfinite(c_xx)) || ...
        any(~isfinite(c_yy)) || ...
-       any(~isfinite(c_zz))
+       any(~isfinite(c_zz)) || ...
+       any(~isfinite(c_xx_th)) || ...
+       any(~isfinite(c_yy_th)) || ...
+       any(~isfinite(c_zz_th))
         error('plot_phase_baseline_comparison:InvalidValues', ...
             'Input data must not contain NaN or Inf values.');
     end
-
-
-    % =========================
-    % Theory
-    % =========================
-
-    c_xx_th = cos(theta);
-    c_yy_th = cos(theta);
-    c_zz_th = -ones(size(theta));
 
 
     % =========================
@@ -85,11 +94,6 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     % =========================
 
     figure_filename = 'experiment_1_correlations_validation.png';
-    % figure_description = [ ...
-    %     'Experiment 1 correlation analysis. ' ...
-    %     'The figure compares the numerical and analytical behavior of the aligned ' ...
-    %     'two-qubit correlations c_xx, c_yy, and c_zz in the deterministic phase model.' ...
-    % ];
 
 
     % =========================
@@ -160,16 +164,6 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     % =========================
     % Figure-level annotations
     % =========================
-
-    % annotation(fig, 'textbox', ...
-    %     [0.12, 0.935, 0.76, 0.05], ...
-    %     'String', figure_description,
-    %     'Interpreter', 'none', ...
-    %     'HorizontalAlignment', 'center', ...
-    %     'VerticalAlignment', 'middle', ...
-    %     'EdgeColor', [0.8 0.8 0.8], ...
-    %     'BackgroundColor', 'w', ...
-    %     'FitBoxToText', 'off');
 
     annotation(fig, 'textbox', ...
         [0.74, 0.005, 0.24, 0.03], ...

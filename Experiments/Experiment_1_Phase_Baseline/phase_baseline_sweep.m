@@ -120,7 +120,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
         results_phase_baseline.purity_B(idx) = compute_purity(rho_B);
 
         results_phase_baseline.fidelity_psi_plus(idx) = compute_fidelity(rho, psi_ref);
-        results_phase_baseline.concurrence(idx) = concurrence_pure_state(psi);
+        results_phase_baseline.concurrence(idx) = compute_concurrence(psi);
     end
 
 end
