@@ -15,10 +15,11 @@ function test_partial_trace()
 
     expected = eye(2) / 2;
 
-    assert(norm(rho_A - expected, 'fro') < 1e-12, ...
+    tolerance = 1e-12;
+    assert(norm(rho_A - expected, 'fro') < tolerance, ...
         'rho_A incorrect for Bell state.');
 
-    assert(norm(rho_B - expected, 'fro') < 1e-12, ...
+    assert(norm(rho_B - expected, 'fro') < tolerance, ...
         'rho_B incorrect for Bell state.');
 
     % =========================
@@ -37,10 +38,10 @@ function test_partial_trace()
     rho_A_theta = partial_trace_B(rho_theta);
     rho_B_theta = partial_trace_A(rho_theta);
 
-    assert(norm(rho_A_theta - expected, 'fro') < 1e-12, ...
+    assert(norm(rho_A_theta - expected, 'fro') < tolerance, ...
         'rho_A incorrect for phase-evolved Bell state.');
 
-    assert(norm(rho_B_theta - expected, 'fro') < 1e-12, ...
+    assert(norm(rho_B_theta - expected, 'fro') < tolerance, ...
         'rho_B incorrect for phase-evolved Bell state.');
 
     disp('test_partial_trace passed.');

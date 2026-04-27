@@ -8,7 +8,8 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %   Starting from the fixed Bell input state |Psi+>, this function:
 %       - sweeps the relative phase theta
 %       - applies the reduced local fiber model
-%       - computes the aligned two-qubit Pauli correlations
+%       - computes the full two-qubit Pauli correlation tensor
+%       - extracts aligned two-qubit Pauli correlations
 %       - computes global and reduced purities
 %       - computes fidelity with respect to the reference Bell state |Psi+>
 %       - computes concurrence of the propagated pure state
@@ -20,6 +21,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 % Output:
 %   results_phase_baseline - structure containing:
 %       .theta_values
+%       .correlation_tensor
 %       .c_xx
 %       .c_yy
 %       .c_zz
@@ -30,9 +32,6 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %       .concurrence
 %
 % Notes:
-%   This function provides the numerical data for Experiment 1 and is
-%   intentionally limited to that scenario.
-%
 %   The input state is fixed to:
 %       |Psi+>
 %
@@ -40,9 +39,14 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %       U_A = phase_unitary(theta)
 %       U_B = I
 %
+%   The expected analytical tensor is:
+%
+%       T(theta) =
+%       [ cos(theta), -sin(theta),  0 ;
+%         sin(theta),  cos(theta),  0 ;
+%         0,           0,          -1 ]
+%
 %   Plotting is intentionally excluded from this function.
-%   Visualization and theory comparison should be handled separately by
-%   experiment-level routines.
 
     % =========================
     % Robustness checks
@@ -55,25 +59,25 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 
     if ~isnumeric(theta_values) || ~isvector(theta_values)
         error('phase_baseline_sweep:InvalidInputType', ...
-            'theta_values must be a numeric vector.');
+              'theta_values must be a numeric vector.');
     end
 
     if isempty(theta_values)
         error('phase_baseline_sweep:EmptyInput', ...
-            'theta_values must not be empty.');
+              'theta_values must not be empty.');
     end
 
     if ~isreal(theta_values)
         error('phase_baseline_sweep:ComplexInput', ...
-            'theta_values must be a real-valued vector.');
+              'theta_values must be a real-valued vector.');
     end
 
     if any(~isfinite(theta_values))
         error('phase_baseline_sweep:InvalidValues', ...
-            'theta_values must not contain NaN or Inf values.');
+              'theta_values must not contain NaN or Inf values.');
     end
 
-    theta_values = theta_values(:).';   % Force row vector
+    theta_values = theta_values(:).';
     N = numel(theta_values);
 
 
@@ -85,6 +89,8 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 
     results_phase_baseline = struct();
     results_phase_baseline.theta_values = theta_values;
+
+    results_phase_baseline.correlation_tensor = zeros(3, 3, N);
 
     results_phase_baseline.c_xx = zeros(1, N);
     results_phase_baseline.c_yy = zeros(1, N);
@@ -106,10 +112,13 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
         psi = apply_unitary(U_A, U_B, psi_ref);
         rho = state_to_density_matrix(psi);
 
-        corr = compute_correlations(psi);
+        T = compute_correlation_tensor(rho);
+        corr = compute_correlations(rho);
 
         rho_A = partial_trace_B(rho);
         rho_B = partial_trace_A(rho);
+
+        results_phase_baseline.correlation_tensor(:, :, idx) = T;
 
         results_phase_baseline.c_xx(idx) = real(corr.c_xx);
         results_phase_baseline.c_yy(idx) = real(corr.c_yy);

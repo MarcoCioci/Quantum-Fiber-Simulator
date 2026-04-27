@@ -56,7 +56,7 @@ function rho_out = depolarizing_channel_two_qubits(rho, p)
               'p must satisfy 0 <= p <= 1.');
     end
 
-    tolerance = 1e-10;
+    tolerance = 1e-12;
 
     if norm(rho - rho', 'fro') > tolerance
         error('depolarizing_channel_two_qubits:NonHermitianInput', ...

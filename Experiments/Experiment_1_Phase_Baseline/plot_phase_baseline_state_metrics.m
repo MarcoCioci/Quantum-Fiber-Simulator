@@ -22,14 +22,6 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
 %
 % Output:
 %   None
-%
-% Notes:
-%   - Theory: continuous colored line
-%   - Numerics: black markers
-%   - Five stacked panels with shared x-axis
-%   - This function is intentionally separate from the correlation plot,
-%     since purity, fidelity, and concurrence play a different
-%     interpretive role.
 
     % =========================
     % Robustness checks
@@ -114,28 +106,32 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
 
 
     % =========================
-    % Common axis limits
+    % Plot style
     % =========================
+
+    palette = get_plot_palette();
 
     y_min = -0.05;
     y_max = 1.05;
+
+    theory_line_width = 1.8;
+    numerical_marker_size = 4;
 
 
     % =========================
     % Figure metadata
     % =========================
 
-    figure_filename = 'experiment_1_state_metrics.png';
+    % figure_filename = 'experiment_1_state_metrics.png';
 
 
     % =========================
     % Figure
     % =========================
 
-    fig = figure('Name', 'Experiment 1: purity, fidelity, and concurrence validation', ...
-                 'NumberTitle', 'off');
+    fig = figure('Name', 'Experiment 1 — State Metrics | deterministic phase sweep');
 
-    tiledlayout(5,1, 'TileSpacing','compact', 'Padding','compact');
+    tiledlayout(5, 1, 'TileSpacing', 'compact', 'Padding', 'compact');
 
 
     % =========================
@@ -143,17 +139,25 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     % =========================
 
     nexttile;
-    hold on; grid on; box on;
+    hold on;
+    grid on;
+    box on;
 
-    plot(theta, purity_global_th, 'b', 'LineWidth', 1.8);
-    plot(theta, purity_global, 'ko', 'MarkerSize', 4);
+    plot(theta, purity_global_th, ...
+    'LineWidth', theory_line_width, ...
+    'Color', palette.metric_global);
 
-    ylabel('$\gamma(\rho_{AB})$', 'Interpreter','latex');
-    ylim([y_min y_max]);
+    plot(theta, purity_global, 'o', ...
+    'MarkerSize', numerical_marker_size, ...
+    'MarkerFaceColor', palette.metric_global, ...
+    'MarkerEdgeColor', palette.gray_dark);
 
-    legend({'theory', 'numerical'}, ...
-           'Location','southoutside', ...
-           'Orientation','horizontal');
+    ylabel('$\gamma(\rho_{AB})$', 'Interpreter', 'latex');
+    ylim([y_min, y_max]);
+
+    legend({'analytical', 'numerical'}, ...
+           'Location', 'southoutside', ...
+           'Orientation', 'horizontal');
 
 
     % =========================
@@ -161,13 +165,21 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     % =========================
 
     nexttile;
-    hold on; grid on; box on;
+    hold on;
+    grid on;
+    box on;
 
-    plot(theta, purity_A_th, 'r', 'LineWidth', 1.8);
-    plot(theta, purity_A, 'ko', 'MarkerSize', 4);
+    plot(theta, purity_A_th, ...
+        'LineWidth', theory_line_width, ...
+        'Color', palette.metric_A);
 
-    ylabel('$\gamma(\rho_A)$', 'Interpreter','latex');
-    ylim([y_min y_max]);
+    plot(theta, purity_A, 'o', ...
+        'MarkerSize', numerical_marker_size, ...
+        'MarkerFaceColor', palette.metric_A, ...
+        'MarkerEdgeColor', palette.gray_dark);
+
+    ylabel('$\gamma(\rho_A)$', 'Interpreter', 'latex');
+    ylim([y_min, y_max]);
 
 
     % =========================
@@ -175,13 +187,21 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     % =========================
 
     nexttile;
-    hold on; grid on; box on;
+    hold on;
+    grid on;
+    box on;
 
-    plot(theta, purity_B_th, 'g', 'LineWidth', 1.8);
-    plot(theta, purity_B, 'ko', 'MarkerSize', 4);
+    plot(theta, purity_B_th, ...
+        'LineWidth', theory_line_width, ...
+        'Color', palette.metric_B);
 
-    ylabel('$\gamma(\rho_B)$', 'Interpreter','latex');
-    ylim([y_min y_max]);
+    plot(theta, purity_B, 'o', ...
+        'MarkerSize', numerical_marker_size, ...
+        'MarkerFaceColor', palette.metric_B, ...
+        'MarkerEdgeColor', palette.gray_dark);
+
+    ylabel('$\gamma(\rho_B)$', 'Interpreter', 'latex');
+    ylim([y_min, y_max]);
 
 
     % ================================
@@ -189,13 +209,21 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     % ================================
 
     nexttile;
-    hold on; grid on; box on;
+    hold on;
+    grid on;
+    box on;
 
-    plot(theta, fidelity_psi_plus_th, 'm', 'LineWidth', 1.8);
-    plot(theta, fidelity_psi_plus, 'ko', 'MarkerSize', 4);
+    plot(theta, fidelity_psi_plus_th, ...
+    'LineWidth', theory_line_width, ...
+    'Color', palette.metric_F);
 
-    ylabel('$F_{\Psi^+}$', 'Interpreter','latex');
-    ylim([y_min y_max]);
+    plot(theta, fidelity_psi_plus, 'o', ...
+    'MarkerSize', numerical_marker_size, ...
+    'MarkerFaceColor', palette.metric_F, ...
+    'MarkerEdgeColor', palette.gray_dark);
+
+    ylabel('$F_{\Psi^+}$', 'Interpreter', 'latex');
+    ylim([y_min, y_max]);
 
 
     % =========================
@@ -203,22 +231,30 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
     % =========================
 
     nexttile;
-    hold on; grid on; box on;
+    hold on;
+    grid on;
+    box on;
 
-    plot(theta, concurrence_th, 'c', 'LineWidth', 1.8);
-    plot(theta, concurrence, 'ko', 'MarkerSize', 4);
+    plot(theta, concurrence_th, ...
+    'LineWidth', theory_line_width, ...
+    'Color', palette.metric_C);
 
-    xlabel('$\theta$', 'Interpreter','latex');
-    ylabel('$C$', 'Interpreter','latex');
-    ylim([y_min y_max]);
+    plot(theta, concurrence, 'o', ...
+    'MarkerSize', numerical_marker_size, ...
+    'MarkerFaceColor', palette.metric_C, ...
+    'MarkerEdgeColor', palette.gray_dark);
+
+    xlabel('$\theta$', 'Interpreter', 'latex');
+    ylabel('$C$', 'Interpreter', 'latex');
+    ylim([y_min, y_max]);
 
 
     % =========================
     % Global title
     % =========================
 
-    sgtitle('Experiment 1: purity, fidelity, and concurrence validation', ...
-            'FontWeight','bold');
+    sgtitle('Experiment 1 — State Metrics | deterministic phase sweep', ...
+            'FontWeight', 'bold');
 
 
     % =========================
@@ -227,11 +263,10 @@ function plot_phase_baseline_state_metrics(results_phase_baseline)
 
     annotation(fig, 'textbox', ...
         [0.74, 0.005, 0.24, 0.03], ...
-        'String', sprintf('File: %s', figure_filename), ...
         'Interpreter', 'none', ...
         'HorizontalAlignment', 'right', ...
         'VerticalAlignment', 'bottom', ...
-        'EdgeColor', [0.8 0.8 0.8], ...
+        'EdgeColor', palette.gray_light, ...
         'BackgroundColor', 'w', ...
         'FitBoxToText', 'off');
 

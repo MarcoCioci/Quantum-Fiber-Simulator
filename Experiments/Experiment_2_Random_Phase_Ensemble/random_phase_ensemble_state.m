@@ -22,16 +22,24 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %   is intentionally limited to that scenario.
 %
 %   The input state is fixed to:
-%       |Psi+>
+%
+%       |Psi+> = (|01> + |10>) / sqrt(2)
 %
 %   The local evolution for each sampled realization is:
+%
 %       U_A = phase_unitary(theta_k)
 %       U_B = I
 %
+%   Therefore:
+%
+%       |Psi+> -> (|01> + exp(i theta_k)|10>) / sqrt(2)
+%
 %   The ensemble state is constructed as:
+%
 %       rho_ensemble = (1/N) * sum_k rho_k
 %
 %   where:
+%
 %       rho_k = |psi(theta_k)><psi(theta_k)|
 %
 %   Plotting and observable analysis are intentionally excluded from this
@@ -43,31 +51,31 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 
     if nargin ~= 1
         error('random_phase_ensemble_state:InvalidNumInputs', ...
-            'Expected exactly 1 input argument: theta_samples.');
+              'Expected exactly 1 input argument: theta_samples.');
     end
 
     if ~isnumeric(theta_samples) || ~isvector(theta_samples)
         error('random_phase_ensemble_state:InvalidInputType', ...
-            'theta_samples must be a numeric vector.');
+              'theta_samples must be a numeric vector.');
     end
 
     if isempty(theta_samples)
         error('random_phase_ensemble_state:EmptyInput', ...
-            'theta_samples must not be empty.');
+              'theta_samples must not be empty.');
     end
 
     if ~isreal(theta_samples)
         error('random_phase_ensemble_state:ComplexInput', ...
-            'theta_samples must be a real-valued vector.');
+              'theta_samples must be a real-valued vector.');
     end
 
     if any(~isfinite(theta_samples))
         error('random_phase_ensemble_state:NonFiniteInput', ...
-            'theta_samples must contain only finite values.');
+              'theta_samples must contain only finite values.');
     end
 
     theta_samples = theta_samples(:).';
-    N = numel(theta_samples);
+    num_samples = numel(theta_samples);
 
 
     % =========================
@@ -75,15 +83,16 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
     % =========================
 
     psi0 = bell_state('psi_plus');
-    rho_sum = zeros(4, 4, 'like', state_to_density_matrix(psi0));
+    rho_sum = zeros(4, 4);
 
 
     % =========================
     % Main ensemble construction
     % =========================
 
-    for idx = 1:N
-        theta = theta_samples(idx);
+    for sample_idx = 1:num_samples
+
+        theta = theta_samples(sample_idx);
 
         U_A = phase_unitary(theta);
         U_B = eye(2);
@@ -92,8 +101,16 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
         rho_k = state_to_density_matrix(psi);
 
         rho_sum = rho_sum + rho_k;
+
     end
 
-    rho_ensemble = rho_sum / N;
+    rho_ensemble = rho_sum / num_samples;
+
+
+    % =========================
+    % Numerical cleanup
+    % =========================
+
+    rho_ensemble = (rho_ensemble + rho_ensemble') / 2;
 
 end

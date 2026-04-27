@@ -10,10 +10,8 @@ function bloch_struct = compute_bloch_vector(rho)
 %       sy = Tr(rho * sigma_y)
 %       sz = Tr(rho * sigma_z)
 %
-%   The resulting vector fully characterizes the state within the Bloch sphere.
-%
 % Input:
-%   rho          - 2x2 density matrix representing a single-qubit quantum state
+%   rho - 2x2 density matrix representing a single-qubit quantum state
 %
 % Output:
 %   bloch_struct - struct containing:
@@ -23,12 +21,10 @@ function bloch_struct = compute_bloch_vector(rho)
 %                  .vector  column vector [sx; sy; sz]
 %
 % Notes:
-%   - The input rho is assumed to be Hermitian and trace-normalized.
-%   - For a pure state, ||bloch_struct.vector|| = 1
-%   - For a maximally mixed state, bloch_struct.vector = [0; 0; 0]
-%
-%   This function is equivalent to extracting Stokes parameters in
-%   polarization optics.
+%   - For a pure state, norm(bloch_struct.vector) = 1.
+%   - For a maximally mixed state, bloch_struct.vector = [0; 0; 0].
+%   - In polarization optics, these components correspond to normalized
+%     Stokes parameters.
 
     % =========================
     % Robustness checks
@@ -44,27 +40,34 @@ function bloch_struct = compute_bloch_vector(rho)
               'rho must be numeric.');
     end
 
-    if ~ismatrix(rho)
-        error('compute_bloch_vector:InvalidShape', ...
-              'rho must be a 2-D matrix.');
-    end
-
     if ~isequal(size(rho), [2, 2])
         error('compute_bloch_vector:InvalidSize', ...
-              'rho must be a 2x2 matrix (single-qubit density operator).');
+              'rho must be a 2x2 density matrix.');
     end
 
-    if norm(rho - rho', 'fro') > 1e-12
-        warning('compute_bloch_vector:NonHermitianInput', ...
-                ['rho is not exactly Hermitian within tolerance. ', ...
-                 'Check input validity.']);
+    tolerance = 1e-12;
+
+    if any(~isfinite(real(rho(:)))) || any(~isfinite(imag(rho(:))))
+        error('compute_bloch_vector:InvalidEntries', ...
+              'rho must contain only finite entries.');
+    end
+
+    if norm(rho - rho', 'fro') > tolerance
+        error('compute_bloch_vector:NonHermitianInput', ...
+              'rho must be Hermitian within tolerance.');
     end
 
     trace_rho = trace(rho);
-    if abs(trace_rho - 1) > 1e-12
-        warning('compute_bloch_vector:TraceNotOne', ...
-                ['rho does not have unit trace within tolerance. ', ...
-                 'Current trace is %g + %gi.'], real(trace_rho), imag(trace_rho));
+    if abs(trace_rho - 1) > tolerance
+        error('compute_bloch_vector:TraceNotOne', ...
+              'rho must have unit trace. Current trace is %g + %gi.', ...
+              real(trace_rho), imag(trace_rho));
+    end
+
+    eigenvalues_rho = eig(rho);
+    if min(real(eigenvalues_rho)) < -tolerance
+        error('compute_bloch_vector:NotPositiveSemidefinite', ...
+              'rho must be positive semidefinite.');
     end
 
 

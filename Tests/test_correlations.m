@@ -1,25 +1,31 @@
 function test_correlations()
-% TEST_CORRELATIONS  Validate standard two-qubit Pauli correlations.
+% TEST_CORRELATIONS  Validate diagonal and full two-qubit Pauli correlations.
 %
 % Objective:
-%   Verify that compute_correlations correctly reproduces the theoretical
-%   values of the aligned Pauli-Pauli correlations
+%   Verify that the simulator correctly computes:
 %
-%       sigma_x ⊗ sigma_x
-%       sigma_y ⊗ sigma_y
-%       sigma_z ⊗ sigma_z
+%       1. diagonal Pauli correlations:
+%          c_xx, c_yy, c_zz
 %
-%   for representative two-qubit states.
+%       2. full Pauli correlation tensor:
+%          T(i,j) = Tr[rho_AB * (sigma_i ⊗ sigma_j)]
 %
-%   The following cases are tested:
+%   for the phase-evolved Bell-like state
 %
-%       1. Phase-evolved Bell-like pure state:
-%          c_xx = cos(theta)
-%          c_yy = cos(theta)
-%          c_zz = -1
+%       |psi(theta)> = (|01> + exp(i theta)|10>) / sqrt(2).
 %
-%       2. Same state represented as density matrix:
-%          same expected correlations
+% Analytical predictions:
+%
+%       T(theta) =
+%       [  cos(theta), -sin(theta),  0 ;
+%          sin(theta),  cos(theta),  0 ;
+%          0,           0,          -1 ]
+%
+%   Therefore:
+%
+%       c_xx = T(1,1) = cos(theta)
+%       c_yy = T(2,2) = cos(theta)
+%       c_zz = T(3,3) = -1
 %
 % Input:
 %   None
@@ -28,8 +34,15 @@ function test_correlations()
 %   None
 %
 % Notes:
-%   The test raises an error if any expected value is not matched within
-%   numerical tolerance. If all checks pass, a success message is printed.
+%   The index convention is:
+%
+%       1 -> x
+%       2 -> y
+%       3 -> z
+%
+%   The test is performed both for:
+%       - pure-state vector representation
+%       - density-matrix representation
 
     % =========================
     % Test configuration
@@ -41,7 +54,7 @@ function test_correlations()
 
 
     % =========================
-    % Test 1: Phase-evolved Bell-like pure state
+    % Reference state
     % =========================
 
     theta = pi / 4;
@@ -51,39 +64,90 @@ function test_correlations()
         exp(1i * theta) * computational_basis('10') ...
     ) / sqrt(2);
 
-    correlations_pure = compute_correlations(psi);
-
-    assert(abs(correlations_pure.c_xx - cos(theta)) < tolerance, ...
-        'test_correlations:PureStateCxxFailed', ...
-        'Pure-state correlation c_xx does not match cos(theta).');
-
-    assert(abs(correlations_pure.c_yy - cos(theta)) < tolerance, ...
-        'test_correlations:PureStateCyyFailed', ...
-        'Pure-state correlation c_yy does not match cos(theta).');
-
-    assert(abs(correlations_pure.c_zz + 1) < tolerance, ...
-        'test_correlations:PureStateCzzFailed', ...
-        'Pure-state correlation c_zz should be -1.');
-
-
-    % =========================
-    % Test 2: Same state as density matrix
-    % =========================
-
     rho = state_to_density_matrix(psi);
-    correlations_density = compute_correlations(rho);
 
-    assert(abs(correlations_density.c_xx - cos(theta)) < tolerance, ...
+    T_expected = [ ...
+         cos(theta), -sin(theta),  0; ...
+         sin(theta),  cos(theta),  0; ...
+         0,           0,          -1 ...
+    ];
+
+
+    % =========================
+    % Test 1: Diagonal correlations from pure state
+    % =========================
+
+    correlations_pure = compute_diagonal_correlations(psi);
+
+    assert(abs(correlations_pure.c_xx - T_expected(1,1)) < tolerance, ...
+        'test_correlations:PureStateCxxFailed', ...
+        'Pure-state correlation c_xx does not match expected value.');
+
+    assert(abs(correlations_pure.c_yy - T_expected(2,2)) < tolerance, ...
+        'test_correlations:PureStateCyyFailed', ...
+        'Pure-state correlation c_yy does not match expected value.');
+
+    assert(abs(correlations_pure.c_zz - T_expected(3,3)) < tolerance, ...
+        'test_correlations:PureStateCzzFailed', ...
+        'Pure-state correlation c_zz does not match expected value.');
+
+
+    % =========================
+    % Test 2: Diagonal correlations from density matrix
+    % =========================
+
+    correlations_density = compute_diagonal_correlations(rho);
+
+    assert(abs(correlations_density.c_xx - T_expected(1,1)) < tolerance, ...
         'test_correlations:DensityStateCxxFailed', ...
-        'Density-matrix correlation c_xx does not match cos(theta).');
+        'Density-matrix correlation c_xx does not match expected value.');
 
-    assert(abs(correlations_density.c_yy - cos(theta)) < tolerance, ...
+    assert(abs(correlations_density.c_yy - T_expected(2,2)) < tolerance, ...
         'test_correlations:DensityStateCyyFailed', ...
-        'Density-matrix correlation c_yy does not match cos(theta).');
+        'Density-matrix correlation c_yy does not match expected value.');
 
-    assert(abs(correlations_density.c_zz + 1) < tolerance, ...
+    assert(abs(correlations_density.c_zz - T_expected(3,3)) < tolerance, ...
         'test_correlations:DensityStateCzzFailed', ...
-        'Density-matrix correlation c_zz should be -1.');
+        'Density-matrix correlation c_zz does not match expected value.');
+
+
+    % =========================
+    % Test 3: Full tensor from pure state
+    % =========================
+
+    T_pure = compute_correlation_tensor(psi);
+
+    assert(norm(T_pure - T_expected, 'fro') < tolerance, ...
+        'test_correlations:PureStateTensorFailed', ...
+        'Pure-state correlation tensor does not match analytical prediction.');
+
+
+    % =========================
+    % Test 4: Full tensor from density matrix
+    % =========================
+
+    T_density = compute_correlation_tensor(rho);
+
+    assert(norm(T_density - T_expected, 'fro') < tolerance, ...
+        'test_correlations:DensityStateTensorFailed', ...
+        'Density-matrix correlation tensor does not match analytical prediction.');
+
+
+    % =========================
+    % Consistency check: diagonal correlations are tensor diagonal
+    % =========================
+
+    assert(abs(correlations_pure.c_xx - T_pure(1,1)) < tolerance, ...
+        'test_correlations:PureDiagonalTensorMismatch', ...
+        'Pure-state c_xx does not match T(1,1).');
+
+    assert(abs(correlations_pure.c_yy - T_pure(2,2)) < tolerance, ...
+        'test_correlations:PureDiagonalTensorMismatch', ...
+        'Pure-state c_yy does not match T(2,2).');
+
+    assert(abs(correlations_pure.c_zz - T_pure(3,3)) < tolerance, ...
+        'test_correlations:PureDiagonalTensorMismatch', ...
+        'Pure-state c_zz does not match T(3,3).');
 
 
     % =========================

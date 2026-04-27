@@ -19,8 +19,8 @@ function plot_phase_baseline_comparison(results_phase_baseline)
 %   None
 %
 % Notes:
-%   - Theory: continuous colored line
-%   - Numerics: black markers
+%   - Theory: continuous palette line
+%   - Numerics: palette markers
 %   - Three stacked panels with shared axis limits
 
     % =========================
@@ -82,28 +82,32 @@ function plot_phase_baseline_comparison(results_phase_baseline)
 
 
     % =========================
-    % Common axis limits
+    % Plot style
     % =========================
+
+    palette = get_plot_palette();
 
     y_min = -1.1;
     y_max =  1.1;
+
+    theory_line_width = 1.8;
+    numerical_marker_size = 4;
 
 
     % =========================
     % Figure metadata
     % =========================
 
-    figure_filename = 'experiment_1_correlations_validation.png';
+    % figure_filename = 'experiment_1_correlations_validation.png';
 
 
     % =========================
     % Figure
     % =========================
 
-    fig = figure('Name', 'Experiment 1: deterministic phase model validation', ...
-                 'NumberTitle', 'off');
+    fig = figure('Name', 'Experiment 1 — Correlation Validation | deterministic phase sweep');
 
-    tiledlayout(3,1, 'TileSpacing','compact', 'Padding','compact');
+    tiledlayout(3, 1, 'TileSpacing', 'compact', 'Padding', 'compact');
 
 
     % =========================
@@ -111,17 +115,25 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     % =========================
 
     nexttile;
-    hold on; grid on; box on;
+    hold on;
+    grid on;
+    box on;
 
-    plot(theta, c_xx_th, 'b', 'LineWidth', 1.8);
-    plot(theta, c_xx, 'ko', 'MarkerSize', 4);
+    plot(theta, c_xx_th, ...
+        'LineWidth', theory_line_width, ...
+        'Color', palette.obs_x);
 
-    ylabel('$c_{xx}$', 'Interpreter','latex');
-    ylim([y_min y_max]);
+    plot(theta, c_xx, 'o', ...
+        'MarkerSize', numerical_marker_size, ...
+        'MarkerFaceColor', palette.obs_x, ...
+        'MarkerEdgeColor', palette.gray_dark);
 
-    legend({'theory', 'numerical'}, ...
-           'Location','southoutside', ...
-           'Orientation','horizontal');
+    ylabel('$c_{xx}$', 'Interpreter', 'latex');
+    ylim([y_min, y_max]);
+
+    legend({'analytical', 'numerical'}, ...
+        'Location', 'southoutside', ...
+        'Orientation', 'horizontal');
 
 
     % =========================
@@ -129,13 +141,21 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     % =========================
 
     nexttile;
-    hold on; grid on; box on;
+    hold on;
+    grid on;
+    box on;
 
-    plot(theta, c_yy_th, 'r', 'LineWidth', 1.8);
-    plot(theta, c_yy, 'ko', 'MarkerSize', 4);
+    plot(theta, c_yy_th, ...
+        'LineWidth', theory_line_width, ...
+        'Color', palette.obs_y);
 
-    ylabel('$c_{yy}$', 'Interpreter','latex');
-    ylim([y_min y_max]);
+    plot(theta, c_yy, 'o', ...
+        'MarkerSize', numerical_marker_size, ...
+        'MarkerFaceColor', palette.obs_y, ...
+        'MarkerEdgeColor', palette.gray_dark);
+
+    ylabel('$c_{yy}$', 'Interpreter', 'latex');
+    ylim([y_min, y_max]);
 
 
     % =========================
@@ -143,22 +163,29 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     % =========================
 
     nexttile;
-    hold on; grid on; box on;
+    hold on;
+    grid on;
+    box on;
 
-    plot(theta, c_zz_th, 'g', 'LineWidth', 1.8);
-    plot(theta, c_zz, 'ko', 'MarkerSize', 4);
+    plot(theta, c_zz_th, ...
+        'LineWidth', theory_line_width, ...
+        'Color', palette.obs_z);
 
-    xlabel('$\theta$', 'Interpreter','latex');
-    ylabel('$c_{zz}$', 'Interpreter','latex');
-    ylim([y_min y_max]);
+    plot(theta, c_zz, 'o', ...
+        'MarkerSize', numerical_marker_size, ...
+        'MarkerFaceColor', palette.obs_z, ...
+        'MarkerEdgeColor', palette.gray_dark);
 
+    xlabel('$\theta$', 'Interpreter', 'latex');
+    ylabel('$c_{zz}$', 'Interpreter', 'latex');
+    ylim([y_min, y_max]);
 
     % =========================
     % Global title
     % =========================
 
-    sgtitle('Experiment 1: deterministic phase model validation', ...
-            'FontWeight','bold');
+    sgtitle('Experiment 1 — Correlation Validation | deterministic phase sweep', ...
+            'FontWeight', 'bold');
 
 
     % =========================
@@ -167,11 +194,10 @@ function plot_phase_baseline_comparison(results_phase_baseline)
 
     annotation(fig, 'textbox', ...
         [0.74, 0.005, 0.24, 0.03], ...
-        'String', sprintf('File: %s', figure_filename), ...
         'Interpreter', 'none', ...
         'HorizontalAlignment', 'right', ...
         'VerticalAlignment', 'bottom', ...
-        'EdgeColor', [0.8 0.8 0.8], ...
+        'EdgeColor', palette.gray_light, ...
         'BackgroundColor', 'w', ...
         'FitBoxToText', 'off');
 

@@ -462,11 +462,11 @@ from which one computes expectation values of local and nonlocal observables, co
 At implementation level, the simulator should allow \(\theta_A\) and \(\theta_B\) as input parameters, while recognizing that all observable quantities depend only on the relative phase \(\theta=\theta_A-\theta_B\). In practice, both parametrizations are useful: the two-phase form for physical interpretation, and the reduced one-parameter form for analytical checks and parameter sweeps.
 
 The first validated MATLAB study consists of a parameter sweep in \(\theta\), with numerical evaluation of state vectors, expectation values, and correlation quantities. This provides a minimal but complete simulation pipeline, forming the basis for all subsequent developments.
+
 %--------------------------------------------------------
+\subsection{Correlation Observables and Correlation Tensor}
 
-\subsection{Correlation Observables: Theory and Implementation}
-
-At the present stage of development, the observables explicitly implemented in the simulator are the standard aligned two-qubit Pauli correlations:
+At the present stage of development, the simulator evaluates a subset of two-qubit correlation observables corresponding to aligned Pauli operators:
 \[
 \sigma_x \otimes \sigma_x,\qquad
 \sigma_y \otimes \sigma_y,\qquad
@@ -491,22 +491,63 @@ i & 0
 \begin{pmatrix}
 1 & 0\\
 0 & -1
-\end{pmatrix}.
+\end{pmatrix},
 \]
+together with the identity operator \(\sigma_0 = I\).
 
-Given a pure two-qubit state \( |\psi\rangle \), the expectation values are defined as
+\medskip
+
+Given a quantum state \(\rho_{AB}\), expectation values are defined as
 \[
-\langle \sigma_i \otimes \sigma_i \rangle
+\langle \sigma_i \otimes \sigma_j \rangle
 =
-\langle \psi|
-(\sigma_i \otimes \sigma_i)
-|\psi\rangle,
-\qquad i\in\{x,y,z\}.
+\mathrm{Tr}\bigl(\rho_{AB}\, \sigma_i \otimes \sigma_j\bigr),
+\qquad i,j \in \{x,y,z\}.
 \]
 
+These quantities form the entries of the \emph{correlation tensor}
+\[
+T_{ij} = \mathrm{Tr}\bigl(\rho_{AB}\, \sigma_i \otimes \sigma_j\bigr),
+\]
+which encodes all two-qubit correlations accessible through local measurements.
+
+\medskip
+
+More generally, any two-qubit density operator admits the Pauli-basis decomposition
+\[
+\rho_{AB}
+=
+\frac{1}{4}
+\sum_{i,j=0}^{3}
+S_{ij}\, \sigma_i \otimes \sigma_j,
+\]
+where the coefficients
+\[
+S_{ij} = \mathrm{Tr}\bigl(\rho_{AB}\, \sigma_i \otimes \sigma_j\bigr)
+\]
+are the generalized Stokes parameters. In this representation:
+\begin{itemize}
+    \item the terms \(S_{i0}\) and \(S_{0j}\) describe local Bloch vectors,
+    \item the block \(S_{ij}\) with \(i,j=1,2,3\) corresponds to the correlation tensor \(T_{ij}\).
+\end{itemize}
+
+This decomposition follows from the fact that the set \(\{\sigma_i \otimes \sigma_j\}_{i,j=0}^3\) forms a complete orthogonal basis for operators on \(\mathbb{C}^2 \otimes \mathbb{C}^2\) with respect to the Hilbert--Schmidt inner product,
+\[
+\mathrm{Tr}\!\left[(\sigma_i \otimes \sigma_j)(\sigma_k \otimes \sigma_l)\right]
+=
+4\,\delta_{ik}\delta_{jl}.
+\]
+The normalization factor \(1/4\) ensures that the expansion coefficients are given by
+\[
+S_{ij} = \mathrm{Tr}\bigl(\rho_{AB}\, \sigma_i \otimes \sigma_j\bigr),
+\]
+in direct analogy with the single-qubit Bloch representation (see, \cite{James2001}).
+\medskip
+
+%---------------------------------------------------------------
 \paragraph{Analytical behavior under the reduced phase model.}
 
-Within the reduced phase model, the initial Bell state
+Within the reduced phase model, the Bell state
 \[
 |\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}}
 \]
@@ -517,7 +558,7 @@ evolves into
 \frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}}.
 \]
 
-For this family of states, the correlation observables can be computed analytically:
+For this family, one obtains
 \[
 \langle \sigma_x \otimes \sigma_x \rangle = \cos\theta,
 \qquad
@@ -526,23 +567,22 @@ For this family of states, the correlation observables can be computed analytica
 \langle \sigma_z \otimes \sigma_z \rangle = -1.
 \]
 
-These results show that the fiber-induced phase \(\theta\) affects only the transverse correlations in the \(x\)- and \(y\)-directions, while the longitudinal correlation along \(z\) remains invariant. This reflects the fact that the relative phase modifies coherence between computational-basis components without changing their populations.
+The phase \(\theta\) therefore affects only transverse coherences, while leaving population correlations invariant. This behavior reflects the fact that the reduced phase model modifies relative phases without altering occupation probabilities in the computational basis.
 
 \paragraph{Simulation notes.}
-At implementation level, the simulator contains routines for:
+
+At implementation level, the simulator includes routines for:
 \begin{itemize}
-    \item generating the Pauli matrices,
-    \item constructing tensor-product operators,
-    \item evaluating expectation values,
-    \item packaging correlation outputs into structured data containers.
+    \item generation of Pauli matrices,
+    \item tensor-product construction,
+    \item expectation-value evaluation for both pure and mixed states,
+    \item structured storage of correlation outputs.
 \end{itemize}
 
-Additional helper routines verify normalization of input state vectors and unitarity of operators used in the fiber model.
+These observables constitute the primary validation layer of the simulator, providing a direct comparison between analytical predictions and numerical results.
 
-These observables constitute the primary diagnostic outputs of the simulator and provide the most direct bridge between analytical predictions and numerical results. Their dependence on \(\theta\) defines the first validation pipeline of the code.
-
-%------------------------------------------------------------
 %========================================================
+%------------------------------------------------------------
 \subsection{From Deterministic Evolution to Ensemble Description}
 
 The reduced phase model introduced in the previous sections describes a deterministic unitary evolution of a pure entangled state, parametrized by a single phase \(\theta\).
@@ -553,44 +593,44 @@ When these fluctuations occur on timescales shorter than the measurement resolut
 
 \medskip
 
-In order to describe such situations, it is necessary to introduce the density operator formalism. A quantum state is represented not only by a state vector, but more generally by an operator \(\rho\), defined as
+In this regime, the appropriate description is given by a density operator
 \[
 \rho = \sum_k p_k \, |\psi_k\rangle\langle \psi_k|,
 \]
-where \(\{p_k\}\) is a probability distribution and \(|\psi_k\rangle\) are normalized pure states. This representation captures both classical statistical uncertainty and loss of coherence arising from unresolved degrees of freedom.
+which captures both classical statistical uncertainty and loss of phase coherence.
 
 \medskip
 
-In the present context, the effective description is obtained by averaging over the phase distribution:
+In the present context, the effective state is obtained by averaging over the phase distribution:
 \[
 \rho = \mathbb{E}_{\theta}\left[ |\psi(\theta)\rangle\langle \psi(\theta)| \right].
 \]
 
-This transition does not introduce new dynamics at the level of individual realizations, which remain unitary, but reflects a loss of accessible phase information. The resulting state is said to be \emph{mixed}, even though each underlying realization is pure.
+This averaging procedure leads to a reduction of off-diagonal coherences and, consequently, to a degradation of correlation observables \(T_{ij}\), even though each underlying realization remains a pure state evolving unitarily.
 
 \medskip
 
-The density operator \(\rho\) satisfies the following fundamental properties:
+The density operator satisfies
 \[
 \rho^\dagger = \rho, 
 \qquad
 \rho \ge 0, 
 \qquad
-\mathrm{Tr}(\rho) = 1.
+\mathrm{Tr}(\rho) = 1,
 \]
-These conditions ensure that \(\rho\) provides a complete and physically consistent description of the quantum state.
+ensuring a consistent probabilistic interpretation.
 
 \medskip
 
-Expectation values of observables are computed in this formalism as
+Expectation values are computed as
 \[
 \langle O \rangle = \mathrm{Tr}(\rho O),
 \]
-which generalizes the pure-state expression \(\langle \psi | O | \psi \rangle\).
+which generalizes the pure-state expression.
 
 \medskip
 
-This framework forms the basis for the modeling of phase-noise effects and, more generally, for the description of non-deterministic or partially coherent quantum evolutions. In the following sections, it will be extended to include more general transformations acting directly on density operators, and in Chapter~4 it will be used to introduce quantitative measures of mixedness and entanglement.
+This formalism provides the foundation for modeling phase noise and more general quantum channels, and will be used in Chapter~5 to interpret the behavior of correlation observables under stochastic perturbations.
 
 %========================================================
 \subsection{Quantum Channels and Effective Depolarization}
@@ -1457,6 +1497,36 @@ The numerical experiment performs a sweep over \(\theta \in [0,2\pi]\), computin
     \label{fig:experiment1_state_metrics}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/Experiment_1/experiment_1_correlation_tensor.png}
+    \caption{
+    Full correlation tensor \(T_{ij}(\theta)\) for the phase-evolved state. 
+    In addition to the diagonal components \(T_{xx}, T_{yy}, T_{zz}\), the off-diagonal terms 
+    \(T_{xy}\) and \(T_{yx}\) exhibit a sinusoidal dependence on \(\theta\), reflecting a rotation 
+    of the correlation structure in the transverse plane. All remaining components vanish.
+    }
+    \label{fig:experiment1_tensor}
+\end{figure}
+
+The numerical results confirm that the full correlation tensor takes the form
+\[
+T(\theta) =
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0\\
+\sin\theta & \cos\theta & 0\\
+0 & 0 & -1
+\end{pmatrix}.
+\]
+
+This representation reveals that the reduced phase model does not merely scale individual correlations, but induces a rotation of the correlation structure in the \(x\)–\(y\) plane. In particular, the non-zero off-diagonal components
+\[
+T_{xy} = -\sin\theta, \qquad T_{yx} = \sin\theta
+\]
+encode the coupling between orthogonal measurement bases.
+
+Therefore, the phase parameter \(\theta\) can be interpreted as a rotation angle of the correlation tensor around the \(z\)-axis in Bloch space. While this structure is not visible when considering only the diagonal observables, it becomes explicit in the full tensor representation.
+
 \subsubsection{Discussion}
 
 The numerical results are in full agreement with the analytical predictions:
@@ -1488,6 +1558,7 @@ At the same time, the phase dependence of the transverse correlations \(c_{xx}\)
 This experiment therefore establishes the minimal physical model of fiber propagation: a deterministic unitary transformation that modifies observable correlations without degrading entanglement.
 %========================================================
 %========================================================
+
 \subsection{Experiment 2: Random Phase Ensemble}
 
 \subsubsection{Objective}
@@ -1594,7 +1665,7 @@ Each case is summarized in a single figure combining:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_constant_distribution.png}
+    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_summary_constant_distribution.png}
     \caption{
     Summary of Experiment 2 for a constant phase distribution. The ensemble reduces to a single deterministic realization, and concurrence remains equal to one.
     }
@@ -1603,7 +1674,7 @@ Each case is summarized in a single figure combining:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_uniform_distribution.png}
+    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_summary_uniform_distribution.png}
     \caption{
     Summary of Experiment 2 for a uniform phase distribution. Phase averaging suppresses transverse correlations, reduces fidelity, and drives concurrence to zero.
     }
@@ -1612,11 +1683,30 @@ Each case is summarized in a single figure combining:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_gaussian_distribution.png}
+    \includegraphics[width=0.9\linewidth]{../Images/Experiment_2/experiment_2_summary_gaussian_distribution.png}
     \caption{
     Summary of Experiment 2 for a Gaussian phase distribution. Residual coherence depends on the phase variance, leading to intermediate values of concurrence.
     }
     \label{fig:experiment2_gaussian}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+
+    \includegraphics[width=0.75\linewidth]{../Images/Experiment_2/experiment_2_correlation_tensor_constant.png}
+
+    \vspace{0.4cm}
+
+    \includegraphics[width=0.75\linewidth]{../Images/Experiment_2/experiment_2_correlation_tensor_uniform.png}
+
+    \vspace{0.4cm}
+
+    \includegraphics[width=0.75\linewidth]{../Images/Experiment_2/experiment_2_correlation_tensor_gaussian.png}
+
+    \caption{
+    Correlation tensor snapshots for the three random-phase ensemble cases: constant, uniform, and Gaussian phase distributions. The tensor visualization shows that random phase averaging mainly suppresses the transverse coherence terms, while the longitudinal anti-correlation \(T_{zz}\) remains fixed at \(-1\).
+    }
+    \label{fig:experiment2_tensor_snapshots}
 \end{figure}
 
 \subsubsection{Discussion}
@@ -2651,8 +2741,18 @@ These are exactly the expressions implemented in the analytical branch of Experi
 %========================================================
 \section{References}
 
-\begin{itemize}
-    \item M. A. Nielsen and I. L. Chuang, \textit{Quantum Computation and Quantum Information}, Cambridge University Press.
-\end{itemize}
+\begin{thebibliography}{9}
+
+\bibitem{NielsenChuang}
+M. A. Nielsen and I. L. Chuang,
+\textit{Quantum Computation and Quantum Information},
+Cambridge University Press (2000).
+
+\bibitem{James2001}
+D. F. V. James, P. G. Kwiat, W. J. Munro, and A. G. White,
+``Measurement of qubits,''
+\textit{Physical Review A}, 64, 052312 (2001).
+
+\end{thebibliography}
 
 \end{document}

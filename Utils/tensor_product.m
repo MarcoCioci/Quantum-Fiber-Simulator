@@ -24,9 +24,6 @@ function T = tensor_product(A, B)
 %       - dimension checks
 %       - sparse implementations
 %       - custom tensor structures
-%
-%   MATLAB implementation:
-%       kron(A, B)
 
     % =========================
     % Robustness checks
