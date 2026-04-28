@@ -1,8 +1,8 @@
 function plot_correlation_tensor_snapshot(results_current)
-% PLOT_CORRELATION_TENSOR_SNAPSHOT  Visualize the Pauli correlation tensor for one experiment case.
+% PLOT_CORRELATION_TENSOR_SNAPSHOT  Visualize the numerical Pauli correlation tensor for one experiment case.
 %
 % Objective:
-%   Plot the 3x3 two-qubit Pauli correlation tensor.
+%   Plot only the numerical 3x3 two-qubit Pauli correlation tensor.
 %
 %   Each tensor entry is the expectation value of a local Pauli-product
 %   observable:
@@ -12,24 +12,20 @@ function plot_correlation_tensor_snapshot(results_current)
 %
 %   where i,j belong to {x,y,z}.
 %
-%   If an analytical tensor is available, the function displays a
-%   numerical/analytical comparison together with the absolute error.
-%
 % Input:
 %   results_current - structure containing:
-%       .correlation_tensor                 - numerical 3x3 correlation tensor
-%       .analytical.correlation_tensor      - analytical 3x3 tensor [optional]
-%       .case_label                         - case label used in the title [optional]
+%       .correlation_tensor  - numerical 3x3 correlation tensor
+%       .case_label          - case label used in the title [optional]
 %
 % Output:
 %   None
 %
 % Notes:
-%   - Designed for Experiment 2 snapshots, where one result corresponds to
-%     one ensemble distribution or one sampled phase-noise configuration.
+%   - Designed for correlation-tensor snapshots of one experiment case.
 %   - Color scale is fixed to [-1, 1] because Pauli correlations are bounded.
 %   - Only the real part is plotted, since expectation values of Hermitian
 %     observables should be real up to numerical roundoff.
+%   - The interface is unchanged: analytical data, if present, is ignored.
 
     % =========================
     % Robustness checks
@@ -57,26 +53,6 @@ function plot_correlation_tensor_snapshot(results_current)
               'correlation_tensor must contain only finite values.');
     end
 
-    has_analytical = isfield(results_current, 'analytical') && ...
-                     isstruct(results_current.analytical) && ...
-                     isfield(results_current.analytical, 'correlation_tensor');
-
-    if has_analytical
-        T_theory = real(results_current.analytical.correlation_tensor);
-
-        if ~isnumeric(T_theory) || ~isequal(size(T_theory), [3, 3])
-            error('plot_correlation_tensor_snapshot:InvalidAnalyticalTensorSize', ...
-                  'analytical.correlation_tensor must be a numeric 3x3 matrix.');
-        end
-
-        if any(~isfinite(T_theory(:)))
-            error('plot_correlation_tensor_snapshot:InvalidAnalyticalTensorValues', ...
-                  'analytical.correlation_tensor must contain only finite values.');
-        end
-
-        T_error = abs(T_num - T_theory);
-    end
-
 
     % =========================
     % Plot style
@@ -93,9 +69,9 @@ function plot_correlation_tensor_snapshot(results_current)
 
     if isfield(results_current, 'case_label')
         case_label = char(results_current.case_label);
-        title_string = sprintf('Experiment 2 — Correlation Tensor | %s', case_label);
+        title_string = sprintf('Experiment 2 — Numerical Correlation Tensor | %s', case_label);
     else
-        title_string = 'Experiment 2 — Correlation Tensor';
+        title_string = 'Experiment 2 — Numerical Correlation Tensor';
     end
 
 
@@ -105,25 +81,7 @@ function plot_correlation_tensor_snapshot(results_current)
 
     figure('Name', title_string);
 
-    if has_analytical
-
-        tiledlayout(1, 3, 'TileSpacing', 'compact', 'Padding', 'compact');
-
-        nexttile;
-        plot_single_tensor_heatmap(T_num, axis_labels, 'Numerical tensor', [-1, 1], palette);
-
-        nexttile;
-        plot_single_tensor_heatmap(T_theory, axis_labels, 'Analytical tensor', [-1, 1], palette);
-
-        nexttile;
-        error_upper_limit = max(1e-12, max(T_error(:)));
-        plot_single_tensor_heatmap(T_error, axis_labels, 'Absolute error', [0, error_upper_limit], palette);
-
-    else
-
-        plot_single_tensor_heatmap(T_num, axis_labels, 'Numerical tensor', [-1, 1], palette);
-
-    end
+    plot_single_tensor_heatmap(T_num, axis_labels, '', [-1, 1], palette);
 
     sgtitle(title_string, 'FontWeight', 'bold');
 
@@ -150,7 +108,9 @@ function plot_single_tensor_heatmap(T, axis_labels, plot_title, color_limits, pa
 
     xlabel('Measurement axis on subsystem B');
     ylabel('Measurement axis on subsystem A');
-    title(plot_title);
+
+    % ---- Removed axes title to avoid redundancy ----
+    % title(plot_title);
 
     for row_idx = 1:3
         for col_idx = 1:3

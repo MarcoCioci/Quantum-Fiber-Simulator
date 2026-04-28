@@ -76,7 +76,7 @@ function plot_phase_baseline_tensor(results_phase_baseline)
     y_min = -1.05;
     y_max = 1.05;
 
-    theory_line_width = 1.8;
+    analytical_line_width = 1.8;
     numerical_marker_size = 4;
 
 
@@ -113,12 +113,12 @@ function plot_phase_baseline_tensor(results_phase_baseline)
             values_num = squeeze(T_num(i, j, :)).';
             values_th = squeeze(T_th(i, j, :)).';
             
-            color_theory = palette.blue;
+            color_analytical = palette.blue;
             color_numerical = palette.orange;
 
             plot(theta, values_th, ...
-            'LineWidth', theory_line_width, ...
-            'Color', color_theory);
+            'LineWidth', analytical_line_width, ...
+            'Color', color_analytical);
 
             plot(theta, values_num, 'o', ...
             'MarkerSize', numerical_marker_size, ...

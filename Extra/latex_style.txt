@@ -1,0 +1,421 @@
+LATEX STYLE GUIDE — QUANTUM FIBER SIMULATOR
+
+========================================================
+1. STRUCTURAL HIERARCHY
+========================================================
+
+1.1 Sections
+
+* Use \section for macro-level conceptual blocks:
+  (Framework, Modeling, Representation, Metrics, Experiments)
+* Each section must represent a self-contained conceptual domain
+
+1.2 Subsections
+
+* Use \subsection for well-defined theoretical or modeling concepts
+* Titles must be sufficient to reconstruct the logic of the document
+
+1.3 Subsubsections
+
+* Use ONLY inside Section 5 (Experiments)
+* Fixed structure:
+
+  * Objective
+  * Model
+  * Analytical Predictions
+  * Numerical Results
+  * Discussion
+  * Physical Interpretation
+* Do NOT use subsubsections in theory chapters
+
+1.4 Paragraphs
+
+* Use only for micro-structure within subsections
+* Allowed paragraph types:
+
+  * \paragraph{Interpretation.}
+  * \paragraph{Role in the modeling hierarchy.}
+  * \paragraph{Operational implications.}
+  * \paragraph{Implementation.}
+* Forbidden:
+
+  * \paragraph{Simulation notes.}
+
+Rule:
+Each paragraph must add new conceptual value (no repetition)
+
+========================================================
+2. SPACING AND READABILITY
+========================================================
+
+
+2.1 Use of \medskip
+
+* Use only for semantic transitions, not visual spacing
+
+Correct usage:
+Concept introduction
+
+```
+\medskip
+
+Formal definition or equation
+
+\medskip
+
+Interpretation or consequence
+```
+
+Avoid:
+
+* Multiple consecutive \medskip
+* Using it after every equation
+
+========================================================
+3. FIGURES
+========================================================
+
+
+3.1 Placement
+
+* Always use:
+  \begin{figure}[htbp]
+* Never use only [h]
+
+3.2 Positioning rule
+
+* Figures must appear AFTER being introduced in text
+* Never before explanation
+
+3.3 Caption structure
+
+* First: what is shown
+* Then: what it proves or implies
+
+3.4 Recommended packages
+\usepackage{caption}
+\usepackage{subcaption}
+
+========================================================
+4. COMMENTS IN .TEX FILE
+========================================================
+
+
+Use structured comment blocks:
+
+Level 1 (Sections):
+%========================================================
+% SECTION X — Title
+%========================================================
+
+Level 2 (Subsections):
+%--------------------------------------------------------
+% Subsection X.Y — Title
+%--------------------------------------------------------
+
+Level 3 (Local blocks):
+%--- Description of block ---
+
+Rule:
+Comments must improve navigation (especially in VSCode)
+
+========================================================
+5. MATHEMATICAL CONSISTENCY
+========================================================
+
+* Define symbols before using them
+* Keep notation consistent (F, γ, C, etc.)
+* Do NOT repeat formulas unnecessarily
+
+Instead of repeating:
+(formula)
+
+Write:
+as derived in Section X.Y
+
+========================================================
+6. APPENDICES
+========================================================
+
+6.1 Structure
+At beginning:
+\appendix
+\section*{Appendices}
+\addcontentsline{toc}{section}{Appendices}
+
+6.2 Naming
+
+* Use functional titles:
+  "Analytical Derivation of Concurrence"
+  NOT vague or overly long titles
+
+========================================================
+7. REFERENCES
+========================================================
+
+
+Replace manual bibliography with:
+
+```
+\bibliographystyle{plain}
+\bibliography{references}
+```
+
+Reason:
+
+* Scalability
+* Required for final thesis
+* Cleaner citation handling
+
+========================================================
+8. SIMULATION NOTES POLICY
+========================================================
+
+Simulation-related text must:
+
+* Link theory → implementation
+* Be meaningful without reading MATLAB code
+* Explain WHY, not HOW
+
+Replace:
+\paragraph{Simulation notes.}
+
+With:
+\paragraph{Implementation.}
+or
+\paragraph{Operational implications.}
+
+Keep \paragraph{Implementation.} ONLY when:
+there is a non-trivial mapping
+the reader could ask: “how does this become code?”
+
+========================================================
+9. STANDARD SUBSECTION STRUCTURE
+========================================================
+
+Each subsection should follow:
+
+1. Concept introduction
+
+\medskip
+
+2. Formal definition / equations
+
+\medskip
+
+3. Interpretation
+
+\medskip
+
+4. Operational / implementation link (optional)
+
+========================================================
+10. IMMEDIATE ACTION ITEMS
+========================================================
+
+* Replace all "Simulation notes" paragraphs
+* Add \medskip at logical transitions
+* Standardize comment separators
+* Change all figure environments [h] → [htbp]
+* Remove repeated formulas in nearby sections
+
+========================================================
+11. MATHEMATICAL MODE AND TYPESSETTING STANDARD
+========================================================
+
+11.1 General Principle
+
+* All mathematical objects must be written in math mode
+* Text mode must never contain mathematical notation
+* Use math mode consistently to ensure readability and typographical correctness
+
+Rule:
+If an expression contains symbols, indices, operators, or Greek letters → it MUST be in math mode
+
+--------------------------------------------------------
+
+11.2 Inline Mathematics
+
+Use inline math when:
+
+* The expression is short
+* It does not interrupt sentence flow
+* It is not the conceptual focus of the sentence
+
+Syntax:
+
+\( ... \)    (preferred)
+or
+$ ... $
+
+Examples:
+
+The phase parameter \( \theta \) controls the evolution.
+
+The expectation value \( \langle \sigma_x \otimes \sigma_x \rangle \) follows a cosine behavior.
+
+Avoid:
+
+* Long expressions inline
+* Fractions or large operators inline when readability is compromised
+
+--------------------------------------------------------
+
+11.3 Display Mathematics (New Line)
+
+Use display math when:
+
+* The expression is central to the discussion
+* The formula is long or structurally complex
+* You need visual emphasis or clarity
+
+Syntax (preferred):
+
+\[
+...
+\]
+
+Example:
+
+\[
+|\psi(\theta)\rangle = \frac{1}{\sqrt{2}} \left( |01\rangle + e^{i\theta} |10\rangle \right)
+\]
+
+--------------------------------------------------------
+
+11.4 Numbered Equations
+
+Use only when:
+
+* The equation will be referenced later
+* It plays a structural role in the document
+
+Syntax:
+
+\begin{equation}
+...
+\end{equation}
+
+Rule:
+Do NOT number equations that are not referenced.
+
+--------------------------------------------------------
+
+11.5 Alignment and Multi-line Equations
+
+For multiple related equations or derivations:
+
+Use:
+
+\begin{align}
+...
+\end{align}
+
+Example:
+
+\begin{align}
+\langle \sigma_x \otimes \sigma_x \rangle &= \cos \theta \\
+\langle \sigma_y \otimes \sigma_y \rangle &= \cos \theta \\
+\langle \sigma_z \otimes \sigma_z \rangle &= -1
+\end{align}
+
+Guidelines:
+
+* Align at "=" or key operators
+* Maintain one logical step per line
+
+--------------------------------------------------------
+
+11.6 Operators and Notation
+
+* Use standard LaTeX operators:
+
+  \sin, \cos, \exp, \log, \Tr
+
+* Do NOT write operators as plain text:
+
+  Wrong: sin(x)
+  Correct: \( \sin(x) \)
+
+* Use:
+
+  \mathrm{} for non-italic text inside math when needed
+
+--------------------------------------------------------
+
+11.7 Quantum Mechanics Notation
+
+Mandatory conventions:
+
+* Kets and bras:
+
+  \( | \psi \rangle \), \( \langle \phi | \)
+
+* Inner product:
+
+  \( \langle \phi | \psi \rangle \)
+
+* Tensor product:
+
+  \( \otimes \)
+
+* Expectation values:
+
+  \( \langle O \rangle \)
+
+* Correlators:
+
+  \( \langle \sigma_i \otimes \sigma_j \rangle \)
+
+Rule:
+Maintain consistency across the entire document.
+
+--------------------------------------------------------
+
+11.8 Blackboard and Special Sets
+
+Use:
+
+* \( \mathbb{R}, \mathbb{C} \)
+
+Always inside math mode.
+
+--------------------------------------------------------
+
+11.9 Spacing Inside Math
+
+* Use spacing commands only when necessary:
+
+  \,   (small space)
+  \;   (medium space)
+  \quad (large space)
+
+Example:
+
+\[
+\Tr(\rho \, O)
+\]
+
+Avoid excessive manual spacing.
+
+--------------------------------------------------------
+
+11.12 Package Requirements
+
+Ensure the following are included:
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{braket}
+
+Reason:
+
+* amsmath → environments and alignment
+* amssymb → \mathbb and symbols
+* braket → clean quantum notation
+
+
+
+========================================================
+END OF GUIDE
+========================================================

@@ -19,7 +19,7 @@ function plot_phase_baseline_comparison(results_phase_baseline)
 %   None
 %
 % Notes:
-%   - Theory: continuous palette line
+%   - Analytical: continuous palette line
 %   - Numerics: palette markers
 %   - Three stacked panels with shared axis limits
 
@@ -90,7 +90,7 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     y_min = -1.1;
     y_max =  1.1;
 
-    theory_line_width = 1.8;
+    analytical_line_width = 1.8;
     numerical_marker_size = 4;
 
 
@@ -120,7 +120,7 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     box on;
 
     plot(theta, c_xx_th, ...
-        'LineWidth', theory_line_width, ...
+        'LineWidth', analytical_line_width, ...
         'Color', palette.obs_x);
 
     plot(theta, c_xx, 'o', ...
@@ -146,7 +146,7 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     box on;
 
     plot(theta, c_yy_th, ...
-        'LineWidth', theory_line_width, ...
+        'LineWidth', analytical_line_width, ...
         'Color', palette.obs_y);
 
     plot(theta, c_yy, 'o', ...
@@ -168,7 +168,7 @@ function plot_phase_baseline_comparison(results_phase_baseline)
     box on;
 
     plot(theta, c_zz_th, ...
-        'LineWidth', theory_line_width, ...
+        'LineWidth', analytical_line_width, ...
         'Color', palette.obs_z);
 
     plot(theta, c_zz, 'o', ...

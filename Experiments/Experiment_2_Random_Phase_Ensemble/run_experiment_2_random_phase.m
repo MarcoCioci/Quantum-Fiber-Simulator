@@ -145,31 +145,31 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
         mu_sin = mean(sin(theta_samples));
         mu = mean(exp(1i * theta_samples));
 
-        theory_tensor = [ ...
+        analytical_tensor = [ ...
              mu_cos, -mu_sin, 0; ...
              mu_sin,  mu_cos, 0; ...
              0,       0,     -1 ];
 
-        theory_c_xx = mu_cos;
-        theory_c_yy = mu_cos;
-        theory_c_zz = -1;
+        analytical_c_xx = mu_cos;
+        analytical_c_yy = mu_cos;
+        analytical_c_zz = -1;
 
-        theory_purity_global = (1 + mu_cos^2 + mu_sin^2) / 2;
-        theory_purity_A = 1/2;
-        theory_purity_B = 1/2;
+        analytical_purity_global = (1 + mu_cos^2 + mu_sin^2) / 2;
+        analytical_purity_A = 1/2;
+        analytical_purity_B = 1/2;
 
-        theory_fidelity = (1 + mu_cos) / 2;
-        theory_concurrence = abs(mu);
+        analytical_fidelity = (1 + mu_cos) / 2;
+        analytical_concurrence = abs(mu);
 
 
         % =========================
         % Console summary
         % =========================
 
-        fprintf('c_xx error        : %.3e\n', abs(correlations.c_xx - theory_c_xx));
-        fprintf('c_yy error        : %.3e\n', abs(correlations.c_yy - theory_c_yy));
-        fprintf('c_zz error        : %.3e\n', abs(correlations.c_zz - theory_c_zz));
-        fprintf('tensor error (F)  : %.3e\n', norm(correlation_tensor - theory_tensor, 'fro'));
+        fprintf('c_xx error        : %.3e\n', abs(correlations.c_xx - analytical_c_xx));
+        fprintf('c_yy error        : %.3e\n', abs(correlations.c_yy - analytical_c_yy));
+        fprintf('c_zz error        : %.3e\n', abs(correlations.c_zz - analytical_c_zz));
+        fprintf('tensor error (F)  : %.3e\n', norm(correlation_tensor - analytical_tensor, 'fro'));
 
 
         % =========================
@@ -202,15 +202,15 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
         results_current.sample_mean_sin_theta = mu_sin;
         results_current.sample_mean_exp_i_theta = mu;
 
-        results_current.analytical.correlation_tensor = theory_tensor;
-        results_current.analytical.c_xx = theory_c_xx;
-        results_current.analytical.c_yy = theory_c_yy;
-        results_current.analytical.c_zz = theory_c_zz;
-        results_current.analytical.purity_global = theory_purity_global;
-        results_current.analytical.purity_A = theory_purity_A;
-        results_current.analytical.purity_B = theory_purity_B;
-        results_current.analytical.fidelity_psi_plus = theory_fidelity;
-        results_current.analytical.concurrence = theory_concurrence;
+        results_current.analytical.correlation_tensor = analytical_tensor;
+        results_current.analytical.c_xx = analytical_c_xx;
+        results_current.analytical.c_yy = analytical_c_yy;
+        results_current.analytical.c_zz = analytical_c_zz;
+        results_current.analytical.purity_global = analytical_purity_global;
+        results_current.analytical.purity_A = analytical_purity_A;
+        results_current.analytical.purity_B = analytical_purity_B;
+        results_current.analytical.fidelity_psi_plus = analytical_fidelity;
+        results_current.analytical.concurrence = analytical_concurrence;
 
         results_experiment_2.cases{case_idx} = results_current;
 

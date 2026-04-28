@@ -11,14 +11,14 @@ do_tensor_plot = true;
 % ==========================================
 % Experiment 1 - Phase Baseline Sweep
 % ==========================================
-results_experiment_1 = run_experiment_1_phase_baseline_sweep([], do_summary_plot, do_tensor_plot);
+    results_experiment_1 = run_experiment_1_phase_baseline_sweep([], do_summary_plot, do_tensor_plot);
 
 % ==========================================
 % Experiment 2 - Random Phase Ensemble State
 % ==========================================
-results_experiment_2 = run_experiment_2_random_phase([], true, true);
+    results_experiment_2 = run_experiment_2_random_phase([], do_summary_plot, do_tensor_plot);
 
 % ==========================================
 % Experiment 3 - Random Phase Ensemble State
 % ==========================================
-results = run_experiment_3_depolarization(do_summary_plot);
+    results = run_experiment_3_depolarization(do_summary_plot);

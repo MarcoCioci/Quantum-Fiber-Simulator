@@ -3,7 +3,7 @@ function palette = get_plot_palette()
 %
 % Objective:
 %   Provide a consistent, readable, and extensible palette for:
-%       - theory vs numerical comparison
+%       - analytical vs numerical comparison
 %       - different observables (x, y, z)
 %       - state metrics (purity, fidelity, concurrence)
 %
@@ -34,7 +34,7 @@ function palette = get_plot_palette()
     % Role-based usage
     % =========================
 
-    palette.theory     = palette.blue;
+    palette.analytical = palette.blue;
     palette.numerical  = palette.orange;
     palette.samples    = palette.gray_mid;
     palette.mean_line  = palette.black;
