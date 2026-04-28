@@ -27,19 +27,22 @@
 \contentsline {paragraph}{Interpretation.}{11}{subsection.3.4}%
 \contentsline {paragraph}{Role in the modeling hierarchy.}{11}{subsection.3.4}%
 \contentsline {paragraph}{Implementation.}{11}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Correlation Observables and Correlation Tensor}{11}{subsection.3.5}%
-\contentsline {paragraph}{Analytical behavior under the reduced phase model.}{12}{subsection.3.5}%
-\contentsline {paragraph}{Implementation.}{12}{equation.3.3}%
+\contentsline {subsection}{\numberline {3.5}Correlation Tensor Representation}{11}{subsection.3.5}%
+\contentsline {paragraph}{Analytical behavior in the reduced phase model.}{12}{subsection.3.5}%
+\contentsline {paragraph}{Interpretation.}{12}{subsection.3.5}%
+\contentsline {paragraph}{Implementation.}{12}{subsection.3.5}%
 \contentsline {subsection}{\numberline {3.6}Arbitrary Local Measurement Axes}{13}{subsection.3.6}%
-\contentsline {paragraph}{Interpretation.}{14}{subsection.3.6}%
+\contentsline {paragraph}{Analytical behavior for the reduced phase model.}{13}{subsection.3.6}%
+\contentsline {paragraph}{Interpretation.}{13}{subsection.3.6}%
+\contentsline {paragraph}{Operational implications.}{13}{subsection.3.6}%
 \contentsline {subsection}{\numberline {3.7}From Deterministic Evolution to Ensemble Description}{14}{subsection.3.7}%
 \contentsline {paragraph}{Interpretation.}{14}{subsection.3.7}%
-\contentsline {subsection}{\numberline {3.8}Quantum Channels and Effective Depolarization}{15}{subsection.3.8}%
+\contentsline {subsection}{\numberline {3.8}Quantum Channels and Effective Depolarization}{14}{subsection.3.8}%
 \contentsline {paragraph}{Interpretation.}{15}{subsection.3.8}%
 \contentsline {paragraph}{Quantum channels as effective evolution maps}{15}{subsection.3.8}%
 \contentsline {paragraph}{Physical origin of effective depolarization}{15}{subsection.3.8}%
 \contentsline {paragraph}{Depolarizing channel model}{15}{subsection.3.8}%
-\contentsline {paragraph}{Application to Bell states}{16}{subsection.3.8}%
+\contentsline {paragraph}{Application to Bell states}{15}{subsection.3.8}%
 \contentsline {paragraph}{Role in the modeling hierarchy}{16}{subsection.3.8}%
 \contentsline {section}{\numberline {4}Quantitative Characterization of Bipartite Quantum States}{17}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Reduced Density Operators}{17}{subsection.4.1}%

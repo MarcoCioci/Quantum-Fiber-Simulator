@@ -698,234 +698,69 @@ At implementation level, both parametrizations \( (\theta_A, \theta_B) \) and \(
 The first validated MATLAB study consists of a parameter sweep in \( \theta \), with numerical evaluation of state vectors, expectation values, and correlation observables. This defines the minimal complete simulation pipeline upon which all subsequent developments are built.
 
 %--------------------------------------------------------
-% Subsection 3.5 — Correlation Observables and Correlation Tensor
+% Subsection 3.5 — Correlation Tensor Representation
 %--------------------------------------------------------
 
-\subsection{Correlation Observables and Correlation Tensor}
+\subsection{Correlation Tensor Representation}
 
-At the present stage of development, the simulator evaluates a subset of two-qubit correlation observables corresponding to aligned Pauli operators:
+At the present stage of development, bipartite correlations are described through the Pauli-operator basis
 \[
-\sigma_x \otimes \sigma_x,\qquad
-\sigma_y \otimes \sigma_y,\qquad
-\sigma_z \otimes \sigma_z.
+\sigma_i \otimes \sigma_j,
+\qquad i,j \in \{x,y,z\},
 \]
-
-These are constructed from the single-qubit Pauli matrices
-\[
-\sigma_x=
-\begin{pmatrix}
-0 & 1\\
-1 & 0
-\end{pmatrix},
-\qquad
-\sigma_y=
-\begin{pmatrix}
-0 & -i\\
-i & 0
-\end{pmatrix},
-\qquad
-\sigma_z=
-\begin{pmatrix}
-1 & 0\\
-0 & -1
-\end{pmatrix},
-\]
-together with the identity operator \( \sigma_0 = I \).
+constructed from the single-qubit Pauli matrices \( \sigma_x, \sigma_y, \sigma_z \) and the identity \( \sigma_0 = I \).
 
 \medskip
 
-Given a quantum state \( \rho_{AB} \), expectation values are defined as
+For a two-qubit state \( \rho_{AB} \), the expectation values
 \[
-\langle \sigma_i \otimes \sigma_j \rangle
+T_{ij}
 =
-\mathrm{Tr}\bigl(\rho_{AB}\, \sigma_i \otimes \sigma_j\bigr),
-\qquad i,j \in \{x,y,z\}.
+\mathrm{Tr}\!\left(\rho_{AB}\, \sigma_i \otimes \sigma_j\right)
 \]
-
-These quantities define the entries of the \emph{correlation tensor}
-\[
-T_{ij} = \mathrm{Tr}\bigl(\rho_{AB}\, \sigma_i \otimes \sigma_j\bigr),
-\]
-which encodes all two-qubit correlations accessible through local measurements.
+define the components of the \emph{correlation tensor} \( T \in \mathbb{R}^{3 \times 3} \).
 
 \medskip
 
-More generally, any two-qubit density operator admits the Pauli-basis decomposition
+More generally, the state admits the Pauli decomposition
 \[
 \rho_{AB}
 =
 \frac{1}{4}
 \sum_{i,j=0}^{3}
 S_{ij}\, \sigma_i \otimes \sigma_j,
+\qquad
+S_{ij}
+=
+\mathrm{Tr}\!\left(\rho_{AB}\, \sigma_i \otimes \sigma_j\right),
 \]
-where
-\[
-S_{ij} = \mathrm{Tr}\bigl(\rho_{AB}\, \sigma_i \otimes \sigma_j\bigr)
-\]
-are the generalized Stokes parameters.
+where \( S_{ij} \) are the generalized Stokes parameters.
 
 In this representation:
 \begin{itemize}
-\item the components \( S_{i0} \) and \( S_{0j} \) describe local Bloch vectors,
-\item the block \( S_{ij} \), with \( i,j = 1,2,3 \), corresponds to the correlation tensor \( T_{ij} \).
+\item \( S_{i0} \), \( S_{0j} \) encode local Bloch vectors,
+\item the block \( S_{ij} \), \( i,j \in \{x,y,z\} \), corresponds to the correlation tensor \( T_{ij} \).
 \end{itemize}
 
 \medskip
 
-This decomposition follows from the orthogonality of the operator basis
+The orthogonality relation
 \[
 \mathrm{Tr}\!\left[(\sigma_i \otimes \sigma_j)(\sigma_k \otimes \sigma_l)\right]
 =
-4\,\delta_{ik}\delta_{jl},
+4\,\delta_{ik}\delta_{jl}
 \]
-which ensures that the coefficients \( S_{ij} \) are directly obtained via projection.
+ensures that all coefficients are obtained by direct projection.
 
 \medskip
 
-\paragraph{Analytical behavior under the reduced phase model.}
+\paragraph{Analytical behavior in the reduced phase model.}
 
-As derived in Section~3.X, the state
+For the phase-evolved Bell state
 \[
 |\psi(\theta)\rangle
 =
-\frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}}
-\]
-yields
-\begin{align}
-\langle \sigma_x \otimes \sigma_x \rangle &= \cos\theta \\
-\langle \sigma_y \otimes \sigma_y \rangle &= \cos\theta \\
-\langle \sigma_z \otimes \sigma_z \rangle &= -1
-\end{align}
-
-The phase \( \theta \) affects only transverse coherences, while leaving population correlations invariant. This reflects the fact that the reduced phase model modifies relative phases without altering occupation probabilities in the computational basis.
-
-\medskip
-
-\paragraph{Implementation.}
-
-The simulator implements correlation evaluation through a unified expectation-value pipeline based on the trace formula \( \mathrm{Tr}(\rho O) \), applicable to both pure and mixed states.
-
-Core components include:
-\begin{itemize}
-\item generation of Pauli matrices,
-\item tensor-product construction \( \sigma_i \otimes \sigma_j \),
-\item expectation-value evaluation,
-\item structured storage of correlation tensor components.
-\end{itemize}
-
-These observables constitute the primary validation layer of the simulator, enabling direct comparison between analytical predictions and numerical results.
-
-%--------------------------------------------------------
-% Subsection 3.6 — Arbitrary Local Measurement Axes
-%--------------------------------------------------------
-
-\subsection{Arbitrary Local Measurement Axes}
-
-The correlation observables introduced previously are defined with respect to the fixed Pauli axes \( x \), \( y \), and \( z \). While sufficient to construct the correlation tensor, this description does not yet capture the most general measurement configurations available in an optical polarization experiment.
-
-\medskip
-
-A measurement on a single polarization qubit can be defined along an arbitrary real direction of the Bloch sphere,
-\[
-\mathbf{n} =
-\begin{pmatrix}
-n_x\\
-n_y\\
-n_z
-\end{pmatrix},
-\qquad
-\|\mathbf{n}\|=1.
-\]
-The corresponding Hermitian observable is
-\[
-\sigma(\mathbf{n})
-=
-\mathbf{n}\cdot\boldsymbol{\sigma}
-=
-n_x\sigma_x+n_y\sigma_y+n_z\sigma_z.
-\]
-
-\medskip
-
-This operator has eigenvalues \( \pm 1 \) and represents a two-outcome projective measurement along the axis \( \mathbf{n} \). In the polarization setting, different choices of \( \mathbf{n} \) correspond to different analyzer orientations, physically implemented through wave-plate transformations followed by a fixed polarization measurement.
-
-\medskip
-
-For a bipartite state \( \rho_{AB} \), one may choose independent local measurement directions \( \mathbf{a} \) and \( \mathbf{b} \) on subsystems \( A \) and \( B \). The corresponding two-photon correlation function is
-\[
-E(\mathbf{a},\mathbf{b})
-=
-\operatorname{Tr}
-\left[
-\rho_{AB}
-\left(
-\sigma(\mathbf{a})\otimes\sigma(\mathbf{b})
-\right)
-\right].
-\]
-
-\medskip
-
-For a pure state \( |\psi\rangle \), this reduces to
-\[
-E(\mathbf{a},\mathbf{b})
-=
-\langle\psi|
-\sigma(\mathbf{a})\otimes\sigma(\mathbf{b})
-|\psi\rangle.
-\]
-
-\medskip
-
-Operationally, \( E(\mathbf{a},\mathbf{b}) \) represents the expectation value of the product of the two local measurement outcomes. Since each outcome takes values in \( \{+1,-1\} \), the correlation satisfies
-\[
--1 \le E(\mathbf{a},\mathbf{b}) \le 1.
-\]
-
-\medskip
-
-The connection with the correlation tensor follows from the expansion of the local observables in the Pauli basis. If
-\[
-T_{ij}
-=
-\operatorname{Tr}
-\left[
-\rho_{AB}
-\left(
-\sigma_i \otimes \sigma_j
-\right)
-\right],
-\qquad
-i,j \in \{x,y,z\},
-\]
-then the correlation function can be written as
-\[
-E(\mathbf{a},\mathbf{b})
-=
-\sum_{i,j \in \{x,y,z\}}
-a_i\, T_{ij}\, b_j.
-\]
-
-\medskip
-
-In compact matrix form,
-\[
-E(\mathbf{a},\mathbf{b})
-=
-\mathbf{a}^{\mathsf T} T \mathbf{b}.
-\]
-
-\medskip
-
-This shows that the full correlation tensor contains all the information required to predict arbitrary local Pauli measurements. The previously introduced quantities \( c_{xx} \), \( c_{yy} \), and \( c_{zz} \) are obtained as special cases corresponding to Cartesian measurement directions.
-
-\medskip
-
-For the phase-evolved Bell state introduced in Section~3.5,
-\[
-|\psi(\theta)\rangle
-=
-\frac{|01\rangle+e^{i\theta}|10\rangle}{\sqrt{2}},
+\frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}},
 \]
 the correlation tensor is
 \[
@@ -940,56 +775,158 @@ T(\theta)
 
 \medskip
 
-The corresponding arbitrary-axis correlation is
+This structure shows that the parameter \( \theta \) induces a rotation in the transverse \( x\text{-}y \) plane, while leaving the longitudinal component invariant.
+
+The commonly evaluated quantities
 \[
-E(\mathbf{a},\mathbf{b};\theta)
-=
-\mathbf{a}^{\mathsf T} T(\theta)\mathbf{b},
+\langle \sigma_x \otimes \sigma_x \rangle = T_{xx} = \cos(\theta), \quad
+\langle \sigma_y \otimes \sigma_y \rangle = T_{yy} = \cos(\theta), \quad
+\langle \sigma_z \otimes \sigma_z \rangle = T_{zz} = -1
 \]
-or explicitly,
+correspond to diagonal projections of this tensor.
+
+\medskip
+
+\paragraph{Interpretation.}
+
+The reduced phase model modifies only coherence terms, producing a rigid rotation of correlations in the transverse plane. Population correlations remain unchanged, reflecting the purely unitary nature of the transformation.
+
+\medskip
+
+\paragraph{Implementation.}
+
+The simulator evaluates tensor components through the trace rule
 \[
-E(\mathbf{a},\mathbf{b};\theta)
+\langle O \rangle = \mathrm{Tr}(\rho O),
+\]
+with a modular pipeline including:
+\begin{itemize}
+\item Pauli operator generation,
+\item tensor-product construction,
+\item expectation-value evaluation,
+\item structured storage of \( T_{ij} \).
+\end{itemize}
+
+The correlation tensor provides the minimal complete description required to predict all local Pauli measurements.
+
+%--------------------------------------------------------
+% Subsection 3.6 — Arbitrary Local Measurement Axes
+%--------------------------------------------------------
+
+\subsection{Arbitrary Local Measurement Axes}
+
+The correlation tensor introduced previously provides a complete description of all two-qubit correlations accessible through local Pauli measurements. This structure enables the prediction of measurement outcomes along arbitrary directions on the Bloch sphere.
+
+\medskip
+
+A single-qubit observable associated with a unit vector
+\[
+\mathbf{n} =
+\begin{pmatrix}
+n_x\\
+n_y\\
+n_z
+\end{pmatrix},
+\qquad
+\|\mathbf{n}\| = 1,
+\]
+is defined as
+\[
+\sigma(\mathbf{n})
 =
-\cos\theta(a_x b_x + a_y b_y)
-+
-\sin\theta(a_y b_x - a_x b_y)
--
-a_z b_z.
+\mathbf{n} \cdot \boldsymbol{\sigma}
+=
+n_x \sigma_x + n_y \sigma_y + n_z \sigma_z.
 \]
 
 \medskip
 
-As a relevant special case, consider measurement directions in the equatorial plane,
+For a bipartite state \( \rho_{AB} \), choosing local directions \( \mathbf{a} \) and \( \mathbf{b} \) leads to the correlation function
 \[
-\mathbf{a}=
+E(\mathbf{a},\mathbf{b})
+=
+\mathrm{Tr}
+\left[
+\rho_{AB}
+\left(
+\sigma(\mathbf{a}) \otimes \sigma(\mathbf{b})
+\right)
+\right].
+\]
+
+\medskip
+
+Expanding in the Pauli basis yields
+\[
+E(\mathbf{a},\mathbf{b})
+=
+\sum_{i,j \in \{x,y,z\}}
+a_i\, T_{ij}\, b_j,
+\]
+or in compact form
+\[
+E(\mathbf{a},\mathbf{b})
+=
+\mathbf{a}^{\mathsf T} T \mathbf{b}.
+\]
+
+\medskip
+
+This expression shows that the correlation tensor completely determines all possible measurement outcomes for local Pauli observables.
+
+\medskip
+
+\paragraph{Analytical behavior for the reduced phase model.}
+
+Using the tensor structure for the phase-evolved Bell state \( T(\theta) \), the correlation function becomes\[
+E(\mathbf{a},\mathbf{b};\theta)
+=
+\mathbf{a}^{\mathsf T} T(\theta) \mathbf{b}.
+\]
+
+\medskip
+
+For measurement directions restricted to the equatorial plane,
+\[
+\mathbf{a} =
 \begin{pmatrix}
 \cos\alpha\\
 \sin\alpha\\
 0
 \end{pmatrix},
 \qquad
-\mathbf{b}=
+\mathbf{b} =
 \begin{pmatrix}
 \cos\beta\\
 \sin\beta\\
 0
-\end{pmatrix}.
+\end{pmatrix},
 \]
-
-\medskip
-
-In this configuration, the correlation reduces to
+this reduces to
 \[
 E(\alpha,\beta;\theta)
 =
-\cos(\theta+\beta-\alpha).
+\cos(\theta + \beta - \alpha).
 \]
 
 \medskip
 
 \paragraph{Interpretation.}
 
-Within the reduced phase model, the fiber-induced phase \( \theta \) acts as an effective shift of the relative angle between the two local measurement bases. As a result, the observed correlations depend only on the combination \( \theta + \beta - \alpha \), highlighting the equivalence between phase evolution and a rotation of measurement settings in the equatorial plane.
+The phase \( \theta \) acts as an effective shift of the relative measurement angle. Consequently, phase evolution induced by the fiber is operationally equivalent to a rotation of measurement settings in the transverse plane.
+
+\medskip
+
+\paragraph{Operational implications.}
+
+In an experimental setting, arbitrary measurement axes are realized through local unitary transformations (wave plates) followed by a fixed computational-basis measurement.
+
+This correspondence allows the simulator to reproduce realistic measurement procedures by combining:
+\begin{itemize}
+\item local unitary rotations,
+\item standard projective measurements,
+\item correlation evaluation through the tensor structure.
+\end{itemize}
 
 %--------------------------------------------------------
 % Subsection 3.7 — From Deterministic Evolution to Ensemble Description
