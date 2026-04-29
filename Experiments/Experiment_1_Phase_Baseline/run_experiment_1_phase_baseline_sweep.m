@@ -38,21 +38,21 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
 % Notes:
 %   For the reduced phase model, the expected analytical quantities are:
 %
-%       c_xx(theta)              = cos(theta)
-%       c_yy(theta)              = cos(theta)
-%       c_zz(theta)              = -1
-%       purity_global(theta)     = 1
-%       purity_A(theta)          = 1/2
-%       purity_B(theta)          = 1/2
-%       fidelity_psi_plus(theta) = (1 + cos(theta)) / 2
-%       concurrence(theta)       = 1
+%       c_xx(θ)              = cos(θ)
+%       c_yy(θ)              = cos(θ)
+%       c_zz(θ)              = -1
+%       purity_global(θ)     = 1
+%       purity_A(θ)          = 1/2
+%       purity_B(θ)          = 1/2
+%       fidelity_psi_plus(θ) = (1 + cos(θ)) / 2
+%       concurrence(θ)       = 1
 %
 %   The full expected correlation tensor is:
 %
-%       T(theta) =
-%       [ cos(theta), -sin(theta),  0 ;
-%         sin(theta),  cos(theta),  0 ;
-%         0,           0,          -1 ]
+%       T(θ) =
+%       [ cos(θ), -sin(θ),   0
+%         sin(θ),  cos(θ),   0
+%         0,            0,  -1]
 
     % =========================
     % Default input handling

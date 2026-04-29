@@ -14,7 +14,7 @@ function test_concurrence()
 %          C = 1
 %
 %       3. Phase-evolved Bell-like pure state:
-%          C = 1 for every theta
+%          C = 1 for every θ
 %
 %       4. Generic separable product pure state:
 %          C = 0

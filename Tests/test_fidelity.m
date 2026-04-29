@@ -14,7 +14,7 @@ function test_fidelity()
 %          F = 0
 %
 %       3. Phase-evolved Bell-like state with respect to |Psi+>:
-%          F(theta) = (1 + cos(theta)) / 2
+%          F(θ) = (1 + cos(θ)) / 2
 %
 %       4. Density matrix of |Psi+> with pure target |Psi+>:
 %          F = 1

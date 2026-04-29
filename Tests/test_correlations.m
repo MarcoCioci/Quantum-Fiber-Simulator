@@ -12,19 +12,19 @@ function test_correlations()
 %
 %   for the phase-evolved Bell-like state
 %
-%       |psi(theta)> = (|01> + exp(i theta)|10>) / sqrt(2).
+%       |psi(θ)> = (|01> + exp(i * θ)|10>) / sqrt(2).
 %
 % Analytical predictions:
 %
-%       T(theta) =
-%       [  cos(theta), -sin(theta),  0 ;
-%          sin(theta),  cos(theta),  0 ;
-%          0,           0,          -1 ]
+%       T(θ) =
+%         [  cos(θ), -sin(θ),  0  ;
+%            sin(θ),  cos(θ),  0  ;
+%                 0,       0,  -1 ]
 %
 %   Therefore:
 %
-%       c_xx = T(1,1) = cos(theta)
-%       c_yy = T(2,2) = cos(theta)
+%       c_xx = T(1,1) = cos(θ)
+%       c_yy = T(2,2) = cos(θ)
 %       c_zz = T(3,3) = -1
 %
 % Input:

@@ -52,9 +52,9 @@ function palette = get_plot_palette()
     % State metrics
     % =========================
 
-    palette.metric_global = palette.blue;     % γ(ρ_AB)
-    palette.metric_A      = palette.orange;   % γ(ρ_A)
-    palette.metric_B      = palette.green;    % γ(ρ_B)
+    palette.metric_global = palette.blue;     % γ(rho_AB)
+    palette.metric_A      = palette.orange;   % γ(rho_A)
+    palette.metric_B      = palette.green;    % γ(rho_B)
     palette.metric_F      = palette.purple;   % Fidelity
     palette.metric_C      = palette.red;      % Concurrence
 

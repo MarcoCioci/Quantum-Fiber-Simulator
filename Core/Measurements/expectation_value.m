@@ -52,14 +52,14 @@ function exp_val = expectation_value(state, O)
               'O must be non-empty.');
     end
 
-    if ndims(state) ~= 2
+    if ~ismatrix(state)
         error('expectation_value:InvalidDimensionsState', ...
               'state must be a 2-D vector or matrix.');
     end
 
-    if ndims(O) ~= 2
+    if ~ismatrix(O)
         error('expectation_value:InvalidDimensionsObservable', ...
-              'O must be a 2-D matrix.');
+          'O must be a 2-D matrix.');
     end
 
     if any(~isfinite(state), 'all')
@@ -92,7 +92,13 @@ function exp_val = expectation_value(state, O)
     if isvector(state)
 
         state_type = 'pure';
-        psi = state(:);
+
+        if size(state,2) ~= 1
+            error('expectation_value:InvalidKetShape', ...
+                  'Pure state must be a column vector (n x 1). Row vectors are not accepted.');
+        end
+        
+        psi = state;
         n = length(psi);
 
         if ~isequal(size(O), [n n])

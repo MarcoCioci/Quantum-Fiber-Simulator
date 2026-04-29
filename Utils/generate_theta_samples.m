@@ -3,7 +3,7 @@ function theta_samples = generate_theta_samples(distribution_type, num_samples, 
 % specified distribution.
 %
 % Objective:
-%   Produce a vector of sampled relative phases theta to be used in the
+%   Produce a vector of sampled relative phases θ to be used in the
 %   random-phase ensemble model of Experiment 2.
 %
 % Input:

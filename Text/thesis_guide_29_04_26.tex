@@ -43,6 +43,20 @@ marginparwidth=2cm
 % Section formatting
 %--------------------------------------------------------
 \usepackage{titlesec}
+\usepackage{ragged2e}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\RaggedRight}
+  {\thesection}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\RaggedRight}
+  {\thesubsection}
+  {1em}
+  {}
+
 \newcommand{\sectionbreak}{\clearpage}
 
 %--------------------------------------------------------
@@ -163,7 +177,10 @@ This abstract structure defines the numerical backbone of the simulator and is i
 
 The physical setting considered in this work is the following.
 
-A spontaneous parametric down-conversion (SPDC) source generates pairs of polarization-entangled photons, ideally prepared in a Bell state. The two photons are injected into distinct optical paths, denoted \( A \) and \( B \), and propagate through independent optical fibers.
+A spontaneous parametric down-conversion (SPDC) source generates pairs of
+polarization\-entangled photons, ideally prepared in a Bell state. The two photons
+are injected into distinct optical paths, denoted \(A\) and \(B\), and propagate
+through independent optical fibers.
 
 \medskip
 
@@ -841,6 +858,25 @@ n_x \sigma_x + n_y \sigma_y + n_z \sigma_z.
 
 \medskip
 
+The use of a three-component vector to parametrize measurement directions follows from the structure of single-qubit observables. Any Hermitian operator acting on a two-dimensional Hilbert space can be decomposed as
+\[
+O = \alpha I + \sum_{i \in \{x,y,z\}} n_i \sigma_i,
+\]
+where \( \alpha \in \mathbb{R} \) and \( \sigma_i \) are the Pauli matrices.
+
+\medskip
+
+The identity term does not contribute to correlation measurements, since it only produces a uniform shift of the eigenvalues. As a consequence, all physically relevant dichotomic observables can be represented by the traceless part
+\[
+\sigma(\mathbf{n}) = \mathbf{n} \cdot \boldsymbol{\sigma}.
+\]
+
+\medskip
+
+This shows that the space of non-trivial single-qubit observables is three-dimensional, with coordinates given by the components of the vector \( \mathbf{n} \). The condition \( \|\mathbf{n}\| = 1 \) ensures that the operator has eigenvalues \( \pm 1 \), corresponding to a valid projective measurement.
+
+\medskip
+
 For a bipartite state \( \rho_{AB} \), choosing local directions \( \mathbf{a} \) and \( \mathbf{b} \) leads to the correlation function
 \[
 E(\mathbf{a},\mathbf{b})
@@ -929,7 +965,186 @@ This correspondence allows the simulator to reproduce realistic measurement proc
 \end{itemize}
 
 %--------------------------------------------------------
-% Subsection 3.7 — From Deterministic Evolution to Ensemble Description
+% Subsection 3.7 — Bell Inequalities and CHSH Nonlocality
+%--------------------------------------------------------
+
+\subsection{Bell Inequalities and CHSH Nonlocality}
+
+The correlation structure introduced in the previous subsections provides a complete operational description of measurement outcomes for arbitrary local observables. This framework makes it possible to formulate quantitative criteria that distinguish correlations compatible with classical physics from those that are intrinsically quantum.
+
+\medskip
+
+The central question addressed by Bell inequalities is the following: \emph{can the observed correlations between spatially separated subsystems be explained by a classical model based on shared hidden information?}
+
+\medskip
+
+In a classical description based on local hidden variables, it is assumed that the outcomes of measurements performed on subsystems \( A \) and \( B \) are determined by a shared underlying variable \( \lambda \), drawn from a probability distribution \( p(\lambda) \). This variable represents all pre-existing information that could influence the measurement results.
+
+\medskip
+
+For each realization of \( \lambda \), the outcome of a measurement on subsystem \( A \) along direction \( \mathbf{a} \) is described by a deterministic response function
+\[
+A(\mathbf{a},\lambda) \in \{-1, +1\},
+\]
+and similarly for subsystem \( B \),
+\[
+B(\mathbf{b},\lambda) \in \{-1, +1\}.
+\]
+
+\medskip
+
+The key physical assumption is \emph{locality}: the outcome at each subsystem depends only on the local measurement setting and on the shared variable \( \lambda \), but not on the measurement choice at the distant subsystem. That is, \( A \) depends on \( \mathbf{a} \) but not on \( \mathbf{b} \), and vice versa.
+
+\medskip
+
+Since \( \lambda \) is not directly accessible, observable quantities correspond to averages over its distribution. The correlation function is therefore given by
+\[
+E(\mathbf{a},\mathbf{b})
+=
+\int d\lambda\, p(\lambda)\,
+A(\mathbf{a},\lambda)\, B(\mathbf{b},\lambda),
+\]
+with \( p(\lambda) \ge 0 \) and \( \int d\lambda\, p(\lambda) = 1 \).
+
+\medskip
+
+This expression represents the most general form of bipartite correlations compatible with a local hidden-variable model. Any experimentally observed correlation that cannot be written in this form is incompatible with such a classical description.
+
+\medskip
+
+From this structure, one derives constraints on the allowed values of correlation functions. The most widely used form is the Clauser--Horne--Shimony--Holt (CHSH) inequality, which involves four measurement settings:
+\[
+\mathbf{a}_1, \mathbf{a}_2 \quad \text{for subsystem A}, \qquad
+\mathbf{b}_1, \mathbf{b}_2 \quad \text{for subsystem B}.
+\]
+
+The CHSH parameter is defined as
+\[
+S =
+E(\mathbf{a}_1,\mathbf{b}_1)
++
+E(\mathbf{a}_1,\mathbf{b}_2)
++
+E(\mathbf{a}_2,\mathbf{b}_1)
+-
+E(\mathbf{a}_2,\mathbf{b}_2).
+\]
+
+\medskip
+
+\paragraph{Classical bound.}
+
+Under the assumptions of locality and realism, the CHSH parameter satisfies
+\[
+|S| \le 2.
+\]
+
+This bound reflects a fundamental limitation of classical correlations: although each term in \( S \) can individually reach its maximal value, their combination is constrained by the requirement that all outcomes originate from the same underlying variable \( \lambda \). As a result, classical correlations cannot exceed this limit.
+
+\medskip
+
+\paragraph{Quantum prediction.}
+
+In quantum mechanics, correlations arise from the structure of the joint state rather than from pre-existing local variables. The correlation function is given by
+\[
+E(\mathbf{a},\mathbf{b})
+=
+\operatorname{Tr}
+\left[
+\rho_{AB}
+\left(
+\sigma(\mathbf{a}) \otimes \sigma(\mathbf{b})
+\right)
+\right],
+\]
+as introduced in Subsection 3.6.
+
+\medskip
+
+Due to the non-commuting nature of quantum observables and the presence of entanglement, the CHSH parameter can exceed the classical bound. The maximal value allowed by quantum mechanics is
+\[
+|S| \le 2\sqrt{2},
+\]
+known as the Tsirelson bound.
+
+\medskip
+
+This violation does not imply faster-than-light communication, but rather that the correlations cannot be reproduced by any model based on local hidden variables.
+
+\medskip
+
+\paragraph{Tensor formulation.}
+
+Using the correlation tensor representation introduced in Subsection 3.5, the CHSH parameter can be expressed as
+\[
+S =
+\mathbf{a}_1^{\mathsf T} T \mathbf{b}_1
++
+\mathbf{a}_1^{\mathsf T} T \mathbf{b}_2
++
+\mathbf{a}_2^{\mathsf T} T \mathbf{b}_1
+-
+\mathbf{a}_2^{\mathsf T} T \mathbf{b}_2.
+\]
+
+\medskip
+
+This formulation makes explicit that the CHSH inequality depends only on the correlation tensor and on the choice of measurement directions. In particular, it shows that the observed value of \( S \) is sensitive not only to the state, but also to the alignment between the measurement axes and the principal directions of the tensor.
+
+\medskip
+
+A particularly important result is that the maximal violation achievable for a given state can be computed directly from the tensor. Defining
+\[
+U = T^{\mathsf T} T,
+\]
+and denoting by \( \lambda_1, \lambda_2 \) the two largest eigenvalues of \( U \), the maximal CHSH value is
+\[
+S_{\max} = 2\sqrt{\lambda_1 + \lambda_2}.
+\]
+
+\medskip
+
+\paragraph{Interpretation.}
+
+A violation of the CHSH inequality, i.e. \( |S| > 2 \), indicates the presence of correlations that cannot be explained by any local hidden-variable model. Such correlations are referred to as \emph{nonlocal}.
+
+\medskip
+
+Nonlocality should be understood as a property of correlations rather than of individual subsystems: each subsystem alone may appear completely random, while the joint statistics reveal strong structured correlations.
+
+\medskip
+
+It is important to distinguish nonlocality from entanglement. While all maximally entangled pure states achieve the maximal quantum violation, not all entangled states violate the CHSH inequality. In particular, sufficiently mixed states may remain within the classical bound despite being entangled.
+
+\medskip
+
+\paragraph{Operational implications.}
+
+The CHSH parameter provides a direct bridge between the theoretical description of correlations and experimentally accessible quantities. In practice, it is evaluated by performing measurements along four selected pairs of local axes and combining the resulting correlation values.
+
+\medskip
+
+The correlation tensor entering this construction can be experimentally reconstructed from a set of bipartite expectation values in the Pauli basis, in a procedure closely related to quantum state tomography. In this sense, the evaluation of CHSH inequalities can be viewed as a specific post-processing of tomographically accessible data.
+
+\medskip
+
+Two complementary perspectives are particularly relevant:
+
+\begin{itemize}
+    \item evaluation of \( S \) for fixed measurement settings, corresponding to a specific experimental configuration,
+    \item computation of \( S_{\max} \), which quantifies the maximal nonlocality extractable from the state.
+\end{itemize}
+
+\medskip
+
+Within the simulator, this distinction is essential. Fixed-axis evaluations reproduce the behavior of a laboratory setup with static analyzers, while the tensor-based computation of \( S_{\max} \) isolates the intrinsic nonlocal content of the quantum state, independent of measurement alignment.
+
+\medskip
+
+This separation will play a central role in the analysis of fiber-induced effects, where transformations may alter the observed correlations without necessarily reducing the underlying nonlocality.
+
+%--------------------------------------------------------
+% Subsection 3.8 — From Deterministic Evolution to Ensemble Description
 %--------------------------------------------------------
 
 \subsection{From Deterministic Evolution to Ensemble Description}
@@ -992,7 +1207,7 @@ The transition from \( |\psi(\theta)\rangle \) to \( \rho \) reflects a loss of 
 This formalism provides the foundation for modeling phase noise and more general quantum channels, and will be used in Chapter~5 to interpret the behavior of correlation observables under stochastic perturbations.
 
 %--------------------------------------------------------
-% Subsection 3.8 — Quantum Channels and Effective Depolarization
+% Subsection 3.9 — Quantum Channels and Effective Depolarization
 %--------------------------------------------------------
 
 \subsection{Quantum Channels and Effective Depolarization}
@@ -1107,7 +1322,7 @@ In the following chapter, quantitative measures such as purity, fidelity, and co
 % SECTION 4 — Quantitative Characterization of Bipartite Quantum States
 %========================================================
 
-\section{Quantitative Characterization of Bipartite Quantum States}
+\section{Quantitative Characterization of Two-Qubit States}
 
 %--------------------------------------------------------
 % Subsection 4.1 — Reduced Density Operators
@@ -1693,9 +1908,10 @@ In summary, the coherence parameter \( \mu \) provides a unifying description of
 
 \section{Numerical Experiments and Results}
 
-%--------------------------------------------------------
+
+%========================================================
 % Subsection 5.1 — Experiment 1: Deterministic Phase Sweep
-%--------------------------------------------------------
+%========================================================
 
 \subsection{Experiment 1: Deterministic Phase Sweep}
 
@@ -1878,9 +2094,12 @@ At the same time, the phase dependence of the transverse correlations \(c_{xx}\)
 
 This experiment establishes the minimal physical model of fiber propagation: a deterministic unitary transformation that modifies observable correlations without degrading entanglement.
 
-%--------------------------------------------------------
+
+%========================================================
 % Subsection 5.2 — Experiment 2: Random Phase Ensemble
-%--------------------------------------------------------
+%========================================================
+
+\newpage
 
 \subsection{Experiment 2: Random Phase Ensemble}
 
@@ -2076,9 +2295,12 @@ The coherence parameter \( \mu = \langle e^{i\theta} \rangle \) provides a unifi
 
 Thus, ensemble averaging leads to a progressive loss of coherence and entanglement, capturing the transition from ideal unitary evolution to realistic noisy propagation in optical fibers.
 
-%--------------------------------------------------------
+
+%========================================================
 % Subsection 5.3 — Experiment 3: Depolarizing Channel
-%--------------------------------------------------------
+%========================================================
+
+\newpage
 
 \subsection{Experiment 3: Depolarizing Channel}
 
@@ -2199,6 +2421,321 @@ The depolarizing channel provides an effective description of coherence loss whe
 Its action drives the initial Bell state toward the maximally mixed state, progressively suppressing both correlations and entanglement.
 
 Although not a complete microscopic model, this channel serves as a baseline for describing decoherence and establishes a reference against which more realistic fiber models can be compared.
+
+
+%========================================================
+% Subsection 5.4 — Experiment 4: CHSH Nonlocality
+%========================================================
+
+\newpage
+
+\subsection{Experiment 4: CHSH Nonlocality}
+
+%--------------------------------------------------------
+% Objective
+%--------------------------------------------------------
+
+\subsubsection{Objective}
+
+The objective of this experiment is to quantify the nonlocal correlations of the bipartite state through the Clauser--Horne--Shimony--Holt (CHSH) parameter.
+
+\medskip
+
+The experiment compares two physically different mechanisms:
+
+\begin{itemize}
+    \item deterministic phase evolution, described by local unitary transformations;
+    \item depolarizing noise, described by an effective two-qubit quantum channel.
+\end{itemize}
+
+\medskip
+
+The analysis distinguishes between two CHSH quantities:
+
+\begin{itemize}
+    \item \( S_{\mathrm{fixed}} \), computed using fixed laboratory measurement axes;
+    \item \( S_{\max} \), computed from the correlation tensor and representing the maximal CHSH value achievable after optimizing the measurement axes.
+\end{itemize}
+
+\medskip
+
+This distinction is essential because a reduction of \( S_{\mathrm{fixed}} \) does not necessarily imply a physical loss of nonlocality. It may also result from a misalignment between the fixed measurement axes and the rotated correlation tensor.
+
+\medskip
+
+%--------------------------------------------------------
+% Model
+%--------------------------------------------------------
+
+\subsubsection{Model}
+
+The reference state is the Bell state
+\[
+|\Psi^+\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + |10\rangle
+\right).
+\]
+
+\medskip
+
+Two families of states are analyzed.
+
+\medskip
+
+\textbf{Phase-evolved states.}
+
+\[
+|\psi(\theta)\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + e^{i\theta}|10\rangle
+\right),
+\]
+obtained by applying a local phase unitary \( U_A(\theta) \otimes I_B \).
+
+\medskip
+
+\textbf{Depolarized states.}
+
+\[
+\rho(p)
+=
+(1-p)\rho_0
++
+\frac{p}{4}I_4,
+\]
+where
+\[
+\rho_0 = |\Psi^+\rangle\langle\Psi^+|,
+\qquad
+p \in [0,1].
+\]
+
+\medskip
+
+The fixed CHSH measurement settings are chosen to be optimal for \( |\Psi^+\rangle \) at \( \theta = 0 \), whose correlation tensor is
+\[
+T(0) =
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & -1
+\end{pmatrix}.
+\]
+
+\medskip
+
+The local axes are
+\[
+\mathbf{a}_1 =
+\begin{pmatrix}
+1 \\ 0 \\ 0
+\end{pmatrix},
+\qquad
+\mathbf{a}_2 =
+\begin{pmatrix}
+0 \\ 1 \\ 0
+\end{pmatrix},
+\]
+for subsystem \( A \), and
+\[
+\mathbf{b}_1 =
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+1 \\ 1 \\ 0
+\end{pmatrix},
+\qquad
+\mathbf{b}_2 =
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+1 \\ -1 \\ 0
+\end{pmatrix},
+\]
+for subsystem \( B \).
+
+\medskip
+
+The corresponding local Bloch-sphere geometry is shown in Fig.~\ref{fig:exp4_bloch_axes}.
+
+\medskip
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../Images/Experiment_4/experiment_4_bloch_axes.png}
+    \caption{Fixed local CHSH measurement axes represented on the Bloch spheres of subsystems \( A \) and \( B \). The left panel shows the analyzer directions \( \mathbf{a}_1 \) and \( \mathbf{a}_2 \), while the right panel shows \( \mathbf{b}_1 \) and \( \mathbf{b}_2 \). These axes define the fixed laboratory configuration used to compute \( S_{\mathrm{fixed}} \).}
+    \label{fig:exp4_bloch_axes}
+\end{figure}
+
+\medskip
+
+With these settings, \( S_{\mathrm{fixed}} \) represents the value measured by a fixed analyzer configuration, while \( S_{\max} \) represents the best value obtainable by adapting the analyzer axes to the state.
+
+\medskip
+
+%--------------------------------------------------------
+% Analytical Predictions
+%--------------------------------------------------------
+
+\subsubsection{Analytical Predictions}
+
+For the phase-evolved Bell state, the correlation tensor is rotated in the \( xy \)-plane:
+\[
+T(\theta)
+=
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0 \\
+\sin\theta & \cos\theta & 0 \\
+0 & 0 & -1
+\end{pmatrix}.
+\]
+
+\medskip
+
+Using the fixed axes defined above, the CHSH value becomes
+\[
+S_{\mathrm{fixed}}(\theta)
+=
+2\sqrt{2}\cos\theta.
+\]
+
+\medskip
+
+In the figure, the plotted quantity is \( |S_{\mathrm{fixed}}| \), since CHSH violation is determined by the magnitude condition
+\[
+|S| > 2.
+\]
+
+\medskip
+
+The maximal CHSH value is instead independent of \( \theta \):
+\[
+S_{\max} = 2\sqrt{2}.
+\]
+
+\medskip
+
+This expresses the fact that deterministic phase evolution is a local unitary transformation and therefore preserves the intrinsic nonlocal content of the Bell state.
+
+\medskip
+
+For the depolarizing channel, the correlation tensor is uniformly contracted:
+\[
+T(p) = (1-p)T(0).
+\]
+
+\medskip
+
+Therefore,
+\[
+S_{\mathrm{fixed}}(p)
+=
+2\sqrt{2}(1-p),
+\qquad
+S_{\max}(p)
+=
+2\sqrt{2}(1-p).
+\]
+
+\medskip
+
+The CHSH violation threshold is obtained from
+\[
+S_{\max}(p) > 2,
+\]
+which gives
+\[
+p < p_{\mathrm{CHSH}}
+=
+1 - \frac{1}{\sqrt{2}}
+\simeq 0.2929.
+\]
+
+\medskip
+
+%--------------------------------------------------------
+% Numerical Results
+%--------------------------------------------------------
+
+\subsubsection{Numerical Results}
+
+The numerical results are shown in Fig.~\ref{fig:exp4_chsh}.
+
+\medskip
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../Images/Experiment_4/experiment_4_chsh_nonlocality_summary.png}
+    \caption{CHSH behavior under deterministic phase evolution and depolarizing noise. The left panel shows \( |S_{\mathrm{fixed}}| \) and \( S_{\max} \) as functions of the phase \( \theta \). The right panel shows the corresponding quantities as functions of the depolarizing parameter \( p \). The red dotted line is the classical CHSH bound \( |S|=2 \), while the purple dotted line is the Tsirelson bound \( 2\sqrt{2} \).}
+    \label{fig:exp4_chsh}
+\end{figure}
+
+\medskip
+
+In the deterministic phase sweep, \( |S_{\mathrm{fixed}}| \) oscillates between zero and the Tsirelson bound. This behavior follows from the fixed measurement axes: as the phase \( \theta \) changes, the correlation tensor rotates relative to the laboratory analyzer directions.
+
+\medskip
+
+At the same time, \( S_{\max} \) remains constant and equal to \( 2\sqrt{2} \), confirming that the state remains maximally nonlocal when the measurement axes are allowed to adapt to the rotated tensor.
+
+\medskip
+
+In the depolarizing case, the numerical and analytical curves for \( S_{\max} \) overlap. Both \( |S_{\mathrm{fixed}}| \) and \( S_{\max} \) decrease linearly with \( p \), crossing the classical bound at \( p_{\mathrm{CHSH}} \simeq 0.2929 \).
+
+\medskip
+
+%--------------------------------------------------------
+% Discussion
+%--------------------------------------------------------
+
+\subsubsection{Discussion}
+
+The two panels of Fig.~\ref{fig:exp4_chsh} show two qualitatively different mechanisms.
+
+\medskip
+
+In the phase-evolution case, the state remains pure and maximally entangled for every value of \( \theta \). The oscillation of \( |S_{\mathrm{fixed}}| \) therefore does not represent a loss of entanglement or a loss of intrinsic nonlocality. Instead, it shows that fixed laboratory axes may become non-optimal when the fiber introduces a relative phase.
+
+\medskip
+
+This is why \( |S_{\mathrm{fixed}}| \) can fall below the classical bound, or even vanish, while \( S_{\max} \) remains fixed at the Tsirelson value. The apparent loss of CHSH violation is caused by measurement-axis mismatch.
+
+\medskip
+
+In the depolarizing case, the behavior is different. The channel reduces the magnitude of the correlation tensor itself. As a consequence, no change of measurement axes can recover the lost CHSH violation once \( p \) exceeds the threshold \( p_{\mathrm{CHSH}} \).
+
+\medskip
+
+Thus, \( S_{\mathrm{fixed}} \) is sensitive to both physical degradation and measurement misalignment, while \( S_{\max} \) isolates the maximal nonlocality still present in the state.
+
+\medskip
+
+%--------------------------------------------------------
+% Physical Interpretation
+%--------------------------------------------------------
+
+\subsubsection{Physical Interpretation}
+
+This experiment separates coherent fiber-induced transformations from incoherent degradation mechanisms.
+
+\medskip
+
+A deterministic relative phase acts as a local unitary transformation. Physically, this can originate from birefringence-induced phase accumulation between polarization components. Such an effect rotates the correlation tensor but does not reduce its singular values. Therefore, the nonlocal resource is preserved, even though a fixed analyzer configuration may fail to reveal it.
+
+\medskip
+
+Depolarization has a different physical meaning. It models the effective loss of polarization coherence produced by unresolved degrees of freedom, statistical fluctuations, or frequency-dependent propagation effects. In this case, the correlation tensor is not only rotated but contracted, and the available nonlocality is genuinely reduced.
+
+\medskip
+
+The comparison between \( S_{\mathrm{fixed}} \) and \( S_{\max} \) therefore provides an operational diagnostic. If \( S_{\mathrm{fixed}} \) changes while \( S_{\max} \) remains constant, the effect is compatible with coherent misalignment. If \( S_{\max} \) decreases, the state itself has lost nonlocal correlation strength.
+
+\medskip
+
+For the quantum fiber simulator, this distinction is important: a fiber-induced phase shift can hide CHSH violation from fixed laboratory measurements, whereas depolarizing effects represent an actual degradation of the entangled photon pair.
 
 
 %========================================================

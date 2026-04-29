@@ -4,9 +4,9 @@ function plot_phase_baseline_tensor(results_phase_baseline)
 % Objective:
 %   Plot all nine entries of the two-qubit Pauli correlation tensor
 %
-%       T_ij(theta) = <sigma_i tensor sigma_j>
+%       T_ij(θ) = <sigma_i tensor sigma_j>
 %
-%   as functions of the reduced phase parameter theta.
+%   as functions of the reduced phase parameter θ.
 %
 % Input:
 %   results_phase_baseline - structure containing:

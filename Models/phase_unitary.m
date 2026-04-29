@@ -1,5 +1,5 @@
 function U = phase_unitary(theta)
-% PHASE_UNITARY  Generate the single-qubit phase unitary U(theta).
+% PHASE_UNITARY  Generate the single-qubit phase unitary U(θ).
 %
 % Objective:
 %   Return the 2x2 unitary operator representing the reduced phase model
@@ -11,8 +11,8 @@ function U = phase_unitary(theta)
 %
 %   the operator is defined as
 %
-%       U(theta) = [1           0
-%                   0  exp(i*theta)]
+%       U(θ) =     [1           0
+%                   0    exp(i*θ)]
 %
 %   up to an irrelevant global phase.
 %

@@ -27,12 +27,12 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %
 %   The local evolution for each sampled realization is:
 %
-%       U_A = phase_unitary(theta_k)
+%       U_A = phase_unitary(θ_k)
 %       U_B = I
 %
 %   Therefore:
 %
-%       |Psi+> -> (|01> + exp(i theta_k)|10>) / sqrt(2)
+%       |Psi+> -> (|01> + exp(i * θ_k)|10>) / sqrt(2)
 %
 %   The ensemble state is constructed as:
 %
@@ -40,7 +40,7 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %
 %   where:
 %
-%       rho_k = |psi(theta_k)><psi(theta_k)|
+%       rho_k = |psi(θ_k)><psi(θ_k)|
 %
 %   Plotting and observable analysis are intentionally excluded from this
 %   function. Those tasks should be handled by experiment-level routines.

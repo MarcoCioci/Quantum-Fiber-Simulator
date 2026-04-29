@@ -14,11 +14,14 @@ test_bell_state();
 test_density_matrix();
 test_partial_trace();
 test_correlations();
+test_arbitrary_axis_correlations();
+test_chsh();
 test_bloch_vector();
 test_purity();
 test_fidelity();
 test_concurrence();
 test_depolarizing_channel_two_qubits();
+
 
 disp('======================================');
 disp('All tests passed successfully.');

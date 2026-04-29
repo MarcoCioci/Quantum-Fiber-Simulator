@@ -5,7 +5,7 @@ function plot_random_phase_summary(results_case)
 %   Provide a single figure summarizing one random-phase ensemble case:
 %
 %       1) sampled phase distribution
-%       2) pure-state trend cos(theta) and sampled realizations
+%       2) pure-state trend cos(θ) and sampled realizations
 %       3) ensemble correlation observables
 %       4) purity, fidelity, and concurrence metrics
 %

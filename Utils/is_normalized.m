@@ -9,14 +9,20 @@ function flag = is_normalized(psi, tolerance)
 %   within a specified numerical tolerance.
 %
 % Input:
-%   psi - numeric state vector (row or column)
+%   psi - numeric column vector representing a quantum state ket
+%         of dimension 2^n x 1
+%
 %   tolerance - numerical tolerance (optional, default = 1e-12)
 %
 % Output:
 %   flag - logical value (true if normalized)
 %
 % Notes:
-%   This function is intended for validation and diagnostics.
+%   This function enforces the ket convention:
+%
+%       psi must be a column vector (2^n x 1)
+%
+%   Row vectors are NOT accepted, since they may represent bras.
 %
 %   The check is performed using:
 %
@@ -37,19 +43,35 @@ function flag = is_normalized(psi, tolerance)
         tolerance = 1e-12;
     end
 
-    if ~isnumeric(psi) || ~isvector(psi)
+    if ~isnumeric(psi)
         error('is_normalized:InvalidType', ...
-            'psi must be a numeric vector.');
+            'psi must be numeric.');
     end
 
-    
+    if ~isvector(psi)
+        error('is_normalized:InvalidShape', ...
+            'psi must be a vector.');
+    end
+
+    if size(psi,2) ~= 1
+        error('is_normalized:InvalidKetShape', ...
+            'psi must be a column vector (2^n x 1). Row vectors are not accepted.');
+    end
+
+    dim = size(psi,1);
+
+    if dim < 2 || abs(log2(dim) - round(log2(dim))) > 1e-12
+        error('is_normalized:InvalidDimension', ...
+            'Dimension of psi must be a power of 2.');
+    end
+
+
     % =========================
     % Main computation
     % =========================
 
-    psi = psi(:);
-
     norm_sq = psi' * psi;
+
     err = abs(norm_sq - 1);
 
     flag = (err < tolerance);

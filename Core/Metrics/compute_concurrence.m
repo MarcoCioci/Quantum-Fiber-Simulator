@@ -50,8 +50,8 @@ function C = compute_concurrence(state)
 %
 %   Context in simulator:
 %   - Bell states should give C = 1.
-%   - The state (|01> + exp(i*theta)|10>)/sqrt(2) should give C = 1
-%     for every theta.
+%   - The state (|01> + exp(i*θ)|10>)/sqrt(2) should give C = 1
+%     for every θ.
 %   - Product states should give C = 0.
 %   - Mixed noisy or ensemble states require the density-matrix branch.
 

@@ -6,7 +6,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %   Experiment 1 of the simulator.
 %
 %   Starting from the fixed Bell input state |Psi+>, this function:
-%       - sweeps the relative phase theta
+%       - sweeps the relative phase θ
 %       - applies the reduced local fiber model
 %       - computes the full two-qubit Pauli correlation tensor
 %       - extracts aligned two-qubit Pauli correlations
@@ -16,7 +16,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %
 % Input:
 %   theta_values - numeric vector of phase values in radians
-%                  (optional; default = 25 values in [0, 2*pi])
+%                  (optional; default = 25 values in [0, 2*π])
 %
 % Output:
 %   results_phase_baseline - structure containing:
@@ -36,15 +36,15 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %       |Psi+>
 %
 %   The local evolution is:
-%       U_A = phase_unitary(theta)
+%       U_A = phase_unitary(θ)
 %       U_B = I
 %
 %   The expected analytical tensor is:
 %
-%       T(theta) =
-%       [ cos(theta), -sin(theta),  0 ;
-%         sin(theta),  cos(theta),  0 ;
-%         0,           0,          -1 ]
+%       T(θ) =
+%       [ cos(θ), -sin(θ),  0  ;
+%         sin(θ),  cos(θ),  0  ;
+%         0,           0,   -1 ]
 %
 %   Plotting is intentionally excluded from this function.
 
@@ -112,7 +112,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
         psi = apply_unitary(U_A, U_B, psi_ref);
         rho = state_to_density_matrix(psi);
 
-        T = compute_correlation_tensor(rho);
+        T = compute_correlation_function_from_tensor(rho);
         corr = compute_correlations(rho);
 
         rho_A = partial_trace_B(rho);
