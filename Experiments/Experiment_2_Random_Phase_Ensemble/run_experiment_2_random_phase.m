@@ -20,6 +20,10 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
     % Default input handling
     % =========================
 
+    fprintf('\n\n==========================================\n');
+    fprintf('Experiment 2 - Monitoring summary\n');
+    fprintf('==========================================\n');
+
     num_samples = 100;
 
     if nargin < 1 || isempty(experiment_2_cases)
@@ -109,7 +113,6 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
         case_label = char(current_case.label);
 
         fprintf('\n==========================================\n');
-        fprintf('Experiment 2 - Case %d\n', case_idx);
         fprintf('Distribution: %s\n', case_label);
         fprintf('==========================================\n');
 

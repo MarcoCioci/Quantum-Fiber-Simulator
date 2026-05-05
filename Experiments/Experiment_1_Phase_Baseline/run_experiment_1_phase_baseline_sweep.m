@@ -183,10 +183,10 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
             'fro');
     end
 
-    fprintf('\n');
+    fprintf('\n\n');
     fprintf('==========================================\n');
     fprintf('Experiment 1 - Monitoring Summary\n');
-    fprintf('==========================================\n');
+    fprintf('==========================================\n\n');
     fprintf('theta sweep            : N = %d, min = %.6f, max = %.6f\n', ...
         N, min(theta_values_out), max(theta_values_out));
     fprintf('c_xx max |err|         : %.3e\n', ...

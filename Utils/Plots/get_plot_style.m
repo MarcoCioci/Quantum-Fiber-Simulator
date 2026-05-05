@@ -32,7 +32,7 @@ function style = get_plot_style()
     % Layout settings
     % =========================
 
-    style.layout.tile_spacing = 'compact';
+    style.layout.tile_spacing = 'loose';
     style.layout.padding = 'loose';
 
     % =========================
@@ -100,7 +100,7 @@ function style = get_plot_style()
     style.export.resolution = 300;
     style.export.format = 'png';
     
-    style.export.figure_position = [100, 100, 1100, 820];
+    style.export.figure_position = [100, 100, 1600, 900];
     style.export.background_color = 'white';
 
 end

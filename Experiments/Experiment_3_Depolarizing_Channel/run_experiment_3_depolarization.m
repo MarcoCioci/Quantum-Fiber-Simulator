@@ -197,11 +197,11 @@ function results_experiment_3 = run_experiment_3_depolarization(p_values, do_plo
         T_max_error = max(T_max_error, T_error);
     end
 
-    fprintf('\n');
+    fprintf('\n\n');
     fprintf('==========================================\n');
     fprintf('Experiment 3 - Depolarizing Channel Summary\n');
     fprintf('Monitoring summary\n');
-    fprintf('==========================================\n');
+    fprintf('==========================================\n\n');
 
     fprintf('p sweep           : N = %d, min = %.6f, max = %.6f\n', ...
         num_p, min(p_values), max(p_values));

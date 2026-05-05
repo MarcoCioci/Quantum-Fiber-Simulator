@@ -1,0 +1,213 @@
+PLOTTING PIPELINE — EXPERIMENT SUMMARY (CRUCIAL STEPS)
+
+==================================================
+
+1. ENTRY POINT (EXPERIMENT PLOT FUNCTION)
+==================================================
+
+Input:
+
+* results_experiment_X (validated structure)
+* do_save (optional)
+
+Steps:
+
+1. Validate inputs (structure, fields, sizes, consistency)
+2. Extract independent variable (e.g., p_values)
+3. Load:
+
+   * style  = get_plot_style()
+   * palette = get_plot_palette()
+4. Compute axis limits
+
+---
+
+==================================================
+2. FIGURE AND TAB MANAGEMENT
+==================================================
+
+Call:
+[fig, tab] = get_experiment_figure_tab(...)
+
+Steps:
+
+1. Create or reuse figure with fixed experiment ID
+2. Create/find uitabgroup
+3. Delete existing tab with same name
+4. Create new tab
+5. Return:
+
+   * fig (figure handle)
+   * tab (plot container)
+
+Purpose:
+
+* One figure per experiment
+* One tab per plot type
+
+---
+
+==================================================
+3. PLOT CONSTRUCTION (CORE LOGIC)
+==================================================
+
+Call:
+build_plot(tab)
+
+Structure:
+
+1. Create tiledlayout (e.g., 2x1)
+2. Panel 1:
+
+   * plot analytical (lines)
+   * plot numerical (markers)
+   * metrics: γ, F, C
+3. Panel 2:
+
+   * plot correlations c_xx, c_yy, c_zz
+4. Configure:
+
+   * axes
+   * labels (LaTeX)
+   * limits
+   * legends
+5. Add global title
+
+Key rule:
+
+* analytical → continuous lines
+* numerical  → markers
+
+---
+
+==================================================
+4. VISUALIZATION CONTROL
+==================================================
+
+After build:
+set(fig, 'Visible', 'on')
+
+During build:
+
+* figure remains hidden
+
+Purpose:
+
+* avoid rendering artifacts
+* cleaner UI behavior
+
+---
+
+==================================================
+5. EXPORT PIPELINE (DECOUPLED)
+==================================================
+
+Condition:
+if do_save
+
+Call:
+export_plot(output_path, @build_plot, style)
+
+Steps:
+
+1. Create hidden standalone figure
+2. Rebuild plot using same build_plot()
+3. Apply export settings:
+
+   * resolution
+   * background
+4. Save via print()
+
+IMPORTANT:
+
+* Do NOT export from tab figure
+* Always rebuild in standalone figure
+
+---
+
+==================================================
+6. STYLE SYSTEM (GLOBAL CONTROL)
+==================================================
+
+Function:
+get_plot_style()
+
+Controls:
+
+* figure size, renderer
+* layout spacing
+* axes formatting
+* fonts and labels
+* line widths, markers
+* legend style
+* export resolution
+
+Purpose:
+
+* ensure consistency across all experiments
+
+---
+
+==================================================
+7. COLOR PALETTE SYSTEM
+==================================================
+
+Function:
+get_plot_palette()
+
+Design:
+
+* semantic mapping (not arbitrary)
+
+Examples:
+
+* metrics:
+  γ_AB → blue
+  γ_A  → orange
+  γ_B  → green
+  F    → purple
+  C    → red
+
+* observables:
+  c_xx → blue
+  c_yy → orange
+  c_zz → green
+
+Purpose:
+
+* visual consistency
+* immediate interpretability 
+
+---
+
+==================================================
+8. CORE DESIGN PRINCIPLE
+==================================================
+
+Key abstraction:
+build_plot(parent_container)
+
+This enables:
+
+* reuse for GUI (tab)
+* reuse for export (hidden figure)
+* no duplicated plotting code
+
+---
+
+==================================================
+9. HIGH-LEVEL FLOW
+==================================================
+
+results_experiment_X
+↓
+plot_experiment_summary(...)
+↓
+get_plot_style + get_plot_palette
+↓
+get_experiment_figure_tab
+↓
+build_plot(tab)
+↓
+(optional)
+export_plot → rebuild → save PNG

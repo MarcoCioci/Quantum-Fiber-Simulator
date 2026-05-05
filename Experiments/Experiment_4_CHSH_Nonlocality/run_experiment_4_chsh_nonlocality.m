@@ -1,4 +1,4 @@
-function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, p_values, do_plot_summary, do_plot_bloch, chsh_axes)
+function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, p_values, do_plot_summary, do_plot_bloch, chsh_axes, do_save)
 % RUN_EXPERIMENT_4_CHSH_NONLOCALITY  Study CHSH nonlocality under phase evolution and depolarization.
 %
 % Objective:
@@ -6,11 +6,11 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
 %
 %       1. Phase-evolved Bell states:
 %
-%              |psi(θ)> = (|01> + exp(i * θ) |10>) / sqrt(2)
+%              |ψ(θ)⟩ = (|01⟩ + exp(iθ)|10⟩) / sqrt(2)
 %
 %       2. Depolarized Bell states:
 %
-%              rho(p) = (1 - p) rho_0 + (p / 4) I_4
+%              ρ(p) = (1 - p)ρ_0 + (p / 4)I_4
 %
 %   The experiment compares:
 %
@@ -39,6 +39,9 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
 %                     Each field must be a real numeric 3x1 or 1x3 vector.
 %                     The vectors are normalized internally.
 %
+%   do_save         - optional logical scalar controlling figure export.
+%                     Default value: false.
+%
 % Output:
 %   results_experiment_4 - structure containing:
 %
@@ -58,10 +61,11 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
 %       run_experiment_4_chsh_nonlocality(theta_values, p_values, do_plot_summary)
 %       run_experiment_4_chsh_nonlocality(theta_values, p_values, do_plot_summary, do_plot_bloch)
 %       run_experiment_4_chsh_nonlocality(theta_values, p_values, do_plot_summary, do_plot_bloch, chsh_axes)
+%       run_experiment_4_chsh_nonlocality(theta_values, p_values, do_plot_summary, do_plot_bloch, chsh_axes, do_save)
 %
 %   Empty inputs [] trigger default values.
 %
-%   If chsh_axes is omitted or empty, the default axes are optimal for |psi+>
+%   If chsh_axes is omitted or empty, the default axes are optimal for |ψ⁺⟩
 %   at θ = 0, where T = diag(1, 1, -1).
 
     % =========================
@@ -71,16 +75,23 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
     default_theta_values = linspace(0, 2*pi, 361);
     default_p_values = linspace(0, 1, 201);
 
+    fprintf('\n\n');
+    fprintf('==========================================\n');
+    fprintf('Experiment 4 - CHSH Nonlocality Summary\n');
+    fprintf('Monitoring summary\n');
+    fprintf('==========================================\n\n');
+
     if nargin == 0
         theta_values = default_theta_values;
         p_values = default_p_values;
         do_plot_summary = false;
         do_plot_bloch = false;
         chsh_axes = default_chsh_axes_psi_plus();
+        do_save = false;
 
         fprintf('No inputs provided, sampling θ with N = 361 uniformly in [0,2π].\n');
         fprintf('No inputs provided, sampling p with N = 201 uniformly in [0,1].\n');
-        fprintf('No CHSH axes provided, using default axes optimal for |psi+> at θ = 0.\n');
+        fprintf('No CHSH axes provided, using default axes optimal for |ψ⁺⟩ at θ = 0.\n');
 
     elseif nargin == 1
         if islogical(theta_values) && isscalar(theta_values)
@@ -89,44 +100,52 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
             p_values = default_p_values;
             do_plot_bloch = false;
             chsh_axes = default_chsh_axes_psi_plus();
+            do_save = false;
 
             fprintf('No θ values provided, sampling θ with N = 361 uniformly in [0,2π].\n');
             fprintf('No p values provided, sampling p with N = 201 uniformly in [0,1].\n');
-            fprintf('No CHSH axes provided, using default axes optimal for |psi+> at θ = 0.\n');
+            fprintf('No CHSH axes provided, using default axes optimal for |ψ⁺⟩ at θ = 0.\n');
         else
             p_values = default_p_values;
             do_plot_summary = false;
             do_plot_bloch = false;
             chsh_axes = default_chsh_axes_psi_plus();
+            do_save = false;
 
             fprintf('No p values provided, sampling p with N = 201 uniformly in [0,1].\n');
-            fprintf('No CHSH axes provided, using default axes optimal for |psi+> at θ = 0.\n');
+            fprintf('No CHSH axes provided, using default axes optimal for |ψ⁺⟩ at θ = 0.\n');
         end
 
     elseif nargin == 2
         do_plot_summary = false;
         do_plot_bloch = false;
         chsh_axes = default_chsh_axes_psi_plus();
+        do_save = false;
 
-        fprintf('No CHSH axes provided, using default axes optimal for |psi+> at θ = 0.\n');
+        fprintf('No CHSH axes provided, using default axes optimal for |ψ⁺⟩ at θ = 0.\n');
 
     elseif nargin == 3
         do_plot_bloch = false;
         chsh_axes = default_chsh_axes_psi_plus();
+        do_save = false;
 
-        fprintf('No CHSH axes provided, using default axes optimal for |psi+> at θ = 0.\n');
+        fprintf('No CHSH axes provided, using default axes optimal for |ψ⁺⟩ at θ = 0.\n');
 
     elseif nargin == 4
         chsh_axes = default_chsh_axes_psi_plus();
+        do_save = false;
 
-        fprintf('No CHSH axes provided, using default axes optimal for |psi+> at θ = 0.\n');
+        fprintf('No CHSH axes provided, using default axes optimal for |ψ⁺⟩ at θ = 0.\n');
 
     elseif nargin == 5
+        do_save = false;
+
+    elseif nargin == 6
         % keep provided inputs
 
     else
         error('run_experiment_4_chsh_nonlocality:InvalidNumInputs', ...
-              'Expected zero, one, two, three, four, or five input arguments.');
+              'Expected zero to six input arguments.');
     end
 
     if isempty(theta_values)
@@ -151,7 +170,12 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
 
     if isempty(chsh_axes)
         chsh_axes = default_chsh_axes_psi_plus();
-        fprintf('Empty CHSH axes provided, using default axes optimal for |psi+> at θ = 0.\n');
+        fprintf('Empty CHSH axes provided, using default axes optimal for |ψ⁺⟩ at θ = 0.\n');
+    end
+
+    if isempty(do_save)
+        do_save = false;
+        fprintf('Empty do_save provided, using false.\n');
     end
 
 
@@ -192,6 +216,11 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
     if ~islogical(do_plot_bloch) || ~isscalar(do_plot_bloch)
         error('run_experiment_4_chsh_nonlocality:InvalidBlochPlotFlag', ...
               'do_plot_bloch must be a logical scalar.');
+    end
+
+    if ~islogical(do_save) || ~isscalar(do_save)
+        error('run_experiment_4_chsh_nonlocality:InvalidDoSave', ...
+              'do_save must be a logical scalar.');
     end
 
     chsh_axes = validate_and_normalize_chsh_axes(chsh_axes);
@@ -299,11 +328,6 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
         results_experiment_4.depolarization.S_max - ...
         results_experiment_4.depolarization.analytical.S_max);
 
-    fprintf('\n');
-    fprintf('==========================================\n');
-    fprintf('Experiment 4 - CHSH Nonlocality Summary\n');
-    fprintf('Monitoring summary\n');
-    fprintf('==========================================\n');
 
     fprintf('theta sweep       : N = %d, min = %.6f, max = %.6f\n', ...
         N_theta, min(theta_values), max(theta_values));
@@ -331,6 +355,7 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
 
     fprintf('summary plot      : %s\n', logical_to_status(do_plot_summary));
     fprintf('Bloch axes plot   : %s\n', logical_to_status(do_plot_bloch));
+    fprintf('figure export     : %s\n', logical_to_status(do_save));
 
 
     % =========================
@@ -338,18 +363,18 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
     % =========================
 
     if do_plot_summary
-        plot_chsh_nonlocality_summary(results_experiment_4);
+        plot_chsh_nonlocality_summary(results_experiment_4, do_save);
     end
 
     if do_plot_bloch
-        plot_chsh_axes_bloch(results_experiment_4);
+        plot_chsh_axes_bloch(results_experiment_4, do_save);
     end
 
 end
 
 
 function chsh_axes = default_chsh_axes_psi_plus()
-% DEFAULT_CHSH_AXES_PSI_PLUS  Return CHSH axes optimal for |psi+> at θ = 0.
+% DEFAULT_CHSH_AXES_PSI_PLUS  Return CHSH axes optimal for |ψ⁺⟩ at θ = 0.
 
     x_axis = [1; 0; 0];
     y_axis = [0; 1; 0];

@@ -51,6 +51,8 @@ function export_plot(output_path, build_plot_function, style)
 
     build_plot_function(export_fig);
 
+    drawnow;  % <-- critical
+
     set(export_fig, ...
         'PaperPositionMode', 'auto');
 
