@@ -15,22 +15,22 @@ function C = compute_concurrence(state)
 %           C = 2 * |a*d - b*c|
 %
 %       - Mixed-state Wootters formula:
-%           C(rho) = max(0, lambda_1 - lambda_2 - lambda_3 - lambda_4)
+%           C(ρ) = max(0, λ₁ - λ₂ - λ₃ - λ₄)
 %
-%   where lambda_i are the square roots of the eigenvalues of
+%   where λ_i are the square roots of the eigenvalues of
 %
-%       rho * rho_tilde,
+%       ρ * ρ_tilde,
 %
 %   ordered in descending order, and
 %
-%       rho_tilde = (sigma_y ⊗ sigma_y) * rho* * (sigma_y ⊗ sigma_y).
+%       ρ_tilde = (σ_y ⊗ σ_y) * ρ* * (σ_y ⊗ σ_y).
 %
 % Input:
 %   state - either:
 %           * 4x1 complex column vector representing a normalized pure
 %             two-qubit state in the computational basis
 %
-%                 {|00>, |01>, |10>, |11>}
+%                 {|00⟩, |01⟩, |10⟩, |11⟩}
 %
 %           * 4x4 complex density matrix representing a two-qubit mixed
 %             state in the same basis
@@ -50,7 +50,7 @@ function C = compute_concurrence(state)
 %
 %   Context in simulator:
 %   - Bell states should give C = 1.
-%   - The state (|01> + exp(i*θ)|10>)/sqrt(2) should give C = 1
+%   - The state (|01⟩ + exp(i*θ)|10⟩)/sqrt(2) should give C = 1
 %     for every θ.
 %   - Product states should give C = 0.
 %   - Mixed noisy or ensemble states require the density-matrix branch.

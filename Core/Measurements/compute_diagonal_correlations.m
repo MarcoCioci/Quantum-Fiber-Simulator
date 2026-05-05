@@ -4,9 +4,9 @@ function correlations = compute_diagonal_correlations(state)
 % Objective:
 %   Compute the standard aligned two-qubit correlation observables:
 %
-%       sigma_x ⊗ sigma_x
-%       sigma_y ⊗ sigma_y
-%       sigma_z ⊗ sigma_z
+%       σ_x ⊗ σ_x
+%       σ_y ⊗ σ_y
+%       σ_z ⊗ σ_z
 %
 %   by extracting the diagonal entries of the full correlation tensor.
 %

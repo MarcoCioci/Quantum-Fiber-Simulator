@@ -4,7 +4,7 @@ function S = compute_chsh_from_tensor(T, a1, a2, b1, b2)
 % Objective:
 %   Compute the CHSH parameter
 %
-%       S = E(a1,b1) + E(a1,b2) + E(a2,b1) - E(a2,b2)
+%       S = E(a₁,b₁) + E(a₁,b₂) + E(a₂,b₁) - E(a₂,b₂)
 %
 %   using the tensor expression
 %
@@ -15,18 +15,18 @@ function S = compute_chsh_from_tensor(T, a1, a2, b1, b2)
 % Input:
 %   T  - 3x3 real correlation tensor with entries
 %
-%          T_ij = Tr[rho_AB * (sigma_i tensor sigma_j)]
+%          T_ij = Tr[ρ_AB * (σ_i ⊗ σ_j)]
 %
-%   a1 - 3x1 real unit vector defining the first measurement axis
+%   a₁ - 3x1 real unit vector defining the first measurement axis
 %        for subsystem A
 %
-%   a2 - 3x1 real unit vector defining the second measurement axis
+%   a₂ - 3x1 real unit vector defining the second measurement axis
 %        for subsystem A
 %
-%   b1 - 3x1 real unit vector defining the first measurement axis
+%   b₁ - 3x1 real unit vector defining the first measurement axis
 %        for subsystem B
 %
-%   b2 - 3x1 real unit vector defining the second measurement axis
+%   b₂ - 3x1 real unit vector defining the second measurement axis
 %        for subsystem B
 %
 % Output:

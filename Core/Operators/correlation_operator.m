@@ -25,9 +25,9 @@ function O = correlation_operator(A, B)
 %
 %   In the two-qubit case, this gives standard operators such as:
 %
-%       sigma_x ⊗ sigma_x
-%       sigma_y ⊗ sigma_y
-%       sigma_z ⊗ sigma_z
+%       σ_x ⊗ σ_x
+%       σ_y ⊗ σ_y
+%       σ_z ⊗ σ_z
 %
 %   This function only constructs the tensor-product operator.
 %   It does not check whether A and B are Hermitian, unitary,

@@ -13,18 +13,18 @@ function test_fidelity()
 %       2. Orthogonal Bell states:
 %          F = 0
 %
-%       3. Phase-evolved Bell-like state with respect to |Psi+>:
+%       3. Phase-evolved Bell-like state with respect to |Ψ⁺⟩:
 %          F(θ) = (1 + cos(θ)) / 2
 %
-%       4. Density matrix of |Psi+> with pure target |Psi+>:
+%       4. Density matrix of |Ψ⁺⟩ with pure target |Ψ⁺⟩:
 %          F = 1
 %
 %       5. Symmetry check for pure-density mixed input order:
-%          F(|psi>, rho) = F(rho, |psi>)
+%          F(|ψ⟩, ρ) = F(ρ, |ψ⟩)
 %
 %       6. Separable mixed state:
-%          rho_sep = 1/2 |01><01| + 1/2 |10><10|
-%          F_{Psi+}(rho_sep) = 1/2
+%          ρ_sep = 1/2 |01⟩⟨01| + 1/2 |10⟩⟨10|
+%          F_{Ψ⁺}(ρ_sep) = 1/2
 %
 % Input:
 %   None
@@ -49,7 +49,7 @@ function test_fidelity()
     % Common reference states
     % =========================
 
-    psi_plus  = (computational_basis('01') + computational_basis('10')) / sqrt(2);   % |Psi+>
+    psi_plus  = (computational_basis('01') + computational_basis('10')) / sqrt(2);   % |ψ+>
     psi_minus = (computational_basis('01') - computational_basis('10'))  / sqrt(2);  % |Psi->
 
     rho_psi_plus = state_to_density_matrix(psi_plus);
@@ -132,7 +132,7 @@ function test_fidelity()
 
     assert(abs(fidelity_sep - 0.5) < tolerance, ...
         'test_fidelity:SeparableMixedStateFailed', ...
-        'Fidelity of the separable mixed state with |Psi+> should be 1/2.');
+        'Fidelity of the separable mixed state with |ψ+> should be 1/2.');
 
 
     % =========================

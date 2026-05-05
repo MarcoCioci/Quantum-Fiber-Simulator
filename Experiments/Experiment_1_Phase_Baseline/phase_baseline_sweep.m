@@ -5,13 +5,13 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %   Compute the deterministic phase-sweep data associated with
 %   Experiment 1 of the simulator.
 %
-%   Starting from the fixed Bell input state |Psi+>, this function:
+%   Starting from the fixed Bell input state |Ψ⁺⟩, this function:
 %       - sweeps the relative phase θ
 %       - applies the reduced local fiber model
 %       - computes the full two-qubit Pauli correlation tensor
 %       - extracts aligned two-qubit Pauli correlations
 %       - computes global and reduced purities
-%       - computes fidelity with respect to the reference Bell state |Psi+>
+%       - computes fidelity with respect to the reference Bell state |Ψ⁺⟩
 %       - computes concurrence of the propagated pure state
 %
 % Input:
@@ -33,7 +33,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %
 % Notes:
 %   The input state is fixed to:
-%       |Psi+>
+%       |Ψ⁺⟩
 %
 %   The local evolution is:
 %       U_A = phase_unitary(θ)
@@ -46,7 +46,6 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 %         sin(θ),  cos(θ),  0  ;
 %         0,           0,   -1 ]
 %
-%   Plotting is intentionally excluded from this function.
 
     % =========================
     % Robustness checks
@@ -112,7 +111,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
         psi = apply_unitary(U_A, U_B, psi_ref);
         rho = state_to_density_matrix(psi);
 
-        T = compute_correlation_function_from_tensor(rho);
+        T = compute_correlation_tensor(rho);
         corr = compute_correlations(rho);
 
         rho_A = partial_trace_B(rho);

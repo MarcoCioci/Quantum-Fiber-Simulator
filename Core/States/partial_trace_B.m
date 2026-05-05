@@ -3,21 +3,21 @@ function rho_A = partial_trace_B(rho_AB)
 %
 % Objective:
 %   Compute the reduced density operator of subsystem A from the bipartite
-%   density matrix rho_AB by performing the partial trace over subsystem B.
+%   density matrix ρ_AB by performing the partial trace over subsystem B.
 %
 % Input:
 %   rho_AB - 4x4 bipartite density matrix representing a two-qubit state
 %            in the computational basis:
-%            {|00>, |01>, |10>, |11>}
+%            {|00⟩, |01⟩, |10⟩, |11⟩}
 %
 % Output:
 %   rho_A  - 2x2 reduced density matrix of subsystem A
 %
 % Notes:
 %   The function assumes a two-qubit system with basis ordering:
-%       |00>, |01>, |10>, |11>
+%       |00⟩, |01⟩, |10⟩, |11⟩
 %   so that:
-%       rho_A = Tr_B(rho_AB)
+%       ρ_A = Tr_B(ρ_AB)
 %
 %   This operation extracts the local state of subsystem A from the global
 %   bipartite state.

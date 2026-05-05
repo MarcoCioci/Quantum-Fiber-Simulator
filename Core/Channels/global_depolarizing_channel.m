@@ -2,11 +2,11 @@ function rho_out = global_depolarizing_channel(rho, p)
 % GLOBAL_DEPOLARIZING_CHANNEL  Apply a global isotropic depolarizing channel.
 %
 % Objective:
-%   Apply the global depolarizing map to a density matrix rho:
+%   Apply the global depolarizing map to a density matrix ρ:
 %
-%       rho_out = (1 - p) * rho + (p / d) * I_d
+%       ρ_out = (1 - p) * ρ + (p / d) * I_d
 %
-%   where d is the Hilbert-space dimension of rho.
+%   where d is the Hilbert-space dimension of ρ.
 %
 % Input:
 %   rho - dxd complex density matrix representing a quantum state
@@ -19,7 +19,7 @@ function rho_out = global_depolarizing_channel(rho, p)
 %   This function acts on the full density matrix as a single global system.
 %   For a two-qubit state, d = 4 and the map becomes:
 %
-%       rho_out = (1 - p) * rho + (p / 4) * I_4
+%       ρ_out = (1 - p) * ρ + (p / 4) * I_4
 %
 %   This is not the same as applying independent local depolarizing channels
 %   to subsystems A and B.

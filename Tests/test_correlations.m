@@ -12,7 +12,7 @@ function test_correlations()
 %
 %   for the phase-evolved Bell-like state
 %
-%       |psi(θ)> = (|01> + exp(i * θ)|10>) / sqrt(2).
+%       |psi(θ)> = (|01> + exp(i*θ)|10>) / sqrt(2).
 %
 % Analytical predictions:
 %

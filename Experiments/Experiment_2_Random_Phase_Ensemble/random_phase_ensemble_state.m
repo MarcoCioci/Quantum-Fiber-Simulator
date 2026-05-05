@@ -5,7 +5,7 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %   Compute the ensemble-averaged two-qubit density matrix associated with
 %   the random-phase noise model used in Experiment 2.
 %
-%   Starting from the fixed Bell input state |Psi+>, this function:
+%   Starting from the fixed Bell input state |Ψ⁺⟩, this function:
 %       - applies a sampled relative phase to each realization
 %       - converts each pure output state into a density operator
 %       - averages all realizations into a single ensemble state
@@ -23,7 +23,7 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %
 %   The input state is fixed to:
 %
-%       |Psi+> = (|01> + |10>) / sqrt(2)
+%       |Ψ⁺⟩ = (|01⟩ + |10⟩) / sqrt(2)
 %
 %   The local evolution for each sampled realization is:
 %
@@ -32,15 +32,15 @@ function rho_ensemble = random_phase_ensemble_state(theta_samples)
 %
 %   Therefore:
 %
-%       |Psi+> -> (|01> + exp(i * θ_k)|10>) / sqrt(2)
+%       |Ψ⁺⟩ -> (|01⟩ + exp(i * θ_k)|10⟩) / sqrt(2)
 %
 %   The ensemble state is constructed as:
 %
-%       rho_ensemble = (1/N) * sum_k rho_k
+%       ρ_ensemble = (1/N) * sum_k ρ_k
 %
 %   where:
 %
-%       rho_k = |psi(θ_k)><psi(θ_k)|
+%       ρ_k = |ψ(θ_k)⟩⟨ψ(θ_k)|
 %
 %   Plotting and observable analysis are intentionally excluded from this
 %   function. Those tasks should be handled by experiment-level routines.

@@ -1,22 +1,26 @@
-function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_values, do_summary_plot, do_tensor_plot)
+function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_values, do_summary_plot, do_tensor_plot, do_save)
 % RUN_EXPERIMENT_1_PHASE_BASELINE_SWEEP  Sweep Bell-state evolution under the reduced phase model.
 %
 % Objective:
-%   Run Experiment 1 by propagating the reference Bell state |Psi+> through
+%   Run Experiment 1 by propagating the reference Bell state |Ψ⁺⟩ through
 %   the reduced deterministic phase model over a user-defined set of phase
-%   values theta, and compute the corresponding correlation observables,
+%   values θ, and compute the corresponding correlation observables,
 %   full correlation tensor, and state metrics.
 %
 % Input:
-%   theta_values   - optional real numeric vector containing phase values in
-%                    radians. If omitted, a default grid is handled by
-%                    phase_baseline_sweep.
+%   theta_values     - optional real numeric vector containing phase values in
+%                      radians. If omitted, a default grid is handled by
+%                      phase_baseline_sweep.
 %
-%   do_summary_plot        - optional logical scalar controlling automatic plotting.
-%                    Default value: true.
+%   do_summary_plot  - optional logical scalar controlling automatic plotting.
+%                      Default value: true.
 %
-%   do_tensor_plot - optional logical scalar controlling plotting of the
-%                    full correlation tensor. Default value: false.
+%   do_tensor_plot   - optional logical scalar controlling plotting of the
+%                      full correlation tensor. Default value: false.
+%
+%   do_save          - optional logical scalar controlling figure export.
+%                      The same value is passed to all plot functions.
+%                      Default value: false.
 %
 % Output:
 %   results_experiment_1 - structure containing:
@@ -66,6 +70,10 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
         do_tensor_plot = false;
     end
 
+    if nargin < 4 || isempty(do_save)
+        do_save = false;
+    end
+
 
     % =========================
     % Robustness checks
@@ -91,6 +99,11 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
     if ~islogical(do_tensor_plot) || ~isscalar(do_tensor_plot)
         error('run_experiment_1_phase_baseline_sweep:InvalidTensorPlotFlag', ...
               'do_tensor_plot must be a logical scalar.');
+    end
+
+    if ~islogical(do_save) || ~isscalar(do_save)
+        error('run_experiment_1_phase_baseline_sweep:InvalidSaveFlag', ...
+              'do_save must be a logical scalar.');
     end
 
 
@@ -172,26 +185,26 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
 
     fprintf('\n');
     fprintf('==========================================\n');
-    fprintf('Experiment 1 - Monitoring summary\n');
+    fprintf('Experiment 1 - Monitoring Summary\n');
     fprintf('==========================================\n');
-    fprintf('theta sweep       : N = %d, min = %.6f, max = %.6f\n', ...
+    fprintf('theta sweep            : N = %d, min = %.6f, max = %.6f\n', ...
         N, min(theta_values_out), max(theta_values_out));
-    fprintf('c_xx max |err|    : %.3e\n', ...
+    fprintf('c_xx max |err|         : %.3e\n', ...
         max(abs(results_experiment_1.c_xx - results_experiment_1.analytical.c_xx)));
-    fprintf('c_yy max |err|    : %.3e\n', ...
+    fprintf('c_yy max |err|         : %.3e\n', ...
         max(abs(results_experiment_1.c_yy - results_experiment_1.analytical.c_yy)));
-    fprintf('c_zz max |err|    : %.3e\n', ...
+    fprintf('c_zz max |err|         : %.3e\n', ...
         max(abs(results_experiment_1.c_zz - results_experiment_1.analytical.c_zz)));
-    fprintf('T tensor max |err|: %.3e\n', max(tensor_errors));
-    fprintf('gamma_AB max |err|: %.3e\n', ...
+    fprintf('T tensor max ||err||_F : %.3e\n', max(tensor_errors));
+    fprintf('gamma_AB max |err|     : %.3e\n', ...
         max(abs(results_experiment_1.purity_global - results_experiment_1.analytical.purity_global)));
-    fprintf('gamma_A max |err| : %.3e\n', ...
+    fprintf('gamma_A max |err|      : %.3e\n', ...
         max(abs(results_experiment_1.purity_A - results_experiment_1.analytical.purity_A)));
-    fprintf('gamma_B max |err| : %.3e\n', ...
+    fprintf('gamma_B max |err|      : %.3e\n', ...
         max(abs(results_experiment_1.purity_B - results_experiment_1.analytical.purity_B)));
-    fprintf('F_Psi+ max |err|  : %.3e\n', ...
+    fprintf('F_psi+ max |err|       : %.3e\n', ...
         max(abs(results_experiment_1.fidelity_psi_plus - results_experiment_1.analytical.fidelity_psi_plus)));
-    fprintf('C max |err|       : %.3e\n', ...
+    fprintf('C max |err|            : %.3e\n', ...
         max(abs(results_experiment_1.concurrence - results_experiment_1.analytical.concurrence)));
 
 
@@ -200,12 +213,12 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
     % =========================
 
     if do_summary_plot
-        plot_phase_baseline_comparison(results_experiment_1);
-        plot_phase_baseline_state_metrics(results_experiment_1);
+        plot_phase_baseline_comparison(results_experiment_1, do_save);
+        plot_phase_baseline_state_metrics(results_experiment_1, do_save);
     end
 
     if do_tensor_plot
-        plot_phase_baseline_tensor(results_experiment_1);
+        plot_phase_baseline_tensor(results_experiment_1, do_save);
     end
 
 end

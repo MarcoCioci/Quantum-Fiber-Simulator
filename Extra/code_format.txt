@@ -14,6 +14,10 @@ function [out1, out2] = function_name(in1, in2)
 %
 % Notes:
 %   Optional remarks (usage, assumptions, context in simulator)
+%
+%   Symbol conventions:
+%   - Header comments follow the notation defined in symbology.txt
+%   - Inline comments use ASCII/code notation for clarity
 
     % =========================
     % Robustness checks

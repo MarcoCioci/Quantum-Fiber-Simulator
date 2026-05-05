@@ -1,22 +1,22 @@
 function purity = compute_purity(rho)
-% COMPUTE_PURITY  Compute the purity Tr(rho^2) of a density matrix.
+% COMPUTE_PURITY  Compute the purity Tr(ρ^2) of a density matrix.
 %
 % Objective:
 %   Evaluate the purity of a quantum state represented by a density matrix.
 %   This quantity is defined as
 %
-%       purity = Tr(rho^2)
+%       γ = Tr(ρ^2)
 %
 %   and is used to distinguish pure and mixed states:
 %
-%       purity = 1    for a pure state
-%       purity < 1    for a mixed state
+%       γ = 1    for a pure state
+%       γ < 1    for a mixed state
 %
 % Input:
 %   rho - NxN density matrix representing a quantum state
 %
 % Output:
-%   purity - scalar value equal to Tr(rho^2)
+%   purity - scalar value equal to Tr(ρ^2)
 %
 % Notes:
 %   The function is intended for density operators, so the input should be

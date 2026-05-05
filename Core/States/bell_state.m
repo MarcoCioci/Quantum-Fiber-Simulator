@@ -7,7 +7,7 @@ function psi = bell_state(type)
 %
 %   The states are defined in the computational basis:
 %
-%       {|00>, |01>, |10>, |11>}
+%       {|00⟩, |01⟩, |10⟩, |11⟩}
 %
 % Input:
 %   type  - string or char specifying the Bell state:

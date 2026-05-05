@@ -17,9 +17,6 @@ function test_chsh()
 % Output:
 %   None
 %
-% Notes:
-%   The test raises an error if any expected property is not matched within
-%   numerical tolerance. If all checks pass, a success message is printed.
 
     % =========================
     % Test configuration
@@ -117,7 +114,7 @@ function test_chsh()
     for k = 1:numel(p_values)
         p = p_values(k);
 
-        rho_dep = depolarizing_channel_two_qubits(rho_plus, p);
+        rho_dep = global_depolarizing_channel(rho_plus, p);
         T_dep = compute_correlation_tensor(rho_dep);
 
         S_max_dep = compute_chsh_max_from_tensor(T_dep);

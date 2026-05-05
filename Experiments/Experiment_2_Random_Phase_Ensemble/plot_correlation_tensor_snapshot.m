@@ -1,4 +1,4 @@
-function plot_correlation_tensor_snapshot(results_current)
+function plot_correlation_tensor_snapshot(results_current, do_save)
 % PLOT_CORRELATION_TENSOR_SNAPSHOT  Visualize the numerical Pauli correlation tensor for one experiment case.
 %
 % Objective:
@@ -7,29 +7,37 @@ function plot_correlation_tensor_snapshot(results_current)
 %   Each tensor entry is the expectation value of a local Pauli-product
 %   observable:
 %
-%       T(i,j) = expectation value of sigma_i on subsystem A
-%                jointly with sigma_j on subsystem B
+%       T(i,j) = ⟨σ_i ⊗ σ_j⟩
 %
 %   where i,j belong to {x,y,z}.
 %
 % Input:
 %   results_current - structure containing:
 %       .correlation_tensor  - numerical 3x3 correlation tensor
-%       .case_label          - case label used in the title [optional]
+%       .case_label          - case label used in the title and filename [optional]
+%
+%   do_save (optional) - logical flag to enable figure saving (default: false)
 %
 % Output:
 %   None
-%
-% Notes:
-%   - Designed for correlation-tensor snapshots of one experiment case.
-%   - Color scale is fixed to [-1, 1] because Pauli correlations are bounded.
-%   - Only the real part is plotted, since expectation values of Hermitian
-%     observables should be real up to numerical roundoff.
-%   - The interface is unchanged: analytical data, if present, is ignored.
 
     % =========================
     % Robustness checks
     % =========================
+
+    if nargin < 1 || nargin > 2
+        error('plot_correlation_tensor_snapshot:InvalidNumInputs', ...
+              'Expected 1 or 2 input arguments.');
+    end
+
+    if nargin < 2 || isempty(do_save)
+        do_save = false;
+    end
+
+    if ~islogical(do_save) || ~isscalar(do_save)
+        error('plot_correlation_tensor_snapshot:InvalidDoSave', ...
+              'do_save must be a logical scalar.');
+    end
 
     if ~isstruct(results_current)
         error('plot_correlation_tensor_snapshot:InvalidInputType', ...
@@ -59,58 +67,134 @@ function plot_correlation_tensor_snapshot(results_current)
     % =========================
 
     palette = get_plot_palette();
+    style   = get_plot_style();
 
 
-    % =========================
-    % Plot labels
+        % =========================
+    % Labels and filename
     % =========================
 
     axis_labels = {'x', 'y', 'z'};
 
     if isfield(results_current, 'case_label')
         case_label = char(results_current.case_label);
-        title_string = sprintf('Experiment 2 — Numerical Correlation Tensor | %s', case_label);
     else
-        title_string = 'Experiment 2 — Numerical Correlation Tensor';
+        case_label = 'case';
+    end
+
+    if isfield(results_current, 'distribution_type')
+        distribution_type = char(results_current.distribution_type);
+    else
+        distribution_type = case_label;
+    end
+
+    distribution_label_file = lower(distribution_type);
+    distribution_label_file = regexprep(distribution_label_file, '\s+', '_');
+    distribution_label_file = regexprep(distribution_label_file, '[^a-z0-9_]', '');
+    distribution_label_file = regexprep(distribution_label_file, '_+', '_');
+    distribution_label_file = regexprep(distribution_label_file, '^_|_$', '');
+
+    title_string = sprintf( ...
+        'Experiment 2 — Numerical Correlation Tensor | %s', ...
+        case_label);
+
+    output_folder = [ ...
+        '/home/marcocioci/HPC/THESIS-Quantum-Communications/', ...
+        'Quantum-Fiber-Simulator/Images/Experiment_2'];
+
+    output_path = fullfile(output_folder, ...
+        sprintf('experiment_2_correlation_tensor_%s.png', distribution_label_file));
+
+    % =========================
+    % Figure and tab
+    % =========================
+
+    [fig, tab] = get_experiment_figure_tab( ...
+        style.figure.experiment_2_id, ...
+        sprintf('Tensor %s', case_label), ...
+        'Experiment 2 — Random Phase Ensemble', ...
+        style);
+
+    build_plot(tab);
+
+    set(fig, 'Visible', style.figure.visible_after_build);
+
+
+    % =========================
+    % Save (conditional)
+    % =========================
+
+    if do_save
+        if ~exist(output_folder, 'dir')
+            mkdir(output_folder);
+        end
+
+        export_plot(output_path, @build_plot, style);
     end
 
 
     % =========================
-    % Figure
+    % Local plot builder
     % =========================
 
-    figure('Name', title_string);
+    function build_plot(parent_container)
 
-    plot_single_tensor_heatmap(T_num, axis_labels, '', [-1, 1], palette);
+        tl = tiledlayout(parent_container, 1, 1, ...
+            'TileSpacing', style.layout.tile_spacing, ...
+            'Padding', style.layout.padding);
 
-    sgtitle(title_string, 'FontWeight', 'bold');
+        ax = nexttile(tl);
+
+        plot_single_tensor_heatmap( ...
+            ax, ...
+            T_num, ...
+            axis_labels, ...
+            [-1, 1], ...
+            palette, ...
+            style);
+
+        title(tl, title_string, ...
+            'FontSize', style.title.font_size, ...
+            'FontWeight', style.title.font_weight, ...
+            'Interpreter', style.title.interpreter);
+
+    end
 
 end
 
 
-function plot_single_tensor_heatmap(T, axis_labels, plot_title, color_limits, palette)
+function plot_single_tensor_heatmap(ax, T, axis_labels, color_limits, palette, style)
 % PLOT_SINGLE_TENSOR_HEATMAP  Plot one 3x3 correlation tensor heatmap.
 
-    imagesc(T);
-    axis square;
-    colorbar;
-    caxis(color_limits);
+    imagesc(ax, T);
 
-    colormap(parula);
+    axis(ax, 'square');
+    colormap(ax, style.heatmap.colormap);
+    clim(ax, color_limits);
 
-    set(gca, ...
+    cb = colorbar(ax);
+    cb.TickLabelInterpreter = style.axes.tick_label_interpreter;
+    cb.FontSize = style.axes.font_size;
+
+    set(ax, ...
         'XTick', 1:3, ...
         'XTickLabel', axis_labels, ...
         'YTick', 1:3, ...
         'YTickLabel', axis_labels, ...
         'XColor', palette.gray_dark, ...
-        'YColor', palette.gray_dark);
+        'YColor', palette.gray_dark, ...
+        'FontSize', style.axes.font_size, ...
+        'LineWidth', style.axes.line_width, ...
+        'TickLabelInterpreter', style.axes.tick_label_interpreter, ...
+        'Layer', style.axes.layer);
 
-    xlabel('Measurement axis on subsystem B');
-    ylabel('Measurement axis on subsystem A');
+    xlabel(ax, 'Measurement axis on subsystem B', ...
+        'Interpreter', style.labels.interpreter, ...
+        'FontSize', style.labels.font_size_axis);
 
-    % ---- Removed axes title to avoid redundancy ----
-    % title(plot_title);
+    ylabel(ax, 'Measurement axis on subsystem A', ...
+        'Interpreter', style.labels.interpreter, ...
+        'FontSize', style.labels.font_size_axis);
 
     for row_idx = 1:3
         for col_idx = 1:3
@@ -123,10 +207,11 @@ function plot_single_tensor_heatmap(T, axis_labels, plot_title, color_limits, pa
                 text_color = palette.gray_dark;
             end
 
-            text(col_idx, row_idx, sprintf('%+.3f', value), ...
+            text(ax, col_idx, row_idx, sprintf('%+.3f', value), ...
                  'HorizontalAlignment', 'center', ...
                  'Color', text_color, ...
-                 'FontWeight', 'bold');
+                 'FontWeight', 'bold', ...
+                 'FontSize', style.labels.font_size_title);
 
         end
     end

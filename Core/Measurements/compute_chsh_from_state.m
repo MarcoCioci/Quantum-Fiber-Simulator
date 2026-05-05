@@ -4,27 +4,27 @@ function S = compute_chsh_from_state(state, a1, a2, b1, b2)
 % Objective:
 %   Compute the CHSH parameter
 %
-%       S = E(a1,b1) + E(a1,b2) + E(a2,b1) - E(a2,b2)
+%       S = E(a₁,b₁) + E(a₁,b₂) + E(a₂,b₁) - E(a₂,b₂)
 %
 %   for a two-qubit quantum state and four local measurement directions
-%   a1, a2, b1, b2 on the Bloch sphere.
+%   a₁, a₂, b₁, b₂ on the Bloch sphere.
 %
 % Input:
 %   state - quantum state of the two-qubit system. Accepted formats:
 %
-%             4x1 complex vector      pure state ket |psi>
-%             4x4 complex matrix      density matrix rho_AB
+%             4x1 complex vector      pure state ket |ψ⟩
+%             4x4 complex matrix      density matrix ρ_AB
 %
-%   a1    - 3x1 real unit vector defining the first measurement axis
+%   a₁    - 3x1 real unit vector defining the first measurement axis
 %           for subsystem A
 %
-%   a2    - 3x1 real unit vector defining the second measurement axis
+%   a₂    - 3x1 real unit vector defining the second measurement axis
 %           for subsystem A
 %
-%   b1    - 3x1 real unit vector defining the first measurement axis
+%   b₁    - 3x1 real unit vector defining the first measurement axis
 %           for subsystem B
 %
-%   b2    - 3x1 real unit vector defining the second measurement axis
+%   b₂    - 3x1 real unit vector defining the second measurement axis
 %           for subsystem B
 %
 % Output:
@@ -36,7 +36,7 @@ function S = compute_chsh_from_state(state, a1, a2, b1, b2)
 %   This function evaluates CHSH directly from the input state by calling
 %   the arbitrary-axis correlation routine:
 %
-%       E(a,b) = Tr[rho_AB * (sigma(a) tensor sigma(b))]
+%       E(a,b) = Tr[ρ_AB * (σ(a) ⊗ σ(b))]
 %
 %   If the input state is a pure vector, the correlation routine handles the
 %   conversion to the corresponding density matrix.

@@ -1,4 +1,4 @@
-function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases, do_summary_plot, do_tensor_plot)
+function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases, do_summary_plot, do_tensor_plot, do_save)
 % RUN_EXPERIMENT_2_RANDOM_PHASE  Sweep Bell-state degradation under random-phase ensembles.
 %
 % Objective:
@@ -11,6 +11,7 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
 %   experiment_2_cases - optional cell array of case structures
 %   do_summary_plot    - logical flag for standard plots (default = true)
 %   do_tensor_plot     - logical flag for tensor plots (default = false)
+%   do_save            - logical flag controlling figure export (default = false)
 %
 % Output:
 %   results_experiment_2 - structure containing all results
@@ -19,17 +20,19 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
     % Default input handling
     % =========================
 
+    num_samples = 100;
+
     if nargin < 1 || isempty(experiment_2_cases)
         experiment_2_cases = {
-            struct('distribution_type','constant','num_samples',100,'parameters',{{pi/4}}, ...
+            struct('distribution_type','constant','num_samples',num_samples,'parameters',{{pi/4}}, ...
                 'label','constant | θ = π/4'); ...
 
-            struct('distribution_type','uniform','num_samples',100,'parameters',{{0,2*pi}}, ...
+            struct('distribution_type','uniform','num_samples',num_samples,'parameters',{{0,2*pi}}, ...
                 'label','uniform | θ ∈ [0, 2π]'); ...
 
-            struct('distribution_type','gaussian','num_samples',100,'parameters',{{0,1}}, ...
+            struct('distribution_type','gaussian','num_samples',num_samples,'parameters',{{0,1}}, ...
                 'label','gaussian | θ ~ N(0,1)')
-};
+        };
     end
 
     if nargin < 2 || isempty(do_summary_plot)
@@ -38,6 +41,10 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
 
     if nargin < 3 || isempty(do_tensor_plot)
         do_tensor_plot = false;
+    end
+
+    if nargin < 4 || isempty(do_save)
+        do_save = false;
     end
 
 
@@ -58,6 +65,11 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
     if ~islogical(do_tensor_plot) || ~isscalar(do_tensor_plot)
         error('run_experiment_2_random_phase:InvalidTensorPlotFlag', ...
               'do_tensor_plot must be a logical scalar.');
+    end
+
+    if ~islogical(do_save) || ~isscalar(do_save)
+        error('run_experiment_2_random_phase:InvalidSaveFlag', ...
+              'do_save must be a logical scalar.');
     end
 
 
@@ -163,13 +175,19 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
 
 
         % =========================
-        % Console summary
+        % Console monitoring
         % =========================
 
-        fprintf('c_xx error        : %.3e\n', abs(correlations.c_xx - analytical_c_xx));
-        fprintf('c_yy error        : %.3e\n', abs(correlations.c_yy - analytical_c_yy));
-        fprintf('c_zz error        : %.3e\n', abs(correlations.c_zz - analytical_c_zz));
-        fprintf('tensor error (F)  : %.3e\n', norm(correlation_tensor - analytical_tensor, 'fro'));
+        fprintf('num_samples            : %d\n',   numel(theta_samples)); 
+        fprintf('c_xx |err|             : %.3e\n', abs(correlations.c_xx - analytical_c_xx));
+        fprintf('c_yy |err|             : %.3e\n', abs(correlations.c_yy - analytical_c_yy));
+        fprintf('c_zz |err|             : %.3e\n', abs(correlations.c_zz - analytical_c_zz));
+        fprintf('T tensor ||err||_F     : %.3e\n', norm(correlation_tensor - analytical_tensor, 'fro'));
+        fprintf('gamma_AB |err|         : %.3e\n', abs(purity_global - analytical_purity_global));
+        fprintf('gamma_A |err|          : %.3e\n', abs(purity_A - analytical_purity_A));
+        fprintf('gamma_B |err|          : %.3e\n', abs(purity_B - analytical_purity_B));
+        fprintf('F_psi+ |err|           : %.3e\n', abs(fidelity_psi_plus - analytical_fidelity));
+        fprintf('C |err|                : %.3e\n', abs(concurrence - analytical_concurrence));
 
 
         % =========================
@@ -220,17 +238,15 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
         % =========================
 
         if do_summary_plot
-            plot_random_phase_summary(results_current);
+            plot_random_phase_summary(results_current, do_save);
         end
 
         if do_tensor_plot
-            plot_correlation_tensor_snapshot(results_current);
+            plot_correlation_tensor_snapshot(results_current, do_save);
         end
 
     end
-
 end
-
 
 function check_required_fields(input_struct, required_fields, error_id)
 % CHECK_REQUIRED_FIELDS  Verify that all required fields are present.
@@ -242,5 +258,4 @@ function check_required_fields(input_struct, required_fields, error_id)
             error(error_id, 'Field "%s" not found.', field_name);
         end
     end
-
 end

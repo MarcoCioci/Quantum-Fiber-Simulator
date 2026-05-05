@@ -4,7 +4,7 @@ function sigma_n = measurement_operator_axis(n)
 % Objective:
 %   Construct the Hermitian single-qubit measurement operator
 %
-%       sigma(n) = n_x sigma_x + n_y sigma_y + n_z sigma_z
+%       σ(n) = n_x σ_x + n_y σ_y + n_z σ_z
 %
 %   associated with a real unit vector n on the Bloch sphere.
 %
@@ -23,10 +23,10 @@ function sigma_n = measurement_operator_axis(n)
 % Notes:
 %   This function implements the elementary building block required for
 %   arbitrary local measurement axes. It generalizes the fixed Pauli
-%   observables sigma_x, sigma_y, sigma_z already used in aligned
+%   observables σ_x, σ_y, σ_z already used in aligned
 %   correlation measurements.
 %
-%   The input vector must be normalized because sigma(n) represents a
+%   The input vector must be normalized because σ(n) represents a
 %   physical two-outcome Pauli measurement only when ||n|| = 1.
 
     % =========================

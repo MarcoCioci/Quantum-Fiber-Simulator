@@ -2,10 +2,10 @@ function rho = state_to_density_matrix(psi)
 % STATE_TO_DENSITY_MATRIX  Convert a normalized pure state vector into a density matrix.
 %
 % Objective:
-%   Given a normalized pure state |psi> represented as an Nx1 complex column
+%   Given a normalized pure state |ψ⟩ represented as an Nx1 complex column
 %   vector, construct the corresponding density operator
 %
-%       rho = |psi><psi|
+%       ρ = |ψ⟩⟨ψ|
 %
 %   This function is used to move from a pure-state vector description to a
 %   density-matrix description, which is required for reduced states,
@@ -15,15 +15,15 @@ function rho = state_to_density_matrix(psi)
 %   psi - Nx1 complex column vector representing a normalized pure quantum state
 %
 % Output:
-%   rho - NxN complex density matrix associated with psi
+%   rho - NxN complex density matrix associated with ψ
 %
 % Notes:
 %   The returned operator should satisfy the standard properties of a pure
 %   state density matrix:
 %
-%       - Hermitian: rho = rho'
-%       - Unit trace: trace(rho) = 1
-%       - Rank one, if psi is normalized and valid
+%       - Hermitian: ρ = ρ'
+%       - Unit trace: Tr(ρ) = 1
+%       - Rank one, if ψ is normalized and valid
 %
 %   This function is intentionally dimension-independent. In the current
 %   simulator it will mainly be used for:
@@ -34,13 +34,6 @@ function rho = state_to_density_matrix(psi)
 %   In ensemble-based simulations, this function may be called repeatedly to
 %   convert each pure-state realization into a density matrix before
 %   averaging.
-%
-% Example:
-%   psi = [0; 1; 1; 0] / sqrt(2);
-%   rho = state_to_density_matrix(psi);
-%
-%   psi = [1; 0];
-%   rho = state_to_density_matrix(psi);
 
     % =========================
     % Robustness checks

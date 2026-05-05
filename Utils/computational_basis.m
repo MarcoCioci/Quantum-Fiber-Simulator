@@ -15,14 +15,14 @@ function ket = computational_basis(label)
 %
 % Notes:
 %   - Basis ordering follows tensor product structure:
-%         |ab> = |a> ⊗ |b>
+%         |ab⟩ = |a⟩ ⊗ |b⟩
 %   - For multi-qubit states, the function builds the vector via repeated
 %     tensor products.
 %
 % Example:
 %   computational_basis('0')   -> [1; 0]
 %   computational_basis('1')   -> [0; 1]
-%   computational_basis('01') -> kron([1;0], [0;1])
+%   computational_basis('01')  -> tensor_product([1;0], [0;1])
 
     % =========================
     % Robustness checks

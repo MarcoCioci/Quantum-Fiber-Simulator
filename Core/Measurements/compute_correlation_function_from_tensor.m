@@ -13,7 +13,7 @@ function E_ab = compute_correlation_function_from_tensor(T, a, b)
 %   T - 3x3 real numeric matrix representing the two-qubit correlation tensor
 %       with entries
 %
-%           T_ij = < sigma_i ⊗ sigma_j >
+%           T_ij = ⟨ σ_i ⊗ σ_j ⟩
 %
 %       for i,j in {x,y,z}.
 %
@@ -35,7 +35,7 @@ function E_ab = compute_correlation_function_from_tensor(T, a, b)
 % Notes:
 %   This function implements the tensor-level shortcut for arbitrary-axis
 %   correlations. It should give the same result as compute_correlation_function_from_state
-%   when T is computed from the same state rho_AB.
+%   when T is computed from the same state ρ_AB.
 %
 %   This routine is useful when many different pairs of measurement axes are
 %   evaluated for the same state, because T only needs to be computed once.

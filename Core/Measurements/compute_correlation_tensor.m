@@ -3,8 +3,8 @@ function T = compute_correlation_tensor(state)
 %
 % Objective:
 %   Compute the 3x3 correlation tensor T whose entries are
-%   T(i,j) = Tr[rho_AB * (sigma_i ⊗ sigma_j)],
-%   with sigma_i, sigma_j in {sigma_x, sigma_y, sigma_z}.
+%   T(i,j) = Tr[ρ_AB * (σ_i ⊗ σ_j)],
+%   with σ_i, σ_j in {σ_x, σ_y, σ_z}.
 %
 % Input:
 %   state - either:
@@ -16,7 +16,7 @@ function T = compute_correlation_tensor(state)
 %
 % Notes:
 %   The computational basis ordering is assumed to be:
-%       {|00>, |01>, |10>, |11>}
+%       {|00⟩, |01⟩, |10⟩, |11⟩}
 %
 %   The output indices correspond to:
 %       1 -> x
@@ -24,10 +24,10 @@ function T = compute_correlation_tensor(state)
 %       3 -> z
 %
 %   Therefore:
-%       T(1,1) = <sigma_x ⊗ sigma_x>
-%       T(1,2) = <sigma_x ⊗ sigma_y>
-%       T(2,1) = <sigma_y ⊗ sigma_x>
-%       T(3,3) = <sigma_z ⊗ sigma_z>
+%       T(1,1) = ⟨σ_x ⊗ σ_x⟩
+%       T(1,2) = ⟨σ_x ⊗ σ_y⟩
+%       T(2,1) = ⟨σ_y ⊗ σ_x⟩
+%       T(3,3) = ⟨σ_z ⊗ σ_z⟩
 
     % =========================
     % Robustness checks

@@ -5,16 +5,16 @@ function S_max = compute_chsh_max_from_tensor(T)
 %   Compute the maximal CHSH parameter achievable by a two-qubit state,
 %   using the Horodecki tensor criterion:
 %
-%       S_max = 2 * sqrt(lambda_1 + lambda_2)
+%       S_max = 2 * sqrt(λ₁ + λ₂)
 %
-%   where lambda_1 and lambda_2 are the two largest eigenvalues of
+%   where λ₁ and λ₂ are the two largest eigenvalues of
 %
 %       U = T.' * T.
 %
 % Input:
 %   T     - 3x3 real correlation tensor with entries
 %
-%              T_ij = Tr(rho_AB * (sigma_i tensor sigma_j))
+%              T_ij = Tr[ρ_AB * (σ_i ⊗ σ_j)]
 %
 %           using the fixed Pauli ordering:
 %

@@ -1,0 +1,91 @@
+SYMBOL CONVENTION — HEADER COMMENTS (PRIMARY)
+
+This notation is intended for function header comments and documentation blocks,
+where clarity and consistency with the theoretical framework are required.
+
+For inline comments inside code, prefer ASCII / code notation
+(e.g., psi, rho, sigma_x) for readability and typing efficiency.
+
+
+Greek and math symbols reference:
+
+theta  -> θ
+phi    -> φ
+psi    -> ψ
+rho    -> ρ
+gamma  -> γ
+sigma  -> σ
+lambda -> λ
+omega  -> ω
+alpha  -> α
+beta   -> β
+
+
+Tensor / QM notation:
+
+tensor product -> ⊗
+dagger         -> †
+trace          -> Tr
+expectation    -> ⟨ ⟩
+
+Identity:
+I -> I_d, with dimension d×d
+
+Bloch representation:
+s_x, s_y, s_z -> Bloch vector components
+
+
+Dirac notation:
+
+ket -> |ψ⟩
+bra -> ⟨ψ|
+
+
+Eigenvalues and indices:
+
+λ₁, λ₂       -> ordered eigenvalues
+₁, ₂         -> index notation for axes (a₁, a₂, b₁, b₂)
+
+
+Special constructs:
+
+ρ_tilde       -> spin-flipped density matrix
+ε_ijk         -> Levi-Civita symbol (structure constants of SU(2))
+
+
+Statistical / ensemble notation:
+
+θ_k           -> sampled phase realization
+ρ_k           -> density matrix of the k-th realization
+ρ_ensemble    -> ensemble-averaged density matrix
+
+
+Fidelity notation:
+
+F_{Ψ⁺}(·)     -> fidelity with respect to |Ψ⁺⟩
+
+
+--------------------------------------------------
+
+INLINE COMMENTS (CODE-LEVEL RULE)
+
+Use ASCII-safe notation:
+
+psi, rho, sigma_x, theta, lambda
+
+Do NOT mix:
+    ψ_out = ...        (forbidden hybrid)
+Use either:
+    |ψ_out⟩ = ...      (header / theory)
+    psi_out = ...      (inline / code)
+
+
+--------------------------------------------------
+
+Examples:
+
+|psi>                  -> |ψ⟩
+<psi|                  -> ⟨ψ|
+sigma_x                -> σ_x
+rho_AB                 -> ρ_AB
+sigma_i ⊗ sigma_j      -> σ_i ⊗ σ_j

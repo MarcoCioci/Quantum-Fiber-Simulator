@@ -7,7 +7,7 @@ function U = phase_unitary(theta)
 %
 %   In the computational / polarization basis
 %
-%       {|0>, |1>} ≡ {|H>, |V>}
+%       {|0⟩, |1⟩} ≡ {|H⟩, |V⟩}
 %
 %   the operator is defined as
 %
@@ -29,7 +29,7 @@ function U = phase_unitary(theta)
 %   This function defines only the local single-qubit transformation.
 %   The corresponding two-qubit evolution is constructed as
 %
-%       U_A(theta_A) ⊗ U_B(theta_B)
+%       U_A(θ_A) ⊗ U_B(θ_B)
 %
 %   within the bipartite Hilbert space.
 %

@@ -4,12 +4,12 @@ function flag = is_normalized(psi, tolerance)
 % Objective:
 %   Verify whether a state vector satisfies:
 %
-%       psi' * psi = 1
+%       ⟨ψ|ψ⟩ = 1
 %
 %   within a specified numerical tolerance.
 %
 % Input:
-%   psi - numeric column vector representing a quantum state ket
+%   psi - numeric column vector representing a quantum state ket |ψ⟩
 %         of dimension 2^n x 1
 %
 %   tolerance - numerical tolerance (optional, default = 1e-12)
@@ -20,13 +20,13 @@ function flag = is_normalized(psi, tolerance)
 % Notes:
 %   This function enforces the ket convention:
 %
-%       psi must be a column vector (2^n x 1)
+%       ψ must be a column vector (2^n x 1)
 %
-%   Row vectors are NOT accepted, since they may represent bras.
+%   Row vectors are NOT accepted, since they may represent bras ⟨ψ|.
 %
 %   The check is performed using:
 %
-%       |psi' * psi - 1|
+%       |⟨ψ|ψ⟩ - 1|
 %
 %   which should be close to zero for a normalized state.
 

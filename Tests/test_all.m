@@ -20,7 +20,7 @@ test_bloch_vector();
 test_purity();
 test_fidelity();
 test_concurrence();
-test_depolarizing_channel_two_qubits();
+test_global_depolarizing_channel();
 
 
 disp('======================================');

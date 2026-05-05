@@ -8,16 +8,16 @@ function test_purity()
 %   The following cases are tested:
 %
 %       1. Pure single-qubit state:
-%          Tr(rho^2) = 1
+%          Tr(ρ^2) = 1
 %
 %       2. Maximally mixed single-qubit state:
-%          Tr(rho^2) = 1/2
+%          Tr(ρ^2) = 1/2
 %
 %       3. Global Bell state:
-%          Tr(rho_AB^2) = 1
+%          Tr(ρ_AB^2) = 1
 %
 %       4. Reduced Bell-state marginals:
-%          Tr(rho_A^2) = Tr(rho_B^2) = 1/2
+%          Tr(ρ_A^2) = Tr(ρ_B^2) = 1/2
 %
 %       5. Phase-evolved Bell-like state:
 %          global purity remains 1

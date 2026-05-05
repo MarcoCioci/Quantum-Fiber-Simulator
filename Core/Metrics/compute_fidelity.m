@@ -8,16 +8,16 @@ function fidelity = compute_fidelity(state_1, state_2)
 %   The function supports the following cases:
 %
 %       1. Pure state vs pure state:
-%          F(|psi>,|phi>) = |<psi|phi>|^2
+%          F(|ψ⟩,|φ⟩) = |⟨ψ|φ⟩|^2
 %
 %       2. Density matrix vs pure state:
-%          F(rho,|psi>) = <psi|rho|psi>
+%          F(ρ,|ψ⟩) = ⟨ψ|ρ|ψ⟩
 %
 %       3. Pure state vs density matrix:
-%          F(|psi>,sigma) = <psi|sigma|psi>
+%          F(|ψ⟩,σ) = ⟨ψ|σ|ψ⟩
 %
 %       4. Density matrix vs density matrix:
-%          F(rho,sigma) = (Tr(sqrt(sqrt(rho) * sigma * sqrt(rho))))^2
+%          F(ρ,σ) = (Tr(sqrt(sqrt(ρ) * σ * sqrt(ρ))))^2
 %
 % Input:
 %   state_1 - either:

@@ -1,10 +1,10 @@
-function plot_phase_baseline_tensor(results_phase_baseline)
+function plot_phase_baseline_tensor(results_phase_baseline, do_save)
 % PLOT_PHASE_BASELINE_TENSOR  Plot Experiment 1 full Pauli correlation tensor.
 %
 % Objective:
 %   Plot all nine entries of the two-qubit Pauli correlation tensor
 %
-%       T_ij(θ) = <sigma_i tensor sigma_j>
+%       T_ij(θ) = ⟨σ_i ⊗ σ_j⟩
 %
 %   as functions of the reduced phase parameter θ.
 %
@@ -14,6 +14,8 @@ function plot_phase_baseline_tensor(results_phase_baseline)
 %       .correlation_tensor
 %       .analytical.correlation_tensor
 %
+%   do_save (optional) - logical flag to enable figure saving (default: false)
+%
 % Output:
 %   None
 
@@ -21,20 +23,39 @@ function plot_phase_baseline_tensor(results_phase_baseline)
     % Robustness checks
     % =========================
 
+    if nargin < 1 || nargin > 2
+        error('plot_phase_baseline_tensor:InvalidNumInputs', ...
+              'Expected 1 or 2 input arguments.');
+    end
+
+    if nargin < 2
+        do_save = false;
+    end
+
+    if ~islogical(do_save) || ~isscalar(do_save)
+        error('plot_phase_baseline_tensor:InvalidDoSave', ...
+              'do_save must be a logical scalar.');
+    end
+
+    if ~isstruct(results_phase_baseline)
+        error('plot_phase_baseline_tensor:InvalidInputType', ...
+              'results_phase_baseline must be a structure.');
+    end
+
     required_fields = {'theta_values', ...
                        'correlation_tensor', ...
                        'analytical'};
 
-    for k = 1:length(required_fields)
+    for k = 1:numel(required_fields)
         if ~isfield(results_phase_baseline, required_fields{k})
             error('plot_phase_baseline_tensor:MissingField', ...
-                'Field "%s" not found.', required_fields{k});
+                  'Field "%s" not found.', required_fields{k});
         end
     end
 
     if ~isfield(results_phase_baseline.analytical, 'correlation_tensor')
         error('plot_phase_baseline_tensor:MissingAnalyticalField', ...
-            'Analytical field "correlation_tensor" not found.');
+              'Analytical field "correlation_tensor" not found.');
     end
 
 
@@ -42,28 +63,38 @@ function plot_phase_baseline_tensor(results_phase_baseline)
     % Extract data
     % =========================
 
-    theta = results_phase_baseline.theta_values(:).';
+    data.theta = results_phase_baseline.theta_values(:).';
 
-    T_num = real(results_phase_baseline.correlation_tensor);
-    T_th = real(results_phase_baseline.analytical.correlation_tensor);
+    data.T_num = real(results_phase_baseline.correlation_tensor);
+    data.T_th  = real(results_phase_baseline.analytical.correlation_tensor);
 
-    N = numel(theta);
+    N = numel(data.theta);
 
-    if ~isequal(size(T_num), [3, 3, N])
+    if isempty(data.theta)
+        error('plot_phase_baseline_tensor:EmptyTheta', ...
+              'theta_values must not be empty.');
+    end
+
+    if ~isnumeric(data.theta) || ~isnumeric(data.T_num) || ~isnumeric(data.T_th)
+        error('plot_phase_baseline_tensor:InvalidDataType', ...
+              'theta_values and correlation tensors must be numeric arrays.');
+    end
+
+    if ~isequal(size(data.T_num), [3, 3, N])
         error('plot_phase_baseline_tensor:InvalidNumericalTensorSize', ...
-            'correlation_tensor must have size 3x3xN.');
+              'correlation_tensor must have size 3x3xN.');
     end
 
-    if ~isequal(size(T_th), [3, 3, N])
+    if ~isequal(size(data.T_th), [3, 3, N])
         error('plot_phase_baseline_tensor:InvalidAnalyticalTensorSize', ...
-            'analytical.correlation_tensor must have size 3x3xN.');
+              'analytical.correlation_tensor must have size 3x3xN.');
     end
 
-    if any(~isfinite(theta)) || ...
-       any(~isfinite(T_num(:))) || ...
-       any(~isfinite(T_th(:)))
+    if any(~isfinite(data.theta)) || ...
+       any(~isfinite(data.T_num(:))) || ...
+       any(~isfinite(data.T_th(:)))
         error('plot_phase_baseline_tensor:InvalidValues', ...
-            'Input data must not contain NaN or Inf values.');
+              'Input data must not contain NaN or Inf values.');
     end
 
 
@@ -72,30 +103,80 @@ function plot_phase_baseline_tensor(results_phase_baseline)
     % =========================
 
     palette = get_plot_palette();
-
-    y_min = -1.05;
-    y_max = 1.05;
-
-    analytical_line_width = 1.8;
-    numerical_marker_size = 4;
+    style   = get_plot_style();
 
 
     % =========================
-    % Figure metadata
+    % Figure and tab
     % =========================
 
-    % figure_filename = 'experiment_1_correlation_tensor.png';
+    [fig, tab] = get_experiment_figure_tab( ...
+        style.figure.experiment_1_id, ...
+        'Correlation tensor', ...
+        'Experiment 1 — Deterministic Phase Sweep', ...
+        style);
+
+    build_phase_baseline_tensor_plot(tab, data, style, palette);
 
 
     % =========================
-    % Figure
+    % Save (conditional)
     % =========================
 
-    fig = figure('Name', 'Experiment 1 — Correlation Tensor | deterministic phase sweep');
+    if do_save
+        output_path = '/home/marcocioci/HPC/THESIS-Quantum-Communications/Quantum-Fiber-Simulator/Images/Experiment_1/experiment_1_correlation_tensor.png';
 
-    tiledlayout(3, 3, 'TileSpacing', 'compact', 'Padding', 'compact');
+        export_plot(output_path, ...
+            @(parent) build_phase_baseline_tensor_plot(parent, data, style, palette), ...
+            style);
+    end
+
+
+    % =========================
+    % Show figure
+    % =========================
+
+    set(fig, 'Visible', style.figure.visible_after_build);
+
+end
+
+
+function tl = build_phase_baseline_tensor_plot(parent, data, style, palette)
+% BUILD_PHASE_BASELINE_TENSOR_PLOT  Build Experiment 1 correlation tensor plot.
+%
+% Objective:
+%   Construct the 3x3 tiledlayout containing all entries T_ij(θ).
+%
+% Input:
+%   parent  - parent container for the tiledlayout
+%   data    - structure containing numerical and analytical tensor entries
+%   style   - plot style structure
+%   palette - plot color palette
+%
+% Output:
+%   tl - tiledlayout handle
+
+    % =========================
+    % Common settings
+    % =========================
 
     labels = {'x', 'y', 'z'};
+
+    theta = data.theta;
+    T_num = data.T_num;
+    T_th  = data.T_th;
+
+    x_limits = [min(theta), max(theta)];
+    y_limits = style.axes.correlation_limits;
+
+
+    % =========================
+    % Layout
+    % =========================
+
+    tl = tiledlayout(parent, 3, 3, ...
+        'TileSpacing', style.layout.tile_spacing, ...
+        'Padding', style.layout.padding);
 
 
     % =========================
@@ -105,45 +186,20 @@ function plot_phase_baseline_tensor(results_phase_baseline)
     for i = 1:3
         for j = 1:3
 
-            nexttile;
-            hold on;
-            grid on;
-            box on;
+            ax = nexttile(tl);
 
             values_num = squeeze(T_num(i, j, :)).';
-            values_th = squeeze(T_th(i, j, :)).';
-            
-            color_analytical = palette.blue;
-            color_numerical = palette.orange;
+            values_th  = squeeze(T_th(i, j, :)).';
 
-            plot(theta, values_th, ...
-            'LineWidth', analytical_line_width, ...
-            'Color', color_analytical);
+            do_xlabel = (i == 3);
+            do_legend = (i == 1 && j == 1);
 
-            plot(theta, values_num, 'o', ...
-            'MarkerSize', numerical_marker_size, ...
-            'MarkerFaceColor', color_numerical, ...
-            'MarkerEdgeColor', palette.black);
-
-            set(gca, 'Layer', 'top');  % grid behind data
-
-            title(sprintf('$T_{%s%s}$', labels{i}, labels{j}), ...
-                  'Interpreter', 'latex');
-
-            ylabel(sprintf('$T_{%s%s}$', labels{i}, labels{j}), ...
-                   'Interpreter', 'latex');
-
-            ylim([y_min, y_max]);
-
-            if i == 3
-                xlabel('$\theta$', 'Interpreter', 'latex');
-            end
-
-            if i == 1 && j == 1
-                legend({'analytical', 'numerical'}, ...
-                       'Location', 'southoutside', ...
-                       'Orientation', 'horizontal');
-            end
+            plot_tensor_entry_panel(ax, ...
+                theta, values_num, values_th, ...
+                labels{i}, labels{j}, ...
+                x_limits, y_limits, ...
+                style, palette, ...
+                do_xlabel, do_legend);
 
         end
     end
@@ -153,21 +209,105 @@ function plot_phase_baseline_tensor(results_phase_baseline)
     % Global title
     % =========================
 
-    sgtitle('Experiment 1 — Correlation Tensor | deterministic phase sweep', ...
-            'FontWeight', 'bold');
+    title(tl, ...
+        'Experiment 1 — Correlation Tensor | deterministic phase sweep', ...
+        'FontSize', style.title.font_size, ...
+        'FontWeight', style.title.font_weight, ...
+        'Interpreter', style.title.interpreter);
+
+end
+
+
+function plot_tensor_entry_panel(ax, theta, values_num, values_th, ...
+                                 row_label, col_label, ...
+                                 x_limits, y_limits, ...
+                                 style, palette, ...
+                                 do_xlabel, do_legend)
+% PLOT_TENSOR_ENTRY_PANEL  Plot one correlation tensor entry.
+%
+% Objective:
+%   Plot analytical and numerical values of one Pauli tensor entry T_ij(θ).
+%
+% Input:
+%   ax         - axes handle
+%   theta      - phase grid θ
+%   values_num - numerical tensor entry values
+%   values_th  - analytical tensor entry values
+%   row_label  - first Pauli index label
+%   col_label  - second Pauli index label
+%   x_limits   - x-axis limits
+%   y_limits   - y-axis limits
+%   style      - plot style structure
+%   palette    - plot color palette
+%   do_xlabel  - logical flag controlling x-axis label
+%   do_legend  - logical flag controlling legend creation
+%
+% Output:
+%   None
+
+    % =========================
+    % Plot
+    % =========================
+
+    hold(ax, 'on');
+    grid(ax, style.axes.grid);
+    box(ax, style.axes.box);
+
+    plot(ax, theta, values_th, ...
+        'LineWidth', style.lines.width_main, ...
+        'Color', palette.analytical);
+
+    plot(ax, theta, values_num, 'o', ...
+        'MarkerSize', style.markers.size, ...
+        'MarkerFaceColor', palette.analytical, ...
+        'MarkerEdgeColor', palette.gray_dark, ...
+        'LineWidth', style.markers.edge_width);
 
 
     % =========================
-    % Figure-level annotations
+    % Labels and limits
     % =========================
 
-    annotation(fig, 'textbox', ...
-        [0.74, 0.005, 0.24, 0.03], ...
-        'Interpreter', 'none', ...
-        'HorizontalAlignment', 'right', ...
-        'VerticalAlignment', 'bottom', ...
-        'EdgeColor', palette.gray_light, ...
-        'BackgroundColor', 'w', ...
-        'FitBoxToText', 'off');
+    title(ax, sprintf('$T_{%s%s}$', row_label, col_label), ...
+        'Interpreter', style.title.interpreter_latex, ...
+        'FontSize', style.title.font_size_small, ...
+        'FontWeight', style.title.font_weight);
+
+    ylabel(ax, sprintf('$T_{%s%s}$', row_label, col_label), ...
+        'Interpreter', style.labels.interpreter, ...
+        'FontSize', style.labels.font_size_axis);
+
+    if do_xlabel
+        xlabel(ax, '$\theta$', ...
+            'Interpreter', style.labels.interpreter, ...
+            'FontSize', style.labels.font_size);
+    end
+
+    ylim(ax, y_limits);
+    xlim(ax, x_limits);
+
+
+    % =========================
+    % Axes style
+    % =========================
+
+    set(ax, ...
+        'FontSize', style.axes.font_size, ...
+        'LineWidth', style.axes.line_width, ...
+        'TickLabelInterpreter', style.axes.tick_label_interpreter, ...
+        'Layer', style.axes.layer);
+
+
+    % =========================
+    % Legend
+    % =========================
+
+    if do_legend
+        legend(ax, {'analytical', 'numerical'}, ...
+            'Location', style.legend.location_south, ...
+            'Orientation', 'horizontal', ...
+            'Interpreter', style.legend.interpreter, ...
+            'FontSize', style.legend.font_size);
+    end
 
 end

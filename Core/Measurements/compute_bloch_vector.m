@@ -3,22 +3,22 @@ function bloch_struct = compute_bloch_vector(rho)
 %
 % Objective:
 %   Extract the Bloch vector components of a single-qubit quantum state
-%   represented by a density matrix rho. These components correspond to
+%   represented by a density matrix ρ. These components correspond to
 %   expectation values of the Pauli operators:
 %
-%       sx = Tr(rho * sigma_x)
-%       sy = Tr(rho * sigma_y)
-%       sz = Tr(rho * sigma_z)
+%       s_x = Tr(ρ * σ_x)
+%       s_y = Tr(ρ * σ_y)
+%       s_z = Tr(ρ * σ_z)
 %
 % Input:
 %   rho - 2x2 density matrix representing a single-qubit quantum state
 %
 % Output:
 %   bloch_struct - struct containing:
-%                  .sx      expectation value of sigma_x
-%                  .sy      expectation value of sigma_y
-%                  .sz      expectation value of sigma_z
-%                  .vector  column vector [sx; sy; sz]
+%                  .sx      expectation value of σ_x
+%                  .sy      expectation value of σ_y
+%                  .sz      expectation value of σ_z
+%                  .vector  column vector [s_x; s_y; s_z]
 %
 % Notes:
 %   - For a pure state, norm(bloch_struct.vector) = 1.

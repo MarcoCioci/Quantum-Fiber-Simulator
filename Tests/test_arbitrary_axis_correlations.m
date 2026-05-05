@@ -69,7 +69,7 @@ function test_arbitrary_axis_correlations()
 
 
     % =========================
-    % Test 3: aligned correlations for Bell state |Psi+>
+    % Test 3: aligned correlations for Bell state |ψ+>
     % =========================
 
     psi_plus = bell_state('psi_plus');
@@ -79,13 +79,13 @@ function test_arbitrary_axis_correlations()
     E_zz = compute_correlation_function_from_state(psi_plus, z_axis, z_axis);
 
     assert(abs(E_xx - 1) < tolerance, ...
-           'compute_correlation_function_from_state failed for E_xx of |Psi+>.');
+           'compute_correlation_function_from_state failed for E_xx of |ψ+>.');
 
     assert(abs(E_yy - 1) < tolerance, ...
-           'compute_correlation_function_from_state failed for E_yy of |Psi+>.');
+           'compute_correlation_function_from_state failed for E_yy of |ψ+>.');
 
     assert(abs(E_zz + 1) < tolerance, ...
-           'compute_correlation_function_from_state failed for E_zz of |Psi+>.');
+           'compute_correlation_function_from_state failed for E_zz of |ψ+>.');
 
 
     % =========================

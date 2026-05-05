@@ -12,7 +12,7 @@ function psi_out = apply_unitary(U_A, U_B, psi_in)
 %
 %   the function returns:
 %
-%       psi_out = (U_A ⊗ U_B) * psi_in
+%       |ψ_out⟩ = (U_A ⊗ U_B) |ψ_in⟩
 %
 %   where ⊗ denotes the tensor (Kronecker) product.
 %

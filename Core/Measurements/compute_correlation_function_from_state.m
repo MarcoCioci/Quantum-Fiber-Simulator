@@ -4,7 +4,7 @@ function E_ab = compute_correlation_function_from_state(state, a, b)
 % Objective:
 %   Compute the arbitrary-axis two-qubit correlation function
 %
-%       E(a,b) = < sigma(a) ⊗ sigma(b) >
+%       E(a,b) = ⟨ σ(a) ⊗ σ(b) ⟩
 %
 %   for a bipartite quantum state represented either as a pure state vector
 %   or as a density matrix.
@@ -12,8 +12,8 @@ function E_ab = compute_correlation_function_from_state(state, a, b)
 % Input:
 %   state - quantum state of the two-qubit system. Accepted formats:
 %
-%             4x1 complex vector      pure state ket |psi>
-%             4x4 complex matrix      density matrix rho_AB
+%             4x1 complex vector      pure state ket |ψ⟩
+%             4x4 complex matrix      density matrix ρ_AB
 %
 %   a     - real numeric vector with 3 components representing the local
 %           measurement direction on subsystem A.
@@ -24,13 +24,13 @@ function E_ab = compute_correlation_function_from_state(state, a, b)
 % Output:
 %   E_ab  - real scalar correlation value associated with
 %
-%              sigma(a) ⊗ sigma(b)
+%              σ(a) ⊗ σ(b)
 %
 % Notes:
 %   This function implements the operational correlation quantity introduced
 %   in Section 3.6:
 %
-%       E(a,b) = Tr[rho_AB (sigma(a) ⊗ sigma(b))]
+%       E(a,b) = Tr[ρ_AB * (σ(a) ⊗ σ(b))]
 %
 %   If the input state is a pure vector, it is internally converted to the
 %   corresponding density matrix before evaluating the expectation value.

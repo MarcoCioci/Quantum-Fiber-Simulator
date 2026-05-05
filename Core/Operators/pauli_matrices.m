@@ -14,22 +14,22 @@ function [sigma_x, sigma_y, sigma_z] = pauli_matrices()
 % Notes:
 %   The Pauli matrices are defined as:
 %
-%       sigma_x = [0  1;
-%                  1  0]
+%       σ_x = [0  1;
+%              1  0]
 %
-%       sigma_y = [0 -i;
-%                  i  0]
+%       σ_y = [0 -i;
+%              i  0]
 %
-%       sigma_z = [1  0;
-%                  0 -1]
+%       σ_z = [1  0;
+%              0 -1]
 %
 %   These operators act on a single-qubit Hilbert space.
 %   Multi-qubit operators are constructed via tensor products.
 %
 %   The matrices are Hermitian and unitary, and satisfy:
 %
-%       sigma_i^2 = I
-%       [sigma_i, sigma_j] = 2i · epsilon_ijk · sigma_k
+%       σ_i^2 = I
+%       [σ_i, σ_j] = 2i · ε_ijk · σ_k
 
     % =========================
     % Main computation

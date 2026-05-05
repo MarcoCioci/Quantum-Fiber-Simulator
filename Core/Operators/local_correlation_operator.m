@@ -4,9 +4,9 @@ function O_ab = local_correlation_operator(a, b)
 % Objective:
 %   Construct the bipartite measurement operator
 %
-%       O_ab = sigma(a) ⊗ sigma(b)
+%       O_ab = σ(a) ⊗ σ(b)
 %
-%   where sigma(a) and sigma(b) are single-qubit Pauli observables along
+%   where σ(a) and σ(b) are single-qubit Pauli observables along
 %   arbitrary real unit vectors a and b on the Bloch sphere.
 %
 % Input:
@@ -23,15 +23,15 @@ function O_ab = local_correlation_operator(a, b)
 % Output:
 %   O_ab - 4x4 Hermitian matrix representing the two-qubit observable
 %
-%              sigma(a) ⊗ sigma(b)
+%              σ(a) ⊗ σ(b)
 %
 %          in the fixed computational basis:
 %
-%              {|00>, |01>, |10>, |11>}
+%              {|00⟩, |01⟩, |10⟩, |11⟩}
 %
 % Notes:
 %   This function implements the operator-level form of the arbitrary-axis
-%   correlation measurement introduced in Section 3.6.
+%   correlation measurement.
 %
 %   It does not evaluate the expectation value. It only builds the observable
 %   to be passed later to expectation_value_density or a dedicated

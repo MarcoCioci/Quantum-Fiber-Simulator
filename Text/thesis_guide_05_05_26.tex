@@ -32,6 +32,8 @@ marginparwidth=2cm
 \usepackage{amsthm}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage[english]{babel}
+\usepackage{datetime2}
 
 \usepackage{graphicx}
 \usepackage[section]{placeins}
@@ -80,7 +82,7 @@ Student ID: 10694772\\
 \texttt{marco.cioci@mail.polimi.it}
 }
 
-\date{\today}
+\date{\DTMenglishmonthname{\the\month}, \the\year}
 
 %--------------------------------------------------------
 % Global formatting
@@ -1144,10 +1146,10 @@ Within the simulator, this distinction is essential. Fixed-axis evaluations repr
 This separation will play a central role in the analysis of fiber-induced effects, where transformations may alter the observed correlations without necessarily reducing the underlying nonlocality.
 
 %--------------------------------------------------------
-% Subsection 3.8 — From Deterministic Evolution to Ensemble Description
+% Subsection 3.8 — From Pure-State Description to Ensemble Representation
 %--------------------------------------------------------
 
-\subsection{From Deterministic Evolution to Ensemble Description}
+\subsection{From Pure-State Description to Ensemble Representation}
 
 The reduced phase model introduced in the previous sections describes a deterministic unitary evolution of a pure entangled state, parametrized by a single phase \( \theta \).
 
@@ -2255,7 +2257,10 @@ Gaussian phase distribution: partial coherence leads to intermediate values of p
 \end{subfigure}
 
 \caption{
-Correlation tensor snapshots for the three cases. Random phase averaging suppresses transverse coherence, while \(T_{zz}=-1\) remains invariant.
+Correlation tensor snapshots for Experiment 2 under different phase distributions.
+Random phase averaging suppresses transverse coherence, leading to a reduction of the off-diagonal components, while the longitudinal correlation \( T_{zz} = -1 \) remains invariant.
+For statistical ensembles, the transverse components converge to their analytical expectation values as the number of samples \( N \) increases.
+In contrast, tensor entries that are analytically zero are identically zero in the simulation, reflecting the exact symmetry of the model.
 }
 \label{fig:experiment2_tensor_snapshots}
 \end{figure}
@@ -2314,8 +2319,8 @@ This experiment studies the degradation of a maximally entangled Bell state unde
 
 The objectives are:
 \begin{itemize}
-\item to validate the depolarizing channel introduced in Section~3.8;
-\item to quantify its effect on purity, fidelity, concurrence, and correlations;
+\item to validate the depolarizing channel introduced in Section~3.9;
+\item to quantify its effect on purity, fidelity, concurrence, correlations, and the correlation tensor;
 \item to compare numerical results with analytical predictions over \(p \in [0,1]\).
 \end{itemize}
 
@@ -2360,12 +2365,7 @@ For this family of states:
 \[
 F_{\Psi^+}(p)=1-\frac{3}{4}p,
 \qquad
-C(p)=\max\!\left(0,\,1-\frac{3}{2}p\right),
-\]
-\[
-c_{xx}(p)=1-p,\qquad
-c_{yy}(p)=1-p,\qquad
-c_{zz}(p)=-(1-p).
+C(p)=\max\!\left(0,\,1-\frac{3}{2}p\right).
 \]
 
 The concurrence vanishes at
@@ -2373,6 +2373,41 @@ The concurrence vanishes at
 p=\frac{2}{3},
 \]
 marking the transition to separability.
+
+The action of the depolarizing channel on the correlation tensor is a uniform contraction of the Bell-state tensor:
+\[
+T(p) = (1-p)T_{\Psi^+}.
+\]
+
+Using
+\[
+T_{\Psi^+}
+=
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & -1
+\end{pmatrix},
+\]
+one obtains
+\[
+T(p)
+=
+\begin{pmatrix}
+1-p & 0 & 0 \\
+0 & 1-p & 0 \\
+0 & 0 & -(1-p)
+\end{pmatrix}.
+\]
+
+Therefore, the diagonal correlations are
+\[
+c_{xx}(p)=1-p,\qquad
+c_{yy}(p)=1-p,\qquad
+c_{zz}(p)=-(1-p).
+\]
+
+These expressions are consistent with the correlation-tensor formalism introduced in Section~3.5 and with the analytical derivation reported in Appendix~D.
 
 %--------------------------------------------------------
 % Numerical Results
@@ -2382,7 +2417,7 @@ marking the transition to separability.
 
 The parameter \(p\) is sampled over \([0,1]\), and all observables are computed and compared to analytical predictions.
 
-The numerical results show agreement at machine precision for all quantities, confirming the correctness of the implementation.
+The numerical results show agreement at machine precision for all quantities, confirming the correctness of the implementation. In particular, the maximum Frobenius-norm error of the correlation tensor is of order \(10^{-16}\), while the errors on purity, fidelity, concurrence, and diagonal correlations remain at numerical roundoff level.
 
 \begin{figure}[htbp]
 \centering
@@ -2405,10 +2440,13 @@ Depolarization reduces global coherence and entanglement while leaving the reduc
 \begin{itemize}
 \item purity decreases smoothly over the full interval;
 \item concurrence exhibits threshold behavior, vanishing at \(p=2/3\);
-\item correlations decay linearly in magnitude.
+\item correlations decay linearly in magnitude;
+\item the full correlation tensor is uniformly contracted by the factor \(1-p\).
 \end{itemize}
 
-Unlike Experiment~2, where mixedness arises from ensemble averaging, here the loss of coherence is intrinsic to the channel. This distinction highlights the difference between statistical mixtures of unitary evolutions and genuine non-unitary dynamics.
+The numerical validation is consistent with the results of Experiment~2. In both experiments, the reduced states remain maximally mixed and the numerical errors remain at machine precision. However, the physical origin of mixedness is different. In Experiment~2, mixedness arises from averaging over unresolved phase realizations, while in Experiment~3 it is introduced directly by a non-unitary depolarizing channel.
+
+This distinction is important: the random-phase ensemble preserves the structure associated with phase fluctuations, whereas the depolarizing channel isotropically suppresses the nontrivial two-qubit correlations by mixing the state with \(I_4/4\).
 
 %--------------------------------------------------------
 % Physical Interpretation

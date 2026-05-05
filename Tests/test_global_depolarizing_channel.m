@@ -1,11 +1,11 @@
-function test_depolarizing_channel_two_qubits()
-% TEST_DEPOLARIZING_CHANNEL_TWO_QUBITS  Validate the two-qubit depolarizing channel.
+function test_global_depolarizing_channel()
+% TEST_GLOBAL_DEPOLARIZING_CHANNEL  Validate the two-qubit depolarizing channel.
 %
 % Objective:
-%   Verify that depolarizing_channel_two_qubits correctly implements the
+%   Verify that global_depolarizing_channel correctly implements the
 %   effective global depolarizing map introduced in the new channel layer:
 %
-%       rho_out = (1 - p) * rho + (p / 4) * I_4
+%       ρ_out = (1 - p) * ρ + (p / 4) * I_4
 %
 %   The following cases are tested:
 %
@@ -41,7 +41,7 @@ function test_depolarizing_channel_two_qubits()
 
     tolerance = 1e-12;
 
-    fprintf('Running test_depolarizing_channel_two_qubits...\n');
+    fprintf('Running test_global_depolarizing_channel...\n');
 
 
     % =========================
@@ -56,10 +56,10 @@ function test_depolarizing_channel_two_qubits()
     % Test 1: Identity limit (p = 0)
     % =========================
 
-    rho_p0 = depolarizing_channel_two_qubits(rho_bell, 0.0);
+    rho_p0 = global_depolarizing_channel(rho_bell, 0.0);
 
     assert(norm(rho_p0 - rho_bell, 'fro') < tolerance, ...
-        'test_depolarizing_channel_two_qubits:IdentityLimitFailed', ...
+        'test_global_depolarizing_channel:IdentityLimitFailed', ...
         'For p = 0, the output state should equal the input state.');
 
 
@@ -68,10 +68,10 @@ function test_depolarizing_channel_two_qubits()
     % =========================
 
     rho_expected_mixed = eye(4) / 4;
-    rho_p1 = depolarizing_channel_two_qubits(rho_bell, 1.0);
+    rho_p1 = global_depolarizing_channel(rho_bell, 1.0);
 
     assert(norm(rho_p1 - rho_expected_mixed, 'fro') < tolerance, ...
-        'test_depolarizing_channel_two_qubits:MaximallyMixedLimitFailed', ...
+        'test_global_depolarizing_channel:MaximallyMixedLimitFailed', ...
         'For p = 1, the output state should equal I_4 / 4.');
 
 
@@ -80,10 +80,10 @@ function test_depolarizing_channel_two_qubits()
     % =========================
 
     p_test = 0.37;
-    rho_test = depolarizing_channel_two_qubits(rho_bell, p_test);
+    rho_test = global_depolarizing_channel(rho_bell, p_test);
 
     assert(norm(rho_test - rho_test', 'fro') < tolerance, ...
-        'test_depolarizing_channel_two_qubits:HermiticityFailed', ...
+        'test_global_depolarizing_channel:HermiticityFailed', ...
         'The output state should remain Hermitian.');
 
 
@@ -92,7 +92,7 @@ function test_depolarizing_channel_two_qubits()
     % =========================
 
     assert(abs(trace(rho_test) - 1.0) < tolerance, ...
-        'test_depolarizing_channel_two_qubits:TraceFailed', ...
+        'test_global_depolarizing_channel:TraceFailed', ...
         'The output state should have trace equal to 1.');
 
 
@@ -103,7 +103,7 @@ function test_depolarizing_channel_two_qubits()
     rho_expected = (1 - p_test) * rho_bell + (p_test / 4) * eye(4);
 
     assert(norm(rho_test - rho_expected, 'fro') < tolerance, ...
-        'test_depolarizing_channel_two_qubits:AnalyticalAgreementFailed', ...
+        'test_global_depolarizing_channel:AnalyticalAgreementFailed', ...
         'The numerical output does not match the analytical depolarizing formula.');
 
 
@@ -111,6 +111,6 @@ function test_depolarizing_channel_two_qubits()
     % Success message
     % =========================
 
-    fprintf('test_depolarizing_channel_two_qubits passed.\n');
+    fprintf('test_global_depolarizing_channel passed.\n');
 
 end

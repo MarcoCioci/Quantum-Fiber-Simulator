@@ -10,7 +10,7 @@ function test_concurrence()
 %       1. Separable computational-basis pure state:
 %          C = 0
 %
-%       2. Bell state |Psi+> as pure-state vector:
+%       2. Bell state |ψ+> as pure-state vector:
 %          C = 1
 %
 %       3. Phase-evolved Bell-like pure state:
@@ -60,7 +60,7 @@ function test_concurrence()
 
 
     % =========================
-    % Test 2: Bell state |Psi+> as pure-state vector
+    % Test 2: Bell state |ψ+> as pure-state vector
     % =========================
 
     psi_bell = bell_state('psi_plus');
@@ -68,7 +68,7 @@ function test_concurrence()
 
     assert(abs(C_bell - 1.0) < tolerance, ...
         'test_concurrence:BellStatePureFailed', ...
-        'Concurrence of |Psi+> should be 1.');
+        'Concurrence of |ψ+> should be 1.');
 
 
     % =========================

@@ -4,13 +4,13 @@ function exp_val = expectation_value(state, O)
 % Objective:
 %   Compute the expectation value of an observable O for either:
 %
-%       pure state:      <O> = psi' * O * psi
-%       density matrix:  <O> = Tr(rho * O)
+%       pure state:      ⟨O⟩ = ψ' * O * ψ
+%       density matrix:  ⟨O⟩ = Tr(ρ * O)
 %
 % Input:
 %   state - quantum state, either:
-%           - n x 1 pure-state vector psi
-%           - n x n density matrix rho
+%           - n x 1 pure-state vector ψ
+%           - n x n density matrix ρ
 %
 %   O     - n x n Hermitian observable operator
 %
