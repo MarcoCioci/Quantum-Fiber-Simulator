@@ -1,0 +1,170 @@
+%========================================================
+% D1 — Expectation Values in the Density-Operator Formalism
+%========================================================
+
+\section{Expectation Values in the Density-Operator Formalism}
+
+This derivation shows how the density-operator expression for expectation values generalizes the pure-state expression.
+
+\medskip
+
+For a pure state \( |\psi\rangle \), the expectation value of an observable \( O \) is
+
+\begin{equation}
+\langle O \rangle
+=
+\langle \psi | O | \psi \rangle.
+\label{eq:pure_state_expectation_derivation}
+\end{equation}
+
+The associated density operator is
+
+\begin{equation}
+\rho
+=
+|\psi\rangle \langle \psi |.
+\label{eq:pure_state_density_operator_derivation}
+\end{equation}
+
+Using this definition, the density-operator expression becomes
+
+\begin{equation}
+\langle O \rangle
+=
+\mathrm{Tr}(\rho O)
+=
+\mathrm{Tr}
+\left(
+|\psi\rangle \langle \psi| O
+\right).
+\label{eq:density_expectation_trace_form}
+\end{equation}
+
+To show that this reproduces the pure-state expression, expand the trace in an arbitrary orthonormal basis \( \{|k\rangle\} \):
+
+\begin{align}
+\mathrm{Tr}(\rho O)
+&=
+\sum_k
+\langle k |
+\psi\rangle
+\langle \psi |
+O
+| k \rangle
+\nonumber
+\\
+&=
+\sum_k
+\langle \psi |
+O
+| k \rangle
+\langle k |
+\psi\rangle
+\nonumber
+\\
+&=
+\langle \psi |
+O
+\left(
+\sum_k |k\rangle \langle k|
+\right)
+|\psi\rangle
+\nonumber
+\\
+&=
+\langle \psi | O | \psi \rangle.
+\label{eq:density_expectation_pure_equivalence}
+\end{align}
+
+Therefore,
+
+\begin{equation}
+\boxed{
+\langle O \rangle
+=
+\mathrm{Tr}(\rho O)
+}
+\label{eq:density_expectation_general_result}
+\end{equation}
+
+reproduces the standard pure-state expectation value whenever \( \rho = |\psi\rangle \langle \psi| \).
+
+\medskip
+
+The advantage of the density-operator formalism becomes evident when the system is not described by a single pure state, but by a statistical ensemble.
+
+Suppose the system is prepared in one of the pure states \( |\psi_k\rangle \) with probability \( p_k \), where
+
+\[
+p_k \geq 0,
+\qquad
+\sum_k p_k = 1.
+\]
+
+The density operator of the ensemble is
+
+\begin{equation}
+\rho
+=
+\sum_k
+p_k
+|\psi_k\rangle \langle \psi_k|.
+\label{eq:ensemble_density_operator_derivation}
+\end{equation}
+
+The expectation value of \( O \) is then the statistical average of the corresponding pure-state expectation values:
+
+\begin{align}
+\langle O \rangle
+&=
+\sum_k
+p_k
+\langle \psi_k | O | \psi_k \rangle
+\nonumber
+\\
+&=
+\sum_k
+p_k
+\mathrm{Tr}
+\left(
+|\psi_k\rangle \langle \psi_k| O
+\right)
+\nonumber
+\\
+&=
+\mathrm{Tr}
+\left[
+\left(
+\sum_k
+p_k
+|\psi_k\rangle \langle \psi_k|
+\right)
+O
+\right]
+\nonumber
+\\
+&=
+\mathrm{Tr}(\rho O).
+\label{eq:ensemble_expectation_density_form}
+\end{align}
+
+Thus, the same expression
+
+\begin{equation}
+\langle O \rangle
+=
+\mathrm{Tr}(\rho O)
+\label{eq:density_expectation_final}
+\end{equation}
+
+applies both to pure states and to statistical mixtures.
+
+\medskip
+
+This result is central for the simulator because it allows observable quantities to be evaluated through a unified mathematical interface, independently of whether the quantum state is represented as a pure state vector or as a density operator.
+
+In particular, correlation observables of the form \( \sigma_i \otimes \sigma_j \), local polarization observables, and state diagnostics can all be computed through the same trace expression once the corresponding operator has been constructed.
+
+\medskip
+
+The density-operator expectation value therefore provides the mathematical bridge between deterministic pure-state evolution, ensemble-averaged descriptions, and effective non-unitary models arising from decoherence or statistical uncertainty.

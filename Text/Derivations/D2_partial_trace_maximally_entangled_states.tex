@@ -1,0 +1,183 @@
+%========================================================
+% D2 — Partial Trace for Maximally Entangled States
+%========================================================
+
+\section{Partial Trace for Maximally Entangled States}
+
+This derivation establishes explicitly that the reduced density operators of a maximally entangled Bell state are maximally mixed.
+
+\medskip
+
+Consider the Bell state
+
+\begin{equation}
+|\Psi^+\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + |10\rangle
+\right).
+\label{eq:bell_state_psiplus_derivation}
+\end{equation}
+
+The corresponding density operator is
+
+\begin{equation}
+\rho_{AB}
+=
+|\Psi^+\rangle \langle \Psi^+|.
+\label{eq:bell_density_operator_derivation}
+\end{equation}
+
+Expanding explicitly:
+
+\begin{align}
+\rho_{AB}
+&=
+\frac{1}{2}
+\left(
+|01\rangle + |10\rangle
+\right)
+\left(
+\langle 01| + \langle 10|
+\right)
+\nonumber
+\\
+&=
+\frac{1}{2}
+\Big(
+|01\rangle \langle 01|
++
+|01\rangle \langle 10|
++
+|10\rangle \langle 01|
++
+|10\rangle \langle 10|
+\Big).
+\label{eq:bell_density_expansion}
+\end{align}
+
+\medskip
+
+The reduced density operator of subsystem \( A \) is obtained by tracing over subsystem \( B \):
+
+\begin{equation}
+\rho_A
+=
+\mathrm{Tr}_B(\rho_{AB}).
+\label{eq:partial_trace_definition_derivation}
+\end{equation}
+
+Using the computational basis \( \{|0\rangle, |1\rangle\} \) for subsystem \( B \), the partial trace can be written as
+
+\begin{equation}
+\rho_A
+=
+\sum_{b=0}^{1}
+(I_A \otimes \langle b|)
+\rho_{AB}
+(I_A \otimes |b\rangle).
+\label{eq:partial_trace_computational_basis}
+\end{equation}
+
+Each contribution in Eq.~\eqref{eq:bell_density_expansion} can now be evaluated separately.
+
+\medskip
+
+For the first diagonal term:
+
+\begin{align}
+\mathrm{Tr}_B
+\left(
+|01\rangle \langle 01|
+\right)
+&=
+|0\rangle \langle 0|
+\,
+\langle 1|1\rangle
+\nonumber
+\\
+&=
+|0\rangle \langle 0|.
+\end{align}
+
+Similarly,
+
+\begin{equation}
+\mathrm{Tr}_B
+\left(
+|10\rangle \langle 10|
+\right)
+=
+|1\rangle \langle 1|.
+\end{equation}
+
+The off-diagonal terms vanish because of basis orthogonality:
+
+\begin{align}
+\mathrm{Tr}_B
+\left(
+|01\rangle \langle 10|
+\right)
+&=
+|0\rangle \langle 1|
+\,
+\langle 1|0\rangle
+\nonumber
+\\
+&=
+0,
+\end{align}
+
+and analogously,
+
+\begin{equation}
+\mathrm{Tr}_B
+\left(
+|10\rangle \langle 01|
+\right)
+=
+0.
+\end{equation}
+
+Collecting all contributions gives
+
+\begin{align}
+\rho_A
+&=
+\frac{1}{2}
+\left(
+|0\rangle \langle 0|
++
+|1\rangle \langle 1|
+\right)
+\nonumber
+\\
+&=
+\frac{1}{2} I.
+\label{eq:reduced_density_maximally_mixed}
+\end{align}
+
+By symmetry, the same result holds for subsystem \( B \):
+
+\begin{equation}
+\rho_B
+=
+\frac{1}{2} I.
+\label{eq:reduced_density_B_maximally_mixed}
+\end{equation}
+
+\medskip
+
+This result has a direct physical interpretation.
+
+Although the global bipartite state \( |\Psi^+\rangle \) is pure, each subsystem individually is described by a maximally mixed state.
+
+Consequently, no local measurement performed on a single subsystem can reveal complete information about the global quantum state.
+
+The information characterizing the entangled state is therefore encoded entirely in the nonlocal correlations between the two subsystems.
+
+\medskip
+
+This property constitutes one of the fundamental signatures of quantum entanglement and establishes the conceptual connection between entanglement and local mixedness explored throughout the present work.
+```
