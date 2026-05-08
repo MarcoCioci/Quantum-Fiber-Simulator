@@ -1,4 +1,16 @@
+#Archive
 Text/Old_text/
-Tests/print_headers.sh
 Old/*
 z_Old/*
+
+
+# Latex build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.bbl
+*.blg
