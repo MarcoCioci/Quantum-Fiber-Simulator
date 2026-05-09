@@ -1,0 +1,206 @@
+%========================================================
+% CHAPTER 5 — Effective Fiber Models
+%========================================================
+
+\chapter{Effective Fiber Models}
+
+%--------------------------------------------------------
+% Section 5.1 — Motivation for Effective Fiber Models
+%--------------------------------------------------------
+
+\section{Motivation for Effective Fiber Models}
+\label{sec:motivation_effective_fiber_models}
+
+The previous chapters introduced the mathematical framework required to describe bipartite polarization states, local unitary propagation, correlation measurements, quantum channels, and state metrics. Within that framework, fiber propagation was first modeled through analytically controlled transformations, such as deterministic phase shifts, statistical phase ensembles, and idealized depolarizing maps.
+
+\medskip
+
+These models provide a necessary validation baseline, but they do not yet fully represent the physical structure of a fiber-based quantum communication link. In the experimental scenario considered in this work, the two photons propagate through two distinct optical arms. Each arm acts locally on the polarization degree of freedom of the corresponding photon, and each arm may introduce its own coherent and incoherent perturbations. Therefore, a physically meaningful fiber model must preserve the bipartite structure of the system while allowing independent degradation mechanisms on subsystems \(A\) and \(B\).
+
+\medskip
+
+The purpose of this chapter is to introduce effective fiber models that bridge the abstract quantum-channel formalism and the physical interpretation of polarization-entangled photon propagation in optical fibers. The word ``effective'' is used deliberately: the aim is not to solve the full electromagnetic propagation problem inside the fiber, including all microscopic degrees of freedom, but to construct reduced models that describe the observable action of the fiber on the polarization state.
+
+\medskip
+
+\paragraph{From ideal unitary propagation to effective noisy evolution.}
+
+In the ideal coherent regime, each fiber arm is represented by a local unitary operator, so that the bipartite state evolves according to
+
+\begin{equation}
+\rho_{AB}^{\mathrm{out}}
+=
+\left(
+U_A \otimes U_B
+\right)
+\rho_{AB}^{\mathrm{in}}
+\left(
+U_A^{\dagger} \otimes U_B^{\dagger}
+\right).
+\label{eq:local_unitary_fiber_model_ch5}
+\end{equation}
+
+This description preserves purity and entanglement. It is appropriate when the polarization transformation is deterministic, spectrally uniform, and not coupled to unresolved degrees of freedom. In this limit, the fiber acts as a coherent optical element.
+
+\medskip
+
+However, real optical fibers may introduce effects that cannot be represented solely by a fixed unitary acting on polarization. Birefringence fluctuations, frequency-dependent polarization transformations, temporal distinguishability, and imperfect compensation may cause the polarization subsystem to lose coherence when additional degrees of freedom are not measured explicitly. At the level of the reduced polarization state, these mechanisms appear as non-unitary dynamics.
+
+\medskip
+
+The correct reduced description is then given by quantum channels acting on the density operator. In the bipartite setting, this leads naturally to local channel models of the form
+
+\begin{equation}
+\rho_{AB}^{\mathrm{out}}
+=
+\left(
+\mathcal{E}_A \otimes \mathcal{E}_B
+\right)
+\left(
+\rho_{AB}^{\mathrm{in}}
+\right),
+\label{eq:local_channel_fiber_model}
+\end{equation}
+
+where \( \mathcal{E}_A \) and \( \mathcal{E}_B \) describe the effective action of the two fiber arms.
+
+\medskip
+
+\paragraph{Why entanglement degradation is delicate.}
+
+Entanglement is not a local property of either photon separately. It is encoded in the correlations of the joint state \( \rho_{AB} \). Consequently, a local disturbance acting on only one arm can degrade global quantum correlations even when the disturbance appears moderate at the single-photon level.
+
+\medskip
+
+This is particularly delicate for quantum communication systems because many protocols rely directly on the preservation of bipartite entanglement. Quantum teleportation, entanglement-based quantum key distribution, Bell-inequality tests, and distributed quantum information protocols all require correlations that cannot be reconstructed from the reduced states \( \rho_A \) and \( \rho_B \) alone. Once local noise reduces or destroys these correlations, the transmitted state may no longer provide the intended quantum resource.
+
+\medskip
+
+For this reason, it is not sufficient to monitor only local polarization degradation. A fiber may preserve apparently reasonable local polarization statistics while still reducing concurrence, lowering Bell-state fidelity, or suppressing CHSH violation. The relevant object is therefore the full bipartite density operator \( \rho_{AB} \), together with quantitative indicators such as purity \( \gamma \), fidelity \( F \), concurrence \( C \), the correlation tensor \( T \), and the CHSH parameter.
+
+\medskip
+
+%--------------------------------------------------------
+% Section 5.2 — Local Depolarizing Fiber Channels
+%--------------------------------------------------------
+
+\section{Local Depolarizing Fiber Channels}
+\label{sec:local_depolarizing_fiber_channels}
+
+The unitary models introduced previously describe coherent polarization evolution in the ideal regime, where the fiber acts as a deterministic transformation on the polarization state. In this limit, the bipartite state remains pure and entanglement degradation does not occur.
+
+\medskip
+
+However, realistic optical-fiber propagation may involve additional physical mechanisms that cannot be represented solely through fixed local unitary operators. In particular, unresolved temporal, spectral, and environmental fluctuations may effectively reduce polarization coherence when only the polarization degree of freedom is observed.
+
+\medskip
+
+A physically important example arises from frequency-dependent birefringence. The polarization transformation implemented by the fiber generally depends on the optical frequency. For sufficiently narrowband or effectively monochromatic propagation, this dependence may be neglected and the fiber can be approximated by a single unitary operator acting coherently on the entire wavepacket.
+
+\medskip
+
+For temporally localized photonic wavepackets, however, different spectral components may experience different polarization transformations during propagation. As a consequence, the polarization subsystem becomes effectively coupled to unresolved temporal and spectral degrees of freedom. When these additional degrees of freedom are not measured explicitly, the reduced polarization state acquires mixed-state character.
+
+\medskip
+
+At the level of the reduced density operator, these effects appear as non-unitary evolution and can be modeled through effective quantum channels acting locally on each subsystem.
+
+\medskip
+
+\paragraph{Effective local description.}
+
+Since the two photons propagate through distinct optical fibers, each arm may experience a different degree of polarization degradation. The effective evolution is therefore naturally represented by local channels acting independently on subsystems \(A\) and \(B\):
+
+\begin{equation}
+\rho_{AB}^{\mathrm{out}}
+=
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left(
+\rho_{AB}^{\mathrm{in}}
+\right),
+\label{eq:two_arm_local_channel_model}
+\end{equation}
+
+where \( \mathcal{D}_{p_A} \) and \( \mathcal{D}_{p_B} \) denote local depolarizing channels characterized by independent depolarization parameters \( p_A \) and \( p_B \).
+
+The tensor-product structure appearing in Eq.~\eqref{eq:two_arm_local_channel_model} is physically motivated by the independent propagation of the two photons through distinct optical arms. 
+
+From the mathematical perspective, the admissibility and entanglement properties of bipartite combinations of depolarizing maps through tensor products have been studied extensively in the literature, including the characterization of positivity, complete positivity, entanglement-breaking, and entanglement-annihilating regimes for composite depolarizing channels~\cite{lami_bipartite_depolarizing_maps}.
+
+\medskip
+
+The depolarization parameters quantify the effective loss of polarization coherence induced by propagation in each fiber arm. Physically, increasing depolarization corresponds to a progressive loss of information about the polarization state when only polarization observables are retained in the reduced description.
+
+\medskip
+
+\paragraph{Single-qubit depolarizing channel.}
+
+The local depolarizing channel acting on a single-qubit density operator \( \rho \) is modeled through the transformation
+
+\begin{equation}
+\mathcal{D}_{p}(\rho)
+=
+\frac{1}{2}
+\left(
+I
++
+(1-p)\,
+\mathbf{r}\cdot\boldsymbol{\sigma}
+\right),
+\label{eq:bloch_contraction_channel}
+\end{equation}
+
+where
+
+\[
+\rho
+=
+\frac{1}{2}
+\left(
+I
++
+\mathbf{r}\cdot\boldsymbol{\sigma}
+\right)
+\]
+
+is the Bloch representation of the input state.
+
+\medskip
+
+In this representation, the action of the channel corresponds to an isotropic contraction of the Bloch vector:
+
+\[
+\mathbf{r}
+\rightarrow
+(1-p)\mathbf{r}.
+\]
+
+Consequently:
+
+\begin{itemize}
+
+\item \( p = 0 \) corresponds to ideal coherent propagation,
+
+\item \( 0 < p < 1 \) describes partial polarization degradation,
+
+\item \( p = 1 \) maps the state to the maximally mixed state \( I/2 \).
+
+\end{itemize}
+
+\medskip
+
+This model provides a simple and analytically tractable effective description of polarization decoherence. Although it does not reproduce the full microscopic physics of optical-fiber propagation, it captures the progressive suppression of polarization information and quantum correlations induced by unresolved propagation effects.
+
+\medskip
+
+\paragraph{Role in the modeling hierarchy.}
+
+The local depolarizing model constitutes the first effective non-unitary fiber model considered in this work. It extends the coherent phase-evolution framework introduced previously while preserving a clear operational interpretation at both the physical and computational levels.
+
+\medskip
+
+Most importantly, the model enables the quantitative study of how local polarization degradation affects global bipartite properties such as concurrence, Bell-state fidelity, correlation tensors, and CHSH nonlocality.

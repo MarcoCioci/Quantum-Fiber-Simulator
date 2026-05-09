@@ -406,6 +406,28 @@ The reduced phase model modifies only coherence terms, producing a rigid rotatio
 
 The correlation tensor is therefore the natural object for distinguishing changes in measurement alignment from actual loss of quantum coherence or entanglement.
 
+\medskip
+
+\paragraph{Dependence on the local operator basis.}
+
+The numerical values of the tensor components \( T_{ij} \) depend on the choice of local measurement axes used to define the Pauli operators.
+
+Under local unitary transformations,
+
+\[
+\rho_{AB}
+\;\rightarrow\;
+(U_A \otimes U_B)\,
+\rho_{AB}\,
+(U_A^\dagger \otimes U_B^\dagger),
+\]
+
+the correlation tensor transforms according to a corresponding rotation of the local operator basis.
+
+Consequently, individual tensor components are representation-dependent, while physically measurable quantities such as expectation values, entanglement measures, and Bell-inequality violations remain invariant under consistent changes of basis.
+
+This distinction becomes particularly important when introducing arbitrary local measurement axes and optimized CHSH measurements in the following sections.
+
 %========================================================
 % SECTION 3.6 — Arbitrary Local Measurement Axes
 %========================================================
@@ -833,36 +855,32 @@ This formalism provides the foundation for modeling phase noise and more general
 
 \section{Quantum Channels and Effective Depolarization}
 
-The ensemble description introduced in the previous section accounts for statistical fluctuations of the relative phase parameter by averaging over a family of pure states. In that setting, each individual realization is still described by a unitary transformation, and the resulting mixed state arises from classical uncertainty over these realizations.
+The ensemble description introduced in the previous section models statistical fluctuations by averaging over a family of unitary realizations. In that framework, each individual evolution remains coherent, and mixedness originates from classical uncertainty over the applied transformations.
 
 \medskip
 
-In realistic fiber propagation, however, loss of coherence may also originate from coupling between polarization and additional physical degrees of freedom that are not directly observed, such as frequency or temporal modes. In such cases, the effective evolution of the polarization state must be formulated as a transformation acting directly on the density operator.
+More generally, however, a quantum system may interact with additional degrees of freedom that are not observed explicitly. In such cases, the reduced dynamics of the subsystem can no longer be described solely through unitary evolution acting on the state vector. Instead, the evolution must be formulated directly at the level of the density operator.
 
 \medskip
 
-This motivates the introduction of the concept of a quantum channel, which provides the appropriate mathematical framework for describing effective non-unitary evolution.
+This motivates the introduction of quantum channels, which provide the general mathematical framework for effective non-unitary evolution.
 
 \medskip
 
-\paragraph{Interpretation.}
+\paragraph{Quantum channels.}
 
-The transition from ensemble averaging to channel-based evolution reflects a change in the physical origin of mixedness. In the ensemble description, mixedness arises from classical uncertainty over unitary realizations, whereas in the channel description it originates from tracing out unobserved degrees of freedom of a larger system. The resulting dynamics is non-unitary at the level of the reduced polarization state.
-
-\medskip
-
-\paragraph{Quantum channels as effective evolution maps.}
-
-A quantum channel is defined as a linear map
+A quantum channel is a linear map
 
 \begin{equation}
 \mathcal{E}:\rho \mapsto \mathcal{E}(\rho),
 \label{eq:quantum_channel_map}
 \end{equation}
 
-acting on density operators, such that it is completely positive and trace preserving.
+acting on density operators and satisfying the conditions of complete positivity and trace preservation.
 
-A general representation of such maps is given by the operator-sum form
+\medskip
+
+A general representation of a quantum channel is given by the operator-sum decomposition
 
 \begin{equation}
 \mathcal{E}(\rho)
@@ -879,29 +897,25 @@ I,
 \label{eq:kraus_operator_sum}
 \end{equation}
 
-where the operators \( K_{\mu} \) encode the effective action of the physical process.
+where the operators \( K_{\mu} \) are referred to as Kraus operators and encode the effective action of the physical process.
 
 \medskip
 
-In the present context, the channel formalism extends the unitary model of fiber propagation. While ideal fibers are described by operators of the form \( U_A \otimes U_B \), realistic propagation may involve coupling to unobserved variables. The polarization state is then obtained by tracing out these auxiliary degrees of freedom, resulting in a non-unitary evolution.
+The channel formalism extends the unitary description introduced previously. While coherent propagation is represented through transformations of the form
+
+\[
+\rho
+\rightarrow
+U \rho U^{\dagger},
+\]
+
+more general physical processes may produce irreversible loss of coherence and therefore require a non-unitary reduced description.
 
 \medskip
 
-\paragraph{Physical origin of effective depolarization.}
+\paragraph{Depolarizing channel.}
 
-One of the main mechanisms responsible for non-unitary behavior in optical fibers is the frequency dependence of the polarization transformation. For finite-duration wave packets, different spectral components experience different polarization-dependent phase shifts.
-
-As a consequence, polarization components may acquire different group delays and become partially or completely separated in time. When this temporal separation exceeds the coherence time of the detection process, interference is lost and the system is no longer described by a coherent superposition in the polarization degree of freedom alone.
-
-\medskip
-
-From the point of view of the polarization subsystem, this manifests as a loss of coherence and leads to an effective depolarization of the state.
-
-\medskip
-
-\paragraph{Depolarizing channel model.}
-
-As a first effective model of this behavior, this work introduces the depolarizing channel. In the bipartite two-qubit setting, its action on a density operator \( \rho \) is
+Among the simplest and most widely used quantum channels is the depolarizing channel, which models isotropic loss of coherence. In the two-qubit setting considered in this work, the global depolarizing model is written as
 
 \begin{equation}
 \mathcal{E}_p(\rho)
@@ -909,28 +923,20 @@ As a first effective model of this behavior, this work introduces the depolarizi
 (1-p)\rho
 +
 \frac{p}{4}I_4,
-\qquad
-p \in [0,1],
 \label{eq:global_two_qubit_depolarizing_channel}
 \end{equation}
 
-where \( I_4 \) is the identity on the four-dimensional Hilbert space and \( p \) quantifies the strength of depolarization.
+where \( I_4 \) denotes the identity operator on the four-dimensional bipartite Hilbert space and \( p \) quantifies the strength of depolarization.
 
 \medskip
 
-This model interpolates between two limiting regimes:
-\begin{itemize}
-    \item \( p = 0 \): the state is preserved,
-    \item \( p = 1 \): the state becomes maximally mixed.
-\end{itemize}
-
-The depolarizing channel is isotropic, meaning that all polarization directions are affected uniformly.
+This channel continuously interpolates between coherent evolution and complete mixing, providing a simple benchmark model for the study of entanglement degradation and correlation suppression in bipartite systems.
 
 \medskip
 
 \paragraph{Application to Bell states.}
 
-For the Bell state introduced in Eq.~\eqref{eq:bell_psi_plus}, with density operator
+Applying the channel to the Bell state introduced in Eq.~\eqref{eq:bell_psi_plus},
 
 \[
 \rho_0
@@ -938,7 +944,7 @@ For the Bell state introduced in Eq.~\eqref{eq:bell_psi_plus}, with density oper
 |\Psi^+\rangle\langle\Psi^+|,
 \]
 
-the channel produces
+produces the family of mixed states
 
 \begin{equation}
 \rho(p)
@@ -949,15 +955,9 @@ the channel produces
 \label{eq:depolarized_bell_state}
 \end{equation}
 
-This family provides a simple yet nontrivial model for entanglement degradation under fiber propagation, interpolating between a maximally entangled pure state and a fully mixed state.
+This construction provides a controlled framework for analyzing the degradation of bipartite quantum correlations under effective noisy evolution.
 
 \medskip
-
-\paragraph{Role in the modeling hierarchy.}
-
-The introduction of quantum channels completes the dynamical modeling structure of the present chapter. The resulting states are, in general, mixed and must be analyzed using the density-operator formalism.
-
-In the following chapter, quantitative measures such as purity, fidelity, and concurrence will be used to characterize the effects of depolarization on bipartite states, providing a detailed assessment of coherence loss and entanglement degradation.
 
 %========================================================
 % SECTION 3.10 — Computational Representation and Implementation Roadmap

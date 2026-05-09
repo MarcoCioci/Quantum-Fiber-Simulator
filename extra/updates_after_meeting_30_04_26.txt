@@ -1,3 +1,0 @@
-1) Replaced subsection title “From Deterministic Evolution to Ensemble Description” with “From Pure-State Description to Ensemble Representation” to correctly reflect a change in representation (single-state → statistical mixture).
-2) Added clarification to Experiment 2 tensor caption: transverse components converge to analytical values with increasing sample size (N), while analytically zero entries remain exactly zero due to model symmetry.
-3)

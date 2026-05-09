@@ -1,450 +1,730 @@
-LATEX REPOSITORY STRUCTURE AND WRITING POLICY
+THESIS WRITING AND REPOSITORY GUIDE
 Quantum Fiber Simulator Thesis
-Updated after repository modularization
+Report-Class Architecture Edition
+
+Repository root:
+~/HPC/THESIS-Quantum-Communications/Quantum-Fiber-Simulator/text
 
 ========================================================
-1. GENERAL PHILOSOPHY
+1. GENERAL REPOSITORY ORGANIZATION
 ========================================================
 
-The thesis repository is organized as a structured scientific environment,
+The repository is structured as a modular scientific environment,
 not as a single monolithic LaTeX document.
 
-The repository must support simultaneously:
+Current structure:
 
-- theoretical development,
-- mathematical derivations,
-- numerical implementation,
-- validation workflows,
-- thesis writing,
-- future model extensions.
+text/
+├── archive/
+├── derivations/
+├── notes/
+├── sources/
+└── thesis/
 
-The architecture must remain modular, scalable, and analytically traceable.
+Purpose of each directory:
 
-The thesis manuscript, derivation repository, and simulator codebase
-must evolve semi-independently while remaining conceptually synchronized.
+archive/
+    Deprecated material, old drafts, legacy versions,
+    experimental structures no longer actively maintained.
 
+derivations/
+    Standalone analytical derivations and mathematical expansions.
+    Used for validation and theoretical support.
+    NOT necessarily intended for direct inclusion in thesis chapters.
 
-========================================================
-2. TOP-LEVEL TEXT STRUCTURE
-========================================================
+notes/
+    Temporary reasoning, advisor discussions, TODOs,
+    exploratory ideas, future directions, PMD notes,
+    implementation planning.
 
-Text/
-├── Thesis/
-├── Derivations/
-├── Notes/
-├── Sources/
-└── Archive/
+sources/
+    Scientific references:
+    books, papers, lecture notes, tomography references,
+    Nielsen & Chuang, Bell papers, etc.
 
-Purpose of each folder:
-
-Thesis/
+thesis/
     Final manuscript-oriented material.
-
-Derivations/
-    Dedicated mathematical derivations and analytical expansions.
-    NOT automatically intended for the final thesis.
-
-Notes/
-    Exploratory notes, advisor discussions, TODOs, PMD ideas,
-    temporary reasoning, future directions.
-
-Sources/
-    Papers, books, lecture notes, references.
-
-Archive/
-    Deprecated material and old monolithic versions.
-
+    This is the actual report-class thesis repository.
 
 ========================================================
-3. THESIS STRUCTURE
+2. THESIS DIRECTORY STRUCTURE
 ========================================================
 
-Thesis/
+thesis/
+├── appendix/
+├── bibliography/
+├── chapters/
+├── figures/
+├── styles/
+├── tables/
 ├── main.tex
-├── Chapters/
-├── Appendix/
-├── Figures/
-├── Tables/
-├── Bibliography/
-├── Styles/
-└── build/
+└── build artifacts
 
-main.tex must remain orchestration-only.
+Purpose of each component:
 
-The main file should only:
-- load packages/styles,
-- include chapters,
-- include appendices,
-- load bibliography.
+appendix/
+    Reader-relevant derivations and supplementary material.
 
-Do NOT place large text blocks directly inside main.tex.
+bibliography/
+    BibTeX database and citation management.
 
+chapters/
+    Main conceptual content of the thesis.
+
+figures/
+    Numerical experiment plots and thesis figures.
+
+styles/
+    Shared formatting files:
+    packages, formatting, metadata, theorem styles.
+
+tables/
+    Dedicated tables if required later.
+
+main.tex
+    Pure orchestration file.
+    Must NOT contain large text blocks.
 
 ========================================================
-4. CHAPTER STRUCTURE
+3. REPORT-CLASS STRUCTURE
 ========================================================
 
-Use report class hierarchy:
+The thesis now follows a report-class hierarchy.
+
+Mandatory hierarchy:
 
 \chapter
 \section
 \subsection
 
-NOT:
-\section
-\subsection
+Avoid using:
 \subsubsection
 
-for major thesis structure.
+except inside numerical experiments where a fixed structure exists.
 
-Recommended mapping:
+--------------------------------------------------------
+3.1 Chapter Mapping
+--------------------------------------------------------
 
-Chapter 1 → General Framework
-Chapter 2 → Modeling Strategy
-Chapter 3 → Physical and Mathematical Representation
-Chapter 4 → Quantitative Characterization
-Chapter 5 → Numerical Experiments and Results
+Chapter 1
+→ General Framework
 
+File:
+chapters/01_general_framework.tex
 
-========================================================
-5. IMPLEMENTATION DISCUSSION POLICY
-========================================================
+Purpose:
+Introduce goals, scope, notation,
+physical context, and project philosophy.
 
-Avoid repeated local implementation paragraphs in every section.
+--------------------------------------------------------
 
-Instead:
-- use chapter-level implementation sections,
-- synthesize computational philosophy,
-- discuss architecture globally.
+Chapter 2
+→ Modeling Strategy
 
-Implementation text should sound like:
-- computational methodology,
-- numerical framework,
-- modeling architecture,
+File:
+chapters/02_modeling_strategy.tex
 
-NOT:
-- software documentation.
+Purpose:
+Explain the progressive modeling hierarchy,
+from ideal Bell states to effective noisy fiber models.
 
-Localized implementation remarks are allowed only when:
-- the theory-to-code mapping is genuinely non-trivial.
+--------------------------------------------------------
 
+Chapter 3
+→ Physical and Mathematical Representation
 
-========================================================
-6. DERIVATION POLICY
-========================================================
+File:
+chapters/03_physical_and_mathematical_representation.tex
 
-Distinguish between:
+Purpose:
+Introduce the full mathematical formalism:
 
-A) Main thesis equations/results
-B) Dedicated derivation files
-C) Appendix material
+- Hilbert spaces
+- Bell states
+- local unitary evolution
+- reduced phase model
+- correlation tensor
+- arbitrary measurement axes
+- CHSH nonlocality
+- ensemble descriptions
+- quantum channels
 
-Main thesis:
-- conceptual flow,
-- final equations,
-- interpretation,
-- operational meaning.
+--------------------------------------------------------
 
-Derivations:
-- full analytical expansions,
-- tensor calculations,
-- intermediate algebra,
-- exploratory analytical work.
+Chapter 4
+→ Quantitative Characterization of Two-Qubit States
 
-Appendices:
-- selected derivations useful to readers,
-- derivations repeatedly referenced,
-- mathematically central derivations.
+File:
+chapters/04_quantitative_characterization_of_two-qubit_states.tex
 
-NOT every derivation belongs in appendices.
+Purpose:
+Define and interpret:
 
+- reduced density operators
+- purity γ
+- fidelity F
+- concurrence C
+- interplay between metrics
 
-========================================================
-7. DERIVATION REPOSITORY POLICY
-========================================================
+--------------------------------------------------------
 
-Derivations/ is a mathematical support repository.
+Chapter 5
+→ Numerical Experiments and Results
 
-It contains:
-- reusable derivations,
-- analytical validations,
-- exploratory mathematical notes,
-- extended calculations.
+File:
+chapters/05_numerical_experiments_and_results.tex
 
-It is NOT:
-- temporary scratch space,
-- final thesis text.
+Purpose:
+Present numerical validation and physical interpretation.
 
-Recommended derivation indexing:
-
-D1 = Bell-state derivations
-D2 = Phase-model derivations
-D3 = Correlation tensor derivations
-D4 = CHSH derivations
-D5 = Density-matrix derivations
-D6 = Quantum-channel derivations
-D7 = PMD and advanced fiber derivations
-
-Recommended filenames:
-
-D3_tensor_phase_model.tex
-D4_chsh_phase_state.tex
-D5_partial_trace.tex
-
+This chapter includes dedicated experiment files.
 
 ========================================================
-8. APPENDIX POLICY
+4. NUMERICAL EXPERIMENT ORGANIZATION
 ========================================================
 
-Appendices contain:
-- mathematically important derivations,
-- reader-relevant analytical details,
-- reproducibility-oriented material.
+Experiment files:
+
+chapters/numerical_experiments/
+
+├── 05_1_deterministic_phase_sweep.tex
+├── 05_2_random_phase_ensemble.tex
+├── 05_3_depolarizing_channel.tex
+└── 05_4_chsh_nonlocality.tex
+
+Each experiment follows the SAME internal structure.
+
+Mandatory subsection order:
+
+1. Objective
+2. Model
+3. Analytical Predictions
+4. Numerical Results
+5. Discussion
+6. Physical Interpretation
+
+Only inside experiments may subsubsections be used.
+
+========================================================
+5. APPENDIX ORGANIZATION
+========================================================
+
+Current appendices:
+
+appendix/
+├── a_reduced_density_operators.tex
+├── b_fidelity_pure_reference_state.tex
+├── c_concurrence_and_reduced_density_operators.tex
+├── d_concurrence_basis_invariance.tex
+├── e_depolarizing_channel_analytics.tex
+└── extra_basis_representation.tex
+
+Purpose of appendices:
+
+- mathematically central derivations
+- reusable derivations
+- derivations repeatedly referenced
+- reproducibility-oriented details
 
 Avoid:
-- too many tiny appendices,
-- fragmented derivation structure.
+- tiny fragmented appendices
+- temporary derivations
+- exploratory scratch work
 
-Preferred:
-Appendix A — Density matrix derivations
-Appendix B — Correlation tensor derivations
-Appendix C — Entanglement metrics
-Appendix D — Channel analytics
+--------------------------------------------------------
+5.1 Appendix Philosophy
+--------------------------------------------------------
 
+Main thesis chapters:
+    conceptual flow,
+    final equations,
+    interpretation,
+    operational meaning.
+
+Appendices:
+    detailed derivations,
+    algebraic expansions,
+    technical proofs.
+
+Derivations repository:
+    broader mathematical workspace,
+    not automatically thesis material.
 
 ========================================================
-9. EQUATION NUMBERING POLICY
+6. DERIVATION REPOSITORY POLICY
 ========================================================
+
+Current derivation structure:
+
+derivations/
+├── d1_density_operator_expectation_values.tex
+├── d2_partial_trace_maximally_entangled_states.tex
+├── d3_phase_shifted_bell_state_metrics.tex
+├── d4_correlation_tensor_phase_model.tex
+└── main_derivations.tex
+
+Purpose:
+
+- analytical validation
+- reusable mathematical derivations
+- intermediate calculations
+- extended expansions
+
+NOT intended as:
+- temporary scratch space
+- direct chapter replacements
+
+--------------------------------------------------------
+6.1 Recommended Future Naming
+--------------------------------------------------------
+
+Recommended indexing philosophy:
+
+D1 = Density operators
+D2 = Partial trace
+D3 = Bell-state metrics
+D4 = Correlation tensor
+D5 = CHSH derivations
+D6 = Quantum channels
+D7 = PMD / advanced fiber models
+
+========================================================
+7. FIGURE ORGANIZATION
+========================================================
+
+Current structure:
+
+figures/
+├── experiment_1/
+├── experiment_2/
+├── experiment_3/
+└── experiment_4/
+
+Each experiment has isolated figure storage.
+
+--------------------------------------------------------
+7.1 Figure Naming Policy
+--------------------------------------------------------
+
+Use descriptive filenames:
+
+experiment_1_state_metrics.png
+experiment_2_summary_uniform_distribution.png
+experiment_4_chsh_nonlocality_summary.png
+
+Avoid:
+- generic names
+- temporary exports
+- duplicated naming styles
+
+--------------------------------------------------------
+7.2 Figure Placement Rules
+--------------------------------------------------------
+
+Always use:
+
+\begin{figure}[htbp]
+
+Never:
+[h]
+
+Figures must appear AFTER explanation in text.
+
+--------------------------------------------------------
+7.3 Caption Structure
+--------------------------------------------------------
+
+Captions must contain:
+
+1. What is shown
+2. What it demonstrates physically
+
+========================================================
+8. LATEX WRITING POLICY
+========================================================
+
+--------------------------------------------------------
+8.1 Structural Hierarchy
+--------------------------------------------------------
+
+Use:
+
+\chapter
+\section
+\subsection
+
+Subsubsections:
+ONLY inside Chapter 5 experiments.
+
+--------------------------------------------------------
+8.2 Paragraph Policy
+--------------------------------------------------------
+
+Allowed paragraph types:
+
+\paragraph{Interpretation.}
+\paragraph{Role in the modeling hierarchy.}
+\paragraph{Operational implications.}
+\paragraph{Implementation.}
+
+Forbidden:
+
+\paragraph{Simulation notes.}
+
+Rule:
+Every paragraph must add conceptual value.
+
+--------------------------------------------------------
+8.3 Spacing Policy
+--------------------------------------------------------
+
+Use:
+
+\medskip
+
+ONLY for semantic transitions.
+
+Correct usage:
+
+Concept introduction
+
+\medskip
+
+Formal equation
+
+\medskip
+
+Interpretation
+
+Avoid:
+- repeated consecutive \medskip
+- spacing after every equation
+
+========================================================
+9. COMMENT BLOCK POLICY
+========================================================
+
+Use structured navigation comments.
+
+--------------------------------------------------------
+9.1 Chapter-Level Blocks
+--------------------------------------------------------
+
+%========================================================
+% CHAPTER X — Title
+%========================================================
+
+--------------------------------------------------------
+9.2 Section-Level Blocks
+--------------------------------------------------------
+
+%--------------------------------------------------------
+% Section X.Y — Title
+%--------------------------------------------------------
+
+--------------------------------------------------------
+9.3 Local Blocks
+--------------------------------------------------------
+
+%--- Description of block ---
+
+Purpose:
+improve VSCode navigation and repository readability.
+
+========================================================
+10. MATHEMATICAL CONSISTENCY
+========================================================
+
+--------------------------------------------------------
+10.1 General Rules
+--------------------------------------------------------
+
+- Define symbols before using them
+- Keep notation globally consistent
+- Avoid repeated equations nearby
+
+Preferred notation:
+
+F  -> fidelity
+γ  -> purity
+C  -> concurrence
+
+--------------------------------------------------------
+10.2 Equation Policy
+--------------------------------------------------------
 
 Number equations ONLY if:
-- referenced later,
-- structurally important,
-- reused,
-- experimentally relevant,
-- implementation-defining.
 
-Do NOT number:
-- temporary algebraic manipulations,
-- obvious local identities,
-- one-off illustrative expressions.
+- referenced later
+- structurally important
+- reused
+- experimentally relevant
 
 Always use:
 
 \label{eq:name}
 
-and reference through:
+Reference with:
 
 \eqref{eq:name}
 
-Never reference equations manually by raw number.
-
-
-========================================================
-10. LABELING CONVENTIONS
-========================================================
-
-Equations:
-eq:phase_state
-eq:correlation_tensor
-
-Figures:
-fig:experiment1_summary
-
-Sections:
-sec:correlation_tensor
-
-Appendices:
-app:concurrence_derivation
-
-Maintain semantic naming consistency.
-
+Never reference equations manually.
 
 ========================================================
-11. MACRO POLICY
+11. MATHEMATICAL TYPESETTING STANDARD
 ========================================================
 
-Moderately aggressive macros are allowed.
+--------------------------------------------------------
+11.1 Inline Mathematics
+--------------------------------------------------------
 
-Good macro targets:
-- repeated operators,
-- repeated states,
-- repeated density matrices,
-- repeated Hilbert spaces.
+Preferred syntax:
+
+\( ... \)
+
+Example:
+
+The phase parameter \( \theta \) controls the evolution.
+
+--------------------------------------------------------
+11.2 Display Mathematics
+--------------------------------------------------------
+
+Use:
+
+\[
+...
+\]
+
+for central equations.
+
+Example:
+
+\[
+|\psi(\theta)\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + e^{i\theta}|10\rangle
+\right)
+\]
+
+--------------------------------------------------------
+11.3 Multi-Line Equations
+--------------------------------------------------------
+
+Use:
+
+\begin{align}
+...
+\end{align}
+
+Align at "=".
+
+--------------------------------------------------------
+11.4 Operators
+--------------------------------------------------------
+
+Use standard operators:
+
+\sin
+\cos
+\exp
+\log
+\Tr
+
+Never write:
+
+sin(x)
+
+Use:
+
+\( \sin(x) \)
+
+========================================================
+12. QUANTUM MECHANICS NOTATION
+========================================================
+
+Mandatory conventions:
+
+Kets:
+\( |\psi\rangle \)
+
+Bras:
+\( \langle\psi| \)
+
+Inner products:
+\( \langle\phi|\psi\rangle \)
+
+Tensor product:
+\( \otimes \)
+
+Expectation values:
+\( \langle O \rangle \)
+
+Correlators:
+\( \langle \sigma_i \otimes \sigma_j \rangle \)
+
+--------------------------------------------------------
+12.1 Hilbert Spaces
+--------------------------------------------------------
+
+Use:
+
+\( \mathbb{C}^2 \)
+
+Composite systems:
+
+\( \mathbb{C}^2 \otimes \mathbb{C}^2 \)
+
+========================================================
+13. SYMBOL CONVENTION POLICY
+========================================================
+
+Header comments and theoretical text:
+use symbolic notation.
 
 Examples:
 
-\Tr
-\rhoAB
-\rhoA
-\rhoB
-\ketPsiPlus
-\sigmaX
-\sigmaY
-\sigmaZ
+θ
+ρ
+σ
+⊗
+⟨ ⟩
 
-Avoid excessive abstraction macros hiding complete formulas.
+Inline MATLAB comments:
+prefer ASCII-safe notation.
 
+Examples:
+
+theta
+rho
+sigma_x
+
+Avoid hybrid notation.
+
+Correct:
+
+psi_out = ...
+
+or
+
+\( |\psi_{\mathrm{out}}\rangle \)
+
+Never mixed forms.
 
 ========================================================
-12. STYLE FILES
+14. IMPLEMENTATION DISCUSSION POLICY
 ========================================================
 
-Styles/
-├── packages.tex
-├── formatting.tex
-├── macros.tex
-├── notation.tex
-├── theorem_styles.tex
-└── metadata.tex
+Implementation text should describe:
+
+- computational methodology
+- simulator architecture
+- theory-to-code mapping
+
+NOT:
+- software documentation
+
+Localized implementation remarks should appear
+ONLY when the mapping is genuinely non-trivial.
+
+========================================================
+15. MATLAB CODE STYLE POLICY
+========================================================
+
+Functions follow standardized structure:
+
+1. Header
+2. Objective
+3. Inputs
+4. Outputs
+5. Robustness checks
+6. Main computation
+
+Typical structure:
+
+function out = my_function(in)
+
+% =========================
+% Robustness checks
+% =========================
+
+% =========================
+% Main computation
+% =========================
+
+end
 
 Purpose:
-
-packages.tex
-    Package loading only.
-
-formatting.tex
-    Global formatting rules.
-
-macros.tex
-    General reusable commands.
-
-notation.tex
-    Quantum notation conventions and symbols.
-
-theorem_styles.tex
-    Theorem environments if later needed.
-
-metadata.tex
-    Title, author, date.
-
+maintain analytical traceability
+between theory and implementation.
 
 ========================================================
-13. FIGURE POLICY
+16. BIBLIOGRAPHY POLICY
 ========================================================
 
-Distinguish progressively between:
-- raw MATLAB exports,
-- thesis-ready figures.
+Use BibTeX only.
 
-Current overlap is acceptable temporarily.
+Mandatory:
 
-Future recommended structure:
+\bibliographystyle{plain}
+\bibliography{references}
 
-Figures/
-├── MATLAB_Exports/
-└── Thesis_Final/
+Bibliography file:
 
-Theory figures should eventually be separated from experiment figures.
+bibliography/references.bib
 
+Avoid manual bibliography entries.
 
 ========================================================
-14. BUILD POLICY
+17. CURRENT SCIENTIFIC DEVELOPMENT FLOW
 ========================================================
 
-Compilation artifacts should not pollute Thesis/.
+Current conceptual pipeline:
 
-Use:
-Thesis/build/
-
-or gitignore rules.
-
-Artifacts:
-*.aux
-*.log
-*.out
-*.toc
-*.fls
-*.fdb_latexmk
-*.synctex.gz
-*.bbl
-*.blg
-
-
-========================================================
-15. WRITING STYLE POLICY
-========================================================
-
-The manuscript should progressively transition from:
-- internal technical guide
-
-to:
-- final scientific thesis.
-
-Avoid meta-document language such as:
-- "this document"
-- "internal guide"
-- "implementation priorities"
-
-Prefer:
-- "this work"
-- "the present study"
-- "the computational framework"
-
-Maintain:
-- analytical clarity,
-- modular reasoning,
-- concise interpretation,
-- controlled equation density.
-
-Avoid theorem-heavy or overly formal writing style unless required.
-
+SPDC Bell-state generation
+↓
+Polarization encoding
+↓
+Local unitary fiber evolution
+↓
+Reduced phase model
+↓
+Correlation tensor formalism
+↓
+Arbitrary measurement axes
+↓
+Density operators
+↓
+Entanglement metrics
+↓
+Quantum channels
+↓
+CHSH nonlocality
+↓
+Effective noisy fiber models
+↓
+PMD-oriented future extensions
 
 ========================================================
-16. CHAPTER WRITING STRUCTURE
+18. LONG-TERM REPOSITORY OBJECTIVE
 ========================================================
 
-Preferred subsection flow:
+The repository must simultaneously support:
 
-1. Physical/conceptual motivation
+- theoretical development
+- MATLAB simulator implementation
+- analytical derivations
+- experimental validation
+- thesis writing
+- future model extensions
 
-2. Formal mathematical definition
-
-3. Interpretation
-
-4. Operational implications
-
-5. Computational implications (only if needed)
-
-Avoid:
-physics
-→ implementation
-→ physics
-→ implementation
-
-Prefer:
-physics
-→ physics
-→ synthesis implementation section
-
+The thesis manuscript, derivation repository,
+and simulator codebase must evolve
+semi-independently while remaining
+conceptually synchronized.
 
 ========================================================
-17. MODELING PHILOSOPHY
+END OF GUIDE
 ========================================================
-
-The simulator follows a progressive refinement hierarchy:
-
-Ideal Bell states
-→ local unitary evolution
-→ reduced phase model
-→ ensemble averaging
-→ density matrices
-→ quantum channels
-→ advanced fiber models
-
-The thesis structure should mirror this hierarchy consistently.
-
-
-========================================================
-18. LONG-TERM OBJECTIVE
-========================================================
-
-The repository should evolve into:
-
-- a reproducible scientific manuscript,
-- a validated simulation framework,
-- a derivation repository,
-- a modular research environment.
-
-Theoretical structure, derivation organization,
-and computational architecture must remain aligned.
-

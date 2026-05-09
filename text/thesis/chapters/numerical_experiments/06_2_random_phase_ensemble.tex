@@ -1,18 +1,20 @@
 %========================================================
-% SECTION 5.2 — Random Phase Ensemble
+% SECTION 6.2 — Random Phase Ensemble
 %========================================================
+
+\newpage
 
 \section{Random Phase Ensemble}
 
 %--------------------------------------------------------
-% Subsection 5.2.1 — Objective and Physical Motivation
+% Subsection 6.2.1 — Objective and Physical Motivation
 %--------------------------------------------------------
 
-\subsection{Objective and Physical Motivation}
+\subsection*{Objective and Physical Motivation}
 
 The second experiment extends the deterministic phase model by introducing random phase realizations \( \theta_k \), modeling stochastic birefringence effects in realistic optical fibers.
 
-Unlike the deterministic regime studied in Section~5.1, the system is no longer described by a single pure state, but by a statistical ensemble of phase-evolved realizations
+Unlike the deterministic regime studied in Section~6.1, the system is no longer described by a single pure state, but by a statistical ensemble of phase-evolved realizations
 
 \[
 \left\{
@@ -27,10 +29,10 @@ The objective is to characterize how unresolved phase fluctuations modify observ
 This experiment therefore represents the transition from purely deterministic unitary evolution toward an effective mixed-state description arising from statistical averaging.
 
 %--------------------------------------------------------
-% Subsection 5.2.2 — Model and Analytical Predictions
+% Subsection 6.2.2 — Model and Analytical Predictions
 %--------------------------------------------------------
 
-\subsection{Model and Analytical Predictions}
+\subsection*{Model and Analytical Predictions}
 
 Each phase realization is described by the pure state
 
@@ -47,7 +49,7 @@ Each phase realization is described by the pure state
 The ensemble-averaged state is then constructed as
 
 \begin{equation}
-\rho_{\mathrm{ensemble}}
+\rho^{\mathrm{ens}}
 =
 \frac{1}{N}
 \sum_{k=1}^{N}
@@ -89,7 +91,7 @@ c_{zz}
 The global purity is
 
 \[
-\gamma(\rho_{\mathrm{ensemble}})
+\gamma(\rho^{\mathrm{ens}})
 =
 \frac{1 + |\mu|^2}{2}.
 \]
@@ -121,7 +123,7 @@ F_{\Psi^+}
 =
 \frac{1 + \mathrm{Re}(\mu)}{2},
 \qquad
-C(\rho_{\mathrm{ensemble}})
+C(\rho^{\mathrm{ens}})
 =
 |\mu|.
 \]
@@ -131,10 +133,10 @@ C(\rho_{\mathrm{ensemble}})
 The ensemble coherence parameter \( \mu \) therefore provides a compact description of the entire propagation regime. Its real part determines observable transverse correlations and fidelity, while its magnitude controls the residual entanglement of the averaged state.
 
 %--------------------------------------------------------
-% Subsection 5.2.3 — Numerical Results
+% Subsection 6.2.3 — Numerical Results
 %--------------------------------------------------------
 
-\subsection{Numerical Results}
+\subsection*{Numerical Results}
 
 Three representative phase distributions are considered:
 
@@ -233,10 +235,10 @@ As the number of realizations increases, the numerically reconstructed tensor co
 At the same time, tensor entries that are analytically zero remain numerically negligible throughout the simulation, confirming the internal consistency of the ensemble implementation.
 
 %--------------------------------------------------------
-% Subsection 5.2.4 — Discussion
+% Subsection 6.2.4 — Discussion
 %--------------------------------------------------------
 
-\subsection{Discussion}
+\subsection*{Discussion}
 
 The numerical results reveal a progressive transition from deterministic coherent evolution to ensemble-induced decoherence.
 
@@ -273,10 +275,10 @@ The experiment therefore establishes an important conceptual distinction:
 This mechanism constitutes the first non-unitary effect emerging naturally from the propagation model.
 
 %--------------------------------------------------------
-% Subsection 5.2.5 — Physical Interpretation
+% Subsection 6.2.5 — Physical Interpretation
 %--------------------------------------------------------
 
-\subsection{Physical Interpretation}
+\subsection*{Physical Interpretation}
 
 Each individual realization of the ensemble remains a pure maximally entangled state. The loss of coherence arises only after averaging over unresolved phase fluctuations.
 

@@ -1,0 +1,485 @@
+%========================================================
+% APPENDIX D — Basis Dependence, Representation Dependence,
+% and Invariance of Concurrence
+%========================================================
+
+\chapter{Concurrence: Basis Dependence, Representation Dependence, and Invariance}
+
+This appendix clarifies the distinction between representation-dependent quantities and physically invariant quantities in quantum mechanics, with particular emphasis on the concurrence used throughout the present work.
+
+\medskip
+
+A potential conceptual ambiguity arises from the standard definition of concurrence for mixed two-qubit states, since the construction explicitly involves the operator \( \sigma_y \) and complex conjugation in the computational basis. At first sight, this may suggest that concurrence depends on a preferred polarization axis or on a specific basis representation.
+
+The purpose of this appendix is to show that this interpretation is incorrect, and that concurrence constitutes an intrinsic, basis-independent measure of bipartite entanglement.
+
+%--------------------------------------------------------
+% D.1 - Representation Dependence and Basis Transformations
+%--------------------------------------------------------
+
+\section*{Representation Dependence and Basis Transformations}
+
+In quantum mechanics, vectors and operators are represented through coordinates and matrices relative to a chosen basis.
+
+For a single qubit, a generic pure state may be written as
+
+\[
+|\psi\rangle
+=
+\alpha |0\rangle
++
+\beta |1\rangle.
+\]
+
+The coefficients \( \alpha \) and \( \beta \) depend on the chosen basis representation.
+
+For example, switching from the computational basis
+
+\[
+\{|0\rangle, |1\rangle\}
+\]
+
+to the rotated basis
+
+\[
+|+\rangle
+=
+\frac{|0\rangle+|1\rangle}{\sqrt{2}},
+\qquad
+|-\rangle
+=
+\frac{|0\rangle-|1\rangle}{\sqrt{2}},
+\]
+
+changes the numerical coordinates of the state vector, while leaving the physical quantum state unchanged.
+
+\medskip
+
+Similarly, a density operator transforms under a basis change according to
+
+\begin{equation}
+\rho
+\rightarrow
+\rho'
+=
+U \rho U^\dagger,
+\label{eq:density_basis_transformation}
+\end{equation}
+
+where \( U \) is a unitary change-of-basis operator.
+
+The individual matrix entries of \( \rho \) therefore depend on the chosen representation.
+
+However, physically meaningful invariant quantities such as
+
+\[
+\mathrm{Tr}(\rho),
+\qquad
+\mathrm{Tr}(\rho^2),
+\qquad
+\det(\rho),
+\qquad
+\text{spec}(\rho)
+\]
+
+remain unchanged under Eq.~\eqref{eq:density_basis_transformation}.
+
+\medskip
+
+This distinction is fundamental:
+
+\begin{itemize}
+
+\item matrix elements and coordinate representations are generally basis dependent,
+
+\item intrinsic physical properties are basis independent.
+
+\end{itemize}
+
+%--------------------------------------------------------
+% D.2 - Direction Dependence and Physical Observables
+%--------------------------------------------------------
+
+\section*{Direction Dependence and Physical Observables}
+
+A separate concept is the dependence of observables on physical measurement directions.
+
+Expectation values such as
+
+\[
+\langle \sigma_x \rangle,
+\qquad
+\langle \sigma_y \rangle,
+\qquad
+\langle \sigma_z \rangle
+\]
+
+correspond to measurements performed along different axes of the Bloch sphere.
+
+These quantities are physically direction dependent, since changing the measurement axis changes the measured observable.
+
+\medskip
+
+For instance,
+
+\[
+\langle \sigma_z \rangle
+=
+\mathrm{Tr}(\rho \sigma_z)
+\]
+
+measures polarization along the computational \( Z \)-axis, while
+
+\[
+\langle \sigma_x \rangle
+=
+\mathrm{Tr}(\rho \sigma_x)
+\]
+
+measures polarization along the transverse \( X \)-axis.
+
+\medskip
+
+Direction dependence therefore refers to the physical choice of measurement axis, rather than to the mathematical choice of representation basis.
+
+These two notions are related but conceptually distinct.
+
+%--------------------------------------------------------
+% D.3 - Representation Dependence of Pauli Matrices
+%--------------------------------------------------------
+
+\section*{Representation Dependence of Pauli Matrices}
+
+The Pauli operators themselves admit different matrix representations depending on the chosen basis.
+
+In the computational basis,
+
+\begin{equation}
+\sigma_y
+=
+\begin{pmatrix}
+0 & -i \\
+i & 0
+\end{pmatrix}.
+\label{eq:sigma_y_computational}
+\end{equation}
+
+Under a basis transformation \( U \), the matrix representation changes according to
+
+\begin{equation}
+\sigma_y
+\rightarrow
+\sigma_y'
+=
+U \sigma_y U^\dagger.
+\label{eq:sigma_y_basis_change}
+\end{equation}
+
+Consequently, the matrix entries appearing in Eq.~\eqref{eq:sigma_y_computational} are representation dependent.
+
+\medskip
+
+Importantly, this does not imply that the physical observable itself changes. Rather, only its coordinate representation changes.
+
+This situation is directly analogous to ordinary vector coordinates in Euclidean geometry.
+
+%--------------------------------------------------------
+% D.4 - Concurrence and the Spin-Flip Construction
+%--------------------------------------------------------
+
+\section*{Concurrence and the Spin-Flip Construction}
+
+For mixed two-qubit states, concurrence is commonly expressed through the spin-flipped density operator
+
+\begin{equation}
+\tilde{\rho}
+=
+(\sigma_y \otimes \sigma_y)
+\rho^*
+(\sigma_y \otimes \sigma_y),
+\label{eq:appendix_spin_flip_definition}
+\end{equation}
+
+where \( \rho^* \) denotes complex conjugation in the computational basis.
+
+The concurrence is then defined as
+
+\begin{equation}
+C(\rho)
+=
+\max
+\left(
+0,
+\lambda_1-\lambda_2-\lambda_3-\lambda_4
+\right),
+\label{eq:appendix_concurrence_definition}
+\end{equation}
+
+where \( \lambda_i \) are the ordered square roots of the eigenvalues of
+
+\[
+\rho \tilde{\rho}.
+\]
+
+\medskip
+
+At first sight, Eq.~\eqref{eq:appendix_spin_flip_definition} may appear to privilege the \( Y \)-direction of the Bloch sphere because of the explicit presence of \( \sigma_y \).
+
+However, this interpretation is incorrect.
+
+In this context, \( \sigma_y \) is not used as a measurement operator associated with the physical \( Y \)-axis. Instead, it appears because it realizes the invariant antisymmetric structure of two-dimensional spinor spaces.
+
+%--------------------------------------------------------
+% D.5 - Antisymmetric Structure of Two-Qubit States
+%--------------------------------------------------------
+
+\section*{Antisymmetric Structure of Two-Qubit States}
+
+Consider a generic pure two-qubit state
+
+\begin{equation}
+|\psi\rangle
+=
+a|00\rangle
++
+b|01\rangle
++
+c|10\rangle
++
+d|11\rangle.
+\label{eq:generic_two_qubit_state_appendix}
+\end{equation}
+
+The coefficients may be organized into the matrix
+
+\begin{equation}
+\Psi
+=
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}.
+\label{eq:coefficient_matrix_appendix}
+\end{equation}
+
+For pure states, concurrence reduces to
+
+\begin{equation}
+C(|\psi\rangle)
+=
+2|ad-bc|.
+\label{eq:pure_state_concurrence_appendix}
+\end{equation}
+
+The quantity
+
+\[
+ad-bc
+\]
+
+is precisely the determinant of the coefficient matrix \( \Psi \):
+
+\begin{equation}
+\det(\Psi)
+=
+ad-bc.
+\label{eq:determinant_coefficient_matrix}
+\end{equation}
+
+This determinant originates from the antisymmetric bilinear form
+
+\begin{equation}
+\varepsilon
+=
+\begin{pmatrix}
+0 & 1 \\
+-1 & 0
+\end{pmatrix},
+\label{eq:antisymmetric_tensor_appendix}
+\end{equation}
+
+which satisfies
+
+\begin{equation}
+\sigma_y
+=
+-i\varepsilon.
+\label{eq:sigma_y_epsilon_relation}
+\end{equation}
+
+Thus, the appearance of \( \sigma_y \) in the concurrence construction is not associated with a preferred physical polarization axis, but with the antisymmetric invariant structure of two-level quantum systems.
+
+%--------------------------------------------------------
+% D.6 - Basis Independence of Concurrence
+%--------------------------------------------------------
+
+\section*{Basis Independence of Concurrence}
+
+An entanglement measure must remain invariant under local unitary transformations, since local polarization rotations cannot create or destroy entanglement.
+
+For any local unitary evolution,
+
+\begin{equation}
+\rho
+\rightarrow
+(U_A \otimes U_B)
+\rho
+(U_A^\dagger \otimes U_B^\dagger),
+\label{eq:local_unitary_appendix}
+\end{equation}
+
+the concurrence satisfies
+
+\begin{equation}
+C
+\left[
+(U_A \otimes U_B)
+\rho
+(U_A^\dagger \otimes U_B^\dagger)
+\right]
+=
+C(\rho).
+\label{eq:concurrence_local_unitary_invariance}
+\end{equation}
+
+This invariance is essential for the physical interpretation of concurrence as an intrinsic measure of bipartite entanglement.
+
+\medskip
+
+Consequently:
+
+\begin{itemize}
+
+\item the matrix representation of the spin-flipped operator depends on the chosen basis,
+
+\item the intermediate construction in Eq.~\eqref{eq:appendix_spin_flip_definition} is representation dependent,
+
+\item the final concurrence \( C(\rho) \) is basis independent.
+
+\end{itemize}
+
+%--------------------------------------------------------
+% D.7 - Manifestly Basis-Independent Formulations
+%--------------------------------------------------------
+
+\section*{Manifestly Basis-Independent Formulations}
+
+For pure states, concurrence admits formulations that make the invariance more transparent.
+
+Using the reduced density operator
+
+\[
+\rho_A
+=
+\mathrm{Tr_B}
+\left(
+|\psi\rangle\langle\psi|
+\right),
+\]
+
+one obtains
+
+\begin{equation}
+C(|\psi\rangle)
+=
+2\sqrt{\det(\rho_A)}.
+\label{eq:concurrence_determinant_appendix}
+\end{equation}
+
+Equivalently,
+
+\begin{equation}
+C(|\psi\rangle)
+=
+\sqrt{
+2
+\left(
+1-\mathrm{Tr}(\rho_A^2)
+\right)
+}.
+\label{eq:concurrence_purity_appendix}
+\end{equation}
+
+These expressions involve only invariant quantities such as determinants and traces, and therefore do not rely explicitly on any preferred basis representation.
+
+\medskip
+
+More fundamentally, concurrence for mixed states is defined through the convex-roof construction
+
+\begin{equation}
+C(\rho)
+=
+\min_{\{p_k,|\psi_k\rangle\}}
+\sum_k
+p_k
+C(|\psi_k\rangle),
+\label{eq:convex_roof_concurrence_appendix}
+\end{equation}
+
+where
+
+\begin{equation}
+\rho
+=
+\sum_k
+p_k
+|\psi_k\rangle\langle\psi_k|.
+\label{eq:convex_decomposition_appendix}
+\end{equation}
+
+This formulation is intrinsically basis independent.
+
+The spin-flip formalism of Eq.~\eqref{eq:appendix_spin_flip_definition} constitutes a special analytical construction that allows the explicit evaluation of the convex-roof optimization for two-qubit systems.
+
+%--------------------------------------------------------
+% D.8 - Physical Interpretation in Fiber-Based Quantum Channels
+%--------------------------------------------------------
+
+\section*{Physical Interpretation in Fiber-Based Quantum Channels}
+
+The distinction between representation-dependent quantities and invariant quantities plays a central role in the modeling strategy developed throughout the present work.
+
+\medskip
+
+Local unitary transformations induced by fiber propagation,
+
+\[
+U_A \otimes U_B,
+\]
+
+may alter:
+
+\begin{itemize}
+
+\item local Bloch coordinates,
+
+\item Stokes parameters,
+
+\item tensor components,
+
+\item fixed-basis Bell-state fidelities,
+
+\item correlation functions evaluated along specific axes.
+
+\end{itemize}
+
+However, these transformations do not modify the intrinsic entanglement content of the bipartite state.
+
+Consequently, the concurrence remains unchanged under coherent local polarization evolution.
+
+\medskip
+
+By contrast, non-unitary effects such as ensemble averaging, decoherence, or polarization-mode dispersion generate effective mixed states and therefore reduce concurrence.
+
+This distinction establishes the conceptual transition
+
+\[
+\text{coherent local evolution}
+\rightarrow
+\text{effective decoherence}
+\rightarrow
+\text{entanglement degradation},
+\]
+
+which constitutes one of the central physical mechanisms investigated in the simulator developed in this work.
+```
