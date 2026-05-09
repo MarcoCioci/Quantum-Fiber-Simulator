@@ -1,0 +1,345 @@
+%========================================================
+% CHAPTER 2 — Modeling Strategy
+%========================================================
+
+\chapter{Modeling Strategy}
+
+%========================================================
+% SECTION 2.1 — Progressive Modeling Philosophy
+%========================================================
+
+\section{Progressive Modeling Philosophy}
+
+%--------------------------------------------------------
+% Subsection 2.1.1 — Progressive Modeling Approach
+%--------------------------------------------------------
+
+\subsection{Progressive Modeling Approach}
+
+The modeling approach follows a progressive refinement strategy, in which the system is described through successive levels of approximation of increasing physical complexity.
+
+Each stage introduces additional physical effects while remaining consistent with the previous ones. This ensures analytical transparency and preserves continuity between simplified and refined models.
+
+\medskip
+
+From a theoretical perspective, this approach isolates the contribution of individual mechanisms. From a computational perspective, it enables a layered simulator structure, where each refinement corresponds to a well-defined extension of the existing codebase.
+
+%--------------------------------------------------------
+% Subsection 2.1.2 — Hierarchy of Modeling Levels
+%--------------------------------------------------------
+
+\subsection{Hierarchy of Modeling Levels}
+
+The modeling workflow is structured as a sequence of progressively refined descriptions:
+
+\[
+\begin{array}{c}
+\text{Ideal Bell State} \\
+\downarrow \\
+\text{Local Phase Model (Z-rotations)} \\
+\downarrow \\
+\text{General Local Unitary Transformations} \\
+\downarrow \\
+\text{Mixed-State Description (Density Operators)} \\
+\downarrow \\
+\text{Noisy Quantum Channels} \\
+\downarrow \\
+\text{Effective Fiber Models}
+\end{array}
+\]
+
+\medskip
+
+More explicitly:
+
+\begin{itemize}
+
+\item \textbf{Level 1: Minimal phase model}  
+Pure, maximally entangled state with fiber action reduced to a relative phase. This level captures the analytical dependence of correlation observables on a single parameter.
+
+\item \textbf{Level 2: General unitary dynamics}  
+Arbitrary polarization rotations described by local operators \( U_A \otimes U_B \).
+
+\item \textbf{Level 3: Mixed-state description}  
+Density operators used to represent statistical mixtures and loss of coherence.
+
+\item \textbf{Level 4: Noisy quantum channels}  
+Effective completely positive trace-preserving (CPTP) maps modeling depolarization and decoherence.
+
+\item \textbf{Level 5: Effective fiber models}  
+Physically motivated descriptions, such as concatenations of random unitary segments or stochastic polarization evolution.
+
+\end{itemize}
+
+\medskip
+
+This hierarchy defines the conceptual roadmap of the present work.
+
+The initial levels remain analytically tractable and allow direct validation, while the later levels progressively increase physical realism and connect to experimentally relevant propagation effects.
+
+%========================================================
+% SECTION 2.2 — Baseline Quantum Model
+%========================================================
+
+\section{Baseline Quantum Model}
+
+%--------------------------------------------------------
+% Subsection 2.2.1 — Pure-State Description
+%--------------------------------------------------------
+
+\subsection{Pure-State Description}
+
+At the first stage, the bipartite system is described as a pure state in \( \mathbb{C}^2 \otimes \mathbb{C}^2 \), 
+
+and fiber propagation is modeled through local unitary transformations.
+
+Particular emphasis is placed on relative phase shifts induced by the fibers.
+
+\medskip
+
+The main objective is to analyze how these phase shifts affect measurable two-photon correlations.
+
+The relevant observables are operators of the form
+\[
+\sigma_i \otimes \sigma_j,
+\qquad
+i,j \in \{x,y,z\},
+\]
+as well as operators corresponding to arbitrary measurement directions on the Bloch sphere.
+
+\medskip
+
+These operators play a central role because they describe joint local measurements performed independently on the two subsystems.
+
+More precisely, the operator \( \sigma_i \) acts on subsystem \( A \), while \( \sigma_j \) acts on subsystem \( B \). Their tensor product therefore represents a correlation measurement between the outcomes obtained along two specified measurement directions.
+
+\medskip
+
+The corresponding expectation values 
+
+\(\langle \sigma_i \otimes \sigma_j \rangle\)
+
+quantify the statistical correlations between local measurements performed on the two photons.
+
+These quantities contain direct information about the nonlocal structure of the bipartite quantum state and therefore constitute one of the fundamental signatures of entanglement.
+
+\medskip
+
+For polarization-entangled states, these observables are particularly important because they are directly connected to experimentally accessible coincidence measurements.
+
+In the computational basis, the Pauli operators correspond to measurements along specific polarization bases:
+\begin{itemize}
+\item \( \sigma_z \): horizontal/vertical basis,
+\item \( \sigma_x \): diagonal/antidiagonal basis,
+\item \( \sigma_y \): circular polarization basis.
+\end{itemize}
+
+Consequently, expectation values of the form
+\[
+\langle \sigma_i \otimes \sigma_j \rangle
+\]
+can be interpreted as experimentally measurable polarization correlations between the two photons.
+
+\medskip
+
+Beyond their direct physical interpretation, these correlators also provide the building blocks for more advanced mathematical descriptions introduced later in this work.
+
+In particular:
+\begin{itemize}
+\item the diagonal correlations \( \langle \sigma_i \otimes \sigma_i \rangle \) characterize the persistence of polarization correlations under fiber propagation,
+\item the complete set of correlators defines the correlation tensor representation of the bipartite state,
+\item combinations of these expectation values enter directly into Bell inequalities and CHSH nonlocality tests.
+\end{itemize}
+
+\medskip
+
+This baseline model therefore constitutes the simplest regime in which entanglement is preserved and can be probed exclusively through correlation observables.
+
+It provides a controlled setting for deriving analytical expressions and validating the numerical implementation.
+
+\medskip
+
+This regime establishes the minimal framework required to connect fiber-induced phase evolution with measurable two-photon correlations, while simultaneously introducing the correlation structures that will later be generalized to mixed states, arbitrary measurement axes, and non-unitary evolution.
+
+%--------------------------------------------------------
+% Subsection 2.2.2 — Extension to Mixed-State Formalism
+%--------------------------------------------------------
+
+\subsection{Extension to Mixed-State Formalism}
+
+At the next level, the model incorporates statistical effects and decoherence.
+
+In this regime, the pure-state description is no longer sufficient and must be replaced by a density-operator formalism.
+
+\medskip
+
+This extension enables the description of:
+\begin{itemize}
+\item reduced states of individual photons,
+\item loss of coherence due to unresolved degrees of freedom,
+\item effective non-unitary dynamics arising from environmental interactions or statistical averaging.
+\end{itemize}
+
+\medskip
+
+Within this framework, physically relevant quantities such as purity, fidelity, and concurrence can be defined and computed, enabling a quantitative characterization of mixedness, coherence, and entanglement (see Chapter~4).
+
+\medskip
+
+A central mathematical operation in the density-operator formalism is the partial trace, which allows the description of individual subsystems starting from the global bipartite state.
+
+For a composite system described by the density operator \( \rho_{AB} \), the reduced state of subsystem \( A \) is obtained by tracing over subsystem \( B \):
+
+\begin{equation}
+\rho_A
+=
+\mathrm{Tr}_B(\rho_{AB})
+\label{eq:partial_trace_A}
+\end{equation}
+
+\medskip
+
+Analogously, the reduced state of subsystem \( B \) is
+
+\begin{equation}
+\rho_B
+=
+\mathrm{Tr}_A(\rho_{AB}).
+\label{eq:partial_trace_B}
+\end{equation}
+
+\medskip
+
+The reduced density operators contain all information accessible through local measurements performed on the corresponding subsystems.
+
+\medskip
+
+For maximally entangled Bell states such as \( |\Psi^+\rangle \), the reduced states are maximally mixed:
+
+\begin{equation}
+\rho_A
+=
+\rho_B
+=
+\frac{1}{2} I.
+\label{eq:maximally_mixed_reduced_states}
+\end{equation}
+
+This result constitutes one of the fundamental signatures of bipartite entanglement.
+
+Although the global state is pure, each subsystem individually admits a mixed-state description, implying that no local measurement can fully reconstruct the global quantum state.
+
+The information characterizing the entangled system is therefore encoded nonlocally in the correlations between the two subsystems.
+
+\medskip
+
+This connection between entanglement, reduced-state mixedness, and nonlocal correlations plays a central role throughout the present work, both in the theoretical analysis and in the interpretation of the numerical simulations developed in later chapters.
+\medskip
+
+Expectation values in the density-operator formalism are computed as
+
+\begin{equation}
+\langle O \rangle = \mathrm{Tr}(\rho O)
+\label{eq:density_expectation}
+\end{equation}
+
+which generalizes the pure-state expression \( \langle \psi | O | \psi \rangle \).
+
+\medskip
+
+The density-operator formalism therefore provides the natural framework for describing ensemble averaging, decoherence, and effective non-unitary dynamics arising during fiber propagation.
+
+%========================================================
+% SECTION 2.3 — Computational Architecture and Modeling Roadmap
+%========================================================
+
+\section{Computational Architecture and Modeling Roadmap}
+
+%--------------------------------------------------------
+% Subsection 2.3.1 — Simulator Design and Architecture
+%--------------------------------------------------------
+
+\subsection{Simulator Design and Architecture}
+
+The simulator is designed as a modular implementation of the theoretical model.
+
+\medskip
+
+The initial modules include:
+\begin{itemize}
+\item Bell-state generation,
+\item local unitary propagation,
+\item correlation evaluation.
+\end{itemize}
+
+\medskip
+
+More advanced modules introduce:
+\begin{itemize}
+\item quantum channels,
+\item reduced density operators,
+\item entanglement measures,
+\item experimentally relevant observables such as Bell parameters and Stokes-like quantities.
+\end{itemize}
+
+\medskip
+
+The theoretical structure is directly reflected in the computational architecture, ensuring consistency, traceability, and extensibility.
+
+\medskip
+
+The implementation distinguishes clearly between reusable computational kernels and higher-level experiment scripts, allowing the simulator to evolve into a structured and reusable research tool.
+
+%--------------------------------------------------------
+% Subsection 2.3.2 — Implementation Strategy
+%--------------------------------------------------------
+
+\subsection{Implementation Strategy}
+
+The simulator is designed as a layered computational framework mirroring the progressive hierarchy of the theoretical model.
+
+\medskip
+
+At the initial level, the implementation operates on pure two-qubit states represented as complex vectors in \( \mathbb{C}^4 \).
+
+The corresponding modules include:
+\begin{itemize}
+\item Bell-state generation,
+\item local unitary evolution,
+\item expectation-value evaluation,
+\item correlation computation.
+\end{itemize}
+
+\medskip
+
+The extension to mixed-state dynamics introduces:
+\begin{itemize}
+\item density-matrix representations,
+\item partial-trace operations,
+\item observable evaluation in the density formalism,
+\item state metrics such as purity, fidelity, and concurrence.
+\end{itemize}
+
+\medskip
+
+More advanced layers incorporate:
+\begin{itemize}
+\item quantum channels,
+\item ensemble-based evolution,
+\item stochastic propagation models,
+\item experimentally motivated observables.
+\end{itemize}
+
+\medskip
+
+At the current stage, this structure is reflected in the repository organization:
+\begin{itemize}
+\item \texttt{Core}: state vectors, operators, expectation values, and correlation routines;
+\item \texttt{Models}: physical propagation models;
+\item \texttt{Utils}: validation routines and auxiliary tools;
+\item \texttt{Experiments}: scripts implementing complete simulation studies.
+\end{itemize}
+
+\medskip
+
+This modular architecture preserves analytical traceability while enabling incremental extensions of the physical model without structural modifications of previously validated components.

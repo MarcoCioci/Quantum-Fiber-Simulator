@@ -1,0 +1,507 @@
+%========================================================
+% APPENDIX D — Depolarizing Channel Analytics
+%========================================================
+
+\section{Depolarizing Channel Analytics}
+\label{app:depolarizing_channel_derivations}
+
+This appendix derives the analytical expressions used to validate the depolarizing-channel experiment in Section~\ref{sec:depolarizing_channel}.
+
+The reference state is the Bell state
+
+\[
+|\Psi^+\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + |10\rangle
+\right),
+\]
+
+with density operator
+
+\[
+\rho_0
+=
+|\Psi^+\rangle
+\langle\Psi^+|.
+\]
+
+The depolarized family is defined as
+
+\begin{equation}
+\rho(p)
+=
+(1-p)\rho_0
++
+\frac{p}{4}I_4,
+\qquad
+p \in [0,1].
+\label{eq:appendix_depolarizing_state}
+\end{equation}
+
+%--------------------------------------------------------
+% Density matrix representation
+%--------------------------------------------------------
+
+\subsection*{Density matrix representation}
+
+In the computational basis
+
+\[
+\left\{
+|00\rangle,
+|01\rangle,
+|10\rangle,
+|11\rangle
+\right\},
+\]
+
+the Bell-state density operator is
+
+\[
+\rho_0
+=
+\begin{pmatrix}
+0 & 0 & 0 & 0 \\
+0 & \frac{1}{2} & \frac{1}{2} & 0 \\
+0 & \frac{1}{2} & \frac{1}{2} & 0 \\
+0 & 0 & 0 & 0
+\end{pmatrix}.
+\]
+
+Substituting this expression into Eq.~\eqref{eq:appendix_depolarizing_state} gives
+
+\[
+\rho(p)
+=
+\begin{pmatrix}
+\frac{p}{4} & 0 & 0 & 0 \\
+0 & \frac{1}{2}-\frac{p}{4} & \frac{1-p}{2} & 0 \\
+0 & \frac{1-p}{2} & \frac{1}{2}-\frac{p}{4} & 0 \\
+0 & 0 & 0 & \frac{p}{4}
+\end{pmatrix}.
+\]
+
+%--------------------------------------------------------
+% Global purity
+%--------------------------------------------------------
+
+\subsection*{Global purity}
+
+The global purity is defined as
+
+\[
+\gamma_{AB}(p)
+=
+\operatorname{Tr}
+\left(
+\rho(p)^2
+\right).
+\]
+
+Since \( \rho_0 \) is a rank-one projector and \( I_4/4 \) is proportional to the identity, the Bell-state direction remains an eigenvector of \( \rho(p) \), with eigenvalue
+
+\[
+\lambda_1
+=
+1-\frac{3p}{4}.
+\]
+
+The three orthogonal Bell-basis directions have eigenvalues
+
+\[
+\lambda_2
+=
+\lambda_3
+=
+\lambda_4
+=
+\frac{p}{4}.
+\]
+
+Therefore,
+
+\[
+\gamma_{AB}(p)
+=
+\left(
+1-\frac{3p}{4}
+\right)^2
++
+3
+\left(
+\frac{p}{4}
+\right)^2.
+\]
+
+After simplification,
+
+\begin{equation}
+\gamma_{AB}(p)
+=
+1
+-
+\frac{3}{2}p
++
+\frac{3}{4}p^2.
+\label{eq:appendix_depolarizing_global_purity}
+\end{equation}
+
+%--------------------------------------------------------
+% Reduced density operators
+%--------------------------------------------------------
+
+\subsection*{Reduced density operators}
+
+For the Bell state,
+
+\[
+\operatorname{Tr}_B(\rho_0)
+=
+\operatorname{Tr}_A(\rho_0)
+=
+\frac{I_2}{2}.
+\]
+
+Moreover,
+
+\[
+\operatorname{Tr}_B
+\left(
+\frac{I_4}{4}
+\right)
+=
+\operatorname{Tr}_A
+\left(
+\frac{I_4}{4}
+\right)
+=
+\frac{I_2}{2}.
+\]
+
+By linearity of the partial trace,
+
+\[
+\rho_A(p)
+=
+\operatorname{Tr}_B(\rho(p))
+=
+(1-p)\frac{I_2}{2}
++
+p\frac{I_2}{2}
+=
+\frac{I_2}{2}.
+\]
+
+Similarly,
+
+\[
+\rho_B(p)
+=
+\frac{I_2}{2}.
+\]
+
+The reduced purities are therefore
+
+\begin{equation}
+\gamma_A(p)
+=
+\gamma_B(p)
+=
+\operatorname{Tr}
+\left[
+\left(
+\frac{I_2}{2}
+\right)^2
+\right]
+=
+\frac{1}{2}.
+\label{eq:appendix_depolarizing_reduced_purity}
+\end{equation}
+
+%--------------------------------------------------------
+% Fidelity
+%--------------------------------------------------------
+
+\subsection*{Fidelity with respect to \texorpdfstring{\( |\Psi^+\rangle \)}{|Psi+>}}
+
+Since the reference state is pure, the fidelity is
+
+\[
+F_{\Psi^+}(p)
+=
+\langle \Psi^+ |
+\rho(p)
+| \Psi^+ \rangle.
+\]
+
+Substituting Eq.~\eqref{eq:appendix_depolarizing_state},
+
+\[
+F_{\Psi^+}(p)
+=
+(1-p)
+\langle \Psi^+ |
+\rho_0
+| \Psi^+ \rangle
++
+\frac{p}{4}
+\langle \Psi^+ |
+I_4
+| \Psi^+ \rangle.
+\]
+
+Since
+
+\[
+\langle \Psi^+ |
+\rho_0
+| \Psi^+ \rangle
+=
+1,
+\qquad
+\langle \Psi^+ |
+I_4
+| \Psi^+ \rangle
+=
+1,
+\]
+
+one obtains
+
+\begin{equation}
+F_{\Psi^+}(p)
+=
+1
+-
+\frac{3}{4}p.
+\label{eq:appendix_depolarizing_fidelity}
+\end{equation}
+
+%--------------------------------------------------------
+% Concurrence
+%--------------------------------------------------------
+
+\subsection*{Concurrence}
+
+The density operator \( \rho(p) \) is Bell-diagonal. For a Bell-diagonal two-qubit state, the concurrence is
+
+\[
+C(p)
+=
+\max
+\left(
+0,
+2\lambda_{\max}-1
+\right),
+\]
+
+where \( \lambda_{\max} \) is the largest Bell-basis eigenvalue.
+
+In the present case,
+
+\[
+\lambda_{\max}
+=
+1-\frac{3p}{4}.
+\]
+
+Therefore,
+
+\begin{equation}
+C(p)
+=
+\max
+\left(
+0,
+1-\frac{3p}{2}
+\right).
+\label{eq:appendix_depolarizing_concurrence}
+\end{equation}
+
+The concurrence vanishes when
+
+\[
+1-\frac{3p}{2}
+=
+0,
+\]
+
+which gives the separability threshold
+
+\begin{equation}
+p
+=
+\frac{2}{3}.
+\label{eq:appendix_depolarizing_separability_threshold}
+\end{equation}
+
+%--------------------------------------------------------
+% Correlation tensor
+%--------------------------------------------------------
+
+\subsection*{Correlation tensor}
+
+The Pauli correlations are defined as
+
+\[
+c_{ij}(p)
+=
+\operatorname{Tr}
+\left[
+\rho(p)
+\left(
+\sigma_i \otimes \sigma_j
+\right)
+\right],
+\qquad
+i,j \in \{x,y,z\}.
+\]
+
+Using linearity,
+
+\[
+c_{ij}(p)
+=
+(1-p)
+\operatorname{Tr}
+\left[
+\rho_0
+\left(
+\sigma_i \otimes \sigma_j
+\right)
+\right]
++
+\frac{p}{4}
+\operatorname{Tr}
+\left[
+I_4
+\left(
+\sigma_i \otimes \sigma_j
+\right)
+\right].
+\]
+
+Since every Pauli product \( \sigma_i \otimes \sigma_j \) with \( i,j \in \{x,y,z\} \) is traceless,
+
+\[
+\operatorname{Tr}
+\left[
+I_4
+\left(
+\sigma_i \otimes \sigma_j
+\right)
+\right]
+=
+0.
+\]
+
+Thus,
+
+\[
+c_{ij}(p)
+=
+(1-p)c_{ij}(0).
+\]
+
+Equivalently, the full correlation tensor is uniformly contracted:
+
+\begin{equation}
+T(p)
+=
+(1-p)T_{\Psi^+}.
+\label{eq:appendix_depolarizing_tensor_contraction}
+\end{equation}
+
+For the reference Bell state \( |\Psi^+\rangle \),
+
+\[
+T_{\Psi^+}
+=
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & -1
+\end{pmatrix}.
+\]
+
+Therefore,
+
+\begin{equation}
+T(p)
+=
+\begin{pmatrix}
+1-p & 0 & 0 \\
+0 & 1-p & 0 \\
+0 & 0 & -(1-p)
+\end{pmatrix}.
+\label{eq:appendix_depolarizing_tensor}
+\end{equation}
+
+The diagonal correlations are
+
+\begin{equation}
+c_{xx}(p)
+=
+1-p,
+\qquad
+c_{yy}(p)
+=
+1-p,
+\qquad
+c_{zz}(p)
+=
+-(1-p).
+\label{eq:appendix_depolarizing_diagonal_correlations}
+\end{equation}
+
+%--------------------------------------------------------
+% Summary
+%--------------------------------------------------------
+
+\subsection*{Summary}
+
+Collecting the analytical expressions:
+
+\[
+\boxed{
+\begin{aligned}
+\gamma_{AB}(p)
+&=
+1-\frac{3}{2}p+\frac{3}{4}p^2,
+\\
+\gamma_A(p)
+&=
+\gamma_B(p)
+=
+\frac{1}{2},
+\\
+F_{\Psi^+}(p)
+&=
+1-\frac{3}{4}p,
+\\
+C(p)
+&=
+\max
+\left(
+0,
+1-\frac{3}{2}p
+\right),
+\\
+c_{xx}(p)
+&=
+1-p,
+\qquad
+c_{yy}(p)
+=
+1-p,
+\qquad
+c_{zz}(p)
+=
+-(1-p).
+\end{aligned}
+}
+\]
+
+These expressions provide the analytical reference used for the numerical validation of the depolarizing-channel experiment.

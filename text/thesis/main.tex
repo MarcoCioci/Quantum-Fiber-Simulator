@@ -1,0 +1,59 @@
+%========================================================
+% MAIN DOCUMENT
+%========================================================
+
+\documentclass[a4paper,12pt]{report}
+
+%--------------------------------------------------------
+% Styles
+%--------------------------------------------------------
+
+\input{styles/packages}
+\input{styles/formatting}
+\input{styles/theorem_styles}
+\input{styles/metadata}
+
+%========================================================
+% DOCUMENT START
+%========================================================
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\medskip
+
+%--------------------------------------------------------
+% Chapters
+%--------------------------------------------------------
+
+\input{chapters/01_general_framework}
+\input{chapters/02_modeling_strategy}
+\input{chapters/03_physical_and_mathematical_representation}
+\input{chapters/04_quantitative_characterization_of_two-qubit_states}
+\input{chapters/05_numerical_experiments_and_results}
+
+%--------------------------------------------------------
+% Appendices
+%--------------------------------------------------------
+
+\appendix
+\addcontentsline{toc}{chapter}{Appendices}
+
+\input{appendix/A_reduced_density_operators}
+\input{appendix/B_fidelity_pure_reference_state}
+\input{appendix/C_concurrence_and_reduced_density_operators}
+\input{appendix/D_depolarizing_channel_analytics}
+
+%--------------------------------------------------------
+% Bibliography
+%--------------------------------------------------------
+
+\bibliographystyle{ieeetr}
+\bibliography{bibliography/references}
+
+%--------------------------------------------------------
+
+\end{document}

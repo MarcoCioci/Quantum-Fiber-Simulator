@@ -1,0 +1,117 @@
+%========================================================
+% CHAPTER 1 — General Framework
+%========================================================
+
+\chapter{General Framework}
+
+%--------------------------------------------------------
+% Section 1.1 — Purpose and Scope
+%--------------------------------------------------------
+
+\section{Purpose and Scope}
+
+The purpose of this work is to establish a coherent framework for the mathematical modeling and numerical simulation of polarization-entangled photon pairs propagating through optical fibers.
+
+The central objective is to organize the physical assumptions, mathematical formalism, and simulation strategy into a reproducible structure, so that each computational step can be traced back to a precise theoretical element. In this way, the simulator is not developed as an isolated numerical tool, but as a direct operational translation of the underlying quantum model.
+
+\medskip
+
+The modeling approach adopted throughout this work is intentionally progressive. Simplified analytically tractable models are introduced first, and are then extended toward increasingly realistic descriptions incorporating statistical effects, decoherence, and effective noisy evolution.
+
+This strategy enables a controlled connection between physical interpretation, analytical predictions, and numerical validation.
+
+%--------------------------------------------------------
+% Section 1.2 — Theoretical Formalism and Notation
+%--------------------------------------------------------
+
+\section{Theoretical Formalism and Notation}
+
+The system is described within the framework of quantum information theory. The relevant mathematical structures include finite-dimensional Hilbert spaces, quantum states, tensor products, unitary operators, density operators, and projective measurements.
+
+Elements of classical optics are introduced only when required to justify the physical origin of the effective quantum transformations.
+
+\medskip
+
+The notation and formal tools are aligned, as far as possible, with the framework developed in \textit{Quantum Computation and Quantum Information} by Nielsen and Chuang \cite{nielsen_chuang_qcqi}.
+
+\medskip
+
+Within this formalism:
+
+\begin{itemize}
+    \item single subsystems are represented by vectors in \( \mathbb{C}^{2} \),
+    \item composite systems are described through tensor-product spaces,
+    \item evolutions are represented by linear operators, unitary in the ideal case,
+    \item measurements are described through Hermitian operators.
+\end{itemize}
+
+\medskip
+
+All states and operators are represented as vectors and matrices over \( \mathbb{C} \), with dimensions determined by the tensor-product structure of the system.
+
+%--------------------------------------------------------
+% Section 1.3 — Physical Scenario and Experimental Setting
+%--------------------------------------------------------
+
+\section{Physical Scenario and Experimental Setting}
+
+The physical setting considered in this work is the following.
+s
+A spontaneous parametric down-conversion (SPDC) source generates pairs of entangled photons, ideally prepared in a Bell state.
+
+The polarization degree of freedom is used to encode the qubit associated with each photon. The two photons are injected into distinct optical paths, denoted \( A \) and \( B \), and propagate through independent optical fibers.
+
+\medskip
+
+Each fiber acts on the polarization degree of freedom of the corresponding photon. In a general description, this action can be represented by a unitary operator acting on a single-qubit Hilbert space.
+
+However, motivated by experimental constraints and by the limited degree of control available on the complete polarization transformation, the model is initially restricted to a simplified effective description.
+
+\medskip
+
+After compensation of global polarization rotations, the dominant residual effect can be modeled as a relative phase shift between the horizontal and vertical polarization components.
+
+In the qubit representation, this corresponds to a rotation around the computational \( Z \)-axis of the Bloch sphere.
+
+\medskip
+
+The objective at this stage is therefore not to reproduce the full electromagnetic propagation inside optical fibers, but rather to construct an effective quantum model capable of capturing the relevant impact of fiber propagation on entanglement and measurable correlations.
+
+%--------------------------------------------------------
+% Section 1.4 — Computational and Modeling Architecture
+%--------------------------------------------------------
+
+\section{Computational and Modeling Architecture}
+
+The computational framework developed in this work follows directly from the theoretical structure introduced in the previous sections. The simulator is designed as a modular numerical realization of the underlying quantum model, preserving a direct correspondence between physical concepts and computational components.
+
+\medskip
+
+At the numerical level, pure states are represented as complex vectors, mixed states as density matrices, and physical evolutions and observables as matrix operators. This representation enables a unified treatment of unitary dynamics, statistical mixtures, expectation values, and effective noisy evolution within the same computational framework.
+
+\medskip
+
+The simulator architecture is organized around distinct functional layers, including state preparation, operator construction, local evolution, observable evaluation, quantum channels, and experiment-specific routines. Each layer corresponds to a well-defined theoretical block and can therefore be validated independently before being integrated into more advanced models.
+
+\medskip
+
+Particular emphasis is placed on progressive model refinement. Simplified analytically tractable configurations are used as validation baselines before introducing increasingly realistic descriptions involving stochastic phase evolution, ensemble averaging, and non-unitary effects.
+
+\medskip
+
+At the first modeling stage, unnecessary optical detail is neglected and each fiber is described exclusively through its effective action on polarization. This leads to a local unitary representation of the form
+
+\begin{equation}
+U_A \otimes U_B
+\label{eq:local_unitary_evolution}
+\end{equation}
+
+where \( U_A, U_B \in \mathbb{C}^{2 \times 2} \) are unitary operators.
+
+\medskip
+
+This abstraction defines the fundamental interface between the physical system and the simulator, and will later allow the introduction of more refined models, including stochastic phase evolution, effective decoherence, and non-unitary quantum channels.
+
+\medskip
+
+The overall objective of the computational framework is therefore not only to reproduce numerical results, but also to maintain analytical transparency, reproducibility, and consistency between theoretical predictions and numerical implementation throughout the progressive development of the model.

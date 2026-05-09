@@ -1,0 +1,883 @@
+%========================================================
+% LATEX FAC TOTUM — QUANTUM FIBER SIMULATOR THESIS
+%========================================================
+
+This document summarizes the LaTeX syntax and mathematical constructs
+used throughout the thesis and derivation repository.
+
+Focus:
+- quantum mechanics notation,
+- equations,
+- matrices,
+- operators,
+- Dirac notation,
+- tensor products,
+- alignment environments,
+- references,
+- theorem-like mathematical writing.
+
+========================================================
+1. BASIC LATEX DOCUMENT STRUCTURE
+========================================================
+
+\documentclass[a4paper,12pt]{report}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{braket}
+\usepackage{physics}
+\usepackage{bm}
+
+\begin{document}
+
+TEXT HERE
+
+\end{document}
+
+--------------------------------------------------------
+
+Meaning:
+
+report
+    Thesis/report structure with chapters
+
+amsmath
+    Advanced equations
+
+amssymb
+    Extra mathematical symbols
+
+braket
+    Quantum bra-ket notation
+
+physics
+    Useful quantum/derivative macros
+
+bm
+    Bold mathematical symbols
+
+========================================================
+2. INLINE VS DISPLAY MATHEMATICS
+========================================================
+
+--------------------------------------------------------
+2.1 Inline math
+--------------------------------------------------------
+
+Used inside sentences.
+
+Syntax:
+
+\( ... \)
+
+Example:
+
+The phase parameter \( \theta \) evolves randomly.
+
+Alternative:
+
+$ ... $
+
+but \( ... \) is preferred.
+
+--------------------------------------------------------
+2.2 Display equations
+--------------------------------------------------------
+
+Used for important standalone equations.
+
+Syntax:
+
+\[
+...
+\]
+
+Example:
+
+\[
+|\psi\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + |10\rangle
+\right)
+\]
+
+========================================================
+3. NUMBERED EQUATIONS
+========================================================
+
+Use when equations are referenced later.
+
+Syntax:
+
+\begin{equation}
+...
+\label{eq:name}
+\end{equation}
+
+Example:
+
+\begin{equation}
+\rho
+=
+|\psi\rangle\langle\psi|
+\label{eq:density_operator}
+\end{equation}
+
+Reference later with:
+
+Eq.~\eqref{eq:density_operator}
+
+========================================================
+4. MULTI-LINE EQUATIONS
+========================================================
+
+--------------------------------------------------------
+4.1 align environment
+--------------------------------------------------------
+
+Used for derivations and aligned equations.
+
+Syntax:
+
+\begin{align}
+A &= B \\
+  &= C
+\end{align}
+
+Example:
+
+\begin{align}
+\langle \sigma_x \otimes \sigma_x \rangle
+&=
+\cos\theta
+\\
+\langle \sigma_y \otimes \sigma_y \rangle
+&=
+\cos\theta
+\\
+\langle \sigma_z \otimes \sigma_z \rangle
+&=
+-1
+\end{align}
+
+--------------------------------------------------------
+4.2 Suppressing equation numbers
+--------------------------------------------------------
+
+Use:
+
+\nonumber
+
+Example:
+
+\begin{align}
+A &= B
+\nonumber
+\\
+  &= C
+\end{align}
+
+========================================================
+5. GREEK LETTERS
+========================================================
+
+Lowercase:
+
+\alpha      → α
+\beta       → β
+\gamma      → γ
+\theta      → θ
+\phi        → φ
+\psi        → ψ
+\rho        → ρ
+\sigma      → σ
+\lambda     → λ
+\omega      → ω
+
+Uppercase:
+
+\Gamma      → Γ
+\Delta      → Δ
+\Lambda     → Λ
+\Omega      → Ω
+
+Example:
+
+\[
+\rho(\theta)
+\]
+
+========================================================
+6. QUANTUM MECHANICS NOTATION
+========================================================
+
+--------------------------------------------------------
+6.1 Ket vectors
+--------------------------------------------------------
+
+Syntax:
+
+\ket{\psi}
+
+Output:
+
+\( \ket{\psi} \)
+
+Equivalent explicit syntax:
+
+|\psi\rangle
+
+--------------------------------------------------------
+6.2 Bra vectors
+--------------------------------------------------------
+
+Syntax:
+
+\bra{\psi}
+
+Output:
+
+\( \bra{\psi} \)
+
+Equivalent explicit syntax:
+
+\langle\psi|
+
+--------------------------------------------------------
+6.3 Bra-ket inner products
+--------------------------------------------------------
+
+Syntax:
+
+\braket{\phi | \psi}
+
+Output:
+
+\( \braket{\phi | \psi} \)
+
+--------------------------------------------------------
+6.4 Outer products
+--------------------------------------------------------
+
+Syntax:
+
+\ket{\psi}\bra{\psi}
+
+Output:
+
+\( \ket{\psi}\bra{\psi} \)
+
+Example:
+
+\[
+\rho
+=
+\ket{\psi}\bra{\psi}
+\]
+
+--------------------------------------------------------
+6.5 Bell states
+--------------------------------------------------------
+
+Example:
+
+\[
+\ket{\Psi^+}
+=
+\frac{1}{\sqrt{2}}
+\left(
+\ket{01} + \ket{10}
+\right)
+\]
+
+========================================================
+7. MATRICES
+========================================================
+
+--------------------------------------------------------
+7.1 Small matrices
+--------------------------------------------------------
+
+Syntax:
+
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}
+
+Example:
+
+\[
+\sigma_x
+=
+\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix}
+\]
+
+--------------------------------------------------------
+7.2 Matrix environments
+--------------------------------------------------------
+
+pmatrix
+    Parentheses
+
+bmatrix
+    Square brackets
+
+vmatrix
+    Determinant bars
+
+========================================================
+8. FRACTIONS, ROOTS, EXPONENTIALS
+========================================================
+
+Fraction:
+
+\frac{a}{b}
+
+Square root:
+
+\sqrt{x}
+
+Exponential:
+
+e^{i\theta}
+
+Example:
+
+\[
+\frac{1}{\sqrt{2}}
+e^{i\theta}
+\]
+
+========================================================
+9. TENSOR PRODUCTS
+========================================================
+
+Syntax:
+
+\otimes
+
+Example:
+
+\[
+\sigma_x \otimes \sigma_y
+\]
+
+Two-qubit Hilbert space:
+
+\[
+\mathbb{C}^2 \otimes \mathbb{C}^2
+\]
+
+========================================================
+10. EXPECTATION VALUES
+========================================================
+
+General syntax:
+
+\[
+\langle O \rangle
+\]
+
+Explicit pure-state form:
+
+\[
+\langle \psi | O | \psi \rangle
+\]
+
+Density operator form:
+
+\[
+\mathrm{Tr}(\rho O)
+\]
+
+========================================================
+11. TRACE OPERATOR
+========================================================
+
+Syntax:
+
+\mathrm{Tr}
+
+Example:
+
+\[
+\mathrm{Tr}(\rho O)
+\]
+
+Partial trace:
+
+\[
+\mathrm{Tr}_B(\rho_{AB})
+\]
+
+========================================================
+12. SUBSCRIPTS AND SUPERSCRIPTS
+========================================================
+
+Subscript:
+
+A_i
+
+Superscript:
+
+x^2
+
+Combined:
+
+\rho_{AB}^{(k)}
+
+Example:
+
+\[
+\rho_{AB}^{(k)}
+\]
+
+========================================================
+13. COMPUTATIONAL BASIS STATES
+========================================================
+
+Single qubit:
+
+\[
+\ket{0}, \ket{1}
+\]
+
+Two qubits:
+
+\[
+\ket{00}, \ket{01}, \ket{10}, \ket{11}
+\]
+
+Basis declaration:
+
+\[
+\{
+\ket{00},
+\ket{01},
+\ket{10},
+\ket{11}
+\}
+\]
+
+========================================================
+14. OPERATORS
+========================================================
+
+Pauli matrices:
+
+\[
+\sigma_x,
+\sigma_y,
+\sigma_z
+\]
+
+General observable:
+
+\[
+O
+\]
+
+Unitary operator:
+
+\[
+U^\dagger U = I
+\]
+
+Hermitian operator:
+
+\[
+O^\dagger = O
+\]
+
+========================================================
+15. DAGGER / HERMITIAN CONJUGATE
+========================================================
+
+Syntax:
+
+^\dagger
+
+Example:
+
+\[
+U^\dagger
+\]
+
+========================================================
+16. IDENTITY MATRICES
+========================================================
+
+Syntax:
+
+I
+
+Dimension-specific:
+
+I_2
+I_4
+
+Example:
+
+\[
+\rho
+=
+\frac{1}{4} I_4
+\]
+
+========================================================
+17. CASES ENVIRONMENT
+========================================================
+
+Syntax:
+
+\begin{cases}
+...
+\end{cases}
+
+Example:
+
+\[
+C(\rho)
+=
+\begin{cases}
+0 & \text{if separable}
+\\
+1 & \text{if maximally entangled}
+\end{cases}
+\]
+
+========================================================
+18. SUMS, PRODUCTS, INTEGRALS
+========================================================
+
+Sum:
+
+\[
+\sum_{k=1}^{N}
+x_k
+\]
+
+Product:
+
+\[
+\prod_{i=1}^{n}
+x_i
+\]
+
+Integral:
+
+\[
+\int_a^b f(x)\,dx
+\]
+
+========================================================
+19. DOTS AND ELLIPSIS
+========================================================
+
+Horizontal:
+
+\cdots
+
+Vertical:
+
+\vdots
+
+Diagonal:
+
+\ddots
+
+========================================================
+20. BOLD SYMBOLS
+========================================================
+
+Vectors:
+
+\mathbf{v}
+
+Bold Greek:
+
+\bm{\sigma}
+
+Example:
+
+\[
+\bm{\sigma}
+=
+(\sigma_x,\sigma_y,\sigma_z)
+\]
+
+========================================================
+21. BLOCH-SPHERE NOTATION
+========================================================
+
+Bloch vector:
+
+\[
+\vec{r}
+=
+(r_x,r_y,r_z)
+\]
+
+Measurement axis:
+
+\[
+\hat{n}
+=
+(n_x,n_y,n_z)
+\]
+
+Observable:
+
+\[
+\sigma(\hat{n})
+=
+\hat{n}\cdot\bm{\sigma}
+\]
+
+========================================================
+22. CORRELATION FUNCTIONS
+========================================================
+
+General correlator:
+
+\[
+E(a,b)
+=
+\mathrm{Tr}
+\left[
+\rho
+(\sigma(a)\otimes\sigma(b))
+\right]
+\]
+
+Tensor form:
+
+\[
+E(a,b)
+=
+a^T T b
+\]
+
+========================================================
+23. CHSH PARAMETER
+========================================================
+
+Example:
+
+\[
+S
+=
+E(a,b)
++
+E(a,b')
++
+E(a',b)
+-
+E(a',b')
+\]
+
+========================================================
+24. COMMON SPACING COMMANDS
+========================================================
+
+Small:
+
+\,
+
+Medium:
+
+\;
+
+Large:
+
+\quad
+
+Example:
+
+\[
+\mathrm{Tr}(\rho \, O)
+\]
+
+========================================================
+25. TEXT INSIDE EQUATIONS
+========================================================
+
+Use:
+
+\text{...}
+
+Example:
+
+\[
+C(\rho)=0
+\quad
+\text{for separable states}
+\]
+
+========================================================
+26. EQUATION LABELING POLICY
+========================================================
+
+Good labels:
+
+\label{eq:phase_state}
+\label{eq:correlation_tensor}
+\label{eq:chsh_parameter}
+
+Avoid:
+
+\label{eq1}
+\label{equationA}
+
+========================================================
+27. FIGURES
+========================================================
+
+Syntax:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figure.png}
+\caption{Caption text}
+\label{fig:name}
+\end{figure}
+
+========================================================
+28. TABLES
+========================================================
+
+Syntax:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ccc}
+A & B & C \\
+\hline
+1 & 2 & 3
+\end{tabular}
+\caption{Caption}
+\label{tab:name}
+\end{table}
+
+========================================================
+29. APPENDICES
+========================================================
+
+Syntax:
+
+\appendix
+
+\chapter{Correlation Tensor Derivations}
+
+========================================================
+30. COMMENT BLOCKS
+========================================================
+
+Section block:
+
+%========================================================
+% SECTION 3 — CORRELATION TENSOR
+%========================================================
+
+Subsection block:
+
+%--------------------------------------------------------
+% Subsection 3.5 — Correlation Tensor
+%--------------------------------------------------------
+
+========================================================
+31. MOST IMPORTANT QUANTUM EXPRESSIONS USED
+========================================================
+
+Bell state:
+
+\[
+\ket{\Psi^+}
+=
+\frac{1}{\sqrt{2}}
+\left(
+\ket{01}
++
+\ket{10}
+\right)
+\]
+
+Density operator:
+
+\[
+\rho
+=
+\ket{\psi}\bra{\psi}
+\]
+
+Partial trace:
+
+\[
+\rho_A
+=
+\mathrm{Tr}_B(\rho_{AB})
+\]
+
+Purity:
+
+\[
+\gamma
+=
+\mathrm{Tr}(\rho^2)
+\]
+
+Fidelity:
+
+\[
+F
+=
+\bra{\Psi^+}
+\rho
+\ket{\Psi^+}
+\]
+
+Concurrence:
+
+\[
+C(\rho)
+=
+\max(0,\lambda_1-\lambda_2-\lambda_3-\lambda_4)
+\]
+
+Correlation tensor:
+
+\[
+T_{ij}
+=
+\mathrm{Tr}
+(
+\rho \,
+\sigma_i \otimes \sigma_j
+)
+\]
+
+========================================================
+32. PACKAGE SET RECOMMENDED 
+========================================================
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{physics}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+
+========================================================
+END
+========================================================

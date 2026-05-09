@@ -1,0 +1,291 @@
+%========================================================
+% SECTION 5.3 — Depolarizing Channel
+%========================================================
+
+\section{Depolarizing Channel}
+\label{sec:depolarizing_channel}
+
+%--------------------------------------------------------
+% Subsection 5.3.1 — Objective and Physical Motivation
+%--------------------------------------------------------
+
+\subsection{Objective and Physical Motivation}
+
+This experiment investigates the degradation of a maximally entangled Bell state under an effective two-qubit depolarizing channel.
+
+Unlike the previous experiments, which were based on deterministic or ensemble-averaged unitary evolution, the present model introduces a genuinely non-unitary transformation directly at the level of the density operator.
+
+The objective is to characterize how depolarization affects:
+
+\begin{itemize}
+    \item purity and mixedness;
+    \item fidelity with respect to the Bell reference state;
+    \item concurrence and entanglement degradation;
+    \item observable correlations;
+    \item the structure of the correlation tensor.
+\end{itemize}
+
+This experiment therefore establishes the first explicit decoherence model of the simulator and provides a baseline description of irreversible coherence loss in bipartite quantum propagation.
+
+%--------------------------------------------------------
+% Subsection 5.3.2 — Model and Analytical Predictions
+%--------------------------------------------------------
+
+\subsection{Model and Analytical Predictions}
+
+The initial state is the Bell state
+
+\[
+|\Psi^+\rangle
+=
+\frac{|01\rangle + |10\rangle}{\sqrt{2}},
+\qquad
+\rho_0
+=
+|\Psi^+\rangle
+\langle\Psi^+|.
+\]
+
+The depolarizing channel is defined as
+
+\begin{equation}
+\rho(p)
+=
+(1-p)\rho_0
++
+\frac{p}{4}I_4,
+\qquad
+p \in [0,1].
+\label{eq:depolarizing_channel_experiment}
+\end{equation}
+
+The parameter \(p\) controls the strength of the depolarization process.
+
+The limiting cases are
+
+\[
+\rho(0)
+=
+\rho_0,
+\qquad
+\rho(1)
+=
+\frac{I_4}{4}.
+\]
+
+Thus, the channel continuously interpolates between a pure maximally entangled Bell state and the maximally mixed two-qubit state.
+
+\medskip
+
+For this family of states, the analytical predictions are
+
+\[
+\gamma_{AB}(p)
+=
+1
+-
+\frac{3}{2}p
++
+\frac{3}{4}p^2,
+\qquad
+\gamma_A
+=
+\gamma_B
+=
+\frac{1}{2},
+\]
+
+\[
+F_{\Psi^+}(p)
+=
+1
+-
+\frac{3}{4}p,
+\qquad
+C(p)
+=
+\max
+\left(
+0,
+1-\frac{3}{2}p
+\right).
+\]
+
+The concurrence vanishes at
+
+\[
+p
+=
+\frac{2}{3},
+\]
+
+marking the transition from entangled to separable states.
+
+\medskip
+
+The action of the depolarizing channel on the correlation tensor corresponds to a uniform contraction of the Bell-state tensor:
+
+\[
+T(p)
+=
+(1-p)
+T_{\Psi^+}.
+\]
+
+Using the Bell-state tensor
+
+\[
+T_{\Psi^+}
+=
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & -1
+\end{pmatrix},
+\]
+
+one obtains
+
+\begin{equation}
+T(p)
+=
+\begin{pmatrix}
+1-p & 0 & 0 \\
+0 & 1-p & 0 \\
+0 & 0 & -(1-p)
+\end{pmatrix}.
+\label{eq:depolarizing_tensor}
+\end{equation}
+
+The corresponding diagonal correlations are therefore
+
+\[
+c_{xx}(p)
+=
+1-p,
+\qquad
+c_{yy}(p)
+=
+1-p,
+\qquad
+c_{zz}(p)
+=
+-(1-p).
+\]
+
+These expressions are consistent with the correlation-tensor formalism introduced in Section~\ref{sec:correlation_tensor_representation} and with the analytical derivations reported in Appendix~\ref{app:depolarizing_channel_derivations}.
+
+%--------------------------------------------------------
+% Subsection 5.3.3 — Numerical Results
+%--------------------------------------------------------
+
+\subsection{Numerical Results}
+
+The depolarization parameter \(p\) is sampled over the interval
+
+\[
+p \in [0,1],
+\]
+
+and all state-characterization quantities and correlation observables are evaluated numerically and compared with the corresponding analytical predictions.
+
+The numerical results show agreement at machine precision for all quantities considered in the simulation.
+
+In particular:
+
+\begin{itemize}
+    \item the Frobenius-norm error of the correlation tensor remains of order \(10^{-16}\);
+    \item the errors on purity, fidelity, concurrence, and diagonal correlations remain at numerical roundoff level.
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/experiment_3/experiment_3_depolarizing_channel_summary.png}
+\caption{
+Numerical and analytical behavior of purity, fidelity, concurrence, and correlations under the depolarizing channel.
+Agreement is exact up to numerical precision.
+}
+\label{fig:experiment3_depolarizing_summary}
+\end{figure}
+
+Figure~\ref{fig:experiment3_depolarizing_summary} summarizes the numerical evolution of the principal observables under the depolarizing channel.
+
+
+The numerical and analytical curves are visually indistinguishable within numerical precision.
+
+The global purity decreases monotonically from unity toward the maximally mixed limit, while the concurrence exhibits threshold behavior and vanishes at
+
+\[
+p
+=
+\frac{2}{3}.
+\]
+
+At the same time, the diagonal correlations decay linearly in magnitude, consistently with the tensor contraction law given in Eq.~\eqref{eq:depolarizing_tensor}.
+
+%--------------------------------------------------------
+% Subsection 5.3.4 — Discussion
+%--------------------------------------------------------
+
+\subsection{Discussion}
+
+This experiment validates the first explicit non-unitary extension of the simulator.
+
+Unlike the deterministic and ensemble-based phase models studied previously, the depolarizing channel introduces an isotropic loss of coherence directly at the level of the two-qubit density operator.
+
+The numerical results show that the different observables exhibit distinct degradation behaviors:
+
+\begin{itemize}
+    \item the global purity decreases smoothly over the full interval;
+    \item the concurrence exhibits a sharp entanglement threshold;
+    \item the observable correlations decay linearly;
+    \item the full correlation tensor undergoes a uniform isotropic contraction.
+\end{itemize}
+
+The reduced density operators remain maximally mixed throughout the evolution:
+
+\[
+\rho_A
+=
+\rho_B
+=
+\frac{I}{2}.
+\]
+
+This behavior is consistent with the results of Experiment~5.2, where local mixedness also remained constant despite degradation of global coherence.
+
+However, the physical origin of mixedness is fundamentally different in the two cases.
+
+In the random-phase ensemble model, mixedness arises from averaging over unresolved coherent realizations while preserving an underlying phase structure.
+
+In contrast, the depolarizing channel suppresses the nontrivial two-qubit correlations isotropically by mixing the state directly with the maximally mixed operator \(I_4/4\).
+
+The experiment therefore establishes a clear distinction between:
+
+\begin{itemize}
+    \item decoherence emerging from statistical phase uncertainty;
+    \item irreversible isotropic depolarization modeled through a CPTP channel.
+\end{itemize}
+
+%--------------------------------------------------------
+% Subsection 5.3.5 — Physical Interpretation
+%--------------------------------------------------------
+
+\subsection{Physical Interpretation}
+
+The depolarizing channel provides an effective phenomenological description of coherence loss when polarization information becomes partially inaccessible due to unresolved physical mechanisms.
+
+Examples include:
+
+\begin{itemize}
+    \item frequency-dependent birefringence;
+    \item temporal walk-off;
+    \item polarization-mode dispersion;
+    \item unresolved environmental fluctuations.
+\end{itemize}
+
+The action of the channel progressively drives the Bell state toward the maximally mixed state, suppressing both observable correlations and entanglement.
+
+Unlike the random-phase ensemble studied previously, the depolarizing model does not preserve any preferred phase structure. All nontrivial two-qubit correlations are uniformly reduced by the same contraction factor.
+
+Although the depolarizing channel is not intended as a complete microscopic model of optical-fiber propagation, it provides a useful baseline description of decoherence and establishes a reference framework against which more realistic propagation models can later be compared.
