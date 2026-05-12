@@ -1,0 +1,399 @@
+%========================================================
+% APPENDIX C.2 — Commutation of Local Phase Evolution
+% and Isotropic Local Depolarization
+%========================================================
+
+\section{Commutation of Local Phase Evolution and Isotropic Local Depolarization}
+
+This appendix establishes explicitly the commutation relation underlying the composite phase--depolarization fiber model introduced in Section~5.4.
+
+\medskip
+
+In particular, it is shown that the reduced phase-evolution model considered in this work commutes with isotropic local depolarizing channels acting independently on the two subsystems. This property justifies the equivalence between applying local depolarization before or after coherent phase evolution within the isotropic approximation adopted in the present work.
+
+\medskip
+
+%--------------------------------------------------------
+% Effective Channel Structure
+%--------------------------------------------------------
+
+\subsection*{Effective Channel Structure}
+
+The coherent phase evolution acting on subsystem \( A \) is represented through the unitary operator
+
+\begin{equation}
+U_{\theta}
+=
+E_{\theta}
+\otimes
+I,
+\label{eq:appendix_phase_unitary}
+\end{equation}
+
+where
+
+\begin{equation}
+E_{\theta}
+=
+\begin{pmatrix}
+1 & 0 \\
+0 & e^{i\theta}
+\end{pmatrix}.
+\label{eq:appendix_single_qubit_phase_unitary}
+\end{equation}
+
+The corresponding unitary channel is
+
+\begin{equation}
+\mathcal{U}_{\theta}(\rho)
+=
+U_{\theta}\rho U_{\theta}^{\dagger}.
+\label{eq:appendix_unitary_channel}
+\end{equation}
+
+\medskip
+
+Local isotropic depolarization acting independently on the two subsystems is described through
+
+\begin{equation}
+\mathcal{E}_{p_A,p_B}
+=
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B},
+\label{eq:appendix_local_depolarizing_channel}
+\end{equation}
+
+where the single-qubit depolarizing channel satisfies
+
+\begin{equation}
+\mathcal{D}_{p}(I)=I,
+\label{eq:appendix_depolarization_identity}
+\end{equation}
+
+and
+
+\begin{equation}
+\mathcal{D}_{p}(\sigma_i)
+=
+(1-p)\sigma_i,
+\qquad
+i\in\{x,y,z\}.
+\label{eq:appendix_depolarization_pauli}
+\end{equation}
+
+\medskip
+
+The objective is to prove that
+
+\begin{equation}
+\mathcal{E}_{p_A,p_B}
+\circ
+\mathcal{U}_{\theta}
+=
+\mathcal{U}_{\theta}
+\circ
+\mathcal{E}_{p_A,p_B}.
+\label{eq:appendix_commutation_statement}
+\end{equation}
+
+%--------------------------------------------------------
+% Pauli-Basis Expansion
+%--------------------------------------------------------
+
+\subsection*{Pauli-Basis Expansion}
+
+Consider a generic two-qubit density operator expanded in the Pauli basis:
+
+\begin{equation}
+\rho
+=
+\frac{1}{4}
+\sum_{\mu,\nu=0}^{3}
+S_{\mu\nu}\,
+\sigma_{\mu}
+\otimes
+\sigma_{\nu},
+\label{eq:appendix_pauli_expansion}
+\end{equation}
+
+where
+
+\[
+\sigma_0 = I,
+\]
+
+and
+
+\[
+\sigma_1=\sigma_x,
+\qquad
+\sigma_2=\sigma_y,
+\qquad
+\sigma_3=\sigma_z.
+\]
+
+\medskip
+
+Since both channels are linear, it is sufficient to study their action on generic Pauli-basis elements
+
+\[
+\sigma_{\mu}
+\otimes
+\sigma_{\nu}.
+\]
+
+%--------------------------------------------------------
+% Action of the Unitary Channel
+%--------------------------------------------------------
+
+\subsection*{Action of the Unitary Channel}
+
+The local phase unitary acts only on subsystem \( A \). Therefore,
+
+\begin{equation}
+\mathcal{U}_{\theta}
+\left(
+\sigma_{\mu}\otimes\sigma_{\nu}
+\right)
+=
+\left(
+E_{\theta}\sigma_{\mu}E_{\theta}^{\dagger}
+\right)
+\otimes
+\sigma_{\nu}.
+\label{eq:appendix_unitary_pauli_action}
+\end{equation}
+
+\medskip
+
+For \( \mu = 0 \), the identity operator is preserved trivially:
+
+\begin{equation}
+E_{\theta}IE_{\theta}^{\dagger}
+=
+I.
+\end{equation}
+
+\medskip
+
+For \( \mu \in \{1,2,3\} \), the transformed operator admits a Pauli-basis expansion of the form
+
+\begin{equation}
+E_{\theta}\sigma_{\mu}E_{\theta}^{\dagger}
+=
+a\sigma_0
++
+b\sigma_1
++
+c\sigma_2
++
+d\sigma_3.
+\label{eq:appendix_general_pauli_expansion}
+\end{equation}
+
+\medskip
+
+However, unitary conjugation preserves tracelessness:
+
+\begin{equation}
+\mathrm{Tr}
+\left(
+E_{\theta}\sigma_{\mu}E_{\theta}^{\dagger}
+\right)
+=
+\mathrm{Tr}(\sigma_{\mu})
+=
+0,
+\qquad
+\mu\in\{1,2,3\}.
+\label{eq:appendix_trace_preservation}
+\end{equation}
+
+Since
+
+\[
+\mathrm{Tr}(\sigma_0)=2,
+\qquad
+\mathrm{Tr}(\sigma_i)=0
+\quad
+(i=1,2,3),
+\]
+
+Eq.~\eqref{eq:appendix_general_pauli_expansion} implies
+
+\[
+a=0.
+\]
+
+Therefore,
+
+\begin{equation}
+E_{\theta}\sigma_{\mu}E_{\theta}^{\dagger}
+=
+b\sigma_1
++
+c\sigma_2
++
+d\sigma_3,
+\qquad
+\mu\in\{1,2,3\}.
+\label{eq:appendix_traceless_pauli_rotation}
+\end{equation}
+
+\medskip
+
+The unitary evolution therefore preserves the traceless Pauli subspace.
+
+%--------------------------------------------------------
+% Comparison of the Two Channel Orders
+%--------------------------------------------------------
+
+\subsection*{Comparison of the Two Channel Orders}
+
+Consider first the ordering
+
+\begin{equation}
+\mathcal{E}_{p_A,p_B}
+\circ
+\mathcal{U}_{\theta}.
+\end{equation}
+
+Acting on a generic basis element gives
+
+\begin{align}
+&
+\mathcal{E}_{p_A,p_B}
+\left[
+\mathcal{U}_{\theta}
+\left(
+\sigma_{\mu}\otimes\sigma_{\nu}
+\right)
+\right]
+\nonumber
+\\
+&=
+\mathcal{D}_{p_A}
+\left(
+E_{\theta}\sigma_{\mu}E_{\theta}^{\dagger}
+\right)
+\otimes
+\mathcal{D}_{p_B}
+\left(
+\sigma_{\nu}
+\right).
+\label{eq:appendix_left_order}
+\end{align}
+
+Using Eq.~\eqref{eq:appendix_traceless_pauli_rotation}, the first factor contains only traceless Pauli operators. Consequently,
+
+\begin{align}
+&
+\mathcal{D}_{p_A}
+\left(
+E_{\theta}\sigma_{\mu}E_{\theta}^{\dagger}
+\right)
+\nonumber
+\\
+&=
+(1-p_A)
+\left(
+E_{\theta}\sigma_{\mu}E_{\theta}^{\dagger}
+\right),
+\qquad
+\mu\in\{1,2,3\}.
+\label{eq:appendix_left_scaling}
+\end{align}
+
+\medskip
+
+Now consider the opposite ordering:
+
+\begin{equation}
+\mathcal{U}_{\theta}
+\circ
+\mathcal{E}_{p_A,p_B}.
+\end{equation}
+
+Its action gives
+
+\begin{align}
+&
+\mathcal{U}_{\theta}
+\left[
+\mathcal{E}_{p_A,p_B}
+\left(
+\sigma_{\mu}\otimes\sigma_{\nu}
+\right)
+\right]
+\nonumber
+\\
+&=
+E_{\theta}
+\mathcal{D}_{p_A}(\sigma_{\mu})
+E_{\theta}^{\dagger}
+\otimes
+\mathcal{D}_{p_B}(\sigma_{\nu}).
+\label{eq:appendix_right_order}
+\end{align}
+
+Using Eq.~\eqref{eq:appendix_depolarization_pauli},
+
+\begin{align}
+&
+E_{\theta}
+\mathcal{D}_{p_A}(\sigma_{\mu})
+E_{\theta}^{\dagger}
+\nonumber
+\\
+&=
+(1-p_A)
+E_{\theta}\sigma_{\mu}E_{\theta}^{\dagger}.
+\label{eq:appendix_right_scaling}
+\end{align}
+
+Comparing Eqs.~\eqref{eq:appendix_left_scaling} and
+\eqref{eq:appendix_right_scaling} shows that the two orderings coincide.
+
+\medskip
+
+Therefore,
+
+\begin{equation}
+\mathcal{E}_{p_A,p_B}
+\circ
+\mathcal{U}_{\theta}
+=
+\mathcal{U}_{\theta}
+\circ
+\mathcal{E}_{p_A,p_B}.
+\label{eq:appendix_final_commutation}
+\end{equation}
+
+%--------------------------------------------------------
+% Physical Interpretation
+%--------------------------------------------------------
+
+\subsection*{Physical Interpretation}
+
+The commutation property derived above follows from two structural features of the effective model:
+
+\begin{itemize}
+
+\item the isotropic depolarizing channel acts uniformly on the traceless Pauli subspace;
+
+\item unitary conjugation preserves the traceless structure of Pauli operators.
+
+\end{itemize}
+
+\medskip
+
+Consequently, coherent phase evolution rotates the polarization-correlation structure without modifying its magnitude, while isotropic local depolarization contracts the correlation amplitudes uniformly without introducing preferred directions in polarization space.
+
+\medskip
+
+Within the isotropic approximation adopted in the present work, the order of coherent phase evolution and local depolarization is therefore irrelevant.
+
+\medskip
+
+This property considerably simplifies the analytical structure of the composite phase--depolarization fiber model introduced in Section~5.4, since coherent phase evolution and isotropic local depolarization may be treated independently while remaining mathematically equivalent under composition.

@@ -1,0 +1,664 @@
+%========================================================
+% D5 — Composite Phase--Depolarization Fiber Channel
+%========================================================
+
+\section{Composite Phase--Depolarization Fiber Channel}
+
+This derivation document develops the analytical structure of the composite phase--depolarization fiber model introduced in Chapter~5. The objective is to derive explicitly the correlation tensor, purity, Bell-state fidelity, concurrence, and CHSH behavior associated with the simultaneous action of coherent phase evolution and local isotropic depolarization.
+
+\medskip
+
+%--------------------------------------------------------
+% D5.1 — Composite Channel Definition
+%--------------------------------------------------------
+
+\subsection{Composite Channel Definition}
+
+The effective composite channel is defined by
+
+\begin{equation}
+\rho_{\mathrm{out}}
+=
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left[
+U_{\theta}
+\rho_{\mathrm{in}}
+U_{\theta}^{\dagger}
+\right],
+\label{eq:d5_composite_channel}
+\end{equation}
+
+where
+
+\begin{equation}
+U_{\theta}
+=
+E_{\theta}
+\otimes
+I,
+\end{equation}
+
+with
+
+\begin{equation}
+E_{\theta}
+=
+\begin{pmatrix}
+1 & 0 \\
+0 & e^{i\theta}
+\end{pmatrix}.
+\end{equation}
+
+\medskip
+
+The phase-evolved Bell state is therefore
+
+\begin{equation}
+|\psi(\theta)\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle
++
+e^{i\theta}|10\rangle
+\right),
+\label{eq:d5_phase_bell_state}
+\end{equation}
+
+with corresponding density operator
+
+\begin{equation}
+\rho(\theta)
+=
+|\psi(\theta)\rangle
+\langle
+\psi(\theta)
+|.
+\end{equation}
+
+\medskip
+
+As established in Appendix~C.2, isotropic local depolarization commutes with the reduced phase-evolution model:
+
+\begin{equation}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left[
+U_{\theta}
+\rho
+U_{\theta}^{\dagger}
+\right]
+=
+U_{\theta}
+\left[
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+(\rho)
+\right]
+U_{\theta}^{\dagger}.
+\label{eq:d5_channel_commutation}
+\end{equation}
+
+Therefore, coherent phase evolution and isotropic local depolarization may be treated independently while remaining equivalent under composition.
+
+\medskip
+
+Define the correlation survival factor
+
+\begin{equation}
+\eta
+=
+(1-p_A)(1-p_B).
+\label{eq:d5_eta_definition}
+\end{equation}
+
+\medskip
+
+%--------------------------------------------------------
+% D5.2 — Correlation Tensor Derivation
+%--------------------------------------------------------
+
+\subsection{Correlation Tensor Derivation}
+
+For the phase-evolved Bell state of Eq.~\eqref{eq:d5_phase_bell_state}, the correlation tensor is
+
+\begin{equation}
+T(\theta)
+=
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0 \\
+\sin\theta & \cos\theta & 0 \\
+0 & 0 & -1
+\end{pmatrix}.
+\label{eq:d5_phase_tensor}
+\end{equation}
+
+\medskip
+
+From the tensor-contraction law established in Chapter~5,
+
+\begin{equation}
+T_{\mathrm{out}}
+=
+\eta
+T_{\mathrm{in}},
+\end{equation}
+
+one obtains
+
+\begin{equation}
+T_{\mathrm{out}}(\theta,p_A,p_B)
+=
+\eta
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0 \\
+\sin\theta & \cos\theta & 0 \\
+0 & 0 & -1
+\end{pmatrix}.
+\label{eq:d5_output_tensor}
+\end{equation}
+
+Therefore,
+
+\begin{align}
+T_{xx}^{\mathrm{out}}
+&=
+\eta\cos\theta,
+\\
+T_{xy}^{\mathrm{out}}
+&=
+-\eta\sin\theta,
+\\
+T_{yx}^{\mathrm{out}}
+&=
+\eta\sin\theta,
+\\
+T_{yy}^{\mathrm{out}}
+&=
+\eta\cos\theta,
+\\
+T_{zz}^{\mathrm{out}}
+&=
+-\eta.
+\end{align}
+
+All remaining tensor components vanish.
+
+\medskip
+
+Thus, coherent phase evolution rotates the transverse \(xy\)-correlation structure, while local depolarization contracts the tensor magnitude uniformly.
+
+\medskip
+
+%--------------------------------------------------------
+% D5.3 — Purity Derivation
+%--------------------------------------------------------
+
+\subsection{Purity Derivation}
+
+For Bell-state inputs, the reduced local Bloch vectors vanish. The output state may therefore be written as
+
+\begin{equation}
+\rho_{\mathrm{out}}
+=
+\frac{1}{4}
+\left[
+I\otimes I
++
+\sum_{i,j=1}^{3}
+T_{ij}^{\mathrm{out}}
+\sigma_i\otimes\sigma_j
+\right].
+\label{eq:d5_pauli_density_expansion}
+\end{equation}
+
+The global purity is
+
+\begin{equation}
+\gamma_{AB}
+=
+\mathrm{Tr}
+\left(
+\rho_{\mathrm{out}}^{2}
+\right).
+\end{equation}
+
+Substituting Eq.~\eqref{eq:d5_pauli_density_expansion} gives
+
+\begin{align}
+\gamma_{AB}
+&=
+\frac{1}{16}
+\mathrm{Tr}
+\left[
+\left(
+I\otimes I
++
+\sum_{i,j}T_{ij}\sigma_i\otimes\sigma_j
+\right)^2
+\right].
+\end{align}
+
+Using the orthogonality relation
+
+\begin{equation}
+\mathrm{Tr}
+\left[
+(\sigma_i\otimes\sigma_j)
+(\sigma_k\otimes\sigma_l)
+\right]
+=
+4
+\delta_{ik}
+\delta_{jl},
+\label{eq:d5_pauli_orthogonality}
+\end{equation}
+
+one obtains
+
+\begin{equation}
+\gamma_{AB}
+=
+\frac14
+\left[
+1
++
+\sum_{i,j=1}^{3}
+(T_{ij}^{\mathrm{out}})^2
+\right].
+\label{eq:d5_purity_tensor_formula}
+\end{equation}
+
+\medskip
+
+From Eq.~\eqref{eq:d5_output_tensor},
+
+\begin{align}
+\sum_{i,j=1}^{3}
+(T_{ij}^{\mathrm{out}})^2
+&=
+\eta^2
+\left[
+\cos^2\theta
++
+\sin^2\theta
++
+\sin^2\theta
++
+\cos^2\theta
++
+1
+\right]
+\nonumber
+\\
+&=
+3\eta^2.
+\end{align}
+
+Therefore,
+
+\begin{equation}
+\boxed{
+\gamma_{AB}
+=
+\frac{1+3\eta^2}{4}
+}
+\label{eq:d5_final_purity}
+\end{equation}
+
+with
+
+\[
+\eta=(1-p_A)(1-p_B).
+\]
+
+\medskip
+
+Since the reduced states remain maximally mixed,
+
+\begin{equation}
+\rho_A
+=
+\rho_B
+=
+\frac{I}{2},
+\end{equation}
+
+their purities are
+
+\begin{equation}
+\boxed{
+\gamma_A
+=
+\gamma_B
+=
+\frac12
+}.
+\end{equation}
+
+\medskip
+
+%--------------------------------------------------------
+% D5.4 — Bell-State Fidelity Derivation
+%--------------------------------------------------------
+
+\subsection{Bell-State Fidelity Derivation}
+
+The Bell-state fidelity relative to the reference state
+
+\[
+|\Psi^+\rangle
+=
+\frac1{\sqrt2}
+(|01\rangle+|10\rangle)
+\]
+
+is
+
+\begin{equation}
+F_{\Psi^+}
+=
+\langle\Psi^+|
+\rho_{\mathrm{out}}
+|\Psi^+\rangle.
+\end{equation}
+
+\medskip
+
+For the pure phase-evolved state,
+
+\begin{align}
+\langle\Psi^+|\psi(\theta)\rangle
+&=
+\frac12
+\left(
+1+e^{i\theta}
+\right),
+\end{align}
+
+so that
+
+\begin{align}
+F_{\Psi^+}^{\mathrm{phase}}
+&=
+\left|
+\frac12
+(1+e^{i\theta})
+\right|^2
+\nonumber
+\\
+&=
+\frac14
+(2+2\cos\theta)
+\nonumber
+\\
+&=
+\frac{1+\cos\theta}{2}.
+\label{eq:d5_phase_fidelity}
+\end{align}
+
+\medskip
+
+Under local depolarization, the bipartite coherences are contracted by the factor \( \eta \). Therefore,
+
+\begin{equation}
+\boxed{
+F_{\Psi^+}
+=
+\frac{1+\eta\cos\theta}{2}
+}
+\label{eq:d5_final_fidelity}
+\end{equation}
+
+with
+
+\[
+\eta=(1-p_A)(1-p_B).
+\]
+
+\medskip
+
+This expression separates coherent phase mismatch from incoherent correlation degradation.
+
+\medskip
+
+%--------------------------------------------------------
+% D5.5 — Concurrence Derivation
+%--------------------------------------------------------
+
+\subsection{Concurrence Derivation}
+
+The composite channel produces a locally unitary-equivalent Bell-diagonal family. Since local unitary transformations preserve concurrence, the phase parameter \( \theta \) does not affect the entanglement measure.
+
+\medskip
+
+The concurrence therefore depends only on the correlation survival factor \( \eta \).
+
+\medskip
+
+For Bell-diagonal states with isotropically contracted correlations, one obtains
+
+\begin{equation}
+\boxed{
+C
+=
+\max
+\left(
+0,
+\frac{3\eta-1}{2}
+\right)
+}
+\label{eq:d5_final_concurrence}
+\end{equation}
+
+with
+
+\[
+\eta=(1-p_A)(1-p_B).
+\]
+
+\medskip
+
+Entanglement disappears when
+
+\begin{equation}
+\frac{3\eta-1}{2}=0,
+\end{equation}
+
+which gives
+
+\begin{equation}
+\boxed{
+\eta=\frac13
+}.
+\label{eq:d5_entanglement_threshold}
+\end{equation}
+
+\medskip
+
+For symmetric local depolarization,
+
+\[
+p_A=p_B=p,
+\]
+
+one obtains
+
+\begin{equation}
+(1-p)^2
+=
+\frac13,
+\end{equation}
+
+and therefore
+
+\begin{equation}
+\boxed{
+p
+=
+1-\frac1{\sqrt3}
+\approx
+0.423
+}.
+\end{equation}
+
+\medskip
+
+%--------------------------------------------------------
+% D5.6 — CHSH Scaling Derivation
+%--------------------------------------------------------
+
+\subsection{CHSH Scaling Derivation}
+
+The maximal CHSH parameter is determined through the Horodecki criterion:
+
+\begin{equation}
+S_{\max}
+=
+2\sqrt{\lambda_1+\lambda_2},
+\label{eq:d5_horodecki}
+\end{equation}
+
+where \( \lambda_1,\lambda_2 \) are the two largest eigenvalues of
+
+\begin{equation}
+T^TT.
+\end{equation}
+
+\medskip
+
+Since
+
+\begin{equation}
+T_{\mathrm{out}}
+=
+\eta T_{\mathrm{in}},
+\end{equation}
+
+one obtains
+
+\begin{align}
+T_{\mathrm{out}}^T
+T_{\mathrm{out}}
+&=
+(\eta T_{\mathrm{in}})^T
+(\eta T_{\mathrm{in}})
+\nonumber
+\\
+&=
+\eta^2
+T_{\mathrm{in}}^T
+T_{\mathrm{in}}.
+\end{align}
+
+Therefore, all eigenvalues scale according to
+
+\begin{equation}
+\lambda_k^{\mathrm{out}}
+=
+\eta^2
+\lambda_k^{\mathrm{in}}.
+\end{equation}
+
+Substituting into Eq.~\eqref{eq:d5_horodecki} gives
+
+\begin{align}
+S_{\max}^{\mathrm{out}}
+&=
+2\sqrt{
+\eta^2
+(\lambda_1^{\mathrm{in}}+\lambda_2^{\mathrm{in}})
+}
+\nonumber
+\\
+&=
+\eta
+S_{\max}^{\mathrm{in}}.
+\end{align}
+
+Hence,
+
+\begin{equation}
+\boxed{
+S_{\max}^{\mathrm{out}}
+=
+\eta
+S_{\max}^{\mathrm{in}}
+}
+\label{eq:d5_final_chsh_scaling}
+\end{equation}
+
+with
+
+\[
+\eta=(1-p_A)(1-p_B).
+\]
+
+\medskip
+
+For Bell states,
+
+\[
+S_{\max}^{\mathrm{in}}
+=
+2\sqrt2,
+\]
+
+therefore
+
+\begin{equation}
+S_{\max}^{\mathrm{out}}
+=
+2\sqrt2\,\eta.
+\end{equation}
+
+Bell-inequality violation requires
+
+\begin{equation}
+S_{\max}^{\mathrm{out}}>2,
+\end{equation}
+
+which gives
+
+\begin{equation}
+\boxed{
+\eta>\frac1{\sqrt2}
+}.
+\label{eq:d5_chsh_threshold}
+\end{equation}
+
+\medskip
+
+For symmetric local depolarization,
+
+\begin{equation}
+(1-p)^2
+>
+\frac1{\sqrt2},
+\end{equation}
+
+thus
+
+\begin{equation}
+\boxed{
+p
+<
+1-2^{-1/4}
+\approx
+0.159
+}.
+\end{equation}
+
+\medskip
+
+Therefore, Bell nonlocality disappears before entanglement vanishes completely, showing that CHSH violation is more fragile than concurrence under local isotropic depolarization.
