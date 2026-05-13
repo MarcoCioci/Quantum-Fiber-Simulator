@@ -1,28 +1,33 @@
-function rho_out = global_depolarizing_channel(rho, p)
+function X_out = global_depolarizing_channel(X, p)
 % GLOBAL_DEPOLARIZING_CHANNEL  Apply a global isotropic depolarizing channel.
 %
 % Objective:
-%   Apply the global depolarizing map to a density matrix ρ:
+%   Apply the global depolarizing operator map D_p to a dxd operator X:
 %
-%       ρ_out = (1 - p) * ρ + (p / d) * I_d
+%       D_p(X) = (1 - p) X + p (I_d / d) Tr(X)
 %
-%   where d is the Hilbert-space dimension of ρ.
+%   where d is the Hilbert-space dimension.
 %
 % Input:
-%   rho - dxd complex density matrix representing a quantum state
-%   p   - real scalar depolarization parameter, with 0 <= p <= 1
+%   X - dxd complex operator or density matrix
+%   p - real scalar depolarization parameter, with 0 <= p <= 1
 %
 % Output:
-%   rho_out - dxd complex density matrix after global depolarization
+%   X_out - dxd globally depolarized operator
 %
 % Notes:
-%   This function acts on the full density matrix as a single global system.
-%   For a two-qubit state, d = 4 and the map becomes:
+%   This function acts on the full operator space as a single global system.
 %
-%       ρ_out = (1 - p) * ρ + (p / 4) * I_4
+%   For a normalized density matrix ρ, the map reduces to:
 %
-%   This is not the same as applying independent local depolarizing channels
-%   to subsystems A and B.
+%       ρ_out = (1 - p) ρ + (p / d) I_d
+%
+%   For a two-qubit density matrix, d = 4:
+%
+%       ρ_out = (1 - p) ρ + (p / 4) I_4
+%
+%   This is not equivalent to applying independent local depolarizing
+%   channels to subsystems A and B.
 
     % =========================
     % Robustness checks
@@ -30,34 +35,34 @@ function rho_out = global_depolarizing_channel(rho, p)
 
     if nargin ~= 2
         error('global_depolarizing_channel:InvalidNumInputs', ...
-              'Expected exactly 2 input arguments: rho and p.');
+              'Expected exactly 2 input arguments: X and p.');
     end
 
-    if ~isnumeric(rho)
+    if ~isnumeric(X)
         error('global_depolarizing_channel:InvalidType', ...
-              'rho must be a numeric matrix.');
+              'X must be a numeric matrix.');
     end
 
-    if isempty(rho)
+    if isempty(X)
         error('global_depolarizing_channel:EmptyInput', ...
-              'rho must not be empty.');
+              'X must not be empty.');
     end
 
-    if ~ismatrix(rho)
+    if ~ismatrix(X)
         error('global_depolarizing_channel:InvalidDimensions', ...
-              'rho must be a 2-D matrix.');
+              'X must be a 2-D matrix.');
     end
 
-    [num_rows, num_cols] = size(rho);
+    [num_rows, num_cols] = size(X);
 
     if num_rows ~= num_cols
         error('global_depolarizing_channel:InvalidSize', ...
-              'rho must be a square density matrix.');
+              'X must be a square matrix.');
     end
 
-    if any(~isfinite(rho), 'all')
-        error('global_depolarizing_channel:InvalidValuesRho', ...
-              'rho must not contain NaN or Inf values.');
+    if any(~isfinite(X), 'all')
+        error('global_depolarizing_channel:InvalidValuesX', ...
+              'X must not contain NaN or Inf values.');
     end
 
     if ~isnumeric(p) || ~isscalar(p) || ~isreal(p)
@@ -77,14 +82,9 @@ function rho_out = global_depolarizing_channel(rho, p)
 
     tolerance = 1e-12;
 
-    if norm(rho - rho', 'fro') > tolerance
+    if norm(X - X', 'fro') > tolerance
         error('global_depolarizing_channel:NonHermitianInput', ...
-              'rho must be Hermitian within numerical tolerance.');
-    end
-
-    if abs(trace(rho) - 1) > tolerance
-        error('global_depolarizing_channel:InvalidTrace', ...
-              'rho must have trace equal to 1 within numerical tolerance.');
+              'X must be Hermitian within numerical tolerance.');
     end
 
 
@@ -93,11 +93,11 @@ function rho_out = global_depolarizing_channel(rho, p)
     % =========================
 
     d = num_rows;
-    I_d = eye(d, d, 'like', rho);
+    I_d = eye(d, d, 'like', X);
 
-    rho_out = (1 - p) * rho + (p / d) * I_d;
+    X_out = (1 - p) * X + p * (I_d / d) * trace(X);
 
     % Remove small numerical anti-Hermitian residues.
-    rho_out = (rho_out + rho_out') / 2;
+    X_out = (X_out + X_out') / 2;
 
 end

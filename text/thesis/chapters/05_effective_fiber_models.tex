@@ -3,6 +3,7 @@
 %========================================================
 
 \chapter{Effective Fiber Models}
+\label{ch:effective_fiber_models}
 
 %========================================================
 % Section 5.1 — Motivation for Effective Fiber Models
@@ -153,6 +154,154 @@ The tensor-product channel structure in Eq.~\eqref{eq:two_arm_local_channel_mode
 
 \medskip
 
+For this reason, the action of a local channel on the bipartite state must be understood as an operator-map action on one tensor factor, not as an ordinary matrix multiplication. If a bipartite operator is written as a linear combination of product operators,
+
+\[
+X_{AB}
+=
+\sum_k
+A_k\otimes B_k,
+\]
+
+then a channel acting locally on subsystem \( A \) is applied as
+
+\begin{equation}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{I}
+\right)
+(X_{AB})
+=
+\sum_k
+\mathcal{D}_{p_A}(A_k)
+\otimes
+B_k.
+\label{eq:local_channel_operator_action}
+\end{equation}
+
+This representation is always possible in finite-dimensional bipartite systems, since product operators span the composite operator space.
+
+\medskip
+
+Using the single-qubit operator-map form of the depolarizing channel,
+
+\begin{equation}
+\mathcal{D}_{p}(X)
+=
+(1-p)X
++
+p\frac{I_2}{2}
+\operatorname{Tr}(X).
+\label{eq:single_qubit_depolarizing_operator_map}
+\end{equation}
+
+one obtains the single-arm action
+
+\begin{equation}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{I}
+\right)
+(\rho_{AB})
+=
+(1-p_A)\rho_{AB}
++
+p_A
+\left(
+\frac{I_2}{2}
+\otimes
+\rho_B
+\right),
+\label{eq:single_arm_depolarization_A}
+\end{equation}
+
+where
+
+\[
+\rho_B
+=
+\mathrm{Tr}_A(\rho_{AB}).
+\]
+
+Analogously,
+
+\begin{equation}
+\left(
+\mathcal{I}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+(\rho_{AB})
+=
+(1-p_B)\rho_{AB}
++
+p_B
+\left(
+\rho_A
+\otimes
+\frac{I_2}{2}
+\right),
+\label{eq:single_arm_depolarization_B}
+\end{equation}
+
+with
+
+\[
+\rho_A
+=
+\mathrm{Tr}_B(\rho_{AB}).
+\]
+
+Applying the two single-arm channels in sequence gives
+
+\begin{align}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+(\rho_{AB})
+&=
+(1-p_A)(1-p_B)\rho_{AB}
+\nonumber
+\\
+&\quad
++
+p_A(1-p_B)
+\left(
+\frac{I_2}{2}
+\otimes
+\rho_B
+\right)
+\nonumber
+\\
+&\quad
++
+(1-p_A)p_B
+\left(
+\rho_A
+\otimes
+\frac{I_2}{2}
+\right)
+\nonumber
+\\
+&\quad
++
+p_Ap_B
+\left(
+\frac{I_2}{2}
+\otimes
+\frac{I_2}{2}
+\right).
+\label{eq:two_arm_depolarization_explicit}
+\end{align}
+
+This expression makes explicit that local depolarization is local in its physical action, but it is still applied to the full joint state. The reduced density operators appear only because complete depolarization of one subsystem replaces that subsystem with \( I_2/2 \) while preserving the marginal state of the other subsystem.
+
+\medskip
+
 This type of bipartite local channel has been studied extensively in the theory of composite quantum channels, including the characterization of positivity, complete positivity, entanglement-breaking, and entanglement-annihilating regimes for tensor products of depolarizing maps~\cite{lami_bipartite_depolarizing_maps}.
 
 \medskip
@@ -189,6 +338,18 @@ I
 
 \medskip
 
+As discussed previously, the depolarizing channel acts as a linear operator map on the space of density operators rather than as an ordinary matrix multiplication. In the Bloch representation, this action corresponds to an isotropic contraction of the polarization vector.
+
+\medskip
+
+Therefore, the depolarizing process cannot be interpreted simply as multiplication of the density operator by a scalar matrix factor. Instead, the channel replaces part of the operator structure by the maximally mixed contribution while preserving trace normalization.
+
+\medskip
+
+This operator-map structure becomes particularly important in the bipartite setting, where local depolarization acts on the full joint density operator and modifies the correlation structure of the composite state.
+
+\medskip
+
 The action of the channel therefore corresponds to an isotropic contraction of the Bloch vector:
 
 \[
@@ -221,22 +382,45 @@ It is important to distinguish local two-arm depolarization from the global depo
 
 \medskip
 
-In the global model, the entire bipartite state is transformed according to
+In the global model, the depolarizing map acts collectively on the full Hilbert space. For a \( d \)-dimensional system, the corresponding operator-map form is
+
+\begin{equation}
+\mathcal{D}_{p}^{(d)}(X)
+=
+(1-p)X
++
+p\frac{I_d}{d}
+\operatorname{Tr}(X).
+\label{eq:global_depolarizing_operator_map_d}
+\end{equation}
+
+For a normalized density operator \( \rho \), this reduces to
+
+\begin{equation}
+\mathcal{D}_{p}^{(d)}(\rho)
+=
+(1-p)\rho
++
+p\frac{I_d}{d}.
+\label{eq:global_depolarizing_density_map_d}
+\end{equation}
+
+In the two-qubit case considered here, \( d=4 \), so that
 
 \begin{equation}
 \rho
 \rightarrow
 (1-p)\rho
 +
-\frac{p}{4}I_4,
+\frac{p}{4}I_4.
 \label{eq:global_depolarization_reminder}
 \end{equation}
 
-where the depolarization acts collectively on the full two-qubit system.
+Here the depolarization acts collectively on the full bipartite system.
 
 \medskip
 
-In contrast, the local model introduced here acts independently on the two physical propagation arms through the tensor-product channel
+In contrast, the local model acts independently on the two physical propagation arms through the tensor-product channel
 
 \[
 \mathcal{D}_{p_A}

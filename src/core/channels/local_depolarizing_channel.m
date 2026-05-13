@@ -1,26 +1,34 @@
-function rho_out = local_depolarizing_channel(rho_in, p)
+function X_out = local_depolarizing_channel(X, p)
 % LOCAL_DEPOLARIZING_CHANNEL  Apply local isotropic depolarization to one qubit.
 %
 % Objective:
-%   Apply the single-qubit depolarizing channel D_p to a 2x2 density
-%   operator ρ.
+%   Apply the single-qubit depolarizing operator map D_p to a 2x2
+%   single-qubit operator X.
 %
 % Input:
-%   rho_in - 2x2 single-qubit density matrix
-%   p      - depolarization parameter, with 0 <= p <= 1
+%   X - 2x2 single-qubit operator or density matrix
+%   p - depolarization parameter, with 0 <= p <= 1
 %
 % Output:
-%   rho_out - 2x2 depolarized density matrix
+%   X_out - 2x2 depolarized operator
 %
 % Notes:
-%   The channel follows the Bloch-vector contraction convention:
+%   The channel follows the operator-map convention:
+%
+%       D_p(X) = (1-p) X + p (I_2/2) Tr(X)
+%
+%   For a normalized density matrix ρ, this reduces to:
+%
+%       D_p(ρ) = (1-p)ρ + p I_2/2
+%
+%   In Bloch-vector form:
 %
 %       ρ = 1/2 (I + r · σ)
 %       D_p(ρ) = 1/2 (I + (1-p) r · σ)
 %
 %   Hence:
 %       p = 0  -> identity channel
-%       p = 1  -> maximally mixed state I/2
+%       p = 1  -> complete depolarization
 %
 %   This function acts on a single qubit only. Two-arm depolarization on a
 %   bipartite state is implemented separately.
@@ -31,35 +39,24 @@ function rho_out = local_depolarizing_channel(rho_in, p)
 
     if nargin ~= 2
         error('local_depolarizing_channel:InvalidNumInputs', ...
-              'Expected 2 input arguments: rho_in and p.');
+              'Expected 2 input arguments: X and p.');
     end
 
-    if ~isnumeric(rho_in)
+    if ~isnumeric(X)
         error('local_depolarizing_channel:InvalidType', ...
-              'rho_in must be numeric.');
+              'X must be numeric.');
     end
 
-    if ~isequal(size(rho_in), [2, 2])
+    if ~isequal(size(X), [2, 2])
         error('local_depolarizing_channel:InvalidSize', ...
-              'rho_in must be a 2x2 matrix.');
+              'X must be a 2x2 matrix.');
     end
 
     tol = 1e-12;
 
-    if norm(rho_in - rho_in', 'fro') > tol
+    if norm(X - X', 'fro') > tol
         error('local_depolarizing_channel:NonHermitianInput', ...
-              'rho_in must be Hermitian within numerical tolerance.');
-    end
-
-    if abs(trace(rho_in) - 1) > tol
-        error('local_depolarizing_channel:InvalidTrace', ...
-              'rho_in must have trace equal to 1 within numerical tolerance.');
-    end
-
-    eigvals = eig((rho_in + rho_in') / 2);
-    if min(real(eigvals)) < -tol
-        error('local_depolarizing_channel:NonPositiveInput', ...
-              'rho_in must be positive semidefinite within numerical tolerance.');
+              'X must be Hermitian within numerical tolerance.');
     end
 
     if ~isnumeric(p) || ~isscalar(p) || ~isreal(p)
@@ -77,9 +74,11 @@ function rho_out = local_depolarizing_channel(rho_in, p)
     % Main computation
     % =========================
 
-    rho_out = (1-p) * rho_in + p * eye(2,2) / 2;
-    
-    % Numerical Clean-Up:
-    rho_out = (rho_out + rho_out') / 2;
+    I2 = eye(2, 'like', X);
+
+    X_out = (1-p) * X + p * (I2 / 2) * trace(X);
+
+    % Numerical clean-up
+    X_out = (X_out + X_out') / 2;
 
 end

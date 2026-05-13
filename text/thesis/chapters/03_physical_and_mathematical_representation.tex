@@ -982,10 +982,10 @@ This geometric interpretation provides an intuitive visualization of the transit
 \end{figure}
 
 %========================================================
-% SECTION 3.9 — Quantum Channels and Effective Depolarization
+% SECTION 3.9 — Quantum Channels and Depolarization
 %========================================================
 
-\section{Quantum Channels and Effective Depolarization}
+\section{Quantum Channels and Depolarization}
 
 The ensemble description introduced in the previous section models statistical fluctuations by averaging over a family of unitary realizations. In that framework, each individual evolution remains coherent, and mixedness originates from classical uncertainty over the applied transformations.
 
@@ -1045,7 +1045,7 @@ more general physical processes may produce irreversible loss of coherence and t
 
 \medskip
 
-\paragraph{Depolarizing channel.}
+\paragraph{Global depolarizing channel.}
 
 Among the simplest and most widely used quantum channels is the depolarizing channel, which models isotropic loss of coherence. In the two-qubit setting considered in this work, the global depolarizing model is written as
 
@@ -1089,7 +1089,9 @@ produces the family of mixed states
 
 This construction provides a controlled framework for analyzing the degradation of bipartite quantum correlations under effective noisy evolution.
 
-\medskip
+\bigskip
+
+The global depolarizing model introduced here should be understood as a reference channel rather than as a complete physical model of two-arm fiber propagation. The refinement to independent local depolarizing channels acting on the two propagation arms is developed later in Chapter~\ref{ch:effective_fiber_models}.
 
 %========================================================
 % SECTION 3.10 — Computational Representation and Implementation Roadmap

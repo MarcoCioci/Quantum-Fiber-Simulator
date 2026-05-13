@@ -9,6 +9,8 @@ addpath(genpath(project_root));
 disp('======================================');
 disp('Running all tests...');
 disp('======================================');
+fprintf('\n')
+
 
 test_bell_state();
 test_density_matrix();
@@ -20,9 +22,9 @@ test_bloch_vector();
 test_purity();
 test_fidelity();
 test_concurrence();
-test_global_depolarizing_channel();
+test_channels();
 
-
+fprintf('\n')
 disp('======================================');
 disp('All tests passed successfully.');
 disp('======================================');
