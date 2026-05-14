@@ -249,6 +249,8 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
     S_classical_bound = 2;
     S_tsirelson_bound = 2 * sqrt(2);
 
+    analytics = analytical_values_experiment_4(theta_values, p_values);
+
 
     % =========================
     % Phase sweep
@@ -281,8 +283,7 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
     results_experiment_4.phase.S_classical_bound = S_classical_bound;
     results_experiment_4.phase.S_tsirelson_bound = S_tsirelson_bound;
 
-    results_experiment_4.phase.analytical.S_max = ...
-        S_tsirelson_bound * ones(1, N_theta);
+    results_experiment_4.phase.analytical = analytics.phase;
 
 
     % =========================
@@ -310,10 +311,10 @@ function results_experiment_4 = run_experiment_4_chsh_nonlocality(theta_values, 
 
     results_experiment_4.depolarization.S_classical_bound = S_classical_bound;
     results_experiment_4.depolarization.S_tsirelson_bound = S_tsirelson_bound;
-    results_experiment_4.depolarization.p_chsh_threshold = 1 - 1 / sqrt(2);
+    results_experiment_4.depolarization.p_chsh_threshold = ...
+        analytics.depolarization.p_chsh_threshold;
 
-    results_experiment_4.depolarization.analytical.S_max = ...
-        S_tsirelson_bound * (1 - p_values);
+    results_experiment_4.depolarization.analytical = analytics.depolarization;
 
 
     % =========================

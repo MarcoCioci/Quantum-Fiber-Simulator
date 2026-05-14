@@ -863,21 +863,24 @@ The fidelity with respect to the reference Bell state \( |\Psi^{+}\rangle \) bec
 \begin{equation}
 F_{\Psi^{+}}
 =
-\frac{1+\eta\cos\theta}{2}.
+\frac{1-\eta}{4}
++
+\eta
+\frac{1+\cos\theta}{2},
 \label{eq:composite_channel_fidelity}
 \end{equation}
 
-This expression contains two distinct contributions.
+\medskip
+
+The first contribution originates from the isotropic mixed component introduced by local depolarization, while the second term corresponds to the coherent overlap of the phase-evolved Bell state with the chosen Bell reference basis.
 
 \medskip
 
-The phase parameter \( \theta \) modifies the relative orientation of the state with respect to the chosen Bell reference basis and may therefore reduce fidelity even in the absence of entanglement degradation. In contrast, the depolarization factor \( \eta \) reduces the coherence strength of the bipartite correlations themselves.
+The phase parameter \( \theta \) modifies the relative orientation of the state with respect to the reference Bell basis and may therefore reduce fidelity even in the absence of entanglement degradation. In contrast, the depolarization factor \( \eta \) reduces the strength of the bipartite quantum correlations themselves.
 
 \medskip
 
 Consequently, reduced Bell-state fidelity does not necessarily imply reduced entanglement.
-
-\medskip
 
 \paragraph{Concurrence.}
 
@@ -1264,11 +1267,24 @@ The Bell-state fidelity with respect to \( |\Psi^+\rangle \) becomes
 \begin{equation}
 F_{\Psi^+}
 =
-\frac{1+\eta\,\mathrm{Re}(\mu)}{2}.
+\frac{1-\eta}{4}
++
+\eta
+\frac{1+\mathrm{Re}(\mu)}{2},
 \label{eq:ensemble_composite_fidelity}
 \end{equation}
 
-This expression shows explicitly that the fidelity depends simultaneously on residual phase coherence and local depolarization strength.
+\medskip
+
+The first contribution originates from the isotropic mixed component introduced by local depolarization, while the second term represents the coherent overlap associated with the residual ensemble phase coherence.
+
+\medskip
+
+Therefore, the fidelity depends simultaneously on \( \mathrm{Re}(\mu) \), which quantifies residual phase alignment with the reference Bell basis, and on the depolarization factor \( \eta \), which globally contracts the bipartite correlations.
+
+\medskip
+
+Consequently, reduced Bell-state fidelity may originate either from statistical phase fluctuations, from incoherent depolarization, or from both simultaneously.
 
 \medskip
 
