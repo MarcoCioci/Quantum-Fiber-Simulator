@@ -15,4 +15,4 @@ extra/
 *.toc
 *.synctex.gz
 *.bbl
-*.blg
+*.blgtext/sources/
