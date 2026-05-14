@@ -106,18 +106,25 @@ function results_experiment_3 = run_experiment_3_depolarization(p_values, do_plo
     results_experiment_3.c_yy = zeros(1, num_p);
     results_experiment_3.c_zz = zeros(1, num_p);
 
-    results_experiment_3.analytical.purity_global = zeros(1, num_p);
-    results_experiment_3.analytical.purity_A = zeros(1, num_p);
-    results_experiment_3.analytical.purity_B = zeros(1, num_p);
-    results_experiment_3.analytical.fidelity_psi_plus = zeros(1, num_p);
-    results_experiment_3.analytical.concurrence = zeros(1, num_p);
+    analytics = analytical_values_experiment_3(p_values);
+
+    results_experiment_3.analytical = analytics;
+
+    results_experiment_3.analytical.purity_global = analytics.gamma_AB;
+    results_experiment_3.analytical.purity_A = analytics.gamma_A;
+    results_experiment_3.analytical.purity_B = analytics.gamma_B;
+    results_experiment_3.analytical.fidelity_psi_plus = analytics.F_psi_plus;
+    results_experiment_3.analytical.concurrence = analytics.C;
 
     results_experiment_3.analytical.T = cell(1, num_p);
-    results_experiment_3.analytical.c_xx = zeros(1, num_p);
-    results_experiment_3.analytical.c_yy = zeros(1, num_p);
-    results_experiment_3.analytical.c_zz = zeros(1, num_p);
 
-    T_psi_plus = diag([1, 1, -1]);
+    for idx = 1:num_p
+        results_experiment_3.analytical.T{idx} = analytics.T(:, :, idx);
+    end
+
+    results_experiment_3.analytical.c_xx = analytics.c_xx;
+    results_experiment_3.analytical.c_yy = analytics.c_yy;
+    results_experiment_3.analytical.c_zz = analytics.c_zz;
 
 
     % =========================
@@ -134,8 +141,6 @@ function results_experiment_3 = run_experiment_3_depolarization(p_values, do_plo
         rho_B = partial_trace_A(rho_AB);
 
         T = compute_correlation_tensor(rho_AB);
-
-        T_analytical = (1 - p) * T_psi_plus;
 
 
         % =========================
@@ -156,29 +161,6 @@ function results_experiment_3 = run_experiment_3_depolarization(p_values, do_plo
         results_experiment_3.c_xx(idx) = T(1, 1);
         results_experiment_3.c_yy(idx) = T(2, 2);
         results_experiment_3.c_zz(idx) = T(3, 3);
-
-
-        % =========================
-        % Store analytical results
-        % =========================
-
-        results_experiment_3.analytical.purity_global(idx) = ...
-            1 - (3/2) * p + (3/4) * p^2;
-
-        results_experiment_3.analytical.purity_A(idx) = 1/2;
-        results_experiment_3.analytical.purity_B(idx) = 1/2;
-
-        results_experiment_3.analytical.fidelity_psi_plus(idx) = ...
-            1 - (3/4) * p;
-
-        results_experiment_3.analytical.concurrence(idx) = ...
-            max(0, 1 - (3/2) * p);
-
-        results_experiment_3.analytical.T{idx} = T_analytical;
-
-        results_experiment_3.analytical.c_xx(idx) = T_analytical(1, 1);
-        results_experiment_3.analytical.c_yy(idx) = T_analytical(2, 2);
-        results_experiment_3.analytical.c_zz(idx) = T_analytical(3, 3);
 
     end
 

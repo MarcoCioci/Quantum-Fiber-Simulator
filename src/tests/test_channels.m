@@ -1,5 +1,5 @@
 function test_channels()
-% TEST_CHANNELS  Validate the depolarizing-channel implementations.
+% TEST_CHANNELS  Validate the quantum-channel implementations.
 %
 % Objective:
 %   Validate the correctness of the quantum-channel routines:
@@ -7,16 +7,18 @@ function test_channels()
 %       1. global_depolarizing_channel
 %       2. local_depolarizing_channel
 %       3. two_arm_depolarizing_channel
+%       4. composite_fiber_channel
 %
 %   The tests verify:
 %
 %       - identity limits
 %       - complete depolarization limits
 %       - Hermiticity preservation
-%       - trace preservation (for density matrices)
+%       - trace preservation for density matrices
 %       - analytical agreement
 %       - tensor-contraction behavior
 %       - distinction between global and local depolarization
+%       - deterministic composite-channel consistency
 %
 % Input:
 %   None
@@ -234,6 +236,135 @@ function test_channels()
     assert(norm(rho_global - rho_local, 'fro') > tolerance, ...
         'test_channels:GlobalLocalDistinctionFailed', ...
         'Global and local depolarization should not be identical.');
+
+
+    % =====================================================
+    % SECTION 4 — COMPOSITE FIBER CHANNEL
+    % =====================================================
+
+    % -----------------------------------------------------
+    % Test 4.1 — Identity limit
+    % -----------------------------------------------------
+
+    rho_composite_identity = composite_fiber_channel( ...
+                                rho_bell, ...
+                                0.0, ...
+                                0.0, ...
+                                0.0);
+
+    assert(norm(rho_composite_identity - rho_bell, 'fro') < tolerance, ...
+        'test_channels:CompositeIdentityLimitFailed', ...
+        'Composite channel failed identity limit test.');
+
+
+    % -----------------------------------------------------
+    % Test 4.2 — Phase-only consistency
+    % -----------------------------------------------------
+
+    theta_test = pi / 3;
+
+    U_A = phase_unitary(theta_test);
+    U_theta = tensor_product(U_A, I2);
+
+    rho_phase_expected = U_theta * rho_bell * U_theta';
+
+    rho_phase_channel = composite_fiber_channel( ...
+                            rho_bell, ...
+                            theta_test, ...
+                            0.0, ...
+                            0.0);
+
+    assert(norm(rho_phase_channel - rho_phase_expected, 'fro') < tolerance, ...
+        'test_channels:CompositePhaseOnlyFailed', ...
+        'Composite channel failed phase-only consistency test.');
+
+
+    % -----------------------------------------------------
+    % Test 4.3 — Depolarization-only consistency
+    % -----------------------------------------------------
+
+    p_A_test = 0.19;
+    p_B_test = 0.31;
+
+    rho_depol_expected = two_arm_depolarizing_channel( ...
+                            rho_bell, ...
+                            p_A_test, ...
+                            p_B_test);
+
+    rho_depol_channel = composite_fiber_channel( ...
+                            rho_bell, ...
+                            0.0, ...
+                            p_A_test, ...
+                            p_B_test);
+
+    assert(norm(rho_depol_channel - rho_depol_expected, 'fro') < tolerance, ...
+        'test_channels:CompositeDepolarizationOnlyFailed', ...
+        'Composite channel failed depolarization-only consistency test.');
+
+
+    % -----------------------------------------------------
+    % Test 4.4 — Hermiticity preservation
+    % -----------------------------------------------------
+
+    rho_composite = composite_fiber_channel( ...
+                        rho_bell, ...
+                        theta_test, ...
+                        p_A_test, ...
+                        p_B_test);
+
+    assert(norm(rho_composite - rho_composite', 'fro') < tolerance, ...
+        'test_channels:CompositeHermiticityFailed', ...
+        'Composite channel does not preserve Hermiticity for density inputs.');
+
+
+    % -----------------------------------------------------
+    % Test 4.5 — Trace preservation
+    % -----------------------------------------------------
+
+    assert(abs(trace(rho_composite) - 1.0) < tolerance, ...
+        'test_channels:CompositeTraceFailed', ...
+        'Composite channel does not preserve trace for density inputs.');
+
+
+    % -----------------------------------------------------
+    % Test 4.6 — Analytical tensor prediction
+    % -----------------------------------------------------
+
+    T_composite = compute_correlation_tensor(rho_composite);
+
+    eta_composite = (1 - p_A_test) * (1 - p_B_test);
+
+    T_expected_composite = eta_composite * [ ...
+         cos(theta_test), -sin(theta_test),  0; ...
+         sin(theta_test),  cos(theta_test),  0; ...
+         0,                0,               -1];
+
+    assert(norm(T_composite - T_expected_composite, 'fro') < tolerance, ...
+        'test_channels:CompositeTensorPredictionFailed', ...
+        'Composite channel failed analytical tensor prediction.');
+
+
+    % -----------------------------------------------------
+    % Test 4.7 — Commutation of phase and depolarization
+    % -----------------------------------------------------
+
+    rho_phase_first = composite_fiber_channel( ...
+                            rho_bell, ...
+                            theta_test, ...
+                            p_A_test, ...
+                            p_B_test);
+
+    rho_depol_first = two_arm_depolarizing_channel( ...
+                            rho_bell, ...
+                            p_A_test, ...
+                            p_B_test);
+
+    rho_depol_first = U_theta * rho_depol_first * U_theta';
+
+    assert(norm(rho_phase_first - rho_depol_first, 'fro') < tolerance, ...
+        'test_channels:CompositeCommutationFailed', ...
+        'Composite channel failed phase-depolarization commutation test.');
+
 
     % =====================================================
     % Final success message

@@ -156,25 +156,20 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
         % Analytical quantities
         % =========================
 
-        mu_cos = mean(cos(theta_samples));
-        mu_sin = mean(sin(theta_samples));
-        mu = mean(exp(1i * theta_samples));
+        analytics = analytical_values_experiment_2(theta_samples);
 
-        analytical_tensor = [ ...
-             mu_cos, -mu_sin, 0; ...
-             mu_sin,  mu_cos, 0; ...
-             0,       0,     -1 ];
+        analytical_tensor = analytics.T;
 
-        analytical_c_xx = mu_cos;
-        analytical_c_yy = mu_cos;
-        analytical_c_zz = -1;
+        analytical_c_xx = analytics.c_xx;
+        analytical_c_yy = analytics.c_yy;
+        analytical_c_zz = analytics.c_zz;
 
-        analytical_purity_global = (1 + mu_cos^2 + mu_sin^2) / 2;
-        analytical_purity_A = 1/2;
-        analytical_purity_B = 1/2;
+        analytical_purity_global = analytics.gamma_AB;
+        analytical_purity_A = analytics.gamma_A;
+        analytical_purity_B = analytics.gamma_B;
 
-        analytical_fidelity = (1 + mu_cos) / 2;
-        analytical_concurrence = abs(mu);
+        analytical_fidelity = analytics.F_psi_plus;
+        analytical_concurrence = analytics.C;
 
 
         % =========================
@@ -182,6 +177,7 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
         % =========================
 
         fprintf('num_samples            : %d\n',   numel(theta_samples)); 
+        fprintf('|mu|                   : %.6f\n', analytics.mu_abs);
         fprintf('c_xx |err|             : %.3e\n', abs(correlations.c_xx - analytical_c_xx));
         fprintf('c_yy |err|             : %.3e\n', abs(correlations.c_yy - analytical_c_yy));
         fprintf('c_zz |err|             : %.3e\n', abs(correlations.c_zz - analytical_c_zz));
@@ -219,20 +215,20 @@ function results_experiment_2 = run_experiment_2_random_phase(experiment_2_cases
         results_current.fidelity_psi_plus = fidelity_psi_plus;
         results_current.concurrence = concurrence;
 
-        results_current.sample_mean_cos_theta = mu_cos;
-        results_current.sample_mean_sin_theta = mu_sin;
-        results_current.sample_mean_exp_i_theta = mu;
+        results_current.sample_mean_cos_theta = analytics.mu_real;
+        results_current.sample_mean_sin_theta = analytics.mu_imag;
+        results_current.sample_mean_exp_i_theta = analytics.mu;
+        results_current.sample_abs_exp_i_theta = analytics.mu_abs;
 
-        results_current.analytical.correlation_tensor = analytical_tensor;
-        results_current.analytical.c_xx = analytical_c_xx;
-        results_current.analytical.c_yy = analytical_c_yy;
-        results_current.analytical.c_zz = analytical_c_zz;
-        results_current.analytical.purity_global = analytical_purity_global;
-        results_current.analytical.purity_A = analytical_purity_A;
-        results_current.analytical.purity_B = analytical_purity_B;
-        results_current.analytical.fidelity_psi_plus = analytical_fidelity;
-        results_current.analytical.concurrence = analytical_concurrence;
+        results_current.analytical = analytics;
 
+        results_current.analytical.correlation_tensor = analytics.T;
+        results_current.analytical.purity_global = analytics.gamma_AB;
+        results_current.analytical.purity_A = analytics.gamma_A;
+        results_current.analytical.purity_B = analytics.gamma_B;
+        results_current.analytical.fidelity_psi_plus = analytics.F_psi_plus;
+        results_current.analytical.concurrence = analytics.C;
+        
         results_experiment_2.cases{case_idx} = results_current;
 
 

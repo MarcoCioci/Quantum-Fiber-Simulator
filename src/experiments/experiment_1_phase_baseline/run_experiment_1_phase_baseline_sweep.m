@@ -147,27 +147,28 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
     results_experiment_1.fidelity_psi_plus = real(results_experiment_1.fidelity_psi_plus(:).');
     results_experiment_1.concurrence = real(results_experiment_1.concurrence(:).');
 
-    results_experiment_1.analytical.c_xx = cos(theta_values_out);
-    results_experiment_1.analytical.c_yy = cos(theta_values_out);
-    results_experiment_1.analytical.c_zz = -ones(size(theta_values_out));
+    
+    % =========================
+    % Analytical predictions
+    % =========================
 
-    results_experiment_1.analytical.correlation_tensor = zeros(3, 3, N);
+    analytics = analytical_values_experiment_1(theta_values_out);
 
-    for idx = 1:N
-        theta = theta_values_out(idx);
+    results_experiment_1.analytical.c_xx = analytics.c_xx;
+    results_experiment_1.analytical.c_yy = analytics.c_yy;
+    results_experiment_1.analytical.c_zz = analytics.c_zz;
 
-        results_experiment_1.analytical.correlation_tensor(:, :, idx) = [ ...
-             cos(theta), -sin(theta),  0; ...
-             sin(theta),  cos(theta),  0; ...
-             0,           0,          -1 ...
-        ];
-    end
+    results_experiment_1.analytical.c_xy = analytics.c_xy;
+    results_experiment_1.analytical.c_yx = analytics.c_yx;
 
-    results_experiment_1.analytical.purity_global = ones(size(theta_values_out));
-    results_experiment_1.analytical.purity_A = 0.5 * ones(size(theta_values_out));
-    results_experiment_1.analytical.purity_B = 0.5 * ones(size(theta_values_out));
-    results_experiment_1.analytical.fidelity_psi_plus = (1 + cos(theta_values_out)) / 2;
-    results_experiment_1.analytical.concurrence = ones(size(theta_values_out));
+    results_experiment_1.analytical.correlation_tensor = analytics.T;
+
+    results_experiment_1.analytical.purity_global = analytics.gamma_AB;
+    results_experiment_1.analytical.purity_A = analytics.gamma_A;
+    results_experiment_1.analytical.purity_B = analytics.gamma_B;
+
+    results_experiment_1.analytical.fidelity_psi_plus = analytics.F_psi_plus;
+    results_experiment_1.analytical.concurrence = analytics.C;
 
 
     % =========================
