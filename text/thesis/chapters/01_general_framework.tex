@@ -21,97 +21,122 @@ The modeling approach adopted throughout this work is intentionally progressive.
 This strategy enables a controlled connection between physical interpretation, analytical predictions, and numerical validation.
 
 %--------------------------------------------------------
-% Section 1.2 — Theoretical Formalism and Notation
-%--------------------------------------------------------
-
-\section{Theoretical Formalism and Notation}
-
-The system is described within the framework of quantum information theory. The relevant mathematical structures include finite-dimensional Hilbert spaces, quantum states, tensor products, unitary operators, density operators, and projective measurements.
-
-Elements of classical optics are introduced only when required to justify the physical origin of the effective quantum transformations.
-
-\medskip
-
-The notation and formal tools are aligned, as far as possible, with the framework developed in \textit{Quantum Computation and Quantum Information} by Nielsen and Chuang \cite{nielsen_chuang_qcqi}.
-
-\medskip
-
-Within this formalism:
-
-\begin{itemize}
-    \item single subsystems are represented by vectors in \( \mathbb{C}^{2} \),
-    \item composite systems are described through tensor-product spaces,
-    \item evolutions are represented by linear operators, unitary in the ideal case,
-    \item measurements are described through Hermitian operators.
-\end{itemize}
-
-\medskip
-
-All states and operators are represented as vectors and matrices over \( \mathbb{C} \), with dimensions determined by the tensor-product structure of the system.
-
-%--------------------------------------------------------
-% Section 1.3 — Physical Scenario and Experimental Setting
+% Section 1.2 — Physical Scenario and Experimental Setting
 %--------------------------------------------------------
 
 \section{Physical Scenario and Experimental Setting}
 
-The physical setting considered in this work is the following.
-s
-A spontaneous parametric down-conversion (SPDC) source generates pairs of entangled photons, ideally prepared in a Bell state.
+The physical system considered in this work consists of a source of polarization-entangled photon pairs, two independent optical-fiber arms, and a final polarization-measurement stage.
 
-The polarization degree of freedom is used to encode the qubit associated with each photon. The two photons are injected into distinct optical paths, denoted \( A \) and \( B \), and propagate through independent optical fibers.
+A spontaneous parametric down-conversion (SPDC) source generates photon pairs ideally prepared in a Bell state. The polarization degree of freedom encodes the qubit associated with each photon, with the horizontal and vertical polarization modes identified as:
 
-\medskip
+\[
+\{|H\rangle, |V\rangle\}
+\]
 
-Each fiber acts on the polarization degree of freedom of the corresponding photon. In a general description, this action can be represented by a unitary operator acting on a single-qubit Hilbert space.
-
-However, motivated by experimental constraints and by the limited degree of control available on the complete polarization transformation, the model is initially restricted to a simplified effective description.
+After generation, the two photons are separated into two spatially distinct paths, denoted \(A\) and \(B\), and propagate through independent optical fibers.
 
 \medskip
 
-After compensation of global polarization rotations, the dominant residual effect can be modeled as a relative phase shift between the horizontal and vertical polarization components.
+The fibers affect the polarization state of the propagating photons. In the experimental setting considered here, the relevant propagation effects are represented by two main physical mechanisms.
 
-In the qubit representation, this corresponds to a rotation around the computational \( Z \)-axis of the Bloch sphere.
+The first one is a residual coherent phase shift between the horizontal and vertical polarization components. After partial polarization compensation, the remaining deterministic or slowly varying effect is modeled as a relative phase accumulated during propagation. Physically, this phase originates from birefringence, optical-path differences, mechanical perturbations, and thermal fluctuations along the fiber. At the two-photon level, this modifies the phase relation between the components of the entangled state and therefore changes the measured polarization correlations.
 
 \medskip
 
-The objective at this stage is therefore not to reproduce the full electromagnetic propagation inside optical fibers, but rather to construct an effective quantum model capable of capturing the relevant impact of fiber propagation on entanglement and measurable correlations.
+The second mechanism is local depolarization. While the phase shift describes a coherent transformation of the polarization state, depolarization represents an effective loss of polarization information in each fiber arm. This accounts for unresolved coupling to additional degrees of freedom, imperfect compensation, environmental instability, or fluctuations that are not explicitly tracked at the measurement stage. Since the two photons propagate through different fibers, this effect is treated locally and independently on arms \(A\) and \(B\).
+
+\medskip
+
+At the output of the fibers, the photons are collected by polarization analyzers and single-photon detectors. Measurements are performed on the two arms jointly, so that the relevant experimental information is contained in coincidence statistics rather than in single-arm detection probabilities alone.
+
+From these joint measurements one extracts polarization correlations and state-level metrics.
+
+\medskip
+
+The physical scenario can therefore be summarized as:
+
+\[
+\begin{array}{c}
+\text{SPDC entangled-photon source} \\
+\downarrow \\
+\text{Separation into fiber arms } A \text{ and } B \\
+\downarrow \\
+\text{Residual phase shift and local depolarization} \\
+\downarrow \\
+\text{Polarization analysis and coincidence detection} \\
+\downarrow \\
+\text{Extraction of correlations and entanglement metrics}.
+\end{array}
+\]
 
 %--------------------------------------------------------
-% Section 1.4 — Computational and Modeling Architecture
+% Section 1.3 — Theoretical Formalism and Notation
 %--------------------------------------------------------
 
-\section{Computational and Modeling Architecture}
+\section{Theoretical Formalism and Notation}
 
-The computational framework developed in this work follows directly from the theoretical structure introduced in the previous sections. The simulator is designed as a modular numerical realization of the underlying quantum model, preserving a direct correspondence between physical concepts and computational components.
-
-\medskip
-
-At the numerical level, pure states are represented as complex vectors, mixed states as density matrices, and physical evolutions and observables as matrix operators. This representation enables a unified treatment of unitary dynamics, statistical mixtures, expectation values, and effective noisy evolution within the same computational framework.
+The physical scenario described above is formulated within the language of finite-dimensional quantum information theory. The two photons are treated as a bipartite quantum system, where each subsystem carries one polarization qubit and the joint state belongs to the tensor-product space associated with arms \( A \) and \( B \).
 
 \medskip
 
-The simulator architecture is organized around distinct functional layers, including state preparation, operator construction, local evolution, observable evaluation, quantum channels, and experiment-specific routines. Each layer corresponds to a well-defined theoretical block and can therefore be validated independently before being integrated into more advanced models.
+The notation follows, as far as possible, the standard conventions of quantum information theory, in particular those used in \textit{Quantum Computation and Quantum Information} by Nielsen and Chuang~\cite{nielsen_chuang_qcqi}. Pure states are denoted by kets such as \( |\psi\rangle \), density operators by \( \rho \), local subsystems by labels \( A \) and \( B \), and tensor products by \( \otimes \).
 
 \medskip
 
-Particular emphasis is placed on progressive model refinement. Simplified analytically tractable configurations are used as validation baselines before introducing increasingly realistic descriptions involving stochastic phase evolution, ensemble averaging, and non-unitary effects.
+Single-photon polarization states are expressed in the computational basis identified with the horizontal and vertical polarization modes,
+
+\[
+|H\rangle \equiv |0\rangle,
+\qquad
+|V\rangle \equiv |1\rangle .
+\]
+
+The corresponding two-photon basis is written as
+
+\[
+\{
+|00\rangle,
+|01\rangle,
+|10\rangle,
+|11\rangle
+\},
+\]
+
+where the first label refers to arm \( A \) and the second label refers to arm \( B \).
 
 \medskip
 
-At the first modeling stage, unnecessary optical detail is neglected and each fiber is described exclusively through its effective action on polarization. This leads to a local unitary representation of the form
-
-\begin{equation}
-U_{AB} = U_A \otimes U_B
-\label{eq:local_unitary_evolution}
-\end{equation}
-
-where \( U_A, U_B \in \mathbb{C}^{2 \times 2} \) are unitary operators.
+Coherent polarization transformations are described by local operators acting on the individual arms, while effective noisy processes are described at the density-operator level. This allows the same formalism to treat pure-state evolution, statistical mixtures, and non-unitary propagation effects.
 
 \medskip
 
-This abstraction defines the fundamental interface between the physical system and the simulator, and will later allow the introduction of more refined models, including stochastic phase evolution, effective decoherence, and non-unitary quantum channels.
+Observable quantities are expressed through expectation values of Hermitian operators. In particular, polarization correlations are described using Pauli operators acting locally on the two arms.
 
 \medskip
 
-The overall objective of the computational framework is therefore not only to reproduce numerical results, but also to maintain analytical transparency, reproducibility, and consistency between theoretical predictions and numerical implementation throughout the progressive development of the model.
+The propagated state is characterized through a fixed set of quantities used throughout the work: fidelity \( F \), purity \( \gamma \), concurrence \( C \), tangle \( \tau \), entanglement of formation \( E_F \), and polarization correlations \( \langle \sigma_i \otimes \sigma_j \rangle \). Their formal definitions are introduced in the dedicated theoretical chapters, while Chapter~1 only establishes the notation used to refer to them.
+
+%--------------------------------------------------------
+% Section 1.4 — Computational Architecture and Framework
+%--------------------------------------------------------
+
+\section{Computational Architecture and Framework}
+
+The computational framework developed in this work is designed as a modular numerical counterpart of the theoretical description. Its purpose is to make each physical or mathematical object appearing in the text correspond to a clear computational component in the codebase.
+
+\medskip
+
+The simulator is organized into functional layers for state preparation, operator construction, state evolution, quantum channels, measurement evaluation, metric computation, testing, and experiment-specific workflows. This organization separates reusable low-level routines from higher-level numerical experiments, improving reproducibility and making each result traceable to the theoretical object from which it originates.
+
+\medskip
+
+State routines construct Bell states and density matrices; evolution routines apply local unitary transformations; channel routines implement global, local, two-arm, and composite fiber-channel maps; measurement routines evaluate correlation functions, correlation tensors, and CHSH quantities; metric routines compute the scalar indicators used to characterize the propagated state.
+
+\medskip
+
+Numerical experiments are built as higher-level workflows that combine these validated components. Each experiment specifies an input state, a propagation mechanism, a set of observables or metrics, and a comparison with analytical predictions whenever available. This makes the simulator not only a numerical tool, but also a reproducibility layer connecting physical assumptions, mathematical formulation, and numerical results.
+
+\medskip
+
+The role of the computational architecture is therefore to support a one-to-one correspondence between theoretical modeling and numerical implementation. Each output of the simulator should be interpretable in terms of a precise state preparation, propagation mechanism, measurement operator, or metric definition.

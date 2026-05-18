@@ -23,6 +23,7 @@ test_purity();
 test_fidelity();
 test_concurrence();
 test_channels();
+test_tangle_entanglement_of_formation();
 
 fprintf('\n')
 disp('======================================');

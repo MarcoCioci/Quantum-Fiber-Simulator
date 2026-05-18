@@ -11,7 +11,7 @@ function results_experiment_5 = run_experiment_5_composite_fiber_channel_pure(th
 %
 % Input:
 %   theta_values - optional real numeric vector of phase values.
-%                  Default: linspace(0, 2*pi, 361)
+%                  Default: linspace(0, 2*pi, 100)
 %
 %   p_A          - optional depolarization parameter on subsystem A.
 %                  Default: 0.20
@@ -38,7 +38,7 @@ function results_experiment_5 = run_experiment_5_composite_fiber_channel_pure(th
     % =========================
 
     if nargin < 1 || isempty(theta_values)
-        theta_values = linspace(0, 2*pi, 361);
+        theta_values = linspace(0, 2*pi, 100);
     end
 
     if nargin < 2 || isempty(p_A)
@@ -261,9 +261,8 @@ function results_experiment_5 = run_experiment_5_composite_fiber_channel_pure(th
     fprintf('\n\n');
 
     fprintf('==========================================\n');
-    fprintf('Experiment 5 - Composite Fiber Channel Pure State\n');
-    fprintf('Pure State\n');
-    fprintf('Monitoring summary\n');
+    fprintf('Experiment 5 - Composite Fiber\n');
+    fprintf('Pure State - Monitoring summary\n');
     fprintf('==========================================\n\n');
 
     fprintf('theta sweep            : N = %d, min = %.6f, max = %.6f\n', ...
@@ -314,11 +313,7 @@ function results_experiment_5 = run_experiment_5_composite_fiber_channel_pure(th
     % =========================
 
     if do_plot
-
-        % TODO:
-        %
-        % plot_composite_fiber_summary(results_experiment_5, do_save)
-
+        plot_composite_pure_summary(results_experiment_5, do_save);
     end
 
 end

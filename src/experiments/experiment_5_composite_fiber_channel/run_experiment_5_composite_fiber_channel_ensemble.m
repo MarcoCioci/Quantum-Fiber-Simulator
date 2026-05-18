@@ -7,8 +7,8 @@ function results_experiment_5 = run_experiment_5_composite_fiber_channel_ensembl
     % =========================
 
     fprintf('\n\n==========================================\n');
-    fprintf('Experiment 5 - Composite Fiber Channel Ensemble\n');
-    fprintf('Monitoring summary\n');
+    fprintf('Experiment 5 - Composite Fiber Channel\n');
+    fprintf('Ensemble - Monitoring summary\n');
     fprintf('==========================================\n');
 
     num_samples = 100;
@@ -296,11 +296,11 @@ function results_experiment_5 = run_experiment_5_composite_fiber_channel_ensembl
         % =========================
 
         if do_summary_plot
-            % plot_composite_ensemble_summary(results_current, do_save);
+            plot_composite_ensemble_summary(results_current, do_save);
         end
-
+        
         if do_tensor_plot
-            % plot_composite_ensemble_tensor_snapshot(results_current, do_save);
+            plot_composite_ensemble_tensor_snapshot(results_current, do_save);
         end
 
     end
