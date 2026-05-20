@@ -4,7 +4,7 @@ function fig = plot_chsh_nonlocality_summary(results_experiment_4, do_save)
 % Objective:
 %   Provide a compact summary of CHSH nonlocality under:
 %
-%       1) deterministic phase evolution
+%       1) coherent phase evolution
 %       2) two-qubit depolarization
 %
 %   The figure compares:
@@ -146,7 +146,7 @@ function fig = plot_chsh_nonlocality_summary(results_experiment_4, do_save)
 
 
         % =====================================================
-        % Panel 1: deterministic phase sweep
+        % Panel 1: fixed-phase sweep
         % =====================================================
 
         ax = nexttile(tl);

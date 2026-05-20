@@ -3,7 +3,7 @@ function results_experiment_1 = run_experiment_1_phase_baseline_sweep(theta_valu
 %
 % Objective:
 %   Run Experiment 1 by propagating the reference Bell state |Ψ⁺⟩ through
-%   the reduced deterministic phase model over a user-defined set of phase
+%   the reduced phase model over a user-defined set of phase
 %   values θ, and compute the corresponding correlation observables,
 %   full correlation tensor, and state metrics.
 %

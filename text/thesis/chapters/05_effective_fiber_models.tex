@@ -12,7 +12,7 @@
 \section{Motivation for Effective Fiber Models}
 \label{sec:motivation_effective_fiber_models}
 
-The previous chapters established the mathematical framework required to describe bipartite polarization states, local unitary propagation, correlation measurements, quantum channels, and quantitative state metrics. Within that framework, fiber propagation was initially modeled through analytically controlled transformations, including deterministic phase shifts, statistical phase ensembles, and idealized depolarizing maps.
+The previous chapters established the mathematical framework required to describe bipartite polarization states, local unitary propagation, correlation measurements, quantum channels, and quantitative state metrics. Within that framework, fiber propagation was initially modeled through analytically controlled transformations, including coherent phase shifts, statistical phase ensembles, and idealized depolarizing maps.
 
 \medskip
 
@@ -49,7 +49,7 @@ Real optical fibers, however, may introduce additional propagation effects that 
 
 \medskip
 
-Within the density-operator formalism introduced previously, such mechanisms are described through effective local quantum channels acting independently on the two subsystems:
+Within the density-operator formalism introduced in Section~\ref{sec:quantum_channels_and_depolarization}, such mechanisms are described through effective local quantum channels acting independently on the two subsystems:
 
 \begin{equation}
 \rho_{AB}^{\mathrm{out}}
@@ -98,7 +98,7 @@ This progression establishes the bridge between the analytically controlled mode
 \section{Local Depolarizing Fiber Channels}
 \label{sec:local_depolarizing_fiber_channels}
 
-The global depolarizing model introduced previously provides a useful baseline for studying the degradation of bipartite quantum correlations. However, that model acts collectively on the full two-qubit state and does not explicitly distinguish the physical propagation of the two photons through separate optical fibers.
+The global depolarizing model introduced in Section \ref{sec:quantum_channels_and_depolarization} provides a useful baseline for studying the degradation of bipartite quantum correlations. However, that model acts collectively on the full two-qubit state and does not explicitly distinguish the physical propagation of the two photons through separate optical fibers.
 
 \medskip
 
@@ -136,16 +136,8 @@ Although the physical propagation occurs locally in each arm, the relevant quant
 
 \medskip
 
-For maximally entangled Bell states, for example, the reduced states remain maximally mixed,
-
-\[
-\rho_A
-=
-\rho_B
-=
-\frac{I}{2},
-\]
-
+For maximally entangled Bell states, for example, the reduced states remain maximally mixed
+(\( \rho_A = \rho_B = I/2 \)),
 independently of the entanglement structure of the global state. Consequently, evolving only the reduced density operators would fail to capture the degradation of bipartite quantum correlations induced by local propagation noise.
 
 \medskip
@@ -160,10 +152,10 @@ For this reason, the action of a local channel on the bipartite state must be un
 X_{AB}
 =
 \sum_k
-A_k\otimes B_k,
+A_k\otimes B_k.
 \]
 
-then a channel acting locally on subsystem \( A \) is applied as
+Using the single-qubit operator-map form of the depolarizing channel, a channel acting locally on subsystem \( A \) is applied as:
 
 \begin{equation}
 \left(
@@ -179,7 +171,7 @@ then a channel acting locally on subsystem \( A \) is applied as
 B_k.
 \label{eq:local_channel_operator_action}
 \end{equation}
-Using the single-qubit operator-map form of the depolarizing channel,
+
 This representation is always possible in finite-dimensional bipartite systems, since product operators span the composite operator space.
 
 \medskip
@@ -218,12 +210,14 @@ p_A
 \end{equation}
 
 where
-
-\[
-\rho_B
+\(
+\rho_B 
 =
-\mathrm{Tr}_A(\rho_{AB}).
-\]
+\mathrm{Tr}_A(\rho_{AB}
+).
+\)
+
+\medskip
 
 Analogously,
 
@@ -247,12 +241,13 @@ p_B
 \end{equation}
 
 with
-
-\[
+\(
 \rho_A
 =
 \mathrm{Tr}_B(\rho_{AB}).
-\]
+\)
+
+\medskip 
 
 Applying the two single-arm channels in sequence gives
 
@@ -309,8 +304,7 @@ This type of bipartite local channel has been studied extensively in the theory 
 \paragraph{Single-qubit depolarizing action.}
 
 For a single-qubit density operator represented in Bloch form as
-
-\[
+\(
 \rho
 =
 \frac{1}{2}
@@ -319,8 +313,7 @@ I
 +
 \mathbf{r}\cdot\boldsymbol{\sigma}
 \right),
-\]
-
+\)
 the depolarizing channel is modeled through
 
 \begin{equation}
@@ -451,7 +444,7 @@ This construction prepares the introduction of more advanced effective models co
 \section{Correlation-Tensor Contraction Under Local Depolarization}
 \label{sec:local_depolarization_tensor_contraction}
 
-The local depolarizing model introduced in the previous section has a direct and experimentally meaningful effect on the bipartite correlation structure of the propagated state. Since polarization correlations are represented through expectation values of Pauli-product observables, the correlation tensor provides the natural framework for describing how local fiber degradation modifies measurable quantities.
+The local depolarizing model introduced in the previous sections has a direct and experimentally meaningful effect on the bipartite correlation structure of the propagated state. Since polarization correlations are represented through expectation values of Pauli-product observables, the correlation tensor provides the natural framework for describing how local fiber degradation modifies measurable quantities.
 
 \medskip
 
@@ -607,7 +600,7 @@ The tensor-contraction law established in this section constitutes the key analy
 % Section 5.4 —  Composite Effective Fiber Channel
 %========================================================
 
-\section{ Composite Effective Fiber Channel}
+\section{Composite Effective Fiber Channel}
 \label{sec:composite_effective_fiber_channel}
 
 The models introduced in the previous sections describe two complementary physical mechanisms affecting polarization-entangled photon propagation in optical fibers.
@@ -735,7 +728,7 @@ The first contribution preserves the coherently evolved bipartite state, while t
 
 \medskip
 
-As demonstrated in Appendix~C.2, isotropic local depolarization commutes with the reduced phase-evolution model considered here. Explicitly,
+As demonstrated in Appendix~\ref{app:Commutation_local_phase_evolution_isotropic_local_depolarization}, isotropic local depolarization commutes with the reduced phase-evolution model considered here. Explicitly,
 
 \begin{equation}
 \left(
@@ -811,7 +804,7 @@ T(\theta)
 \label{eq:composite_phase_tensor}
 \end{equation}
 
-Using the tensor-contraction law derived in Section~5.3, the output tensor under local two-arm depolarization becomes
+Using the tensor-contraction law derived in Section~\ref{sec:local_depolarization_tensor_contraction}, the output tensor under local two-arm depolarization becomes
 
 \begin{equation}
 T_{\mathrm{out}}(\theta,p_A,p_B)
@@ -1110,7 +1103,7 @@ In realistic propagation scenarios, however, the relative phase accumulated duri
 
 \medskip
 
-The purpose of this section is to extend the deterministic composite channel toward a statistical effective model capable of describing simultaneous coherent uncertainty and incoherent polarization degradation.
+The purpose of this section is to extend the composite coherent-phase channel toward a statistical effective model capable of describing simultaneous coherent uncertainty and incoherent polarization degradation.
 
 \medskip
 
@@ -1436,4 +1429,4 @@ Most importantly, the model shows that coherent uncertainty and incoherent polar
 
 \medskip
 
-This statistical composite framework constitutes the theoretical basis for the final numerical investigations developed in the following chapter.
+This statistical composite framework constitutes the theoretical basis for the final numerical investigations developed in chapter~\ref{ch:numerical_experiments}.

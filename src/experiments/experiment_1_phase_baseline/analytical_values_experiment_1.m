@@ -1,6 +1,6 @@
 function analytics = analytical_values_experiment_1(theta)
 % ANALYTICAL_VALUES_EXPERIMENT_1
-% Analytical predictions for the deterministic phase-sweep experiment.
+% Analytical predictions for the fixed-phase evolution experiment.
 %
 % Objective:
 %   Return the analytical quantities associated with the reduced phase

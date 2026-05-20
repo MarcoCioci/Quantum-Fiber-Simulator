@@ -7,7 +7,7 @@ function test_chsh()
 %       1. Fixed-axis CHSH values from state and tensor representations
 %       2. Maximal CHSH value from the correlation tensor
 %       3. Analytical behavior for Bell states
-%       4. Analytical behavior under deterministic phase evolution
+%       4. Analytical behavior under fixed-phase evolution
 %       5. Analytical behavior under two-qubit depolarization
 %       6. Vanishing CHSH value for the maximally mixed state
 %

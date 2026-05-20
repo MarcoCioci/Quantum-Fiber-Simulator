@@ -3,6 +3,7 @@
 %========================================================
 
 \chapter{Physical and Mathematical Representation}
+\label{physical_and_mathematical_representation}
 
 %========================================================
 % SECTION 3.1 — Quantum System and Hilbert Space Structure
@@ -153,8 +154,6 @@ For completeness, the four Bell states are
 \label{eq:bell_state_basis}
 \end{equation}
 
-Among these, \( |\Psi^+\rangle \) is used as the default reference input for the propagation models considered in this work.
-
 %========================================================
 % SECTION 3.3 — Fiber Propagation as Local Unitary Evolution
 %========================================================
@@ -185,7 +184,7 @@ In this framework, the two fibers act independently on the two polarization subs
 
 \medskip
 
-The local-unitary model is therefore the first dynamical layer of the thesis: it captures deterministic polarization transformations while preserving the purity of the global two-photon state.
+The local-unitary model is therefore the first dynamical layer of the work: it captures deterministic polarization transformations while preserving the purity of the global two-photon state.
 
 %========================================================
 % SECTION 3.4 — Pure-State and Density-Operator Descriptions
@@ -195,11 +194,11 @@ The local-unitary model is therefore the first dynamical layer of the thesis: it
 \label{sec:pure_state_and_density_operator_descriptions}
 
 The first modeling level describes the two-photon system as a pure state in the bipartite Hilbert space
-\( \mathbb{C}^2 \otimes \mathbb{C}^2 \). In this regime, fiber propagation is represented by local unitary transformations acting independently on the two polarization qubits.
+\( \mathbb{C}^2 \otimes \mathbb{C}^2 \). 
 
 \medskip
 
-As introduced in Eq.~\eqref{eq:local_unitary_state_evolution}, the evolution remains fully coherent and deterministic, with the quantum state being represented directly through a state vector
+As introduced in Eq.~\eqref{eq:local_unitary_state_evolution}, the evolution remains fully coherent, with the quantum state being represented directly through a state vector
 \( |\psi\rangle \).
 
 \medskip
@@ -231,140 +230,7 @@ The density-operator formalism, however, extends naturally beyond pure states an
 For this reason, although the initial propagation models can be formulated entirely at the pure-state level, the density-operator representation will progressively become central in the mathematical framework and in the quantitative analyses developed in the following chapters.
 
 %--------------------------------------------------------
-% Subsection 3.4.1 — Reduced Density Operators
-%--------------------------------------------------------
-
-\subsection{Reduced Density Operators}
-\label{subsec:reduced_density_operators}
-
-A central operation in the density-operator formalism is the partial trace. It allows one to describe the state accessible to a single subsystem when the global bipartite system is described by \( \rho_{AB} \).
-
-\medskip
-
-The reduced density operators are defined as
-
-\begin{equation}
-\rho_A
-=
-\mathrm{Tr}_B(\rho_{AB}),
-\qquad
-\rho_B
-=
-\mathrm{Tr}_A(\rho_{AB}).
-\end{equation}
-
-These operators contain all information accessible through local measurements on the corresponding subsystem. For any observable \( O_A \) acting only on arm \( A \),
-
-\begin{equation}
-\langle O_A \rangle
-=
-\mathrm{Tr}
-\left[
-\rho_{AB}
-\left(
-O_A \otimes I_B
-\right)
-\right]
-=
-\mathrm{Tr}(\rho_A O_A).
-\end{equation}
-
-\medskip
-
-An explicit expression for the partial trace over subsystem \( B \) is
-
-\begin{equation}
-\rho_A
-=
-\sum_{j=0}^{1}
-\left(
-I_A \otimes \langle j|
-\right)
-\rho_{AB}
-\left(
-I_A \otimes |j\rangle
-\right),
-\end{equation}
-
-where \( \{|0\rangle, |1\rangle\} \) is the computational basis of subsystem \( B \). The analogous expression defines \( \rho_B \) by tracing over subsystem \( A \).
-
-\medskip
-
-For the Bell state
-
-\[
-|\Psi^+\rangle
-=
-\frac{1}{\sqrt{2}}
-\left(
-|01\rangle + |10\rangle
-\right),
-\]
-
-the reduced states are maximally mixed:
-
-\begin{equation}
-\rho_A
-=
-\rho_B
-=
-\frac{1}{2}I.
-\end{equation}
-
-This result shows that each photon is locally unpolarized, even though the global two-photon state is pure and maximally entangled.
-
-%--------------------------------------------------------
-% Subsection 3.4.2 — Extension to Mixed-State Descriptions
-%--------------------------------------------------------
-
-\subsection{Extension to Mixed-State Descriptions}
-\label{subsec:mixed_state_descriptions}
-
-The density-operator formalism also describes states that cannot be represented by a single state vector. This situation appears when different realizations of the system are combined statistically, or when unresolved degrees of freedom are not modeled explicitly.
-
-\medskip
-
-A generic mixed state can be written as a convex combination
-
-\begin{equation}
-\rho
-=
-\sum_k q_k
-|\psi_k\rangle\langle\psi_k|,
-\qquad
-q_k \geq 0,
-\qquad
-\sum_k q_k = 1.
-\label{eq:mixed_state_convex_decomposition}
-\end{equation}
-
-In the context of fiber propagation, this representation is useful for describing random phase fluctuations. If each photon pair experiences a different phase realization \( \theta_k \), the ensemble state is
-
-\begin{equation}
-\rho_{AB}^{(\mathrm{ens})}
-=
-\sum_k q_k
-|\psi(\theta_k)\rangle
-\langle \psi(\theta_k)|.
-\end{equation}
-
-For a uniform numerical average over \( N \) sampled realizations, this becomes
-
-\begin{equation}
-\rho_{AB}^{(\mathrm{ens})}
-=
-\frac{1}{N}
-\sum_{k=1}^{N}
-|\psi(\theta_k)\rangle
-\langle \psi(\theta_k)|.
-\end{equation}
-
-\medskip
-
-The density-operator formalism is therefore the natural framework for describing statistical phase averaging, local reduced states, and later effective non-unitary dynamics through quantum channels.
-
-%--------------------------------------------------------
-% Subsection 3.4.3 — Expectation Values
+% Subsection 3.4.1 — Expectation Values
 %--------------------------------------------------------
 
 \subsection{Expectation Values}
@@ -404,6 +270,218 @@ This formula applies both to pure states and to mixed states. Indeed, for
 \medskip
 
 This unified expression is used throughout the simulator to compute local quantities, state metrics, and two-photon observables from the same matrix-based representation.
+
+%--------------------------------------------------------
+% Subsection 3.4.2 — Reduced Density Operators
+%--------------------------------------------------------
+
+\subsection{Reduced Density Operators}
+\label{subsec:reduced_density_operators}
+
+A central operation in the density-operator formalism is the partial trace. It allows to describe the state accessible to a single subsystem when the global bipartite system is described by \( \rho_{AB} \).
+
+\medskip
+
+The reduced density operators are defined as
+
+\begin{equation}
+\rho_A
+=
+\mathrm{Tr}_B(\rho_{AB}),
+\qquad
+\rho_B
+=
+\mathrm{Tr}_A(\rho_{AB}).
+\label{eq:reduced_density_operator_definition}
+\end{equation}
+
+These operators contain all information accessible through local measurements on the corresponding subsystem. For any observable \( O_A \) acting only on arm \( A \),
+
+\begin{equation}
+\langle O_A \rangle
+=
+\mathrm{Tr}
+\left[
+\rho_{AB}
+\left(
+O_A \otimes I_B
+\right)
+\right]
+=
+\mathrm{Tr}(\rho_A O_A).
+\label{eq:local_expectation_reduced_state}
+\end{equation}
+
+\medskip
+
+An explicit expression for the partial trace over subsystem \( B \) is
+
+\begin{equation}
+\rho_A
+=
+\sum_{j=0}^{1}
+\left(
+I_A \otimes \langle j|
+\right)
+\rho_{AB}
+\left(
+I_A \otimes |j\rangle
+\right),
+\label{eq:partial_trace_expression}
+\end{equation}
+
+where \( \{|0\rangle, |1\rangle\} \) is the computational basis of subsystem \( B \). The analogous expression defines \( \rho_B \) by tracing over subsystem \( A \).
+
+\medskip
+
+For the Bell state
+
+\[
+|\Psi^+\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + |10\rangle
+\right),
+\]
+
+the reduced states are maximally mixed:
+
+\begin{equation}
+\rho_A
+=
+\rho_B
+=
+\frac{1}{2}I.
+\label{eq:bell_reduced_states}
+\end{equation}
+
+The operator \( I/2 \) represents the maximally mixed single-qubit state. In this situation, the two computational-basis outcomes occur with equal probability, and no preferred polarization direction exists locally. 
+
+\medskip 
+
+Consequently, each photon individually is described by a state of maximal local uncertainty, even though the global bipartite state remains pure and maximally entangled. This result illustrates one of the fundamental properties of entanglement: complete information about the quantum state is encoded nonlocally in the correlations between the two subsystems rather than in the local states themselves.
+
+%--------------------------------------------------------
+% Subsection 3.4.3 — Extension to Mixed-State Descriptions
+%--------------------------------------------------------
+
+\subsection{Extension to Mixed-State Descriptions}
+\label{subsec:mixed_state_descriptions}
+
+The density-operator formalism also describes states that cannot be represented by a single state vector. This situation appears when different realizations of the system are combined statistically, or when unresolved degrees of freedom are not modeled explicitly.
+
+\medskip
+
+A generic mixed state can be written as a convex combination
+
+\begin{equation}
+\rho
+=
+\sum_k p_k
+|\psi_k\rangle\langle\psi_k|,
+\qquad
+p_k \geq 0,
+\qquad
+\sum_k p_k = 1.
+\label{eq:mixed_state_convex_decomposition}
+\end{equation}
+
+In the context of fiber propagation, this representation is useful for describing random phase fluctuations. If each photon pair experiences a different phase realization \( \theta_k \), the ensemble state is
+
+\begin{equation}
+\rho_{AB}^{(\mathrm{ens})}
+=
+\sum_k p_k
+|\psi(\theta_k)\rangle
+\langle \psi(\theta_k)|.
+\label{eq:mixed_state_ensemble_probabilities}
+\end{equation}
+
+For a uniform numerical average over \( N \) sampled realizations, this becomes
+
+\begin{equation}
+\rho_{AB}^{(\mathrm{ens})}
+=
+\frac{1}{N}
+\sum_{k=1}^{N}
+|\psi(\theta_k)\rangle
+\langle \psi(\theta_k)|.
+\label{eq:mixed_state_ensemble_realizations}
+\end{equation}
+
+\medskip
+
+The density-operator formalism is therefore the natural framework for describing statistical phase averaging, local reduced states, and later effective non-unitary dynamics through quantum channels.
+
+%--------------------------------------------------------
+% Subsection 3.4.4 — Bloch-Sphere Interpretation of Mixed States
+%--------------------------------------------------------
+
+\subsection{Bloch-Sphere Interpretation of Mixed States}
+\label{subsec:bloch_sphere_interpretation_mixed_states}
+
+For a single qubit, any density operator can be represented in Bloch form as
+
+\begin{equation}
+\rho
+=
+\frac{1}{2}
+\left(
+I + \mathbf{r}\cdot\boldsymbol{\sigma}
+\right),
+\label{eq:bloch_density_representation}
+\end{equation}
+
+where \( \mathbf{r}\in\mathbb{R}^3 \) is the Bloch vector and
+
+\[
+\boldsymbol{\sigma}
+=
+(\sigma_x,\sigma_y,\sigma_z).
+\]
+
+Physical states satisfy
+
+\begin{equation}
+|\mathbf{r}| \leq 1.
+\label{eq:bloch_ball_condition}
+\end{equation}
+
+Pure states lie on the surface of the Bloch sphere and satisfy \( |\mathbf{r}|=1 \). Mixed states satisfy \( |\mathbf{r}|<1 \) and are represented by points inside the Bloch ball. The maximally mixed state corresponds to
+
+\[
+\mathbf{r}=0,
+\qquad
+\rho=\frac{1}{2}I,
+\]
+
+which is the center of the Bloch representation.
+
+\medskip
+
+Within this geometric picture, single-qubit unitary evolution acts as a rotation of the Bloch vector and preserves its norm. Statistical averaging and depolarizing processes instead reduce the magnitude of the Bloch vector, producing a contraction toward the center of the Bloch ball.
+
+\medskip
+
+This distinction is useful for interpreting the models developed in this work. Coherent phase evolution changes the orientation of the state or of the measurement correlations without reducing purity. Statistical averaging and depolarization instead produce effective mixedness, visible as a loss of coherence or polarization information.
+
+\begin{figure}[htbp]
+    \centering
+
+    \includegraphics[
+        width=0.78\textwidth
+    ]{
+        figures/theory/bloch_sphere_vector_contraction.png
+    }
+
+    \caption{
+    Bloch-sphere representation of pure and mixed single-qubit states.
+    Pure states lie on the sphere surface and satisfy \( |\mathbf{r}|=1 \), while mixed states are represented by contracted Bloch vectors with \( |\mathbf{r}|<1 \). Statistical averaging and depolarizing mechanisms correspond to contractions toward the center of the Bloch ball.
+    }
+
+    \label{fig:bloch_sphere_vector_contraction}
+\end{figure}
 
 %========================================================
 % SECTION 3.5 — Reduced Phase Model
@@ -537,9 +615,9 @@ The reduced phase model constitutes the first nontrivial propagation model in th
 Bipartite correlations are described through the Pauli-operator basis
 
 \[
-\sigma_i \otimes \sigma_j,
-\qquad
-i,j \in \{x,y,z\},
+\left\{
+\sigma_i \otimes \sigma_j
+\right\}_{i,j \in \{x,y,z\}}.
 \]
 
 constructed from the single-qubit Pauli matrices \( \sigma_x, \sigma_y, \sigma_z \). It is also useful to introduce \( \sigma_0 = I \), so that local terms and correlations can be treated within a single notation.
@@ -571,17 +649,19 @@ More generally, the state admits the Pauli decomposition
 \rho_{AB}
 =
 \frac{1}{4}
-\sum_{i,j=0}^{3}
-S_{ij}\,
-\sigma_i \otimes \sigma_j,
+\sum_{\mu,\nu \in \{0,x,y,z\}}
+S_{\mu\nu}\,
+\sigma_\mu \otimes \sigma_\nu,
 \qquad
-S_{ij}
+S_{\mu\nu}
 =
 \mathrm{Tr}
+\left[
+\rho_{AB}
 \left(
-\rho_{AB}\,
-\sigma_i \otimes \sigma_j
-\right),
+\sigma_\mu \otimes \sigma_\nu
+\right)
+\right],
 \label{eq:two_qubit_pauli_decomposition}
 \end{equation}
 
@@ -839,130 +919,12 @@ In an experimental setting, arbitrary measurement axes are realized through loca
 
 This correspondence allows the theoretical model to reproduce realistic measurement procedures by combining local unitary rotations, standard projective measurements, and correlation evaluation through the tensor structure.
 
-
 %========================================================
-% SECTION 3.8 — Random Phase Ensembles
-%========================================================
-
-\section{Random Phase Ensembles}
-\label{sec:random_phase_ensembles}
-
-The reduced phase model introduced in Section~\ref{sec:reduced_phase_model} describes a deterministic unitary evolution parametrized by a single phase \( \theta \). In realistic fiber propagation, however, this phase may fluctuate because of birefringence variations, mechanical perturbations, or thermal instability.
-
-\medskip
-
-If these fluctuations are not resolved at the level of individual photon pairs, the observed state must be described as an ensemble over different phase realizations. For a set of phases \( \{\theta_k\} \) with probabilities \( q_k \), the resulting density operator is
-
-\begin{equation}
-\rho_{AB}^{(\mathrm{ens})}
-=
-\sum_k q_k
-|\psi(\theta_k)\rangle
-\langle \psi(\theta_k)|,
-\qquad
-q_k \geq 0,
-\qquad
-\sum_k q_k = 1.
-\end{equation}
-
-For a uniform numerical average over \( N \) sampled realizations, this becomes
-
-\begin{equation}
-\rho_{AB}^{(\mathrm{ens})}
-=
-\frac{1}{N}
-\sum_{k=1}^{N}
-|\psi(\theta_k)\rangle
-\langle \psi(\theta_k)|.
-\label{eq:sampled_random_phase_ensemble_density_operator}
-\end{equation}
-
-\medskip
-
-Each realization \( |\psi(\theta_k)\rangle \) remains a pure state generated by unitary evolution. The mixed-state character of \( \rho_{AB}^{(\mathrm{ens})} \) therefore comes from unresolved statistical variability of the phase, rather than from a non-unitary transformation acting on each individual realization.
-
-\medskip
-
-The phase ensemble modifies the global coherence terms and the two-photon correlations, while the reduced local states remain maximally mixed for the Bell-state family considered here. Therefore, the loss of phase information is detected through global quantities such as correlation tensors, fidelity, purity, and entanglement measures, rather than through local polarization alone.
-
-\medskip
-
-This construction provides the statistical extension of the deterministic reduced phase model and prepares the transition toward effective quantum channels, where mixedness is introduced directly through non-unitary maps.
-
-%--------------------------------------------------------
-% Subsection 3.8.1 — Bloch-Sphere Interpretation of Mixed States
-%--------------------------------------------------------
-
-\subsection{Bloch-Sphere Interpretation of Mixed States}
-\label{subsec:bloch_sphere_interpretation_mixed_states}
-
-For a single qubit, any density operator can be represented in Bloch form as
-
-\begin{equation}
-\rho
-=
-\frac{1}{2}
-\left(
-I + \mathbf{r}\cdot\boldsymbol{\sigma}
-\right),
-\label{eq:bloch_density_representation}
-\end{equation}
-
-where \( \mathbf{r}\in\mathbb{R}^3 \) is the Bloch vector and
-
-\[
-\boldsymbol{\sigma}
-=
-(\sigma_x,\sigma_y,\sigma_z).
-\]
-
-Physical states satisfy
-
-\begin{equation}
-|\mathbf{r}| \leq 1.
-\label{eq:bloch_ball_condition}
-\end{equation}
-
-Pure states lie on the surface of the Bloch sphere and satisfy \( |\mathbf{r}|=1 \). Mixed states satisfy \( |\mathbf{r}|<1 \) and are represented by points inside the Bloch ball. The maximally mixed state corresponds to
-
-\[
-\mathbf{r}=0,
-\qquad
-\rho=\frac{1}{2}I,
-\]
-
-which is the center of the Bloch representation.
-
-\medskip
-
-Within this geometric picture, single-qubit unitary evolution acts as a rotation of the Bloch vector and preserves its norm. Statistical averaging and depolarizing processes instead reduce the magnitude of the Bloch vector, producing a contraction toward the center of the Bloch ball.
-
-\medskip
-
-This distinction is useful for interpreting the models developed in this work. Coherent phase evolution changes the orientation of the state or of the measurement correlations without reducing purity. Statistical averaging and depolarization instead produce effective mixedness, visible as a loss of coherence or polarization information.
-
-\begin{figure}[htbp]
-    \centering
-
-    \includegraphics[
-        width=0.78\textwidth
-    ]{
-        figures/theory/bloch_sphere_vector_contraction.png
-    }
-
-    \caption{
-    Bloch-sphere representation of pure and mixed single-qubit states.
-    Pure states lie on the sphere surface and satisfy \( |\mathbf{r}|=1 \), while mixed states are represented by contracted Bloch vectors with \( |\mathbf{r}|<1 \). Statistical averaging and depolarizing mechanisms correspond to contractions toward the center of the Bloch ball.
-    }
-
-    \label{fig:bloch_sphere_vector_contraction}
-\end{figure}
-
-%========================================================
-% SECTION 3.9 — Quantum Channels and Depolarization
+% SECTION 3.8 — Quantum Channels and Depolarization
 %========================================================
 
 \section{Quantum Channels and Depolarization}
+\label{sec:quantum_channels_and_depolarization}
 
 The ensemble description introduced in the previous section models statistical fluctuations by averaging over a family of unitary realizations. In that framework, each individual evolution remains coherent, and mixedness originates from classical uncertainty over the applied transformations.
 
@@ -989,7 +951,7 @@ acting on density operators and satisfying the conditions of complete positivity
 
 \medskip
 
-A general representation of a quantum channel is given by the operator-sum decomposition
+A general representation of a quantum channel is given by the operator-sum decomposition~\cite{nielsen_chuang_qcqi,kraus1971general}
 
 \begin{equation}
 \mathcal{E}(\rho)
@@ -1070,70 +1032,3 @@ This construction provides a controlled framework for analyzing the degradation 
 
 The global depolarizing model introduced here should be understood as a reference channel rather than as a complete physical model of two-arm fiber propagation. The refinement to independent local depolarizing channels acting on the two propagation arms is developed later in Chapter~\ref{ch:effective_fiber_models}.
 
-%========================================================
-% SECTION 3.10 — Computational Representation and Implementation Roadmap
-%========================================================
-
-\section{Computational Representation and Implementation Roadmap}
-
-The mathematical structures introduced in this chapter define the computational backbone of the simulator. The purpose of the implementation is not to introduce a separate numerical model, but to realize the theoretical framework in a modular and reproducible form.
-
-\medskip
-
-At MATLAB level, bipartite pure states are represented as \(4 \times 1\) complex vectors and operators acting on the full two-qubit system are represented as \(4 \times 4\) complex matrices.
-
-The computational basis ordering is fixed as
-
-\[
-\{|00\rangle, |01\rangle, |10\rangle, |11\rangle\},
-\]
-
-and is used consistently across all modules. This convention is critical: tensor products, operator constructions, density matrices, and correlation observables are all defined with respect to this ordering. Any mismatch would lead to incorrect physical results, even if the underlying mathematical expressions are formally correct.
-
-\medskip
-
-State preparation is implemented through dedicated routines returning normalized Bell states in the fixed computational basis. The state \( |\Psi^+\rangle \) is used as the default reference input for the baseline model, providing a controlled benchmark for validating correlation observables, fidelity computations, and entanglement measures under fiber propagation.
-
-\medskip
-
-The fundamental evolution primitive is the tensor-product action
-
-\[
-\psi_{\mathrm{out}}
-=
-(U_A \otimes U_B)\psi_{\mathrm{in}}.
-\]
-
-This operation is isolated as a core routine because all unitary propagation models reduce to this structure at the bipartite level. Local single-qubit operators are combined into the global operator \( U_A \otimes U_B \), which is then applied to the input state vector.
-
-\medskip
-
-For the reduced phase model, the simulator is structured around the one-parameter family \( |\psi(\theta)\rangle \). Both parametrizations \( (\theta_A,\theta_B) \) and \( \theta = \theta_A-\theta_B \) are useful: the two-phase representation preserves the physical interpretation of independent fiber arms, while the reduced one-parameter form enables efficient analytical validation and parameter sweeps.
-
-\medskip
-
-The first validated numerical study consists of a parameter sweep in \( \theta \), with numerical evaluation of state vectors, expectation values, and correlation observables. This defines the minimal complete simulation pipeline upon which all subsequent developments are built.
-
-\medskip
-
-For correlation analysis, the simulator evaluates tensor components through the density-operator trace rule
-
-\[
-\langle O \rangle = \mathrm{Tr}(\rho O),
-\]
-
-using a modular pipeline including:
-\begin{itemize}
-    \item Pauli operator generation,
-    \item tensor-product construction,
-    \item expectation-value evaluation,
-    \item structured storage of \( T_{ij} \).
-\end{itemize}
-
-\medskip
-
-The same computational framework is reused for arbitrary-axis measurements by constructing operators of the form \( \sigma(\mathbf{a}) \otimes \sigma(\mathbf{b}) \), and for CHSH analysis by combining the resulting correlation functions into fixed-axis or optimized Bell parameters.
-
-\medskip
-
-This organization ensures that changes in the physical model, such as stochastic phase evolution, random unitary propagation, or effective quantum channels, can be introduced by modifying well-isolated components while preserving the validated core routines.

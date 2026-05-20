@@ -62,6 +62,38 @@ Analogous expressions hold for subsystem \( B \). These quantities define the lo
 
 \medskip
 
+More generally, a reduced density operator of the form
+
+\[
+\rho
+=
+\frac{1}{d}I
+\]
+
+represents a maximally mixed state in a \( d \)-dimensional Hilbert space. In this situation, all basis states occur with equal probability and no preferred measurement direction exists.
+
+\medskip
+
+For single-qubit systems (\( d=2 \)), the maximally mixed state is therefore
+
+\[
+\rho
+=
+\frac{1}{2}I.
+\]
+
+Conversely, when
+
+\[
+\rho
+\neq
+\frac{1}{2}I,
+\]
+
+the subsystem possesses nontrivial local structure. In the Bloch-sphere representation, this corresponds to a nonzero Bloch vector and therefore to the existence of preferred local measurement outcomes or residual polarization.
+
+\medskip
+
 For the Bell state
 
 \[
@@ -120,20 +152,20 @@ has reduced density operators
 \frac{1}{2}I.
 \]
 
-The relative phase \( \theta \) changes the global coherence structure and the two-photon correlations, but it does not modify the local reduced states. Therefore, local polarization measurements alone cannot detect the deterministic phase shift.
+The relative phase \( \theta \) changes the global coherence structure and the two-photon correlations, but it does not modify the local reduced states. Therefore, local polarization measurements alone cannot detect the fixed phase shift.
 
 \medskip
 
-By linearity of the partial trace, the same conclusion extends to the random-phase ensemble introduced in Section~\ref{sec:pure_and_density_operator_descriptions}. If
+By linearity of the partial trace, the same conclusion extends to the random-phase ensemble introduced in Section~\ref{subsec:mixed_state_descriptions}. If
 
 \[
 \rho_{AB}^{(\mathrm{ens})}
 =
-\sum_k q_k
+\sum_k p_k
 |\psi(\theta_k)\rangle
 \langle \psi(\theta_k)|,
 \qquad
-\sum_k q_k = 1,
+\sum_k p_k = 1,
 \]
 
 then
@@ -195,35 +227,15 @@ For this reason, reduced density operators are not sufficient by themselves to c
 
 \section{Purity and Mixedness}
 
-Having introduced reduced density operators in Section~4.1, we now require a quantitative criterion to distinguish whether a quantum state is pure or mixed.
+Having introduced reduced density operators in Section~\ref{sec:reduced_density_operators_diagnostics}, we now require a quantitative criterion to distinguish whether a quantum state is pure or mixed.
 
 \medskip
 
-A state described by a density operator \( \rho \) is pure if it can be written as
+A density operator represents a pure quantum state when it can be expressed in the form of Eq.~\eqref{eq:pure_state_density_operator}, namely as the projector onto a single state vector.
 
-\begin{equation}
-\rho
-=
-|\psi\rangle\langle\psi|,
-\label{eq:pure_density_operator}
-\end{equation}
+Otherwise, the state is mixed, meaning that it describes a statistical ensemble of pure states with associated probabilities.
 
-for some normalized vector \( |\psi\rangle \). Otherwise, it is mixed, meaning that it admits an ensemble representation
-
-\begin{equation}
-\rho
-=
-\sum_k
-p_k
-|\psi_k\rangle\langle\psi_k|,
-\qquad
-p_k \ge 0,
-\qquad
-\sum_k p_k = 1.
-\label{eq:mixed_density_operator}
-\end{equation}
-
-\medskip
+\medskip 
 
 A convenient quantitative measure of mixedness is the purity, defined as
 
@@ -275,7 +287,7 @@ with the lower bound attained by the maximally mixed state \( \rho = I/d \).
 
 \medskip
 
-For single-qubit systems, purity admits a simple geometric interpretation. Any density operator can be written as
+For single-qubit systems, purity admits a simple geometric interpretation. As shown in \ref{eq:bloch_density_representation}, any density operator can be written as
 
 \begin{equation}
 \rho
@@ -310,19 +322,11 @@ Thus,
 
 \medskip
 
-Mixedness does not uniquely determine the physical origin of a state. As discussed in Section~4.1, it may arise either from classical statistical uncertainty or from entanglement with an unobserved subsystem.
+Mixedness does not uniquely determine the physical origin of a state. As discussed in Section~\ref{sec:reduced_density_operators_diagnostics}, it may arise either from classical statistical uncertainty or from entanglement with an unobserved subsystem.
 
 \medskip
 
-A paradigmatic example is provided by the Bell state
-
-\[
-|\Psi^+\rangle
-=
-\frac{|01\rangle + |10\rangle}{\sqrt{2}},
-\]
-
-whose global density operator
+A paradigmatic example is provided by the Bell state \( |\Psi^+\rangle \), whose global density operator
 
 \[
 \rho_{AB}
@@ -356,7 +360,7 @@ This illustrates that a globally pure entangled state may generate locally maxim
 
 \medskip
 
-In the present model, the phase-evolved state introduced in Chapter~3,
+In the present model, the phase-evolved state introduced in Chapter~\ref{physical_and_mathematical_representation},
 
 \[
 |\psi(\theta)\rangle
@@ -396,33 +400,14 @@ When extending the model to include stochastic or environmental effects, the sit
 
 and its purity is
 
-\begin{equation}
-\gamma
-\left(
-\rho_{AB}^{(\mathrm{ens})}
-\right)
-=
-\frac{1+|\mu|^2}{2}.
-\label{eq:random_phase_ensemble_purity_mu}
-\end{equation}
-
-Equivalently,
-
-\begin{equation}
-\gamma
-\left(
-\rho_{AB}^{(\mathrm{ens})}
-\right)
-=
-\frac{
-1
-+
-\langle \cos\theta \rangle^2
-+
-\langle \sin\theta \rangle^2
-}{2}.
-\label{eq:random_phase_ensemble_purity_trigonometric}
-\end{equation}
+\begin{align} 
+\gamma \left( \rho_{AB}^{(\mathrm{ens})} \right) 
+&= 
+\frac{1+|\mu|^2}{2} 
+= 
+\frac{ 1 + \langle \cos\theta \rangle^2 + \langle \sin\theta \rangle^2 }{2}. 
+\label{eq:random_phase_ensemble_purity_mu} 
+\end{align}
 
 This shows that purity directly quantifies the loss of phase coherence in the ensemble: the state is pure for \( |\mu|=1 \) and becomes mixed as \( |\mu| \) decreases.
 
@@ -483,14 +468,10 @@ which admits a direct interpretation as the probability of projecting onto \( |\
 
 \medskip
 
-We focus on the Bell state introduced in Chapter~3,
-
-\[
+We focus on Bell state 
+\( 
 |\Psi^+\rangle
-=
-\frac{|01\rangle + |10\rangle}{\sqrt{2}},
-\]
-
+\)
 and define
 
 \begin{equation}
@@ -502,18 +483,16 @@ F_{\Psi^+}(\rho)
 
 \medskip
 
-For the phase-evolved state,
-
-\[
-|\psi(\theta)\rangle
-=
-\frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}},
-\qquad
+For the phase-evolved state
+\(
+|\psi(\theta)\rangle,
+\)
+with
+\(
 \rho(\theta)
 =
 |\psi(\theta)\rangle\langle\psi(\theta)|,
-\]
-
+\)
 one obtains
 
 \[
@@ -637,7 +616,7 @@ where \( C=0 \) corresponds to separable states and \( C=1 \) to maximally entan
 
 \medskip
 
-For a pure state
+For a pure two-qubit state
 
 \[
 |\psi\rangle
@@ -660,7 +639,11 @@ C(|\psi\rangle)
 \label{eq:pure_state_concurrence}
 \end{equation}
 
-This expression vanishes for separable states and reaches unity for Bell states. For example,
+This expression vanishes for separable states and reaches unity for maximally-entangled states. 
+
+\medskip
+
+For Bell state:
 
 \[
 |\Psi^+\rangle
@@ -669,22 +652,20 @@ This expression vanishes for separable states and reaches unity for Bell states.
 \quad
 \Rightarrow
 \quad
-C=1.
+C(|\Psi^+\rangle)=1.
 \]
 
 \medskip
 
-For the phase-evolved state introduced in Chapter~3,
+For the phase-evolved state:
 
-\[
+\begin{equation}
 |\psi(\theta)\rangle
 =
 \frac{|01\rangle + e^{i\theta}|10\rangle}{\sqrt{2}},
-\]
-
-one finds
-
-\begin{equation}
+\quad
+\Rightarrow
+\quad
 C(|\psi(\theta)\rangle)
 =
 1,
@@ -697,30 +678,51 @@ showing that the relative phase modifies fidelity but leaves entanglement unchan
 
 For pure bipartite states, concurrence is directly related to the reduced density operators:
 
-\begin{equation}
+\begin{align}
 C(|\psi\rangle)
-=
+&=
 2\sqrt{\det(\rho_A)}
 =
 \sqrt{
 2\left(
 1-\gamma(\rho_A)
 \right)
+}
+\nonumber
+\\
+&=
+2\sqrt{\det(\rho_B)}
+=
+\sqrt{
+2\left(
+1-\gamma(\rho_B)
+\right)
 },
-\qquad
+\label{eq:concurrence_reduced_density_relation}
+\end{align}
+
+where
+
+\[
 \rho_A
 =
 \mathrm{Tr}_B
 \left(
 |\psi\rangle\langle\psi|
+\right),
+\qquad
+\rho_B
+=
+\mathrm{Tr}_A
+\left(
+|\psi\rangle\langle\psi|
 \right).
-\label{eq:concurrence_reduced_density_relation}
-\end{equation}
+\]
 
 Thus, entanglement is encoded in the mixedness of the reduced states: separable states yield pure reductions, while maximally entangled states yield maximally mixed reductions.
 
 \medskip
-s
+
 For mixed states \( \rho \in \mathbb{C}^{4 \times 4} \), concurrence is defined through the Wootters spin-flip construction \cite{wootters_entanglement_1998}. The associated spin-flipped density operator is
 
 \begin{equation}
@@ -760,12 +762,13 @@ In the present model, mixed states arise from ensemble averaging over random pha
 \]
 
 which depend on the coherence parameter
-
-\[
+\(
 \mu
 =
 \langle e^{i\theta}\rangle.
-\]
+\)
+
+\medskip
 
 In the computational basis, the ensemble state reads
 
@@ -819,7 +822,7 @@ Thus, the reduced phase model provides a unified description in which coherence,
 
 \section{Tangle}
 
-While concurrence provides a direct quantitative measure of bipartite entanglement, it is often useful to introduce an associated quadratic quantity known as the \emph{tangle}.
+While concurrence provides a direct quantitative measure of bipartite entanglement, it is often useful to introduce an associated quadratic quantity known as the tangle.
 
 For a two-qubit state \( \rho \), the tangle is defined as
 
@@ -936,13 +939,19 @@ Within the present work, the tangle is used as an auxiliary entanglement metric 
 
 \section{Entanglement of Formation}
 
-The concurrence and tangle quantify the amount of bipartite entanglement present in a quantum state. However, they do not directly describe the operational cost required to create that entanglement.
-
-For this purpose, a central quantity in quantum information theory is the \emph{entanglement of formation}.
+The concurrence and tangle quantify the degree of bipartite entanglement present in a quantum state. In particular, larger values of these quantities correspond to stronger nonclassical correlations between the two subsystems.
 
 \medskip
 
-The entanglement of formation measures the minimal amount of bipartite entanglement required, on average, to prepare a given mixed state using pure entangled states and local operations with classical communication.
+However, these measures do not directly characterize the physical resources required to generate such entanglement. In quantum information theory, entanglement is treated as a resource, and one may ask how much pure-state entanglement is necessary in order to prepare a given mixed state.
+
+\medskip
+
+For this purpose, a central quantity is the entanglement of formation.
+
+\medskip
+
+The entanglement of formation measures the minimal amount of bipartite entanglement required, on average, to prepare a given mixed state using pure entangled states together with local operations and classical communication.
 
 \medskip
 
@@ -1030,32 +1039,6 @@ This nonlinear behavior is physically significant because it reflects the effect
 
 \medskip
 
-For the Bell state \( |\Psi^+\rangle \), one obtains
-
-\[
-C
-=
-1,
-\qquad
-E_F
-=
-1,
-\]
-
-while for separable states,
-
-\[
-C
-=
-0,
-\qquad
-E_F
-=
-0.
-\]
-
-\medskip
-
 Within the present work, the entanglement of formation provides an operational complement to concurrence and tangle, allowing the degradation of entanglement under effective fiber propagation to be interpreted not only geometrically, but also in terms of entanglement-resource loss.
 
 %========================================================
@@ -1092,7 +1075,7 @@ B(\mathbf{b},\lambda) \in \{-1,+1\}.
 
 The key physical assumption is locality: the outcome at each subsystem depends only on the local measurement setting and on the shared variable \( \lambda \), but not on the measurement choice at the distant subsystem.
 
-Since \( \lambda \) is not directly accessible, observable quantities correspond to averages over its distribution. The classical correlation function is therefore \cite{bell_epr_paradox_1964}
+Since \( \lambda \) is not directly accessible, observable quantities correspond to averages over its distribution. The classical correlation function is therefore defined as
 
 \begin{equation}
 E(\mathbf{a},\mathbf{b})
@@ -1107,6 +1090,10 @@ p(\lambda) \ge 0,
 \int d\lambda\,p(\lambda)=1.
 \label{eq:local_hidden_variable_correlation}
 \end{equation}
+
+following the local hidden-variable framework introduced by Bell \cite{bell_epr_paradox_1964}.
+
+\medskip
 
 This expression represents the most general form of bipartite correlations compatible with a local hidden-variable model.
 
@@ -1230,7 +1217,8 @@ The CHSH parameter provides a direct bridge between the theoretical description 
 
 \medskip
 
-The correlation tensor entering this construction can be experimentally reconstructed from a set of bipartite expectation values in the Pauli basis, in a procedure closely related to quantum state tomography. In this sense, the evaluation of CHSH inequalities can be viewed as a specific post-processing of tomographically accessible data.
+The correlation tensor entering this construction can be experimentally reconstructed from a set of bipartite expectation values in the Pauli basis, in a procedure closely related to quantum state tomography.
+In this sense, the evaluation of CHSH inequalities can be viewed as a specific post-processing of tomographically accessible data.
 
 \medskip
 
@@ -1368,7 +1356,7 @@ Consequently, two states may possess the same concurrence while having different
 
 \medskip
 
-This distinction becomes particularly evident in the deterministic phase model. In that case,
+This distinction becomes particularly evident in the fixed-phase model. In that case,
 
 \[
 |\mu|
@@ -1490,193 +1478,23 @@ This hierarchy will play a central role in the interpretation of the numerical e
 
 \section{Computational Evaluation of State Metrics}
 
-The quantities introduced throughout this chapter constitute the main diagnostic layer of the simulator. Their role is to translate the density-operator description of bipartite quantum states into quantitative indicators of mixedness, coherence, entanglement, and nonlocality.
+The quantities introduced throughout this chapter constitute the main diagnostic layer of the simulator. Their purpose is to translate the density-operator description of bipartite quantum states into quantitative indicators of mixedness, coherence, entanglement, and nonlocality.
 
 \medskip
 
-At the computational level, all metrics are evaluated directly from the numerically reconstructed density operator \( \rho_{AB} \). This provides a unified characterization framework applicable to deterministic phase evolution, statistical phase ensembles, depolarizing channels, and composite effective fiber models.
+At computational level, all metrics are evaluated directly from the numerically reconstructed density operator \( \rho_{AB} \). This provides a unified characterization framework applicable to coherent phase evolution, statistical phase ensembles, depolarizing channels, and composite effective fiber models.
 
 \medskip
 
-Reduced density operators are obtained through partial-trace operations acting on the global state:
-
-\[
-\rho_A
-=
-\mathrm{Tr}_B(\rho_{AB}),
-\qquad
-\rho_B
-=
-\mathrm{Tr}_A(\rho_{AB}).
-\]
-
-For two-qubit systems represented in the computational basis, these operations return \(2\times2\) matrices that encode the effective local states of the two subsystems.
+Reduced density operators are computed through partial-trace operations acting on the global bipartite state. The resulting local states are then used to evaluate local observables, local purities, and entanglement-related quantities.
 
 \medskip
 
-The reduced states are then used to evaluate local purities, local expectation values, and entanglement-related quantities.
+The simulator evaluates purity, fidelity, concurrence, tangle, entanglement of formation, and CHSH quantities according to the definitions introduced in the previous sections. Since all quantities are derived from the same density-operator representation, the computational framework remains internally consistent across all propagation models and numerical experiments.
 
 \medskip
 
-\paragraph{Purity evaluation.}
-
-Purity is computed numerically using the trace formula
-
-\[
-\gamma(\rho)
-=
-\mathrm{Tr}(\rho^2),
-\]
-
-which is applied both to the global density operator and to the reduced density operators.
-
-\medskip
-
-This quantity provides a direct computational diagnostic of coherence loss and mixedness generation. In particular:
-
-\begin{itemize}
-    \item pure states satisfy
-    \[
-    \gamma(\rho)=1,
-    \]
-    \item mixed states satisfy
-    \[
-    \gamma(\rho)<1,
-    \]
-    \item maximally mixed single-qubit states satisfy
-    \[
-    \gamma=\frac{1}{2}.
-    \]
-\end{itemize}
-
-\medskip
-
-\paragraph{Fidelity evaluation.}
-
-Fidelity with respect to the reference Bell state \( |\Psi^+\rangle \) is computed using the pure-reference formula
-
-\[
-F_{\Psi^+}(\rho)
-=
-\langle\Psi^+|
-\rho
-|\Psi^+\rangle.
-\]
-
-Since the reference state is pure, this expression avoids the matrix square-root operations required by the general Uhlmann fidelity and therefore constitutes the natural implementation for the present simulator.
-
-\medskip
-
-\paragraph{Concurrence evaluation.}
-
-Concurrence is evaluated using the standard two-qubit spin-flip construction. Defining
-
-\[
-\tilde{\rho}
-=
-(\sigma_y\otimes\sigma_y)
-\rho^*
-(\sigma_y\otimes\sigma_y),
-\]
-
-the simulator computes the eigenvalues of
-
-\[
-\rho\tilde{\rho},
-\]
-
-and evaluates the concurrence according to the mixed-state formula introduced previously.
-
-\medskip
-
-For pure states, the analytical expression
-
-\[
-C(|\psi\rangle)
-=
-2|ad-bc|
-\]
-
-provides an additional validation benchmark for the numerical implementation.
-
-\medskip
-
-\paragraph{Tangle and entanglement of formation.}
-
-The tangle is evaluated directly from the concurrence through
-
-\[
-\tau(\rho)
-=
-C(\rho)^2,
-\]
-
-while the entanglement of formation is computed from
-
-\[
-E_F(\rho)
-=
-h
-\left(
-\frac{
-1+\sqrt{1-C(\rho)^2}
-}{2}
-\right),
-\]
-
-where \( h(x) \) denotes the binary entropy function.
-
-\medskip
-
-Implementing both quantities through concurrence guarantees numerical consistency across the entanglement-diagnostic layer while avoiding redundant spectral decompositions.
-
-\medskip
-
-\paragraph{CHSH nonlocality evaluation.}
-
-The CHSH parameter is evaluated using the correlation tensor representation introduced previously.
-
-For fixed measurement settings, the simulator computes
-
-\[
-S
-=
-\mathbf{a}_1^{\mathsf T} T \mathbf{b}_1
-+
-\mathbf{a}_1^{\mathsf T} T \mathbf{b}_2
-+
-\mathbf{a}_2^{\mathsf T} T \mathbf{b}_1
--
-\mathbf{a}_2^{\mathsf T} T \mathbf{b}_2.
-\]
-
-In addition, the maximal CHSH violation is evaluated through the Horodecki construction:
-
-\[
-S_{\max}
-=
-2\sqrt{\lambda_1+\lambda_2},
-\]
-
-where \( \lambda_1 \) and \( \lambda_2 \) denote the two largest eigenvalues of
-
-\[
-U=T^{\mathsf T}T.
-\]
-
-\medskip
-
-This distinction allows the simulator to separate experimentally observed nonlocality for specific measurement settings from the maximal nonlocality intrinsically supported by the state.
-
-\medskip
-
-\paragraph{Unified diagnostic framework.}
-
-All numerical experiments presented in this work employ the same set of computational metric routines. This ensures that deterministic evolution, statistical averaging, and effective noisy channels are characterized within a common and internally consistent framework.
-
-\medskip
-
-The computational objective is therefore not merely the evaluation of isolated quantities, but rather the simultaneous comparison of complementary state descriptors.
+The simultaneous evaluation of multiple metrics is essential because different quantities characterize different physical properties of the propagated quantum state.
 
 In particular:
 
@@ -1685,17 +1503,15 @@ In particular:
     \item fidelity measures proximity to the reference Bell state,
     \item concurrence and tangle quantify bipartite entanglement,
     \item entanglement of formation quantifies entanglement resources,
-    \item CHSH quantities diagnose observable nonlocality.
+    \item CHSH quantities characterize observable nonlocality.
 \end{itemize}
 
 \medskip
 
-This separation is essential for the interpretation of fiber-induced effects.
+This distinction is important for the interpretation of fiber-induced effects. For example, a reduction in fidelity may arise from coherent phase evolution without necessarily reducing entanglement, whereas reductions in concurrence, tangle, and entanglement of formation indicate degradation of quantum correlations.
 
-A reduction in fidelity may arise solely from coherent phase rotations without affecting entanglement. By contrast, reductions in concurrence, tangle, and entanglement of formation indicate genuine degradation of quantum correlations.
-
-Similarly, nonzero concurrence does not necessarily imply CHSH violation, especially in sufficiently mixed states.
+Similarly, nonzero concurrence does not necessarily imply CHSH violation, particularly for sufficiently mixed states.
 
 \medskip
 
-The coexistence of these complementary quantities therefore provides a multidimensional characterization of the propagation regime, allowing coherent rotations, statistical decoherence, entanglement degradation, and nonlocality suppression to be distinguished quantitatively throughout the simulator analysis.
+The coexistence of these complementary quantities therefore provides a multidimensional characterization of the propagation regime, allowing coherent phase evolution, statistical decoherence, entanglement degradation, and nonlocality suppression to be distinguished quantitatively throughout the simulator analysis.

@@ -2,7 +2,7 @@ function X_out = composite_fiber_channel(X, theta, p_A, p_B)
 % COMPOSITE_FIBER_CHANNEL  Apply phase evolution and two-arm depolarization.
 %
 % Objective:
-%   Apply the deterministic composite fiber operator map:
+%   Apply the composite fiber operator map:
 %
 %       X_out = (D_pA ⊗ D_pB)[U_θ X U_θ†]
 %

@@ -18,7 +18,7 @@ function test_channels()
 %       - analytical agreement
 %       - tensor-contraction behavior
 %       - distinction between global and local depolarization
-%       - deterministic composite-channel consistency
+%       - composite-channel consistency
 %
 % Input:
 %   None

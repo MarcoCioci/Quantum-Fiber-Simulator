@@ -2,7 +2,7 @@ function results_phase_baseline = phase_baseline_sweep(theta_values)
 % PHASE_BASELINE_SWEEP  Compute Experiment 1 numerical baseline data.
 %
 % Objective:
-%   Compute the deterministic phase-sweep data associated with
+%   Compute the fixed-phase sweep data associated with
 %   Experiment 1 of the simulator.
 %
 %   Starting from the fixed Bell input state |Ψ⁺⟩, this function:

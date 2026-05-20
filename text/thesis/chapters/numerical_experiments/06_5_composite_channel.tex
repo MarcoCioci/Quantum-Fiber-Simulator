@@ -14,7 +14,7 @@
 
 The fifth experiment combines the two main physical mechanisms introduced in the previous experiments: coherent residual phase evolution and local incoherent depolarization.
 
-The objective is to model the optical fiber not only as a deterministic phase shifter, but as an effective composite quantum channel acting independently on the two propagation arms.
+The objective is to model the optical fiber not only as a fixed-phase shifter, but as an effective composite quantum channel acting independently on the two propagation arms.
 
 The channel is constructed by first applying the residual phase evolution and then applying independent local depolarizing channels on subsystems \( A \) and \( B \).
 
@@ -178,7 +178,7 @@ Thus, the composite model separates two distinct degradation mechanisms:
 
 The experiment is divided into two complementary parts.
 
-First, the pure-branch composite channel is evaluated over a deterministic sweep of \( \theta \). This isolates the effect of local depolarization on a single phase-evolved realization.
+First, the pure-branch composite channel is evaluated over a fixed sweep of \( \theta \). This isolates the effect of local depolarization on a single phase-evolved realization.
 
 \medskip
 
@@ -290,7 +290,7 @@ The tensor snapshots confirm that the composite model reproduces the expected an
 
 The numerical results show that phase averaging and local depolarization affect the state in distinct but complementary ways.
 
-The phase distribution controls the coherence parameter \( \mu \). When the distribution is narrow or deterministic, coherence is preserved. When the distribution becomes broad, transverse coherence is suppressed.
+The phase distribution controls the coherence parameter \( \mu \). When the distribution is narrow or concentrated around a single phase value, coherence is preserved. When the distribution becomes broad, transverse coherence is suppressed.
 
 Local depolarization instead acts through the contraction factor \( \eta \), reducing the magnitude of two-body correlations independently of the particular phase realization.
 
@@ -317,7 +317,7 @@ This separation is physically useful because it distinguishes two mechanisms tha
     \item local polarization degradation due to depolarizing effects in each fiber arm.
 \end{itemize}
 
-In the pure-branch case, the phase remains deterministic, and the state degradation is entirely due to local depolarization.
+In the pure-branch case, the phase remains fixed, and the state degradation is entirely due to local depolarization.
 
 In the ensemble case, both mechanisms are present. The resulting decrease of purity, fidelity, concurrence, and maximal CHSH value reflects the combined effect of coherent uncertainty and incoherent local noise.
 
@@ -329,7 +329,7 @@ In the ensemble case, both mechanisms are present. The resulting decrease of pur
 
 The composite channel provides a more realistic effective description of fiber propagation than the previous isolated models.
 
-The residual phase \( \theta \) describes a coherent birefringent effect that rotates the correlation tensor in the transverse plane. If this phase is deterministic, the evolution remains coherent and can in principle be compensated.
+The residual phase \( \theta \) describes a coherent birefringent effect that rotates the correlation tensor in the transverse plane. If this phase is fixed, the evolution remains coherent and can in principle be compensated.
 
 The depolarizing parameters \( p_A \) and \( p_B \), instead, describe incoherent degradation in the two independent fiber arms. Their effect cannot be represented as a unitary rotation, because they reduce the magnitude of the polarization correlations.
 
@@ -340,7 +340,7 @@ When phase fluctuations are also present, the ensemble coherence parameter \( \m
 The composite fiber model therefore captures the simultaneous presence of:
 
 \begin{itemize}
-    \item deterministic or stochastic coherent phase evolution;
+    \item fixed or stochastic coherent phase evolution;
     \item independent local depolarization in the two arms;
     \item reduction of Bell-state fidelity;
     \item reduction of concurrence;
