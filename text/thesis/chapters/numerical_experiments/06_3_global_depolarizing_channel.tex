@@ -1,11 +1,11 @@
 %========================================================
-% SECTION 6.3 — Depolarizing Channel
+% SECTION 6.3 — Global Depolarizing Channel
 %========================================================
 
 \newpage
 
-\section{Depolarizing Channel}
-\label{sec:depolarizing_channel}
+\section{Experiment 3: Global Depolarizing Channel}
+\label{sec:global_depolarizing_channel}
 
 %--------------------------------------------------------
 % Subsection 6.3.1 — Objective and Physical Motivation
@@ -254,7 +254,8 @@ The reduced density operators remain maximally mixed throughout the evolution:
 \frac{I}{2}.
 \]
 
-This behavior is consistent with the results of Experiment~6.2, where local mixedness also remained constant despite degradation of global coherence.
+This behavior is consistent with the results of Experiment~\ref{sec:exp_2_random_phase_ensemble_sweep}, 
+where local mixedness also remained constant despite degradation of global coherence.
 
 However, the physical origin of mixedness is fundamentally different in the two cases.
 
@@ -275,19 +276,22 @@ The experiment therefore establishes a clear distinction between:
 
 \subsection*{Physical Interpretation}
 
-The depolarizing channel provides an effective phenomenological description of coherence loss when polarization information becomes partially inaccessible due to unresolved physical mechanisms.
+The depolarizing channel considered in this experiment is a global two-qubit depolarizing channel. It acts directly on the complete bipartite density operator and models the progressive replacement of the initial Bell state by the maximally mixed two-qubit state,
 
-Examples include:
+In this sense, the parameter \( p \) does not represent the degradation of a specific fiber arm. Instead, it controls an isotropic loss of information at the level of the full two-photon state. The limiting cases are directly interpretable: for \( p=0 \), the initial Bell state is recovered, while for \( p=1 \), the output state is completely mixed.
 
-\begin{itemize}
-    \item frequency-dependent birefringence;
-    \item temporal walk-off;
-    \item polarization-mode dispersion;
-    \item unresolved environmental fluctuations.
-\end{itemize}
+\medskip
 
-The action of the channel progressively drives the Bell state toward the maximally mixed state, suppressing both observable correlations and entanglement.
+Physically, this model should be interpreted as an effective baseline for incoherent two-qubit degradation rather than as a microscopic description of optical-fiber propagation. It captures the idealized situation in which all nontrivial information contained in the bipartite state is uniformly suppressed, without distinguishing between different physical origins or between the two propagation arms.
 
-Unlike the random-phase ensemble studied previously, the depolarizing model does not preserve any preferred phase structure. All nontrivial two-qubit correlations are uniformly reduced by the same contraction factor.
+\medskip
 
-Although the depolarizing channel is not intended as a complete microscopic model of optical-fiber propagation, it provides a useful baseline description of decoherence and establishes a reference framework against which more realistic propagation models can later be compared.
+Under global depolarization, all traceless components of the two-qubit state are contracted uniformly. As a consequence, the observable two-photon correlations, the fidelity with respect to the reference Bell state, and the concurrence decrease monotonically as \( p \) increases. In the fully depolarized limit, the state \( I_4/4 \) contains no preferred polarization structure, no entanglement, and no nonzero two-qubit correlation tensor components.
+
+\medskip
+
+This behavior differs from the random-phase ensemble studied previously. In the random-phase model, decoherence arises from statistical averaging over unresolved phase realizations and therefore preserves a specific phase-related structure. By contrast, the global depolarizing channel removes information isotropically: no particular phase direction, measurement basis, or fiber arm is privileged.
+
+\medskip
+
+For this reason, the global depolarizing channel is not intended to be the final physical model of fiber propagation. Its role is to provide a simple and analytically transparent reference case for mixed-state degradation. More realistic descriptions, such as local depolarization acting independently on arms \( A \) and \( B \), will refine this baseline by assigning the loss mechanism to the individual propagation paths.

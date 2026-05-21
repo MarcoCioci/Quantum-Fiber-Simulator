@@ -601,6 +601,30 @@ The model isolates the dominant contribution affecting two-photon correlations w
 
 \medskip
 
+Although a general fiber transformation may involve arbitrary polarization rotations, birefringence, and mode-coupling effects, the first approximation adopted here is simpler and directly motivated by the experimental control scheme.
+
+\medskip
+
+\paragraph{Role of polarization compensation.}
+
+Operationally, polarization compensation is used to realign the dominant output polarization basis with the measurement basis. For example, a known input polarization can be injected through the fiber and the compensating optical elements can be adjusted so that the detected output is again aligned with the expected horizontal--vertical reference basis. In this way, the largest polarization drifts are effectively suppressed at the level of the measurement setup.
+
+\medskip
+
+This compensation, however, does not amount to a complete reconstruction of the full fiber transformation. In particular, it cannot generally remove all residual rotations around the stabilized polarization axis. After the dominant basis drift has been compensated, the remaining unresolved action is therefore modeled as a relative phase accumulation between the two orthogonal polarization components.
+
+\medskip
+
+Consequently, the compensated fiber is described in this reduced model not as a generic uncontrolled single-qubit unitary, but as an effective phase operator acting on each arm. For arms \( A \) and \( B \), this leads to the local transformation
+
+\[
+U_A(\theta_A)\otimes U_B(\theta_B),
+\]
+
+where \( \theta_A \) and \( \theta_B \) represent the residual phase shifts accumulated in the two paths.
+
+\medskip
+
 \paragraph{Role in the modeling hierarchy.}
 
 The reduced phase model constitutes the first nontrivial propagation model in the hierarchy. It provides an analytically tractable reference case for validating the simulator and serves as the baseline for subsequent extensions, including general unitary dynamics, ensemble descriptions, and effective non-unitary evolutions.
