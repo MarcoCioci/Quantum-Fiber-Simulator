@@ -1,0 +1,92 @@
+%========================================================
+% MAIN DERIVATION DOCUMENT
+% Quantum Fiber Simulator Thesis
+%========================================================
+
+\documentclass[a4paper,12pt]{report}
+
+%--------------------------------------------------------
+% Shared thesis styles
+%--------------------------------------------------------
+
+\input{../thesis/styles/packages}
+\input{../thesis/styles/formatting}
+\input{../thesis/styles/theorem_styles}
+\input{../thesis/styles/metadata}
+
+%========================================================
+% DOCUMENT START
+%========================================================
+
+\begin{document}
+
+\maketitle
+
+%========================================================
+% PURPOSE
+%========================================================
+
+\chapter{Purpose of This Document}
+\addcontentsline{toc}{chapter}{Purpose of This Document}
+
+This document collects detailed mathematical derivations supporting the theoretical and numerical development of the quantum fiber simulator.
+
+The derivations reported here are not intended to interrupt the main thesis narrative. Their role is to provide a rigorous analytical reference for results that are used in the manuscript, in the MATLAB implementation, and in the validation of numerical experiments.
+
+\medskip
+
+The main thesis text contains the physical motivation, final mathematical results, and physical interpretation. Detailed algebraic passages, intermediate expansions, and reusable analytical validations are instead collected here.
+
+\medskip
+
+Whenever a derivation becomes essential for reader-facing reproducibility, it may later be adapted into the thesis appendices.
+
+\tableofcontents
+
+%========================================================
+% CHAPTER 1 — Density Operators and Reduced States
+%========================================================
+
+\chapter{Density Operators and Reduced States}
+
+\input{D1_density_operator_expectation_values}
+
+\input{D2_partial_trace_maximally_entangled_states}
+
+%========================================================
+% CHAPTER 2 — Phase-Shifted Bell-State Formalism
+%========================================================
+
+\chapter{Phase-Shifted Bell-State Formalism}
+
+\input{D3_phase_shifted_bell_state_metrics}
+
+%========================================================
+% CHAPTER 3 — Correlation Tensor and Measurement Formalism
+%========================================================
+
+\chapter{Correlation Tensor and Measurement Formalism}
+
+\input{D4_correlation_tensor_phase_model}
+
+%========================================================
+% CHAPTER 5 - Depolarization Fiber Channel Metrics
+%========================================================
+
+\chapter{Depolarization Fiber Channel Metrics}
+
+\input{d5_composite_phase_depolarization_channel}
+
+%========================================================
+
+% \chapter{Quantum Channels and Decoherence}
+%
+% \input{D6_depolarizing_channel_derivations}
+%
+%========================================================
+
+% \chapter{Advanced Fiber Models and PMD}
+%
+% \input{D7_pmd_and_frequency_dependent_models}
+
+\end{document}

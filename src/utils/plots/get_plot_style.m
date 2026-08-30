@@ -23,6 +23,7 @@ function style = get_plot_style()
     style.figure.experiment_3_id = 103;
     style.figure.experiment_4_id = 104;
     style.figure.experiment_5_id = 105;
+    style.figure.experiment_6_id = 106;
 
     % Hidden during construction, shown after the plot is complete.
     style.figure.visible_during_build = 'off';

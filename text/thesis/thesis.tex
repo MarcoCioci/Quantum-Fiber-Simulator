@@ -1,57 +1,309 @@
 %========================================================
 % MAIN DOCUMENT
+% Politecnico di Milano MSc Thesis
 %========================================================
 
-\documentclass[a4paper,12pt]{report}
+\documentclass{Configuration_Files/PoliMi3i_thesis}
 
-%--------------------------------------------------------
-% Styles
-%--------------------------------------------------------
+%------------------------------------------------------------------------------
+% REQUIRED PACKAGES AND CONFIGURATIONS
+%------------------------------------------------------------------------------
 
-\input{styles/packages}
-\input{styles/formatting}
-\input{styles/theorem_styles}
-\input{styles/metadata}
+% CONFIGURATIONS
+\usepackage{parskip}      % For paragraph layout
+\usepackage{setspace}     % For using single or double spacing
+\usepackage{emptypage}    % To insert empty pages
+\usepackage{multicol}     % To write in multiple columns
+\setlength\columnsep{15pt}
+\setlength\parindent{0pt}
+\raggedbottom
 
-%========================================================
-% DOCUMENT START
-%========================================================
+% PACKAGES FOR TITLES
+\usepackage{titlesec}
+\titlespacing{\section}{0pt}{3.3ex}{2ex}
+\titlespacing{\subsection}{0pt}{3.3ex}{1.65ex}
+\titlespacing{\subsubsection}{0pt}{3.3ex}{1ex}
+\usepackage{color}
+
+% PACKAGES FOR LANGUAGE AND FONT
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[11pt]{moresize}
+
+% PACKAGES FOR IMAGES
+\usepackage{graphicx}
+\usepackage{transparent}
+\usepackage{eso-pic}
+\usepackage{subfig}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\graphicspath{{./Images/}}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{amsthm,thmtools,xcolor}
+\usepackage{float}
+\usepackage{svg}
+
+% STANDARD MATH PACKAGES
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[overload]{empheq}
+\usepackage{fix-cm}
+
+% PACKAGES FOR TABLES
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{colortbl}
+
+% PACKAGES FOR ALGORITHMS
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% PACKAGES FOR REFERENCES AND BIBLIOGRAPHY
+\usepackage[
+    colorlinks=true,
+    linkcolor=black,
+    anchorcolor=black,
+    citecolor=black,
+    filecolor=black,
+    menucolor=black,
+    runcolor=black,
+    urlcolor=black
+]{hyperref}
+
+\usepackage{cleveref}
+
+\usepackage[
+    square,
+    numbers,
+    sort&compress
+]{natbib}
+
+\bibliographystyle{unsrtnat}
+
+% OTHER PACKAGES
+\usepackage{pdfpages}
+\usepackage{afterpage}
+\usepackage{fancyhdr}
+\fancyhf{}
+
+% Input of PoliMi configuration file.
+% Do not modify config.tex unless strictly necessary.
+\input{Configuration_Files/config}
+
+%------------------------------------------------------------------------------
+% ADD THESIS-SPECIFIC DEFINITIONS AND COMMANDS HERE
+%------------------------------------------------------------------------------
+
+% Example:
+% \newcommand{\Tr}{\operatorname{Tr}}
+
+%------------------------------------------------------------------------------
+% BEGIN OF DOCUMENT
+%------------------------------------------------------------------------------
 
 \begin{document}
 
-\maketitle
+\fancypagestyle{plain}{%
+    \fancyhf{}
+    \fancyhead[RO,RE]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
 
-\tableofcontents
+%------------------------------------------------------------------------------
+% TITLE PAGE
+%------------------------------------------------------------------------------
+
+\pagestyle{empty}
+
+\frontmatter
+
+\puttitle{
+    title={Study of Depolarization Effects on\\Polarization Entanglement Distribution through Optical Fibers},
+    name={Marco Cioci},
+    course={High Performance Computing Engineering},
+    ID={252488},
+    advisor={Prof. Paolo Martelli},
+    coadvisor={Dr. Alessandro Gagliano},
+    academicyear={2025--2026},
+}
+
+%------------------------------------------------------------------------------
+% PREAMBLE PAGES
+%------------------------------------------------------------------------------
+
+\startpreamble
+
+\setcounter{page}{1}
+
+%------------------------------------------------------------------------------
+% ABSTRACT IN ENGLISH
+%------------------------------------------------------------------------------
+
+\chapter*{Abstract}
+
+\input{abstract/abstract_EN}
 
 \medskip
 
-%--------------------------------------------------------
-% Chapters
-%--------------------------------------------------------
+\noindent
+\textbf{Keywords:}
+Polarization Entanglement,
+Optical Fibers,
+Quantum Channels,
+Decoherence,
+Depolarization.
 
-\input{chapters/01_general_framework}
-\input{chapters/02_modeling_strategy}
-\input{chapters/03_physical_and_mathematical_representation}
-\input{chapters/04_quantitative_characterization_of_bipartite_quantum_states.tex}
-\input{chapters/05_effective_fiber_models}
-\input{chapters/06_numerical_experiments_and_results}
+%------------------------------------------------------------------------------
+% ABSTRACT IN ITALIAN
+%------------------------------------------------------------------------------
 
-%--------------------------------------------------------
-% Appendices
-%--------------------------------------------------------
+\chapter*{Abstract in lingua italiana}
+
+\input{abstract/abstract_IT}
+
+\medskip
+
+\noindent
+\textbf{Parole chiave:}
+Entanglement di Polarizzazione,
+Fibre Ottiche,
+Canali Quantistici,
+Decoerenza,
+Depolarizzazione.
+
+%------------------------------------------------------------------------------
+% TABLE OF CONTENTS
+%------------------------------------------------------------------------------
+
+\thispagestyle{empty}
+
+\tableofcontents
+
+\thispagestyle{empty}
+
+\cleardoublepage
+
+%------------------------------------------------------------------------------
+% THESIS MAIN TEXT
+%------------------------------------------------------------------------------
+
+\addtocontents{toc}{\vspace{2em}}
+
+\mainmatter
+
+%------------------------------------------------------------------------------
+% INTRODUCTION
+%------------------------------------------------------------------------------
+
+\chapter*{Introduction}
+
+\input{chapters/introduction}
+
+%------------------------------------------------------------------------------
+% CHAPTER 1
+% MATHEMATICAL AND PHYSICAL FRAMEWORK
+%------------------------------------------------------------------------------
+\chapter{Mathematical and Physical Framework}
+\label{ch:01_mathematical_and_physical_framework}
+\input{chapters/01_mathematical_and_physical_representation}
+
+%------------------------------------------------------------------------------
+% CHAPTER 2
+% FIBER-CHANNEL MODELING
+%------------------------------------------------------------------------------
+\chapter{Fiber-Channel Modeling}
+\label{ch:02_fiber_channel_modeling}
+\input{chapters/02_fiber_channel_modeling}
+% \input{chapters/06_frequency_dependent_fiber_propagation_and_pmd}
+
+%------------------------------------------------------------------------------
+% CHAPTER 3
+% NUMERICAL FRAMEWORK AND RESULTS
+%------------------------------------------------------------------------------
+
+\chapter{Numerical Experiments and Results}
+\label{ch:03_numerical_experiments_results}
+\input{chapters/03_numerical_experiments_and_results}
+
+%------------------------------------------------------------------------------
+% CHAPTER 4
+% EXPERIMENTAL ACTIVITY
+%------------------------------------------------------------------------------
+
+% \chapter{Experimental Activity}
+% \label{ch:04_experimental_activity}
+%
+% \input{chapters/04_experimental_activity}
+
+%------------------------------------------------------------------------------
+% CONCLUSIONS AND FUTURE DEVELOPMENTS
+%------------------------------------------------------------------------------
+
+% \chapter{Conclusions and Future Developments}
+% \label{ch:05_conclusions}
+%
+% \input{chapters/09_conclusions}
+
+%------------------------------------------------------------------------------
+% BIBLIOGRAPHY
+%------------------------------------------------------------------------------
+
+\addtocontents{toc}{\vspace{2em}}
+
+% Uncomment once active citations are present.
+%
+\bibliography{bibliography/Thesis_bibliography}
+
+%------------------------------------------------------------------------------
+% APPENDICES
+%------------------------------------------------------------------------------
+
+\cleardoublepage
+
+\addtocontents{toc}{\vspace{2em}}
 
 \appendix
-\addcontentsline{toc}{chapter}{Appendices}
 
-\input{appendices/appendices.tex}
+\input{appendices/appendices}
 
-%--------------------------------------------------------
-% Bibliography
-%--------------------------------------------------------
+%------------------------------------------------------------------------------
+% LIST OF FIGURES
+%------------------------------------------------------------------------------
 
-\bibliographystyle{ieeetr}
-\bibliography{bibliography/references}
+\listoffigures
 
-%--------------------------------------------------------
+%------------------------------------------------------------------------------
+% LIST OF TABLES
+%------------------------------------------------------------------------------
+
+\listoftables
+
+%------------------------------------------------------------------------------
+% LIST OF SYMBOLS
+%------------------------------------------------------------------------------
+
+% \chapter*{List of Symbols}
+%
+% \input{frontmatter/list_of_symbols}
+
+%------------------------------------------------------------------------------
+% ACKNOWLEDGEMENTS
+%------------------------------------------------------------------------------
+
+% \chapter*{Acknowledgements}
+%
+% \input{frontmatter/acknowledgements}
+
+\cleardoublepage
+
+%------------------------------------------------------------------------------
+% END OF DOCUMENT
+%------------------------------------------------------------------------------
 
 \end{document}

@@ -1,0 +1,60 @@
+%========================================================
+% MAIN DOCUMENT
+%========================================================
+
+\documentclass[a4paper,12pt]{report}
+
+%--------------------------------------------------------
+% Styles
+%--------------------------------------------------------
+
+\input{styles/packages}
+\input{styles/formatting}
+\input{styles/theorem_styles}
+\input{styles/metadata}
+
+%========================================================
+% DOCUMENT START
+%========================================================
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\medskip
+
+%--------------------------------------------------------
+% Chapters
+%--------------------------------------------------------
+
+\input{chapters/01_general_framework}
+\input{chapters/02_modeling_strategy}
+\input{chapters/03_physical_and_mathematical_representation}
+\input{chapters/04_quantitative_characterization_of_bipartite_quantum_states}
+\input{chapters/05_effective_fiber_models}
+\input{chapters/06_frequency_dependent_fiber_propagation_and_pmd}
+
+\input{chapters/07_numerical_experiments_and_results}
+
+\input{}
+%--------------------------------------------------------
+% Appendices
+%--------------------------------------------------------
+
+\appendix
+\addcontentsline{toc}{chapter}{Appendices}
+
+\input{appendices/appendices.tex}
+
+%--------------------------------------------------------
+% Bibliography
+%--------------------------------------------------------
+
+\bibliographystyle{ieeetr}
+\bibliography{bibliography/references}
+
+%--------------------------------------------------------
+
+\end{document}

@@ -1,0 +1,343 @@
+%========================================================
+% D3 — Correlation Tensor of the Phase-Evolved Bell State
+%========================================================
+
+\section{Correlation Tensor of the Phase-Evolved Bell State}
+
+This derivation computes explicitly the correlation tensor associated with the reduced phase model.
+
+\medskip
+
+The phase-evolved Bell state is
+
+\begin{equation}
+|\psi(\theta)\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle
++
+e^{i\theta}|10\rangle
+\right).
+\label{eq:der_phase_bell_state}
+\end{equation}
+
+The corresponding density operator is
+
+\begin{equation}
+\rho(\theta)
+=
+|\psi(\theta)\rangle\langle\psi(\theta)|.
+\label{eq:der_phase_density_operator}
+\end{equation}
+
+Expanding explicitly gives
+
+\begin{align}
+\rho(\theta)
+&=
+\frac{1}{2}
+\left(
+|01\rangle
++
+e^{i\theta}|10\rangle
+\right)
+\left(
+\langle 01|
++
+e^{-i\theta}\langle 10|
+\right)
+\nonumber
+\\
+&=
+\frac{1}{2}
+\Big(
+|01\rangle\langle 01|
++
+e^{-i\theta}|01\rangle\langle 10|
++
+e^{i\theta}|10\rangle\langle 01|
++
+|10\rangle\langle 10|
+\Big).
+\label{eq:der_phase_density_expansion}
+\end{align}
+
+\medskip
+
+The correlation tensor is defined by
+
+\begin{equation}
+T_{ij}(\theta)
+=
+\mathrm{Tr}
+\left[
+\rho(\theta)
+\left(
+\sigma_i \otimes \sigma_j
+\right)
+\right],
+\qquad
+i,j \in \{x,y,z\}.
+\label{eq:der_correlation_tensor_definition}
+\end{equation}
+
+Equivalently, since the state is pure,
+
+\begin{equation}
+T_{ij}(\theta)
+=
+\langle \psi(\theta) |
+\sigma_i \otimes \sigma_j
+|
+\psi(\theta)
+\rangle.
+\label{eq:der_correlation_tensor_pure_state}
+\end{equation}
+
+The Pauli matrices act on the computational basis as
+
+\begin{align}
+\sigma_x |0\rangle &= |1\rangle,
+&
+\sigma_x |1\rangle &= |0\rangle,
+\nonumber
+\\
+\sigma_y |0\rangle &= i|1\rangle,
+&
+\sigma_y |1\rangle &= -i|0\rangle,
+\nonumber
+\\
+\sigma_z |0\rangle &= |0\rangle,
+&
+\sigma_z |1\rangle &= -|1\rangle.
+\label{eq:der_pauli_basis_action}
+\end{align}
+
+\medskip
+
+We now compute each nonzero tensor component.
+
+\subsection*{Diagonal components}
+
+For \( T_{xx} \), one has
+
+\[
+(\sigma_x \otimes \sigma_x)|01\rangle = |10\rangle,
+\qquad
+(\sigma_x \otimes \sigma_x)|10\rangle = |01\rangle.
+\]
+
+Therefore,
+
+\begin{align}
+T_{xx}(\theta)
+&=
+\frac{1}{2}
+\left(
+\langle 01|
++
+e^{-i\theta}\langle 10|
+\right)
+\left(
+|10\rangle
++
+e^{i\theta}|01\rangle
+\right)
+\nonumber
+\\
+&=
+\frac{1}{2}
+\left(
+e^{i\theta}
++
+e^{-i\theta}
+\right)
+\nonumber
+\\
+&=
+\cos\theta.
+\label{eq:der_Txx_phase_model}
+\end{align}
+
+For \( T_{yy} \), one has
+
+\[
+(\sigma_y \otimes \sigma_y)|01\rangle = |10\rangle,
+\qquad
+(\sigma_y \otimes \sigma_y)|10\rangle = |01\rangle.
+\]
+
+Hence the same calculation gives
+
+\begin{equation}
+T_{yy}(\theta)
+=
+\cos\theta.
+\label{eq:der_Tyy_phase_model}
+\end{equation}
+
+For \( T_{zz} \), one has
+
+\[
+(\sigma_z \otimes \sigma_z)|01\rangle = -|01\rangle,
+\qquad
+(\sigma_z \otimes \sigma_z)|10\rangle = -|10\rangle.
+\]
+
+Thus,
+
+\begin{align}
+T_{zz}(\theta)
+&=
+\langle \psi(\theta) |
+\sigma_z \otimes \sigma_z
+|
+\psi(\theta)
+\rangle
+\nonumber
+\\
+&=
+-1.
+\label{eq:der_Tzz_phase_model}
+\end{align}
+
+\medskip
+
+\subsection*{Off-diagonal transverse components}
+
+For \( T_{xy} \), one has
+
+\[
+(\sigma_x \otimes \sigma_y)|01\rangle
+=
+-i|10\rangle,
+\qquad
+(\sigma_x \otimes \sigma_y)|10\rangle
+=
+i|01\rangle.
+\]
+
+Therefore,
+
+\begin{align}
+T_{xy}(\theta)
+&=
+\frac{1}{2}
+\left(
+\langle 01|
++
+e^{-i\theta}\langle 10|
+\right)
+\left(
+-i|10\rangle
++
+i e^{i\theta}|01\rangle
+\right)
+\nonumber
+\\
+&=
+\frac{1}{2}
+\left(
+i e^{i\theta}
+-
+i e^{-i\theta}
+\right)
+\nonumber
+\\
+&=
+-\sin\theta.
+\label{eq:der_Txy_phase_model}
+\end{align}
+
+For \( T_{yx} \), one has
+
+\[
+(\sigma_y \otimes \sigma_x)|01\rangle
+=
+i|10\rangle,
+\qquad
+(\sigma_y \otimes \sigma_x)|10\rangle
+=
+-i|01\rangle.
+\]
+
+Therefore,
+
+\begin{align}
+T_{yx}(\theta)
+&=
+\frac{1}{2}
+\left(
+\langle 01|
++
+e^{-i\theta}\langle 10|
+\right)
+\left(
+i|10\rangle
+-
+i e^{i\theta}|01\rangle
+\right)
+\nonumber
+\\
+&=
+\frac{1}{2}
+\left(
+-i e^{i\theta}
++
+i e^{-i\theta}
+\right)
+\nonumber
+\\
+&=
+\sin\theta.
+\label{eq:der_Tyx_phase_model}
+\end{align}
+
+\medskip
+
+\subsection*{Vanishing components}
+
+All remaining components involving one transverse Pauli operator and one \( z \)-Pauli operator vanish:
+
+\begin{equation}
+T_{xz}
+=
+T_{zx}
+=
+T_{yz}
+=
+T_{zy}
+=
+0.
+\label{eq:der_vanishing_phase_tensor_components}
+\end{equation}
+
+This follows because these operators map the subspace spanned by \( |01\rangle \) and \( |10\rangle \) to the orthogonal subspace spanned by \( |00\rangle \) and \( |11\rangle \), or produce contributions with zero overlap against \( |\psi(\theta)\rangle \).
+
+\medskip
+
+Collecting the computed components gives
+
+\begin{equation}
+T(\theta)
+=
+\begin{pmatrix}
+T_{xx} & T_{xy} & T_{xz}\\
+T_{yx} & T_{yy} & T_{yz}\\
+T_{zx} & T_{zy} & T_{zz}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0\\
+\sin\theta & \cos\theta & 0\\
+0 & 0 & -1
+\end{pmatrix}.
+\label{eq:der_correlation_tensor_phase_model}
+\end{equation}
+
+\medskip
+
+The result shows that the reduced phase \( \theta \) acts as a rotation of the transverse correlation components in the \( x\text{-}y \) plane, while the longitudinal anticorrelation \( T_{zz}=-1 \) remains unchanged.
+
+This is consistent with the physical interpretation of the reduced phase model: the local phase shift modifies coherence between \( |01\rangle \) and \( |10\rangle \), but does not alter their populations.

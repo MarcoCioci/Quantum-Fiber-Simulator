@@ -1,0 +1,349 @@
+%========================================================
+% EXTRA APPENDIX — Basis Choice and Pauli Operator Representations
+%========================================================
+
+\section{Basis Choice and Pauli Operator Representations}
+
+This appendix clarifies the distinction between abstract quantum operators and their matrix representations, with particular emphasis on the dependence of Pauli matrices on the chosen basis representation.
+
+\medskip
+
+A common source of confusion in quantum information theory is the apparent identification between Pauli operators and their standard matrix forms. In reality, the matrices commonly denoted by
+
+\[
+\sigma_x,
+\qquad
+\sigma_y,
+\qquad
+\sigma_z
+\]
+
+represent the coordinate expressions of abstract operators relative to a chosen basis.
+
+The operators themselves are basis-independent linear transformations acting on the Hilbert space.
+
+%--------------------------------------------------------
+% Hilbert Space and Basis Choice
+%--------------------------------------------------------
+
+\subsection*{Hilbert Space and Basis Choice}
+
+A single qubit is described by a two-dimensional complex Hilbert space
+
+\[
+\mathcal H \cong \mathbb C^2.
+\]
+
+To perform explicit calculations, one introduces an orthonormal basis.
+
+In quantum information theory, the standard choice is the computational basis
+
+\[
+B_{cb}
+=
+\{
+|0\rangle,
+|1\rangle
+\}.
+\]
+
+However, this basis is not fundamentally privileged by quantum mechanics. Any orthonormal pair of states may be chosen as the primary basis of the Hilbert space.
+
+\medskip
+
+For example, one may alternatively choose the basis
+
+\begin{equation}
+B_{+-}
+=
+\{
+|+\rangle,
+|-\rangle
+\},
+\label{eq:plus_minus_basis_appendix}
+\end{equation}
+
+where
+
+\begin{equation}
+|+\rangle
+=
+\frac{|0\rangle+|1\rangle}{\sqrt{2}},
+\qquad
+|-\rangle
+=
+\frac{|0\rangle-|1\rangle}{\sqrt{2}}.
+\label{eq:plus_minus_states_appendix}
+\end{equation}
+
+The computational basis is therefore a convention rather than a physical necessity.
+
+%--------------------------------------------------------
+% Abstract Definition of Pauli Operators
+%--------------------------------------------------------
+
+\subsection*{Abstract Definition of Pauli Operators}
+
+Pauli operators are fundamentally defined through their action on basis states.
+
+For instance, in the computational basis, the Pauli \(X\) operator is defined by
+
+\begin{equation}
+\sigma_x |0\rangle = |1\rangle,
+\qquad
+\sigma_x |1\rangle = |0\rangle.
+\label{eq:sigma_x_action_computational}
+\end{equation}
+
+Thus, \( \sigma_x \) acts as a basis-state exchange operator.
+
+\medskip
+
+Importantly, Eq.~\eqref{eq:sigma_x_action_computational} defines the operator itself, not its matrix representation.
+
+The matrix representation appears only after coordinates are assigned to the basis vectors.
+
+Using
+
+\[
+|0\rangle
+=
+\begin{pmatrix}
+1\\
+0
+\end{pmatrix},
+\qquad
+|1\rangle
+=
+\begin{pmatrix}
+0\\
+1
+\end{pmatrix},
+\]
+
+the matrix representation of \( \sigma_x \) in the computational basis becomes
+
+\begin{equation}
+[\sigma_x]_{B_{cb}}
+=
+\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix}.
+\label{eq:sigma_x_matrix_computational}
+\end{equation}
+
+%--------------------------------------------------------
+% Basis Dependence of Matrix Representations
+%--------------------------------------------------------
+
+\subsection*{Basis Dependence of Matrix Representations}
+
+The matrix representation of an operator depends on the chosen basis.
+
+To illustrate this explicitly, consider the alternative basis \( B_{+-} \) introduced in Eq.~\eqref{eq:plus_minus_basis_appendix}.
+
+Using Eq.~\eqref{eq:sigma_x_action_computational}, one obtains
+
+\begin{align}
+\sigma_x |+\rangle
+&=
+\sigma_x
+\left(
+\frac{|0\rangle+|1\rangle}{\sqrt{2}}
+\right)
+\nonumber
+\\
+&=
+\frac{
+\sigma_x|0\rangle
++
+\sigma_x|1\rangle
+}{\sqrt{2}}
+\nonumber
+\\
+&=
+\frac{
+|1\rangle+|0\rangle
+}{\sqrt{2}}
+\nonumber
+\\
+&=
+|+\rangle,
+\end{align}
+
+and similarly,
+
+\begin{align}
+\sigma_x |-\rangle
+&=
+\sigma_x
+\left(
+\frac{|0\rangle-|1\rangle}{\sqrt{2}}
+\right)
+\nonumber
+\\
+&=
+\frac{
+|1\rangle-|0\rangle
+}{\sqrt{2}}
+\nonumber
+\\
+&=
+-|-\rangle.
+\end{align}
+
+Therefore, in the basis \( B_{+-} \),
+
+\begin{equation}
+[\sigma_x]_{B_{+-}}
+=
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix}.
+\label{eq:sigma_x_matrix_plus_minus}
+\end{equation}
+
+This matrix coincides with the standard matrix representation usually associated with \( \sigma_z \).
+
+\medskip
+
+Consequently, the same abstract operator admits different matrix representations depending on the chosen basis.
+
+%--------------------------------------------------------
+% Rotation of Bloch-Sphere Axes
+%--------------------------------------------------------
+
+\subsection*{Rotation of Bloch-Sphere Axes}
+
+The previous result admits a direct geometric interpretation on the Bloch sphere.
+
+When the computational basis \( \{|0\rangle,|1\rangle\} \) is chosen as the reference basis, the corresponding quantization axis defines the Bloch \(Z\)-axis.
+
+The states \( |+\rangle \) and \( |-\rangle \) then lie along the Bloch \(X\)-axis.
+
+\medskip
+
+If the basis \( B_{+-} \) is instead chosen as the primary basis, the coordinate system of the Bloch sphere is effectively rotated:
+
+\begin{itemize}
+
+\item the former \(X\)-axis becomes the new \(Z\)-axis,
+
+\item the former \(Z\)-axis becomes the new \(X\)-axis.
+
+\end{itemize}
+
+Consequently, the matrix representations associated with the Pauli operators are permuted.
+
+\medskip
+
+This demonstrates that the labels \(X\), \(Y\), and \(Z\) are not intrinsically tied to fixed matrices, but depend on the chosen reference basis.
+
+%--------------------------------------------------------
+% Pauli Operators in the B_{+-} Basis
+%--------------------------------------------------------
+
+\subsection*{Pauli Operators in the \(B_{+-}\) Basis}
+
+Suppose now that \( B_{+-} \) is chosen as the primary computational basis of the Hilbert space.
+
+One may then define new Pauli operators relative to this basis.
+
+The operator exchanging the basis states is
+
+\begin{equation}
+X_{(+-)}
+|+\rangle
+=
+|-\rangle,
+\qquad
+X_{(+-)}
+|-\rangle
+=
+|+\rangle.
+\label{eq:new_x_operator_plus_minus}
+\end{equation}
+
+Its matrix representation is therefore
+
+\begin{equation}
+[X_{(+-)}]_{B_{+-}}
+=
+\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix}.
+\label{eq:new_x_matrix_plus_minus}
+\end{equation}
+
+However, expressed in the original computational basis, this operator corresponds physically to the former \( \sigma_z \).
+
+\medskip
+
+Similarly, the diagonal operator in the \( B_{+-} \) basis is
+
+\begin{equation}
+Z_{(+-)}
+|+\rangle
+=
+|+\rangle,
+\qquad
+Z_{(+-)}
+|-\rangle
+=
+-|-\rangle,
+\label{eq:new_z_operator_plus_minus}
+\end{equation}
+
+with matrix representation
+
+\begin{equation}
+[Z_{(+-)}]_{B_{+-}}
+=
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix},
+\label{eq:new_z_matrix_plus_minus}
+\end{equation}
+
+which corresponds physically to the former \( \sigma_x \).
+
+\medskip
+
+Thus, changing the primary basis rotates the correspondence between Bloch-sphere axes and Pauli operators while preserving the underlying qubit algebra.
+
+%--------------------------------------------------------
+% Physical Interpretation
+%--------------------------------------------------------
+
+\subsection*{Physical Interpretation}
+
+In abstract quantum information theory, Pauli operators are initially defined at the purely algebraic level.
+
+The physical interpretation arises only after associating the chosen basis with a specific experimental encoding.
+
+For polarization qubits, one commonly identifies
+
+\[
+|0\rangle
+\leftrightarrow
+|H\rangle,
+\qquad
+|1\rangle
+\leftrightarrow
+|V\rangle,
+\]
+
+so that the computational basis corresponds to horizontal and vertical polarization states.
+
+Only after this identification do the Bloch-sphere axes acquire direct physical meaning in terms of polarization measurements.
+
+\medskip
+
+Consequently, the matrix forms of the Pauli operators are not fundamentally physical objects. Rather, they represent coordinate descriptions of abstract operators relative to a chosen basis convention.
+
+This distinction is essential for understanding why quantities such as concurrence remain invariant under local basis rotations despite the apparent presence of specific Pauli matrices in their formal definitions.
+

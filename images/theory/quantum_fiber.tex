@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+
+%========================================================
+% Packages
+%========================================================
+\usepackage[a4paper, margin=0.65in, landscape]{geometry}
+\usepackage{amsmath}
+\usepackage{braket}
+\usepackage{tikz}
+\usepackage{quantikz}
+
+%========================================================
+% TikZ / quantikz local styling
+%========================================================
+\tikzset{
+    sourcebox/.style={
+        draw,
+        rounded corners,
+        align=center,
+        minimum width=3.45cm,
+        minimum height=1.30cm,
+        fill=white
+    },
+    phasebox/.style={
+        draw,
+        rounded corners,
+        align=center,
+        minimum width=2.95cm,
+        minimum height=0.90cm,
+        fill=white
+    },
+    channelbox/.style={
+        draw,
+        rounded corners,
+        align=center,
+        minimum width=3.05cm,
+        minimum height=0.90cm,
+        fill=white
+    },
+    analyzerbox/.style={
+        draw,
+        rounded corners,
+        align=center,
+        minimum width=3.20cm,
+        minimum height=1.00cm,
+        fill=white
+    },
+    statbox/.style={
+        draw,
+        rounded corners,
+        align=center,
+        minimum width=3.25cm,
+        minimum height=0.95cm,
+        fill=white
+    }
+}
+
+\begin{document}
+
+%========================================================
+% SINGLE PANEL: STATISTICAL COMPOSITE FIBER CHANNEL
+%========================================================
+\begin{center}
+
+\setlength{\fboxsep}{8pt}
+\fbox{
+\begin{minipage}{0.985\textwidth}
+\centering
+    
+    \begin{quantikz}[row sep=0.82cm, column sep=0.65cm, thin lines]
+    %
+    %-----------------------------
+    % Upper arm (A)
+    %-----------------------------
+    \lstick{
+        \begin{tabular}{c}
+        arm $A$
+        \end{tabular}
+    }
+    &
+    \gate[2,style={sourcebox}]{
+        \begin{tabular}{c}
+        SPDC source\\
+        Bell-pair generation\\[0.3ex]
+        $\rho_0 = \ket{\Psi^+}\!\bra{\Psi^+}$
+        \end{tabular}
+    }
+    &
+    \qw
+    &
+    \gate[1,style={statbox}]{
+        \begin{tabular}{c}
+        sampled phase\\
+        $U_A(\theta_{A,k})$
+        \end{tabular}
+    }
+    &
+    \gate[1,style={channelbox}]{
+        \begin{tabular}{c}
+        local depolarization\\
+        $\mathcal{D}_{p_A}$
+        \end{tabular}
+    }
+    &
+    \gate[1,style={analyzerbox}]{
+        \begin{tabular}{c}
+        local analyzer\\
+        $R_A(\mathbf{a})$
+        \end{tabular}
+    }
+    &
+    \meter{}
+    &
+    \setwiretype{c}
+    \begin{tabular}{c}
+        $m_A$\\
+        coincidence\\
+        counts
+    \end{tabular}
+    \\
+    %
+    %-----------------------------
+    % Lower arm (B)
+    %-----------------------------
+    \lstick{
+        \begin{tabular}{c}
+        arm $B$
+        \end{tabular}
+    }
+    &
+    &
+    \qw
+    &
+    \gate[1,style={statbox}]{
+        \begin{tabular}{c}
+        sampled phase\\
+        $U_B(\theta_{B,k})$
+        \end{tabular}
+    }
+    &
+    \gate[1,style={channelbox}]{
+        \begin{tabular}{c}
+        local depolarization\\
+        $\mathcal{D}_{p_B}$
+        \end{tabular}
+    }
+    &
+    \gate[1,style={analyzerbox}]{
+        \begin{tabular}{c}
+        local analyzer\\
+        $R_B(\mathbf{b})$
+        \end{tabular}
+    }
+    &
+    \meter{}
+    &
+    \setwiretype{c}
+    \begin{tabular}{c}
+        $m_B$\\
+        coincidence\\
+        counts
+    \end{tabular}
+    \end{quantikz}
+
+\end{minipage}
+}
+
+\end{center}
+
+\end{document}

@@ -1,0 +1,351 @@
+%========================================================
+% SECTION 7.5 — Composite Channel
+%========================================================
+
+\newpage
+
+\section{Experiment 5: Composite Fiber Channel}
+
+%--------------------------------------------------------
+% Subsection 7.5.1 — Objective and Physical Motivation
+%--------------------------------------------------------
+
+\subsection*{Objective and Physical Motivation}
+
+The fifth experiment combines the two main physical mechanisms introduced in the previous experiments: coherent residual phase evolution and local incoherent depolarization.
+
+The objective is to model the optical fiber not only as a fixed-phase shifter, but as an effective composite quantum channel acting independently on the two propagation arms.
+
+The channel is constructed by first applying the residual phase evolution and then applying independent local depolarizing channels on subsystems \( A \) and \( B \).
+
+This produces the effective transformation
+
+\begin{equation}
+\rho_{AB}^{\mathrm{out}}
+=
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left[
+U_A(\theta)
+\otimes
+U_B
+\,
+\rho_{AB}^{\mathrm{in}}
+\,
+\left(
+U_A(\theta)
+\otimes
+U_B
+\right)^{\dagger}
+\right],
+\label{eq:experiment5_composite_channel}
+\end{equation}
+
+where \( U_B = I \) and \( U_A(\theta) \) is the reduced phase unitary.
+
+This experiment therefore represents the first complete effective fiber model considered in the simulator, where coherent and incoherent effects are treated within the same density-operator framework.
+
+%--------------------------------------------------------
+% Subsection 7.5.2 — Model and Analytical Predictions
+%--------------------------------------------------------
+
+\subsection*{Model and Analytical Predictions}
+
+The input state is the Bell state
+
+\[
+|\Psi^+\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + |10\rangle
+\right).
+\]
+
+After the local phase evolution, the state becomes
+
+\[
+|\psi(\theta)\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + e^{i\theta}|10\rangle
+\right).
+\]
+
+The two-arm depolarizing channel is then applied with independent depolarization parameters \( p_A \) and \( p_B \).
+
+For two-body Pauli correlations, local depolarization produces the contraction factor
+
+\begin{equation}
+\eta
+=
+(1-p_A)(1-p_B).
+\label{eq:experiment5_eta_definition}
+\end{equation}
+
+Therefore, in the pure single-realization branch, the diagonal correlations are
+
+\[
+c_{xx}
+=
+\eta \cos\theta,
+\qquad
+c_{yy}
+=
+\eta \cos\theta,
+\qquad
+c_{zz}
+=
+-\eta.
+\]
+
+The maximal CHSH parameter is predicted from the singular values of the correlation tensor. Since local depolarization contracts the correlation tensor by \( \eta \), the maximal CHSH value is reduced accordingly:
+
+\[
+S_{\max}
+=
+2\sqrt{2}\,\eta.
+\]
+
+For the statistical ensemble extension, phase realizations \( \theta_k \) are sampled and averaged after the composite channel is applied to each realization:
+
+\begin{equation}
+\rho_{AB}^{\mathrm{(ens)}}
+=
+\frac{1}{N}
+\sum_{k=1}^{N}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left[
+U_A(\theta_k)
+\otimes
+U_B
+\,
+\rho_{AB}^{\mathrm{in}}
+\,
+\left(
+U_A(\theta_k)
+\otimes
+U_B
+\right)^{\dagger}
+\right].
+\label{eq:experiment5_composite_ensemble}
+\end{equation}
+
+Introducing again the ensemble coherence parameter
+
+\[
+\mu
+=
+\langle e^{i\theta} \rangle,
+\]
+
+the ensemble-averaged transverse correlations become
+
+\[
+c_{xx}
+=
+\eta\,\mathrm{Re}(\mu),
+\qquad
+c_{yy}
+=
+\eta\,\mathrm{Re}(\mu),
+\qquad
+c_{zz}
+=
+-\eta.
+\]
+
+Thus, the composite model separates two distinct degradation mechanisms:
+
+\begin{itemize}
+    \item \( \mu \) describes coherence loss due to unresolved phase fluctuations;
+    \item \( \eta \) describes correlation contraction due to independent local depolarization.
+\end{itemize}
+
+%--------------------------------------------------------
+% Subsection 7.5.3 — Numerical Results
+%--------------------------------------------------------
+
+\subsection*{Numerical Results}
+
+The experiment is divided into two complementary parts.
+
+First, the pure-branch composite channel is evaluated over a fixed sweep of \( \theta \). This isolates the effect of local depolarization on a single phase-evolved realization.
+
+\medskip
+
+Figure~\ref{fig:experiment5_pure_channel_summary} shows the pure-channel summary.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/experiment_5/experiment_5_summary_pure_channel.png}
+\caption{
+Pure composite fiber channel: local depolarization contracts the phase-dependent correlations and lowers the maximal CHSH value, while the analytical and numerical curves remain indistinguishable at the plotted scale.
+}
+\label{fig:experiment5_pure_channel_summary}
+\end{figure}
+
+The transverse correlations \( c_{xx} \) and \( c_{yy} \) retain their sinusoidal dependence on \( \theta \), but their amplitude is reduced by the contraction factor \( \eta \). The longitudinal correlation \( c_{zz} \) remains independent of \( \theta \), but is also contracted by the same factor.
+
+\medskip
+
+The second part introduces statistical phase ensembles. Three representative distributions are considered:
+
+\begin{itemize}
+    \item constant phase distribution;
+    \item uniform phase distribution;
+    \item Gaussian phase distribution.
+\end{itemize}
+
+Figure~\ref{fig:experiment5_constant} shows the constant-phase ensemble.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/experiment_5/experiment_5_summary_constant_distribution.png}
+\caption{
+Composite channel with constant phase distribution: the ensemble reduces to a single phase realization, while local depolarization reduces purity, fidelity, concurrence, and nonlocality.
+}
+\label{fig:experiment5_constant}
+\end{figure}
+
+In this regime, the stochastic part of the model is inactive, and the observed degradation is entirely due to local depolarization.
+
+\medskip
+
+Figure~\ref{fig:experiment5_uniform} shows the uniform phase distribution.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/experiment_5/experiment_5_summary_uniform_distribution.png}
+\caption{
+Composite channel with uniform phase distribution: phase averaging suppresses transverse coherence, while local depolarization further contracts the remaining longitudinal correlation.
+}
+\label{fig:experiment5_uniform}
+\end{figure}
+
+The transverse coherence is suppressed by the phase average, while the depolarizing channel reduces the remaining correlation structure.
+
+\medskip
+
+Figure~\ref{fig:experiment5_gaussian} shows the Gaussian phase distribution.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/experiment_5/experiment_5_summary_gaussian_distribution.png}
+\caption{
+Composite channel with Gaussian phase distribution: partial phase coherence survives ensemble averaging, producing intermediate values of purity, fidelity, concurrence, and maximal CHSH parameter.
+}
+\label{fig:experiment5_gaussian}
+\end{figure}
+
+This case represents an intermediate propagation regime, where neither phase coherence nor entanglement is completely suppressed.
+
+\medskip
+
+The corresponding correlation tensor snapshots are shown in Figure~\ref{fig:experiment5_tensor_snapshots}.
+
+\begin{figure}[htbp]
+\centering
+
+\begin{subfigure}{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/experiment_5/experiment_5_correlation_tensor_constant.png}
+    \caption{Constant phase}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/experiment_5/experiment_5_correlation_tensor_uniform.png}
+    \caption{Uniform distribution}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/experiment_5/experiment_5_correlation_tensor_gaussian.png}
+    \caption{Gaussian distribution}
+\end{subfigure}
+
+\caption{
+Correlation tensor snapshots for the composite fiber channel.
+The tensor structure reflects the combined action of statistical phase averaging and local two-arm depolarization: phase fluctuations suppress transverse coherence, while local depolarization contracts all two-body correlations by the factor \( \eta \).
+}
+\label{fig:experiment5_tensor_snapshots}
+\end{figure}
+
+The tensor snapshots confirm that the composite model reproduces the expected analytical structure across all tested phase distributions.
+
+%--------------------------------------------------------
+% Subsection 7.5.4 — Discussion
+%--------------------------------------------------------
+
+\subsection*{Discussion}
+
+The numerical results show that phase averaging and local depolarization affect the state in distinct but complementary ways.
+
+The phase distribution controls the coherence parameter \( \mu \). When the distribution is narrow or concentrated around a single phase value, coherence is preserved. When the distribution becomes broad, transverse coherence is suppressed.
+
+Local depolarization instead acts through the contraction factor \( \eta \), reducing the magnitude of two-body correlations independently of the particular phase realization.
+
+The composite model therefore produces the effective structure
+
+\[
+\text{coherent phase behavior}
+\quad
+\longrightarrow
+\quad
+\mu
+\quad
+\longrightarrow
+\quad
+\eta\mu,
+\]
+
+for the transverse correlation terms.
+
+This separation is physically useful because it distinguishes two mechanisms that may otherwise appear similar at the level of measured correlations:
+
+\begin{itemize}
+    \item loss of phase coherence due to unresolved stochastic phase evolution;
+    \item local polarization degradation due to depolarizing effects in each fiber arm.
+\end{itemize}
+
+In the pure-branch case, the phase remains fixed, and the state degradation is entirely due to local depolarization.
+
+In the ensemble case, both mechanisms are present. The resulting decrease of purity, fidelity, concurrence, and maximal CHSH value reflects the combined effect of coherent uncertainty and incoherent local noise.
+
+%--------------------------------------------------------
+% Subsection 7.5.5 — Physical Interpretation
+%--------------------------------------------------------
+
+\subsection*{Physical Interpretation}
+
+The composite channel provides a more realistic effective description of fiber propagation than the previous isolated models.
+
+The residual phase \( \theta \) describes a coherent birefringent effect that rotates the correlation tensor in the transverse plane. If this phase is fixed, the evolution remains coherent and can in principle be compensated.
+
+The depolarizing parameters \( p_A \) and \( p_B \), instead, describe incoherent degradation in the two independent fiber arms. Their effect cannot be represented as a unitary rotation, because they reduce the magnitude of the polarization correlations.
+
+The contraction factor \(\eta \) encodes the fact that two-body correlations survive only to the extent that polarization information is preserved in both arms.
+
+When phase fluctuations are also present, the ensemble coherence parameter \( \mu \) determines how much of the coherent transverse structure remains after averaging.
+
+The composite fiber model therefore captures the simultaneous presence of:
+
+\begin{itemize}
+    \item fixed or stochastic coherent phase evolution;
+    \item independent local depolarization in the two arms;
+    \item reduction of Bell-state fidelity;
+    \item reduction of concurrence;
+    \item degradation of CHSH nonlocality.
+\end{itemize}
+
+This experiment represents the final step of the present numerical validation pipeline: it connects the reduced phase model, random phase ensembles, depolarizing channels, and CHSH diagnostics into a single effective fiber-channel description.
+

@@ -1,0 +1,393 @@
+%========================================================
+% APPENDIX A.1 — Reduced Density Operators and Global-State Comparison
+%========================================================
+
+\section{Explicit Derivation of Reduced Density Operators and Comparison of Global States}
+\label{app:reduced_density_operators}
+
+This appendix provides an explicit derivation of the reduced density operators associated with the phase-evolved Bell state introduced in Chapter~3. It also illustrates an important conceptual point: identical local reduced states may correspond to physically different global states.
+
+\medskip
+
+The discussion clarifies why local measurements alone are insufficient to characterize bipartite quantum systems and motivates the introduction of global quantities such as purity, correlation functions, and entanglement measures.
+
+%========================================================
+% Phase-Evolved Bell State
+%========================================================
+
+\subsection*{Phase-Evolved Bell State}
+
+We consider the two-qubit state
+
+\begin{equation}
+|\psi(\theta)\rangle
+=
+\frac{
+|01\rangle
++
+e^{i\theta}|10\rangle
+}{
+\sqrt{2}
+},
+\label{eq:appendix_phase_bell_state}
+\end{equation}
+
+written in the computational basis
+
+\[
+\{
+|00\rangle,
+|01\rangle,
+|10\rangle,
+|11\rangle
+\}.
+\]
+
+Its vector representation is
+
+\begin{equation}
+|\psi(\theta)\rangle
+=
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+0 \\
+1 \\
+e^{i\theta} \\
+0
+\end{pmatrix}.
+\label{eq:appendix_phase_bell_vector}
+\end{equation}
+
+The corresponding density operator is
+
+\begin{equation}
+\rho_{AB}(\theta)
+=
+|\psi(\theta)\rangle
+\langle\psi(\theta)|.
+\label{eq:appendix_phase_density_operator}
+\end{equation}
+
+Expanding explicitly gives
+
+\begin{equation}
+\rho_{AB}(\theta)
+=
+\frac{1}{2}
+\begin{pmatrix}
+0 & 0 & 0 & 0 \\
+0 & 1 & e^{-i\theta} & 0 \\
+0 & e^{i\theta} & 1 & 0 \\
+0 & 0 & 0 & 0
+\end{pmatrix}.
+\label{eq:appendix_phase_density_matrix}
+\end{equation}
+
+%========================================================
+% Explicit Partial Trace
+%========================================================
+
+\subsection*{Explicit Evaluation of the Partial Trace}
+
+The reduced density operator of subsystem \( A \) is obtained through the partial trace over subsystem \( B \):
+
+\begin{equation}
+\rho_A(\theta)
+=
+\mathrm{Tr}_B
+\left(
+\rho_{AB}(\theta)
+\right).
+\label{eq:appendix_partial_trace_definition}
+\end{equation}
+
+Using the computational basis of subsystem \( B \),
+
+\[
+\{
+|0\rangle,
+|1\rangle
+\},
+\]
+
+the partial trace can be written explicitly as
+
+\begin{equation}
+\rho_A(\theta)
+=
+\sum_{b=0}^{1}
+\left(
+I_A \otimes \langle b|
+\right)
+\rho_{AB}(\theta)
+\left(
+I_A \otimes |b\rangle
+\right).
+\label{eq:appendix_partial_trace_explicit}
+\end{equation}
+
+We now evaluate the individual contributions.
+
+\medskip
+
+The diagonal terms give
+
+\begin{align}
+\mathrm{Tr}_B
+\left(
+|01\rangle\langle 01|
+\right)
+&=
+|0\rangle\langle 0|,
+\nonumber
+\\
+\mathrm{Tr}_B
+\left(
+|10\rangle\langle 10|
+\right)
+&=
+|1\rangle\langle 1|.
+\label{eq:appendix_partial_trace_diagonal}
+\end{align}
+
+The off-diagonal terms vanish:
+
+\begin{align}
+\mathrm{Tr}_B
+\left(
+|01\rangle\langle 10|
+\right)
+&=
+0,
+\nonumber
+\\
+\mathrm{Tr}_B
+\left(
+|10\rangle\langle 01|
+\right)
+&=
+0,
+\label{eq:appendix_partial_trace_offdiagonal}
+\end{align}
+
+due to the orthogonality relation
+
+\[
+\langle 0|1\rangle = 0.
+\]
+
+Summing all contributions yields
+
+\begin{equation}
+\rho_A(\theta)
+=
+\frac{1}{2}
+|0\rangle\langle 0|
++
+\frac{1}{2}
+|1\rangle\langle 1|
+=
+\frac{I}{2}.
+\label{eq:appendix_reduced_density_A}
+\end{equation}
+
+By symmetry,
+
+\begin{equation}
+\rho_B(\theta)
+=
+\frac{I}{2}.
+\label{eq:appendix_reduced_density_B}
+\end{equation}
+
+Thus, although the global state depends explicitly on the phase \( \theta \), the reduced states do not. The phase appears only in the off-diagonal coherence terms of the global density operator, which are eliminated by the partial trace.
+
+\medskip
+
+In particular, for \( \theta = 0 \),
+
+\begin{equation}
+|\Psi^+\rangle
+=
+\frac{
+|01\rangle
++
+|10\rangle
+}{
+\sqrt{2}
+},
+\label{eq:appendix_standard_bell_state}
+\end{equation}
+
+one obtains the same reduced states,
+
+\begin{equation}
+\rho_A
+=
+\rho_B
+=
+\frac{I}{2}.
+\label{eq:appendix_standard_bell_reduced}
+\end{equation}
+
+%========================================================
+% Local Equivalence and Global Distinction
+%========================================================
+
+\subsection*{Local Equivalence and Global Distinction}
+
+The previous result illustrates an important conceptual property of bipartite quantum systems.
+
+\medskip
+
+Consider the classical mixture
+
+\begin{equation}
+\rho^{(\mathrm{class})}
+=
+\frac{1}{2}
+|0\rangle\langle 0|
++
+\frac{1}{2}
+|1\rangle\langle 1|
+=
+\frac{I}{2}.
+\label{eq:appendix_classical_mixture}
+\end{equation}
+
+At the local level,
+
+\begin{equation}
+\rho_A^{(\mathrm{ent})}
+=
+\rho^{(\mathrm{class})},
+\label{eq:appendix_local_equivalence}
+\end{equation}
+
+and therefore, for any observable \( O_A \),
+
+\begin{equation}
+\mathrm{Tr}
+\left(
+\rho^{(\mathrm{class})} O_A
+\right)
+=
+\mathrm{Tr}
+\left(
+\rho_A^{(\mathrm{ent})} O_A
+\right).
+\label{eq:appendix_local_expectation_equivalence}
+\end{equation}
+
+Hence, local measurements cannot distinguish classical mixtures from reductions of entangled states.
+
+\medskip
+
+The distinction emerges only at the global level.
+
+Consider the separable mixed state
+
+\begin{equation}
+\rho_{AB}^{(\mathrm{sep})}
+=
+\frac{1}{2}
+|01\rangle\langle 01|
++
+\frac{1}{2}
+|10\rangle\langle 10|.
+\label{eq:appendix_separable_state}
+\end{equation}
+
+Its reduced states are identical to those of the entangled Bell state:
+
+\begin{align}
+\mathrm{Tr}_B
+\left(
+\rho_{AB}^{(\mathrm{sep})}
+\right)
+&=
+\frac{I}{2},
+\nonumber
+\\
+\mathrm{Tr}_A
+\left(
+\rho_{AB}^{(\mathrm{sep})}
+\right)
+&=
+\frac{I}{2}.
+\label{eq:appendix_separable_reductions}
+\end{align}
+
+However, the separable state lacks the coherence terms present in the entangled density operator.
+
+\medskip
+
+This difference becomes visible through global quantities.
+
+For the entangled state,
+
+\begin{equation}
+\gamma
+\left(
+\rho_{AB}(\theta)
+\right)
+=
+1,
+\label{eq:appendix_entangled_purity}
+\end{equation}
+
+whereas for the separable mixture,
+
+\begin{equation}
+\gamma
+\left(
+\rho_{AB}^{(\mathrm{sep})}
+\right)
+=
+\frac{1}{2}.
+\label{eq:appendix_separable_purity}
+\end{equation}
+
+A second distinction appears in bipartite correlations.
+
+For the entangled phase-evolved state,
+
+\begin{align}
+\langle
+\sigma_x \otimes \sigma_x
+\rangle
+&=
+\cos\theta,
+\nonumber
+\\
+\langle
+\sigma_y \otimes \sigma_y
+\rangle
+&=
+\cos\theta,
+\label{eq:appendix_entangled_correlations}
+\end{align}
+
+whereas for the separable mixture,
+
+\begin{align}
+\langle
+\sigma_x \otimes \sigma_x
+\rangle
+&=
+0,
+\nonumber
+\\
+\langle
+\sigma_y \otimes \sigma_y
+\rangle
+&=
+0.
+\label{eq:appendix_separable_correlations}
+\end{align}
+
+\medskip
+
+Thus, states with identical reduced density operators may differ fundamentally at the global level.
+
+Reduced states encode all locally accessible information, but do not capture global coherence or bipartite entanglement.

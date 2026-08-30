@@ -1,0 +1,294 @@
+%========================================================
+% SECTION 7.2 — Random Phase Ensemble Sweep
+%========================================================
+
+\newpage
+
+\section{Experiment 2: Random Phase Ensemble Sweep}
+\label{sec:exp_2_random_phase_ensemble_sweep}
+
+%--------------------------------------------------------
+% Subsection 7.2.1 — Objective and Physical Motivation
+%--------------------------------------------------------
+
+\subsection*{Objective and Physical Motivation}
+
+The second experiment extends the fixed-phase model by introducing random phase realizations \( \theta_k \), modeling stochastic birefringence effects in realistic optical fibers.
+
+Unlike the coherent regime studied in Section~7.1, the system is no longer described by a single pure state, but by a statistical ensemble of phase-evolved realizations
+
+\[
+\left\{
+|\psi(\theta_k)\rangle
+\right\}_{k=1}^{N},
+\]
+
+together with the corresponding ensemble-averaged density operator.
+
+The objective is to characterize how unresolved phase fluctuations modify observable correlations, global coherence, purity, fidelity, and entanglement.
+
+This experiment therefore represents the transition from purely deterministic unitary evolution toward an effective mixed-state description arising from statistical averaging.
+
+%--------------------------------------------------------
+% Subsection 7.2.2 — Model and Analytical Predictions
+%--------------------------------------------------------
+
+\subsection*{Model and Analytical Predictions}
+
+Each phase realization is described by the pure state
+
+\begin{equation}
+|\psi(\theta_k)\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle + e^{i\theta_k}|10\rangle
+\right).
+\label{eq:random_phase_realization}
+\end{equation}
+
+The ensemble-averaged state is then constructed as
+
+\begin{equation}
+\rho^{\mathrm{(ens)}}
+=
+\frac{1}{N}
+\sum_{k=1}^{N}
+|\psi(\theta_k)\rangle
+\langle\psi(\theta_k)|.
+\label{eq:random_phase_ensemble_density_operator}
+\end{equation}
+
+Introducing the ensemble coherence parameter
+
+\begin{equation}
+\mu
+=
+\langle e^{i\theta} \rangle
+=
+\langle \cos\theta \rangle
++
+i
+\langle \sin\theta \rangle,
+\label{eq:ensemble_coherence_parameter}
+\end{equation}
+
+the ensemble-averaged diagonal correlations become
+
+\[
+c_{xx}
+=
+\mathrm{Re}(\mu),
+\qquad
+c_{yy}
+=
+\mathrm{Re}(\mu),
+\qquad
+c_{zz}
+=
+-1.
+\]
+
+The global purity is
+
+\[
+\gamma(\rho^{\mathrm{(ens)}})
+=
+\frac{1 + |\mu|^2}{2}.
+\]
+
+The reduced density operators remain maximally mixed:
+
+\[
+\rho_A
+=
+\rho_B
+=
+\frac{I}{2},
+\]
+
+which implies
+
+\[
+\gamma(\rho_A)
+=
+\gamma(\rho_B)
+=
+\frac{1}{2}.
+\]
+
+The fidelity with respect to the reference Bell state and the concurrence are given by
+
+\[
+F_{\Psi^+}
+=
+\frac{1 + \mathrm{Re}(\mu)}{2},
+\qquad
+C(\rho^{\mathrm{(ens)}})
+=
+|\mu|.
+\]
+
+\medskip
+
+The ensemble coherence parameter \( \mu \) therefore provides a compact description of the entire propagation regime. Its real part determines observable transverse correlations and fidelity, while its magnitude controls the residual entanglement of the averaged state.
+
+%--------------------------------------------------------
+% Subsection 7.2.3 — Numerical Results
+%--------------------------------------------------------
+
+\subsection*{Numerical Results}
+
+Three representative phase distributions are considered:
+
+\begin{itemize}
+    \item constant phase distribution;
+    \item uniform phase distribution;
+    \item Gaussian phase distribution.
+\end{itemize}
+
+For each case, the simulator evaluates:
+
+\begin{itemize}
+    \item sampled phase statistics;
+    \item pure-state correlation trends;
+    \item ensemble-averaged correlations;
+    \item purity, fidelity, and concurrence.
+\end{itemize}
+
+Figure~\ref{fig:experiment2_constant} shows the constant-phase regime.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/experiment_2/experiment_2_summary_constant_distribution.png}
+\caption{
+Constant phase distribution: the ensemble reduces to a coherent realization and concurrence remains maximal.
+}
+\label{fig:experiment2_constant}
+\end{figure}
+
+In this limit, all realizations coincide and the ensemble reproduces the coherent behavior observed in Experiment~1.
+
+\medskip
+
+Figure~\ref{fig:experiment2_uniform} shows the behavior corresponding to a uniform phase distribution.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/experiment_2/experiment_2_summary_uniform_distribution.png}
+\caption{
+Uniform phase distribution: transverse correlations vanish, fidelity decreases, and concurrence tends to zero.
+}
+\label{fig:experiment2_uniform}
+\end{figure}
+
+The averaging process suppresses the transverse coherence terms, leading to vanishing ensemble correlations in the \(x\)--\(y\) plane and to a strong reduction of both fidelity and concurrence.
+
+\medskip
+
+Figure~\ref{fig:experiment2_gaussian} presents the intermediate regime generated by a Gaussian phase distribution.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/experiment_2/experiment_2_summary_gaussian_distribution.png}
+\caption{
+Gaussian phase distribution: partial coherence leads to intermediate values of purity and concurrence.
+}
+\label{fig:experiment2_gaussian}
+\end{figure}
+
+In this case, residual coherence survives ensemble averaging, producing intermediate values of purity, fidelity, and concurrence.
+
+\medskip
+
+The corresponding correlation tensor structures are shown in Figure~\ref{fig:experiment2_tensor_snapshots}.
+
+\begin{figure}[htbp]
+\centering
+
+\begin{subfigure}{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/experiment_2/experiment_2_correlation_tensor_constant.png}
+    \caption{Constant phase}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/experiment_2/experiment_2_correlation_tensor_uniform.png}
+    \caption{Uniform distribution}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/experiment_2/experiment_2_correlation_tensor_gaussian.png}
+    \caption{Gaussian distribution}
+\end{subfigure}
+
+\caption{
+Correlation tensor snapshots for different phase distributions.
+Random phase averaging suppresses transverse coherence, progressively reducing the off-diagonal tensor components, while the longitudinal correlation \(T_{zz}=-1\) remains invariant.
+}
+\label{fig:experiment2_tensor_snapshots}
+\end{figure}
+
+As the number of realizations increases, the numerically reconstructed tensor components converge toward their analytical expectation values.
+
+At the same time, tensor entries that are analytically zero remain numerically negligible throughout the simulation, confirming the internal consistency of the ensemble implementation.
+
+%--------------------------------------------------------
+% Subsection 7.2.4 — Discussion
+%--------------------------------------------------------
+
+\subsection*{Discussion}
+
+The numerical results reveal a progressive transition from coherent evolution to ensemble-induced decoherence.
+
+The constant-phase regime reproduces the behavior observed in Experiment~1, where the ensemble effectively reduces to a single pure realization.
+
+As the phase distribution broadens, the transverse coherence terms are progressively suppressed. Consequently, the ensemble coherence parameter satisfies
+
+\[
+|\mu|
+\rightarrow
+0,
+\]
+
+leading to the disappearance of coherent transverse correlations.
+
+This transition is reflected directly in the state-characterization quantities:
+
+\begin{itemize}
+    \item the global purity decreases from unity;
+    \item the reduced purities remain fixed at \(1/2\);
+    \item the fidelity decreases;
+    \item the concurrence decreases continuously from \(1\) toward \(0\).
+\end{itemize}
+
+Unlike the fixed-phase evolution studied previously, the reduction of fidelity is now associated with a genuine degradation of entanglement.
+
+The experiment therefore establishes an important conceptual distinction:
+
+\begin{itemize}
+    \item fixed-phase evolution modifies observable correlations without destroying entanglement;
+    \item unresolved statistical phase fluctuations generate effective mixedness and progressively suppress entanglement.
+\end{itemize}
+
+This mechanism constitutes the first non-unitary effect emerging naturally from the propagation model.
+
+%--------------------------------------------------------
+% Subsection 7.2.5 — Physical Interpretation
+%--------------------------------------------------------
+
+\subsection*{Physical Interpretation}
+
+Each individual realization of the ensemble remains a pure maximally entangled state. The loss of coherence arises only after averaging over unresolved phase fluctuations.
+
+Physically, this situation models realistic fiber propagation conditions in which the accumulated birefringence-induced phase is not perfectly controlled and varies over time, frequency, or environmental conditions.
+
+The ensemble coherence parameter \( \mu \) provides a unified physical interpretation of the propagation regime.
+
+Its real part determines the observable transverse correlations and the fidelity with respect to the reference Bell state, while its magnitude quantifies the residual entanglement preserved after averaging.
+
+As the phase fluctuations become broader, the ensemble loses its coherent phase structure. The corresponding density operator progressively approaches a mixed state, leading to a reduction of both purity and concurrence.
+
+This experiment therefore captures the transition from ideal coherent propagation toward realistic noisy optical-fiber evolution, where stochastic birefringence effects induce effective decoherence and entanglement degradation.

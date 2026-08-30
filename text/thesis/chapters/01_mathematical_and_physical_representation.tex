@@ -1,0 +1,1086 @@
+%========================================================
+% CHAPTER 1 — Physical and Mathematical Framework
+%========================================================
+
+This chapter introduces the physical representation and mathematical tools used
+throughout the thesis to describe polarization-entangled photon pairs and their
+evolution through optical-fiber channels. The treatment is formulated within the
+density-operator framework of quantum information theory, which provides a common
+description for pure states, statistical mixtures, local measurements, and noisy
+quantum evolution~\cite{nielsen_chuang_qcqi}.
+
+The chapter first defines the bipartite polarization system and the reference Bell
+state. The density-operator and reduced-state formalisms are then introduced,
+followed by the representation of two-photon correlations through Pauli operators
+and the correlation tensor. Finally, the quantities used throughout the numerical
+and experimental analysis are defined, including purity, fidelity, concurrence,
+tangle, entanglement of formation, and CHSH nonlocality.
+
+
+%========================================================
+% SECTION 1.1 — Bipartite Polarization System
+%========================================================
+
+\section{Bipartite Polarization System}
+\label{sec:bipartite_polarization_system}
+
+The physical system considered in this work consists of a pair of
+polarization-entangled photons propagating along two spatially separated optical
+paths, denoted by \(A\) and \(B\). In the experimental configuration considered
+later in this thesis, the photon pairs are produced through spontaneous parametric
+down-conversion (SPDC).
+
+The quantum information carried by each photon is encoded in its polarization
+degree of freedom. Horizontal and vertical polarization are identified with the
+computational basis according to
+
+\begin{equation}
+|H\rangle \equiv |0\rangle,
+\qquad
+|V\rangle \equiv |1\rangle.
+\label{eq:polarization_computational_encoding}
+\end{equation}
+
+Each photon therefore defines a two-dimensional Hilbert space,
+
+\begin{equation}
+\mathcal{H}_A \simeq \mathbb{C}^{2},
+\qquad
+\mathcal{H}_B \simeq \mathbb{C}^{2}.
+\end{equation}
+
+The joint system is described in the tensor-product Hilbert space
+
+\begin{equation}
+\mathcal{H}_{AB}
+=
+\mathcal{H}_A \otimes \mathcal{H}_B
+\simeq
+\mathbb{C}^{2}\otimes\mathbb{C}^{2},
+\label{eq:two_qubit_hilbert_space}
+\end{equation}
+
+which has dimension four.
+
+The ordered computational basis adopted throughout the thesis is
+
+\begin{equation}
+\mathcal{B}_{AB}
+=
+\{
+|00\rangle,\,
+|01\rangle,\,
+|10\rangle,\,
+|11\rangle
+\},
+\label{eq:two_qubit_computational_basis}
+\end{equation}
+
+where the first entry refers to subsystem \(A\) and the second to subsystem \(B\).
+In polarization notation, the same basis is
+
+\[
+\{
+|H\rangle_A|H\rangle_B,\,
+|H\rangle_A|V\rangle_B,\,
+|V\rangle_A|H\rangle_B,\,
+|V\rangle_A|V\rangle_B
+\}.
+\]
+
+Consequently, pure states of the complete system are represented by four-component
+complex vectors and operators acting on both photons by \(4\times4\) matrices.
+This basis convention is used consistently in the analytical derivations and in
+the MATLAB implementation.
+
+
+%========================================================
+% SECTION 1.2 — Reference Entangled State
+%========================================================
+
+\section{Reference Entangled State}
+\label{sec:reference_entangled_state}
+
+The principal input state considered in this work is the Bell state
+
+\begin{equation}
+|\Psi^{+}\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle+|10\rangle
+\right),
+\label{eq:bell_psi_plus}
+\end{equation}
+
+or equivalently,
+
+\begin{equation}
+|\Psi^{+}\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|H\rangle_A|V\rangle_B
++
+|V\rangle_A|H\rangle_B
+\right).
+\label{eq:bell_psi_plus_polarization}
+\end{equation}
+
+The correspondence between the polarization basis and the standard single-qubit
+Bloch-sphere representation is illustrated in
+Fig.~\ref{fig:polarization_bloch_sphere}. In particular,
+\(|H\rangle\equiv|0\rangle\) and
+\(|V\rangle\equiv|1\rangle\), while coherent superpositions of the two basis
+states lie on the equator of the sphere.
+
+The correspondence between the polarization basis and the standard single-qubit
+Bloch-sphere representation is illustrated in
+Fig.~\ref{fig:polarization_bloch_sphere}. In particular,
+\(|H\rangle\equiv|0\rangle\) and
+\(|V\rangle\equiv|1\rangle\), while coherent superpositions of the two basis
+states lie on the equator of the sphere.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[
+        width=0.42\textwidth
+    ]{figures/theory/bloch_sphere_representation.png}
+    \caption{
+    Bloch-sphere representation of a single polarization qubit.
+    The horizontal and vertical polarization states correspond to
+    \(|H\rangle\equiv|0\rangle\) and \(|V\rangle\equiv|1\rangle\).
+    }
+    \label{fig:polarization_bloch_sphere}
+\end{figure}
+
+In the ordered basis of Eq.~\eqref{eq:two_qubit_computational_basis}, its vector
+representation is
+
+\begin{equation}
+|\Psi^{+}\rangle
+=
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+0\\
+1\\
+1\\
+0
+\end{pmatrix}.
+\label{eq:bell_psi_plus_vector}
+\end{equation}
+
+The state \( |\Psi^{+}\rangle \) is maximally entangled and therefore provides both
+a physically relevant resource and a convenient analytical benchmark for studying
+fiber-induced transformations.
+
+For completeness, the four Bell states are:
+
+\begin{equation}
+|\Psi^{\pm}\rangle
+=
+\frac{|01\rangle\pm|10\rangle}{\sqrt{2}},
+\qquad
+|\Phi^{\pm}\rangle
+=
+\frac{|00\rangle\pm|11\rangle}{\sqrt{2}}.
+\label{eq:bell_state_basis}
+\end{equation}
+
+Although the theoretical framework applies to arbitrary two-qubit states,
+\( |\Psi^{+}\rangle \) is used as the reference state throughout most of the
+simulations and laboratory analysis.
+
+
+%========================================================
+% SECTION 1.3 — Density-Operator Description
+%========================================================
+
+\section{Density-Operator Description}
+\label{sec:density_operator_description}
+
+A pure quantum state can be represented either by its state vector
+\( |\psi\rangle \) or by the corresponding density operator
+
+\begin{equation}
+\rho
+=
+|\psi\rangle\langle\psi|.
+\label{eq:pure_state_density_operator}
+\end{equation}
+
+For a bipartite system, the complete state is denoted by \( \rho_{AB} \).
+The density-operator formulation is equivalent to the state-vector description
+for pure states, but it extends naturally to situations in which the system is
+mixed.
+
+A general mixed state may be expressed as
+
+\begin{equation}
+\rho
+=
+\sum_k p_k
+|\psi_k\rangle\langle\psi_k|,
+\qquad
+p_k\geq0,
+\qquad
+\sum_k p_k=1.
+\label{eq:mixed_state_convex_decomposition}
+\end{equation}
+
+Such states arise naturally when different physical realizations are averaged
+statistically or when degrees of freedom correlated with the system are not
+resolved experimentally. Importantly, a density operator does not in general
+possess a unique ensemble decomposition; different statistical ensembles may
+represent the same physical state~\cite{nielsen_chuang_qcqi}.
+
+The density-operator formalism is therefore adopted as the common representation
+throughout the simulator.
+
+
+%--------------------------------------------------------
+% Subsection 1.3.1 — Expectation Values
+%--------------------------------------------------------
+
+\subsection{Expectation Values}
+\label{subsec:expectation_values}
+
+For a pure state, the expectation value of an observable \(O\) is
+
+\[
+\langle O\rangle
+=
+\langle\psi|O|\psi\rangle.
+\]
+
+In density-operator notation, the corresponding general expression is
+
+\begin{equation}
+\langle O\rangle
+=
+\mathrm{Tr}(\rho O).
+\label{eq:density_expectation_value}
+\end{equation}
+
+For \( \rho=|\psi\rangle\langle\psi| \), Eq.~\eqref{eq:density_expectation_value}
+reduces directly to the pure-state expression. The same equation remains valid for
+mixed states and therefore provides the basis for the evaluation of all observables
+used in this work.
+
+
+%--------------------------------------------------------
+% Subsection 1.3.2 — Reduced Density Operators
+%--------------------------------------------------------
+
+\subsection{Reduced Density Operators}
+\label{subsec:reduced_density_operators}
+
+For a bipartite state \( \rho_{AB} \), the state accessible locally to either
+subsystem is obtained through the partial trace,
+
+\begin{equation}
+\rho_A
+=
+\mathrm{Tr}_B(\rho_{AB}),
+\qquad
+\rho_B
+=
+\mathrm{Tr}_A(\rho_{AB}).
+\label{eq:reduced_density_operator_definition}
+\end{equation}
+
+For example, tracing over subsystem \(B\) gives
+
+\begin{equation}
+\rho_A
+=
+\sum_{j=0}^{1}
+\left(
+I_A\otimes\langle j|
+\right)
+\rho_{AB}
+\left(
+I_A\otimes|j\rangle
+\right).
+\label{eq:partial_trace_expression}
+\end{equation}
+
+The reduced state contains all information required to predict measurements
+performed exclusively on the corresponding subsystem. For an observable \(O_A\),
+
+\begin{equation}
+\mathrm{Tr}
+\left[
+\rho_{AB}
+\left(
+O_A\otimes I_B
+\right)
+\right]
+=
+\mathrm{Tr}(\rho_A O_A).
+\label{eq:local_expectation_reduced_state}
+\end{equation}
+
+For the Bell state of Eq.~\eqref{eq:bell_psi_plus}, the two reduced density
+operators are
+
+\begin{equation}
+\rho_A
+=
+\rho_B
+=
+\frac{I_2}{2}.
+\label{eq:bell_reduced_states}
+\end{equation}
+
+Thus, each photon is locally maximally mixed even though the complete two-photon
+state is pure and maximally entangled. The information distinguishing the Bell
+state from an uncorrelated local mixture is therefore contained in the joint
+correlations rather than in the individual reduced states.
+
+
+%--------------------------------------------------------
+% Subsection 1.3.3 — Bloch Representation
+%--------------------------------------------------------
+
+\subsection{Bloch Representation}
+\label{subsec:bloch_representation}
+
+Any single-qubit density operator can be written as
+
+\begin{equation}
+\rho
+=
+\frac{1}{2}
+\left(
+I+\mathbf{r}\cdot\boldsymbol{\sigma}
+\right),
+\label{eq:bloch_density_representation}
+\end{equation}
+
+where
+
+\[
+\boldsymbol{\sigma}
+=
+(\sigma_x,\sigma_y,\sigma_z)
+\]
+
+is the vector of Pauli matrices and
+\( \mathbf{r}\in\mathbb{R}^{3} \) is the Bloch vector.
+
+Physical states satisfy
+
+\begin{equation}
+\|\mathbf{r}\|\leq1.
+\label{eq:bloch_ball_condition}
+\end{equation}
+
+Pure states satisfy \( \|\mathbf{r}\|=1 \) and lie on the surface of the Bloch
+sphere, whereas mixed states satisfy \( \|\mathbf{r}\|<1 \). The maximally mixed
+state corresponds to
+
+\[
+\mathbf{r}=0,
+\qquad
+\rho=\frac{I_2}{2}.
+\]
+
+Unitary transformations rotate the Bloch vector while preserving its norm.
+Effective decohering processes may instead reduce its magnitude, corresponding
+to motion toward the interior of the Bloch ball.
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[
+        width=0.90\textwidth
+    ]{figures/theory/bloch_sphere_vector_contraction.png}
+    \caption{
+        Bloch-sphere representation of pure and mixed single-qubit states.
+        Pure states satisfy \( \|\mathbf{r}\|=1 \), whereas mixed states are
+        represented by vectors inside the Bloch sphere. The maximally mixed
+        state corresponds to the origin.
+    }
+    \label{fig:bloch_sphere_vector_contraction}
+\end{figure}
+
+
+%========================================================
+% SECTION 1.4 — Quantum Evolution and Quantum Channels
+%========================================================
+
+\section{Quantum Evolution and Quantum Channels}
+\label{sec:quantum_evolution_channels}
+
+The evolution of the two polarization qubits can occur either coherently or through
+an effective noisy process. These two regimes are naturally distinguished within
+the density-operator formalism.
+
+
+%--------------------------------------------------------
+% Subsection 1.4.1 — Local Unitary Evolution
+%--------------------------------------------------------
+
+\subsection{Local Unitary Evolution}
+\label{subsec:local_unitary_evolution}
+
+When each photon undergoes a coherent polarization transformation, its evolution
+is represented by a unitary operator acting on the corresponding subsystem.
+
+If \(U_A\) and \(U_B\) denote the transformations acting on arms \(A\) and \(B\),
+respectively, the pure state evolves according to
+
+\begin{equation}
+|\psi_{\mathrm{out}}\rangle
+=
+(U_A\otimes U_B)
+|\psi_{\mathrm{in}}\rangle.
+\label{eq:local_unitary_state_evolution}
+\end{equation}
+
+At the density-operator level,
+
+\begin{equation}
+\rho_{\mathrm{out}}
+=
+(U_A\otimes U_B)
+\rho_{\mathrm{in}}
+(U_A^\dagger\otimes U_B^\dagger).
+\label{eq:local_unitary_density_evolution}
+\end{equation}
+
+Local unitary evolution preserves global purity and bipartite entanglement.
+It may nevertheless modify the correlations observed with respect to fixed
+laboratory measurement axes. This distinction between a coherent transformation
+and genuine entanglement degradation is central to the fiber models developed in
+Chapter~\ref{ch:02_fiber_channel_modeling}.
+
+
+%--------------------------------------------------------
+% Subsection 1.4.2 — Quantum Channels
+%--------------------------------------------------------
+
+\subsection{Quantum Channels}
+\label{subsec:quantum_channels}
+
+A more general transformation of a quantum state is represented by a quantum
+channel,
+
+\begin{equation}
+\mathcal{E}:\rho\mapsto\mathcal{E}(\rho),
+\label{eq:quantum_channel_map}
+\end{equation}
+
+which is a completely positive and trace-preserving linear map.
+
+A general channel may be written in operator-sum form as
+~\cite{nielsen_chuang_qcqi,kraus1971general}
+
+\begin{equation}
+\mathcal{E}(\rho)
+=
+\sum_\mu
+K_\mu
+\rho
+K_\mu^\dagger,
+\qquad
+\sum_\mu
+K_\mu^\dagger K_\mu
+=
+I,
+\label{eq:kraus_operator_sum}
+\end{equation}
+
+where the operators \(K_\mu\) are the Kraus operators associated with the map.
+
+Unitary evolution is recovered as the special case containing a single Kraus
+operator \(K=U\). More general channels allow the reduced state to become mixed
+and are therefore required to describe decoherence, depolarization, and other
+effective noise mechanisms.
+
+The specific channel models used to represent optical-fiber propagation are
+introduced in Chapter~\ref{ch:02_fiber_channel_modeling}.
+
+
+%========================================================
+% SECTION 1.5 — Polarization Correlations and Measurements
+%========================================================
+
+\section{Polarization Correlations and Measurements}
+\label{sec:polarization_correlations_measurements}
+
+The information carried by a polarization-entangled state is primarily contained
+in joint measurement statistics. A convenient representation of these correlations
+is obtained using tensor products of Pauli operators.
+
+
+%--------------------------------------------------------
+% Subsection 1.5.1 — Correlation Tensor
+%--------------------------------------------------------
+
+\subsection{Correlation Tensor}
+\label{subsec:correlation_tensor}
+
+For a two-qubit state \( \rho_{AB} \), the correlation tensor is defined by
+
+\begin{equation}
+T_{ij}
+=
+\mathrm{Tr}
+\left[
+\rho_{AB}
+\left(
+\sigma_i\otimes\sigma_j
+\right)
+\right],
+\qquad
+i,j\in\{x,y,z\}.
+\label{eq:correlation_tensor_components}
+\end{equation}
+
+The tensor \(T\in\mathbb{R}^{3\times3}\) therefore collects the nine bipartite
+Pauli correlations.
+
+Introducing \( \sigma_0=I \), a general two-qubit state can be expanded as
+
+\begin{equation}
+\rho_{AB}
+=
+\frac{1}{4}
+\sum_{\mu,\nu\in\{0,x,y,z\}}
+S_{\mu\nu}
+\sigma_\mu\otimes\sigma_\nu,
+\label{eq:two_qubit_pauli_decomposition}
+\end{equation}
+
+where
+
+\begin{equation}
+S_{\mu\nu}
+=
+\mathrm{Tr}
+\left[
+\rho_{AB}
+\left(
+\sigma_\mu\otimes\sigma_\nu
+\right)
+\right].
+\label{eq:generalized_stokes_parameters}
+\end{equation}
+
+The quantities \(S_{\mu\nu}\) correspond to generalized Stokes parameters.
+The terms \(S_{i0}\) and \(S_{0j}\) describe the local Bloch vectors, whereas
+the \(3\times3\) block \(S_{ij}\) coincides with the correlation tensor \(T\).
+
+This representation is particularly useful in polarization experiments because
+the density operator can be reconstructed from expectation values of local Pauli
+measurements, as in standard two-qubit quantum-state tomography
+~\cite{altepeter_james_kwiat_quantum_state_tomography}.
+
+The reconstruction follows from the orthogonality relation
+
+\begin{equation}
+\mathrm{Tr}
+\left[
+(\sigma_i\otimes\sigma_j)
+(\sigma_k\otimes\sigma_l)
+\right]
+=
+4\,\delta_{ik}\delta_{jl},
+\qquad
+i,j,k,l\in\{0,x,y,z\}.
+\label{eq:pauli_tensor_orthogonality}
+\end{equation}
+
+
+%--------------------------------------------------------
+% Subsection 1.5.2 — Arbitrary Local Measurement Axes
+%--------------------------------------------------------
+
+\subsection{Arbitrary Local Measurement Axes}
+\label{subsec:arbitrary_measurement_axes}
+
+A projective qubit measurement along a unit vector
+\( \mathbf{n}\in\mathbb{R}^{3} \) is represented by the observable
+
+\begin{equation}
+\sigma(\mathbf{n})
+=
+\mathbf{n}\cdot\boldsymbol{\sigma}
+=
+n_x\sigma_x+n_y\sigma_y+n_z\sigma_z,
+\qquad
+\|\mathbf{n}\|=1.
+\label{eq:measurement_operator_axis}
+\end{equation}
+
+The normalization condition ensures that the observable has eigenvalues
+\( \pm1 \).
+
+For measurement directions \( \mathbf{a} \) and \( \mathbf{b} \) on subsystems
+\(A\) and \(B\), respectively, the two-photon correlation is
+
+\begin{equation}
+E(\mathbf{a},\mathbf{b})
+=
+\mathrm{Tr}
+\left[
+\rho_{AB}
+\left(
+\sigma(\mathbf{a})\otimes\sigma(\mathbf{b})
+\right)
+\right].
+\label{eq:axis_correlation_trace}
+\end{equation}
+
+Using Eq.~\eqref{eq:correlation_tensor_components}, this becomes
+
+\begin{equation}
+E(\mathbf{a},\mathbf{b})
+=
+\mathbf{a}^{\mathsf T}
+T
+\mathbf{b}.
+\label{eq:axis_correlation_tensor_form}
+\end{equation}
+
+The correlation tensor therefore determines the expectation value associated with
+any pair of local Pauli measurement directions.
+
+Experimentally, measurements along arbitrary axes can be realized by applying
+appropriate local polarization transformations before a fixed polarization
+analysis stage. This provides the connection between the abstract operator
+description and the wave-plate and polarization-controller settings used in the
+laboratory.
+
+
+%========================================================
+% SECTION 1.6 — Quantitative Characterization of the State
+%========================================================
+
+\section{Quantitative Characterization of the State}
+\label{sec:quantitative_state_characterization}
+
+No single scalar quantity completely characterizes a bipartite quantum state.
+Different measures are therefore used in this work to distinguish mixedness,
+proximity to a target state, entanglement, and Bell nonlocality.
+
+
+%--------------------------------------------------------
+% Subsection 1.6.1 — Purity
+%--------------------------------------------------------
+
+\subsection{Purity}
+\label{subsec:purity}
+
+The purity of a density operator is defined as:
+
+\begin{equation}
+\gamma(\rho)
+=
+\mathrm{Tr}(\rho^2).
+\label{eq:purity_definition}
+\end{equation}
+
+If \( \rho \) acts on a \(d\)-dimensional Hilbert space,
+
+\begin{equation}
+\frac{1}{d}
+\leq
+\gamma(\rho)
+\leq
+1.
+\label{eq:purity_bounds}
+\end{equation}
+
+The upper bound corresponds to a pure state, whereas the lower bound is attained
+by the maximally mixed state \(I_d/d\).
+
+If
+
+\[
+\rho
+=
+\sum_i
+\lambda_i
+|i\rangle\langle i|
+\]
+
+is the spectral decomposition of the state, then
+
+\begin{equation}
+\gamma(\rho)
+=
+\sum_i \lambda_i^2.
+\label{eq:purity_spectral_decomposition}
+\end{equation}
+
+For a single qubit written in Bloch form,
+Eq.~\eqref{eq:bloch_density_representation} gives
+
+\begin{equation}
+\gamma(\rho)
+=
+\frac{1+\|\mathbf{r}\|^2}{2}.
+\label{eq:single_qubit_purity_bloch}
+\end{equation}
+
+Purity quantifies mixedness but does not identify its physical origin. A mixed
+reduced state may result, for example, from tracing over an entangled subsystem,
+whereas a mixed global state may arise from statistical averaging or interaction
+with unresolved degrees of freedom.
+
+
+%--------------------------------------------------------
+% Subsection 1.6.2 — Fidelity
+%--------------------------------------------------------
+
+\subsection{Fidelity}
+\label{subsec:fidelity}
+
+Throughout this work, fidelity is defined using the squared Uhlmann convention, for two states \( \rho \) and \( \sigma \) it is given by
+
+\begin{equation}
+F(\rho,\sigma)
+=
+\left[
+\mathrm{Tr}
+\left(
+\sqrt{
+\sqrt{\rho}\,
+\sigma\,
+\sqrt{\rho}
+}
+\right)
+\right]^2.
+\label{eq:fidelity_general_definition}
+\end{equation}
+
+When the reference state is pure,
+\( \sigma=|\phi\rangle\langle\phi| \), the expression simplifies to
+
+\begin{equation}
+F(\rho,|\phi\rangle)
+=
+\langle\phi|\rho|\phi\rangle.
+\label{eq:fidelity_pure_reference}
+\end{equation}
+
+In this thesis the principal reference is \( |\Psi^+\rangle \), so that
+
+\begin{equation}
+F_{\Psi^+}
+=
+\langle\Psi^+|\rho|\Psi^+\rangle.
+\label{eq:fidelity_psi_plus_definition}
+\end{equation}
+
+Fidelity measures similarity to a chosen target and must therefore not be
+interpreted directly as an entanglement measure. A local unitary transformation
+can substantially change \(F_{\Psi^+}\) while leaving the amount of entanglement
+unchanged.
+
+
+%--------------------------------------------------------
+% Subsection 1.6.3 — Concurrence and Tangle
+%--------------------------------------------------------
+
+\subsection{Concurrence and Tangle}
+\label{subsec:concurrence_tangle}
+
+For two-qubit systems, concurrence provides a standard quantitative measure of
+bipartite entanglement.
+
+For a pure state
+
+\[
+|\psi\rangle
+=
+a|00\rangle
++b|01\rangle
++c|10\rangle
++d|11\rangle,
+\]
+
+the concurrence is
+
+\begin{equation}
+C(|\psi\rangle)
+=
+2|ad-bc|.
+\label{eq:pure_state_concurrence}
+\end{equation}
+
+It satisfies
+
+\[
+0\leq C\leq1,
+\]
+
+with \(C=0\) for separable pure states and \(C=1\) for maximally entangled
+two-qubit states.
+
+For pure bipartite states, concurrence can also be expressed through either
+reduced density operator,
+
+\begin{equation}
+C(|\psi\rangle)
+=
+2\sqrt{\det\rho_A}
+=
+\sqrt{
+2\left[
+1-\mathrm{Tr}(\rho_A^2)
+\right]
+}.
+\label{eq:concurrence_reduced_density_relation}
+\end{equation}
+
+For a mixed two-qubit state, concurrence is defined through the Wootters
+spin-flip construction~\cite{wootters_entanglement_1998}. Defining
+
+\begin{equation}
+\widetilde{\rho}
+=
+(\sigma_y\otimes\sigma_y)
+\rho^*
+(\sigma_y\otimes\sigma_y),
+\label{eq:spin_flipped_density_matrix}
+\end{equation}
+
+and denoting by
+\( \lambda_1\geq\lambda_2\geq\lambda_3\geq\lambda_4 \)
+the square roots of the eigenvalues of
+\( \rho\widetilde{\rho} \), one obtains
+
+\begin{equation}
+C(\rho)
+=
+\max
+\left(
+0,\,
+\lambda_1-\lambda_2-\lambda_3-\lambda_4
+\right).
+\label{eq:mixed_state_concurrence}
+\end{equation}
+
+The associated tangle is
+
+\begin{equation}
+\tau(\rho)
+=
+C(\rho)^2.
+\label{eq:tangle_definition}
+\end{equation}
+
+For the Bell state,
+
+\[
+C(|\Psi^+\rangle)=1,
+\qquad
+\tau(|\Psi^+\rangle)=1.
+\]
+
+Both quantities are invariant under local unitary transformations.
+
+
+%--------------------------------------------------------
+% Subsection 1.6.4 — Entanglement of Formation
+%--------------------------------------------------------
+
+\subsection{Entanglement of Formation}
+\label{subsec:entanglement_of_formation}
+
+The entanglement of formation provides a resource-oriented measure of bipartite
+entanglement. For two qubits, it can be expressed analytically in terms of the
+concurrence~\cite{wootters_entanglement_1998}:
+
+\begin{equation}
+E_F(\rho)
+=
+h
+\left(
+\frac{
+1+\sqrt{1-C(\rho)^2}
+}{2}
+\right),
+\label{eq:eof_definition}
+\end{equation}
+
+where
+
+\begin{equation}
+h(x)
+=
+-x\log_2x
+-
+(1-x)\log_2(1-x)
+\label{eq:binary_entropy_function}
+\end{equation}
+
+is the binary entropy.
+
+For two-qubit states,
+
+\[
+0\leq E_F\leq1,
+\]
+
+with \(E_F=0\) for separable states and \(E_F=1\) for maximally entangled
+Bell states.
+
+Because \(E_F\) depends nonlinearly on concurrence, it provides information
+complementary to \(C\) and \(\tau\), while preserving the same ordering of
+two-qubit entanglement.
+
+
+%========================================================
+% SECTION 1.7 — Bell Inequalities and CHSH Nonlocality
+%========================================================
+
+\section{Bell Inequalities and CHSH Nonlocality}
+\label{sec:chsh_nonlocality}
+
+Entanglement does not exhaust the possible manifestations of nonclassical
+correlations. Bell inequalities provide a stronger test by asking whether the
+observed correlations can be reproduced by a local hidden-variable theory
+~\cite{bell_epr_paradox_1964,clauser_horne_shimony_holt_1969}.
+
+In a local hidden-variable description, measurement outcomes on the two arms are
+represented by functions
+
+\[
+A(\mathbf{a},\lambda)\in\{-1,+1\},
+\qquad
+B(\mathbf{b},\lambda)\in\{-1,+1\},
+\]
+
+where \( \lambda \) denotes shared hidden information and
+\( \mathbf{a} \), \( \mathbf{b} \) are the local measurement settings.
+
+The corresponding correlation function is
+
+\begin{equation}
+E(\mathbf{a},\mathbf{b})
+=
+\int
+d\lambda\,
+p(\lambda)\,
+A(\mathbf{a},\lambda)
+B(\mathbf{b},\lambda).
+\label{eq:local_hidden_variable_correlation}
+\end{equation}
+
+The Clauser--Horne--Shimony--Holt form of Bell's inequality considers two
+measurement settings on each side. The CHSH parameter is
+
+\begin{equation}
+S
+=
+E(\mathbf{a}_1,\mathbf{b}_1)
++
+E(\mathbf{a}_1,\mathbf{b}_2)
++
+E(\mathbf{a}_2,\mathbf{b}_1)
+-
+E(\mathbf{a}_2,\mathbf{b}_2).
+\label{eq:chsh_parameter}
+\end{equation}
+
+Any local hidden-variable theory satisfies
+
+\begin{equation}
+|S|\leq2.
+\label{eq:chsh_classical_bound}
+\end{equation}
+
+Quantum mechanics allows this bound to be exceeded, while respecting the
+Tsirelson bound
+
+\begin{equation}
+|S|\leq2\sqrt{2}.
+\label{eq:tsirelson_bound}
+\end{equation}
+
+Using the correlation tensor,
+Eq.~\eqref{eq:chsh_parameter} becomes
+
+\begin{equation}
+S
+=
+\mathbf{a}_1^{\mathsf T}T\mathbf{b}_1
++
+\mathbf{a}_1^{\mathsf T}T\mathbf{b}_2
++
+\mathbf{a}_2^{\mathsf T}T\mathbf{b}_1
+-
+\mathbf{a}_2^{\mathsf T}T\mathbf{b}_2.
+\label{eq:chsh_tensor_form}
+\end{equation}
+
+For a given two-qubit state, the maximal CHSH value can be obtained directly from
+the tensor~\cite{horodecki_chsh_1995}. Defining
+
+\begin{equation}
+M
+=
+T^{\mathsf T}T,
+\label{eq:horodecki_matrix}
+\end{equation}
+
+and denoting by \(m_1\) and \(m_2\) the two largest eigenvalues of \(M\), one has
+
+\begin{equation}
+S_{\max}
+=
+2\sqrt{m_1+m_2}.
+\label{eq:chsh_smax_horodecki}
+\end{equation}
+
+The distinction between \(S\) and \(S_{\max}\) is particularly important in this
+work. The first quantity corresponds to a fixed set of experimental measurement
+axes and can change when the state undergoes a coherent polarization rotation.
+The second is optimized over all local measurement directions and characterizes
+the maximum CHSH violation supported by the state itself.
+
+Entanglement and CHSH nonlocality are therefore related but distinct properties.
+In particular, an entangled mixed state need not violate the CHSH inequality.
+
+
+%========================================================
+% SECTION 1.8 — Complementarity of the State Metrics
+%========================================================
+
+\section{Complementarity of the State Metrics}
+\label{sec:complementarity_state_metrics}
+
+The quantities introduced in the previous sections characterize different
+properties of the same density operator and should therefore be interpreted
+jointly.
+
+Purity quantifies whether the state is pure or mixed but does not measure
+entanglement. Fidelity measures the overlap with a selected reference state and
+can change under coherent local transformations. Concurrence, tangle, and
+entanglement of formation quantify bipartite entanglement, whereas the CHSH
+parameter tests whether the observed correlations are incompatible with a local
+hidden-variable description.
+
+This distinction is particularly relevant for optical-fiber propagation. A
+coherent polarization transformation may alter the correlations measured along
+fixed laboratory axes and reduce fidelity with respect to the initial Bell state
+without changing purity or entanglement. By contrast, unresolved statistical
+fluctuations or coupling between polarization and unobserved degrees of freedom
+may produce genuine mixedness and a reduction of concurrence.
+
+The simultaneous evaluation of several metrics therefore makes it possible to
+distinguish changes caused by coherent state rotation from those associated with
+decoherence and entanglement degradation.
+
+These concepts provide the mathematical basis for Chapter~\ref{ch:02_fiber_channel_modeling},
+where progressively more detailed models of optical-fiber propagation are
+introduced and their effects on the quantities defined here are derived.
+
+
+%========================================================
+% END OF CHAPTER
+%========================================================

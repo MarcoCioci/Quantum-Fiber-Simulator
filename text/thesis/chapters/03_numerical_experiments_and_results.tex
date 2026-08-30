@@ -1,0 +1,137 @@
+%========================================================
+% CHAPTER 3 — Numerical Experiments and Results
+%========================================================
+
+The theoretical framework developed in the previous chapters is implemented and
+investigated numerically in this chapter. The objective is to move from the
+analytical description of polarization-entangled photon propagation to a
+computational framework capable of quantifying how physically relevant fiber and
+source parameters affect the distributed quantum state.
+
+The numerical analysis is organized around a progressive increase in physical
+complexity. Controlled limiting cases are considered first in order to validate the
+implementation against analytical predictions. The study is then extended to
+frequency-dependent birefringent propagation, two-arm polarization-mode
+dispersion, and statistical ensembles of randomly birefringent fibers. Particular
+attention is given to the dependence of the output state on quantities that can be
+related directly to the physical system, including photon bandwidth, differential
+group delay, fiber length, birefringence statistics, principal-state orientations,
+and the spectral correlations of the photon pair.
+
+The purpose of the numerical experiments is therefore not limited to verifying the
+correctness of the implementation. The simulator is used as an analysis tool to
+identify the physical regimes in which fiber propagation produces negligible,
+partial, or substantial degradation of polarization entanglement, and to determine
+how these regimes are reflected in experimentally accessible quantities. The
+output states are characterized through polarization correlations, reduced density
+operators, purity, fidelity, concurrence, and Bell-nonlocality indicators. When the
+fiber model is stochastic, these quantities are treated statistically over an
+ensemble of fiber realizations rather than solely through their mean values.
+
+A further objective is to establish a direct connection between the numerical model
+and the experimental investigation developed later in this work. Whenever
+possible, the numerical experiments are therefore formulated in terms of parameters
+that can either be controlled or estimated experimentally. This allows the
+simulator to provide reference predictions for the interpretation of measured
+single-photon and coincidence statistics and, more generally, to investigate the
+range of fiber and source conditions compatible with the preservation of useful
+polarization entanglement.
+
+%--------------------------------------------------------
+% MATLAB computational framework
+%--------------------------------------------------------
+
+\section{Computational Framework and MATLAB Library}
+\label{sec:computational_framework_matlab}
+
+All numerical models presented in this chapter are implemented in MATLAB. This
+choice allows the simulator to be integrated directly into the pre-existing
+computational codebase used throughout the project, avoiding the introduction of a
+separate software environment and facilitating maintenance, validation, and future
+extensions of the framework.
+
+MATLAB is also particularly well suited to the mathematical structure of the
+problem considered in this work. Quantum states, density operators, Jones
+operators, Pauli observables, tensor products, and frequency-dependent propagation
+matrices are represented directly through complex vectors and matrices. As a
+consequence, the numerical objects used in the implementation closely reproduce
+both the notation and the algebraic structure of their theoretical counterparts.
+For example, single-photon polarization operators are represented by
+\(2\times2\) matrices, bipartite states and operators by vectors and matrices in
+\(\mathbb{C}^{2}\otimes\mathbb{C}^{2}\), and local bipartite transformations are
+constructed explicitly through tensor products.
+
+The resulting implementation is organized as a modular MATLAB library rather than
+as a collection of experiment-specific scripts. Reusable routines are provided for
+state preparation, operator construction, local and frequency-dependent
+propagation, quantum-channel application, partial traces, correlation evaluation,
+state metrics, spectral integration, segmented-fiber construction, statistical
+sampling, and numerical validation. Higher-level numerical experiments then
+combine these validated components without redefining the underlying mathematical
+operations.
+
+This architecture provides a direct correspondence between the theoretical model
+and its computational realization:
+
+\[
+\begin{array}{c}
+\text{Physical and Mathematical Model}
+\\
+\downarrow
+\\
+\text{Reusable MATLAB Operators and State Routines}
+\\
+\downarrow
+\\
+\text{Frequency-Resolved Fiber Propagation}
+\\
+\downarrow
+\\
+\text{Spectral and Statistical Averaging}
+\\
+\downarrow
+\\
+\text{Density Operator and Observable Evaluation}
+\\
+\downarrow
+\\
+\text{Numerical Experiments and Experimental Predictions}.
+\end{array}
+\]
+
+Separating the reusable numerical library from the individual experiment
+workflows has two main advantages. First, the same implementation of each
+mathematical operation is used throughout the thesis, reducing duplication and
+making numerical consistency easier to verify. Second, progressively more complex
+fiber models can be constructed by composition of previously validated components,
+following the same hierarchical strategy adopted in the theoretical development.
+
+The numerical study presented in the following sections therefore proceeds from
+controlled validation cases toward increasingly realistic and statistically
+characterized models of fiber propagation.
+
+%--------------------------------------------------------
+% Chapter sections
+%--------------------------------------------------------
+% \section{Numerical Methodology Validation}
+% \label{sec:03_1_numerical_methodology_validation}
+% \input{chapters/numerical_experiments/03_1_numerical_methodology_validation}
+
+\section{Experiment 1: Single-Segment PMD and the Bandwidth--DGD Regime}
+\label{sec:experiment_1_single_segment_pmd}
+\input{chapters/numerical_experiments/03_1_single_segment_pmd}
+
+
+\section{Experiment 2: Two-Arm PMD and Spectral Correlations}
+\label{sec:experiment_2_two_arm_pmd_spectral_correlations}
+\input{chapters/numerical_experiments/03_2_two_arm_pmd_spectral_correlations}
+
+% \input{chapters/numerical_experiments/03_4_statistical_segmented_fiber}
+
+% \input{chapters/numerical_experiments/03_5_fiber_parameter_entanglement_maps}
+
+% \input{chapters/numerical_experiments/03_6_pmd_compensation_robustness}
+
+% \input{chapters/numerical_experiments/03_7_effective_model_comparison}
+
+% \input{chapters/numerical_experiments/03_8_experimental_implications}

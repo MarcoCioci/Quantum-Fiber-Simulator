@@ -1,0 +1,1585 @@
+%========================================================
+% CHAPTER 5 — Effective Fiber Models
+%========================================================
+
+\chapter{Effective Fiber Models}
+\label{ch:effective_fiber_models}
+
+%========================================================
+% Section 5.1 — Motivation for Effective Fiber Models
+%========================================================
+
+\section{Motivation for Effective Fiber Models}
+\label{sec:motivation_effective_fiber_models}
+
+The previous chapters established the mathematical framework required to describe bipartite polarization states, local unitary propagation, correlation measurements, quantum channels, and quantitative state metrics. Within that framework, fiber propagation was initially modeled through analytically controlled transformations, including coherent phase shifts, statistical phase ensembles, and idealized depolarizing maps.
+
+\medskip
+
+These models provide a necessary validation baseline, but they do not yet fully capture the physical structure of a fiber-based quantum communication link. In the experimental scenario considered in this work, the two photons propagate through two distinct optical arms. Each arm acts locally on the polarization degree of freedom of the corresponding photon and may introduce both coherent and incoherent perturbations. Consequently, a physically meaningful fiber model must preserve the bipartite structure of the system while allowing independent evolution and degradation mechanisms on subsystems \( A \) and \( B \).
+
+\medskip
+
+The objective of the present chapter is therefore to construct effective fiber models connecting the abstract quantum-channel formalism introduced previously with the physical interpretation of entangled-photon propagation in optical fibers. The term ``effective'' is used deliberately: the goal is not to reproduce the full electromagnetic propagation problem inside the fiber, including all microscopic temporal and spectral degrees of freedom, but rather to develop reduced models describing the observable action of the fiber on the polarization state.
+
+\medskip
+
+\paragraph{From coherent propagation to effective noisy evolution.}
+
+In the ideal coherent regime, each fiber arm is represented by a local unitary transformation acting on the corresponding polarization qubit. The bipartite state therefore evolves according to
+
+\begin{equation}
+\rho_{AB}^{\mathrm{out}}
+=
+\left(
+U_A \otimes U_B
+\right)
+\rho_{AB}^{\mathrm{in}}
+\left(
+U_A^{\dagger} \otimes U_B^{\dagger}
+\right).
+\label{eq:local_unitary_fiber_model_ch5}
+\end{equation}
+
+In this limit, the evolution preserves purity and entanglement, and the fiber acts as a coherent optical element producing deterministic polarization rotations and relative phase shifts.
+
+\medskip
+
+Real optical fibers, however, may introduce additional propagation effects that cannot be represented solely through fixed polarization rotations. Unresolved temporal, spectral, and environmental fluctuations may effectively reduce polarization coherence when only polarization observables are retained in the description. At the level of the reduced polarization state, these effects appear as non-unitary dynamics.
+
+\medskip
+
+Within the density-operator formalism introduced in Section~\ref{sec:quantum_channels_and_depolarization}, such mechanisms are described through effective local quantum channels acting independently on the two subsystems:
+
+\begin{equation}
+\rho_{AB}^{\mathrm{out}}
+=
+\left(
+\mathcal{E}_A
+\otimes
+\mathcal{E}_B
+\right)
+\left(
+\rho_{AB}^{\mathrm{in}}
+\right),
+\label{eq:local_channel_fiber_model}
+\end{equation}
+
+where \( \mathcal{E}_A \) and \( \mathcal{E}_B \) describe the effective action of the two fiber arms.
+
+\medskip
+
+\paragraph{Entanglement sensitivity to local degradation.}
+
+Entanglement is encoded in the nonlocal correlations of the joint bipartite state \( \rho_{AB} \), rather than in the properties of either subsystem separately. Consequently, even moderate local perturbations acting on a single propagation arm may significantly degrade global quantum correlations.
+
+\medskip
+
+This aspect is particularly relevant for quantum communication systems because many protocols rely directly on the preservation of bipartite entanglement. Bell-state fidelity, concurrence, correlation tensors, and CHSH nonlocality may all degrade even when local polarization statistics remain apparently reasonable.
+
+\medskip
+
+For this reason, the physically relevant object is the full bipartite density operator together with its associated correlation and entanglement structure, rather than the reduced states \( \rho_A \) and \( \rho_B \) alone.
+
+\medskip
+
+\paragraph{Modeling strategy of the present chapter.}
+
+The construction developed in this chapter proceeds progressively. First, local depolarizing channels are introduced as effective models of independent polarization degradation in the two fiber arms. These channels are then combined with the coherent phase-evolution model developed previously, leading to composite effective fiber channels incorporating both residual unitary evolution and incoherent depolarization.
+
+\medskip
+
+This progression establishes the bridge between the analytically controlled models introduced previously and the more physically meaningful effective propagation models studied later in the numerical experiments.
+
+%========================================================
+% Section 5.2 — Local Depolarizing Fiber Channels
+%========================================================
+
+\section{Local Depolarizing Fiber Channels}
+\label{sec:local_depolarizing_fiber_channels}
+
+The global depolarizing model introduced in Section \ref{sec:quantum_channels_and_depolarization} provides a useful baseline for studying the degradation of bipartite quantum correlations. However, that model acts collectively on the full two-qubit state and does not explicitly distinguish the physical propagation of the two photons through separate optical fibers.
+
+\medskip
+
+In realistic fiber-based quantum communication systems, the two photons propagate through distinct optical paths. As a consequence, polarization degradation may occur independently in the two propagation arms. This motivates the introduction of local depolarizing channels acting separately on subsystems \( A \) and \( B \).
+
+\medskip
+
+\paragraph{Effective local channel model.}
+
+The effective evolution is modeled through independent local channels acting on the two subsystems:
+
+\begin{equation}
+\rho_{AB}^{\mathrm{out}}
+=
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left(
+\rho_{AB}^{\mathrm{in}}
+\right),
+\label{eq:two_arm_local_channel_model}
+\end{equation}
+
+where \( \mathcal{D}_{p_A} \) and \( \mathcal{D}_{p_B} \) denote single-qubit depolarizing channels characterized by independent depolarization parameters \( p_A \) and \( p_B \).
+
+\medskip
+
+It is important to emphasize that the local channels act on the full bipartite density operator \( \rho_{AB} \), rather than independently on the reduced states \( \rho_A \) and \( \rho_B \).
+
+\medskip
+
+Although the physical propagation occurs locally in each arm, the relevant quantum correlations are encoded in the nonlocal structure of the joint density operator. In particular, entanglement and bipartite correlation tensors cannot, in general, be reconstructed from the reduced density operators alone.
+
+\medskip
+
+For maximally entangled Bell states, for example, the reduced states remain maximally mixed
+(\( \rho_A = \rho_B = I/2 \)),
+independently of the entanglement structure of the global state. Consequently, evolving only the reduced density operators would fail to capture the degradation of bipartite quantum correlations induced by local propagation noise.
+
+\medskip
+
+The tensor-product channel structure in Eq.~\eqref{eq:two_arm_local_channel_model} therefore preserves the full operator structure of the bipartite state while still representing physically local propagation effects.
+
+\medskip
+
+For this reason, the action of a local channel on the bipartite state must be understood as an operator-map action on one tensor factor, not as an ordinary matrix multiplication. If a bipartite operator is written as a linear combination of product operators,
+
+\[
+X_{AB}
+=
+\sum_k
+A_k\otimes B_k.
+\]
+
+Using the single-qubit operator-map form of the depolarizing channel, a channel acting locally on subsystem \( A \) is applied as:
+
+\begin{equation}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{I}
+\right)
+(X_{AB})
+=
+\sum_k
+\mathcal{D}_{p_A}(A_k)
+\otimes
+B_k.
+\label{eq:local_channel_operator_action}
+\end{equation}
+
+This representation is always possible in finite-dimensional bipartite systems, since product operators span the composite operator space.
+
+\medskip
+
+Using the single-qubit operator-map form of the depolarizing channel,
+
+\begin{equation}
+\mathcal{D}_{p}(X)
+=
+(1-p)X
++
+p\frac{I_2}{2}
+\operatorname{Tr}(X).
+\label{eq:single_qubit_depolarizing_operator_map}
+\end{equation}
+
+one obtains the single-arm action
+
+\begin{equation}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{I}
+\right)
+(\rho_{AB})
+=
+(1-p_A)\rho_{AB}
++
+p_A
+\left(
+\frac{I_2}{2}
+\otimes
+\rho_B
+\right),
+\label{eq:single_arm_depolarization_A}
+\end{equation}
+
+where
+\(
+\rho_B 
+=
+\mathrm{Tr}_A(\rho_{AB}
+).
+\)
+
+\medskip
+
+Analogously,
+
+\begin{equation}
+\left(
+\mathcal{I}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+(\rho_{AB})
+=
+(1-p_B)\rho_{AB}
++
+p_B
+\left(
+\rho_A
+\otimes
+\frac{I_2}{2}
+\right),
+\label{eq:single_arm_depolarization_B}
+\end{equation}
+
+with
+\(
+\rho_A
+=
+\mathrm{Tr}_B(\rho_{AB}).
+\)
+
+\medskip 
+
+Applying the two single-arm channels in sequence gives
+
+\begin{align}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+(\rho_{AB})
+&=
+(1-p_A)(1-p_B)\rho_{AB}
+\nonumber
+\\
+&\quad
++
+p_A(1-p_B)
+\left(
+\frac{I_2}{2}
+\otimes
+\rho_B
+\right)
+\nonumber
+\\
+&\quad
++
+(1-p_A)p_B
+\left(
+\rho_A
+\otimes
+\frac{I_2}{2}
+\right)
+\nonumber
+\\
+&\quad
++
+p_Ap_B
+\left(
+\frac{I_2}{2}
+\otimes
+\frac{I_2}{2}
+\right).
+\label{eq:two_arm_depolarization_explicit}
+\end{align}
+
+This expression makes explicit that local depolarization is local in its physical action, but it is still applied to the full joint state. The reduced density operators appear only because complete depolarization of one subsystem replaces that subsystem with \( I_2/2 \) while preserving the marginal state of the other subsystem.
+
+\medskip
+
+This type of bipartite local channel has been studied extensively in the theory of composite quantum channels, including the characterization of positivity, complete positivity, entanglement-breaking, and entanglement-annihilating regimes for tensor products of depolarizing maps~\cite{lami_bipartite_depolarizing_maps}.
+
+\medskip
+
+\paragraph{Single-qubit depolarizing action.}
+
+For a single-qubit density operator represented in Bloch form as
+\(
+\rho
+=
+\frac{1}{2}
+\left(
+I
++
+\mathbf{r}\cdot\boldsymbol{\sigma}
+\right),
+\)
+the depolarizing channel is modeled through
+
+\begin{equation}
+\mathcal{D}_{p}(\rho)
+=
+\frac{1}{2}
+\left(
+I
++
+(1-p)\,
+\mathbf{r}\cdot\boldsymbol{\sigma}
+\right).
+\label{eq:bloch_contraction_channel}
+\end{equation}
+
+\medskip
+
+As discussed previously, the depolarizing channel acts as a linear operator map on the space of density operators rather than as an ordinary matrix multiplication. In the Bloch representation, this action corresponds to an isotropic contraction of the polarization vector.
+
+\medskip
+
+Therefore, the depolarizing process cannot be interpreted simply as multiplication of the density operator by a scalar matrix factor. Instead, the channel replaces part of the operator structure by the maximally mixed contribution while preserving trace normalization.
+
+\medskip
+
+This operator-map structure becomes particularly important in the bipartite setting, where local depolarization acts on the full joint density operator and modifies the correlation structure of the composite state.
+
+\medskip
+
+The action of the channel therefore corresponds to an isotropic contraction of the Bloch vector:
+
+\[
+\mathbf{r}
+\rightarrow
+(1-p)\mathbf{r}.
+\]
+
+Consequently:
+
+\begin{itemize}
+
+\item \( p = 0 \) corresponds to ideal coherent propagation,
+
+\item \( 0 < p < 1 \) describes partial polarization degradation,
+
+\item \( p = 1 \) maps the state to the maximally mixed state \( I/2 \).
+
+\end{itemize}
+
+\medskip
+
+This representation provides a simple and analytically tractable effective description of polarization decoherence while preserving a direct geometric interpretation at the level of the Bloch sphere.
+
+\medskip
+
+\paragraph{Difference from global depolarization.}
+
+It is important to distinguish local two-arm depolarization from the global depolarizing model introduced previously.
+
+\medskip
+
+In the global model, the depolarizing map acts collectively on the full Hilbert space. For a \( d \)-dimensional system, the corresponding operator-map form is
+
+\begin{equation}
+\mathcal{D}_{p}^{(d)}(X)
+=
+(1-p)X
++
+p\frac{I_d}{d}
+\operatorname{Tr}(X).
+\label{eq:global_depolarizing_operator_map_d}
+\end{equation}
+
+For a normalized density operator \( \rho \), this reduces to
+
+\begin{equation}
+\mathcal{D}_{p}^{(d)}(\rho)
+=
+(1-p)\rho
++
+p\frac{I_d}{d}.
+\label{eq:global_depolarizing_density_map_d}
+\end{equation}
+
+In the two-qubit case considered here, \( d=4 \), so that
+
+\begin{equation}
+\rho
+\rightarrow
+(1-p)\rho
++
+\frac{p}{4}I_4.
+\label{eq:global_depolarization_reminder}
+\end{equation}
+
+Here the depolarization acts collectively on the full bipartite system.
+
+\medskip
+
+In contrast, the local model acts independently on the two physical propagation arms through the tensor-product channel
+
+\[
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}.
+\]
+
+Although both models produce suppression of quantum correlations and progressive entanglement degradation, they correspond to physically distinct propagation mechanisms.
+
+\medskip
+
+The local model is therefore more naturally aligned with the physical structure of fiber-based bipartite propagation, where each photon experiences an independent effective environment during transmission.
+
+\medskip
+
+\paragraph{Role in the modeling hierarchy.}
+
+The local depolarizing model constitutes the first effective fiber-channel model in which independent incoherent degradation mechanisms are explicitly associated with the two propagation arms.
+
+\medskip
+
+This construction prepares the introduction of more advanced effective models combining coherent phase evolution and local depolarization within a unified composite propagation channel.
+
+%========================================================
+% Section 5.3 — Correlation-Tensor Contraction Under Local Depolarization
+%========================================================
+
+\section{Correlation-Tensor Contraction Under Local Depolarization}
+\label{sec:local_depolarization_tensor_contraction}
+
+The local depolarizing model introduced in the previous sections has a direct and experimentally meaningful effect on the bipartite correlation structure of the propagated state. Since polarization correlations are represented through expectation values of Pauli-product observables, the correlation tensor provides the natural framework for describing how local fiber degradation modifies measurable quantities.
+
+\medskip
+
+The effective two-arm depolarizing channel is
+
+\begin{equation}
+\mathcal{E}_{p_A,p_B}
+=
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B},
+\label{eq:two_arm_depolarizing_channel}
+\end{equation}
+
+where \( \mathcal{D}_{p_A} \) and \( \mathcal{D}_{p_B} \) act independently on subsystems \( A \) and \( B \).
+
+\medskip
+
+The single-qubit depolarizing channel preserves the identity operator and contracts all traceless Pauli components isotropically:
+
+\begin{equation}
+\mathcal{D}_{p}(I)=I,
+\qquad
+\mathcal{D}_{p}(\sigma_i)
+=
+(1-p)\sigma_i,
+\qquad
+i\in\{x,y,z\}.
+\label{eq:single_qubit_depolarizing_pauli_action}
+\end{equation}
+
+Consequently, for a generic two-body Pauli product \( \sigma_i\otimes\sigma_j \), one obtains
+
+\begin{align}
+\mathcal{E}_{p_A,p_B}
+\left(
+\sigma_i\otimes\sigma_j
+\right)
+&=
+\mathcal{D}_{p_A}(\sigma_i)
+\otimes
+\mathcal{D}_{p_B}(\sigma_j)
+\nonumber
+\\
+&=
+(1-p_A)(1-p_B)
+\sigma_i\otimes\sigma_j.
+\label{eq:two_body_pauli_contraction}
+\end{align}
+
+\medskip
+
+It follows that all bipartite Pauli correlations are contracted by the common factor
+
+\begin{equation}
+\eta
+=
+(1-p_A)(1-p_B).
+\label{eq:two_arm_correlation_survival_factor}
+\end{equation}
+
+\medskip
+
+For a generic two-qubit state, the correlation tensor components are defined by
+
+\begin{equation}
+T_{ij}
+=
+\mathrm{Tr}
+\left(
+\rho_{AB}
+\sigma_i\otimes\sigma_j
+\right),
+\qquad
+i,j\in\{x,y,z\}.
+\end{equation}
+
+Using Eq.~\eqref{eq:two_body_pauli_contraction}, the output tensor satisfies
+
+\begin{equation}
+T_{ij}^{\mathrm{out}}
+=
+\eta
+T_{ij}^{\mathrm{in}},
+\qquad
+i,j\in\{x,y,z\}.
+\label{eq:correlation_tensor_component_contraction}
+\end{equation}
+
+Equivalently, in matrix form,
+
+\begin{equation}
+T_{\mathrm{out}}
+=
+\eta
+T_{\mathrm{in}}.
+\label{eq:correlation_tensor_contraction_law}
+\end{equation}
+
+\medskip
+
+The quantity \( \eta \) therefore represents the effective survival factor of bipartite polarization correlations under independent local depolarization in the two propagation arms.
+
+\medskip
+
+\paragraph{Physical interpretation.}
+
+The tensor-contraction law derived above provides a simple geometric interpretation of isotropic local depolarization. The local channels do not alter the structural form of the correlation tensor; instead, they uniformly reduce its magnitude.
+
+\medskip
+
+Physically, this means that local depolarization suppresses the strength of polarization correlations without introducing preferred directions in polarization space. Within the isotropic approximation adopted here, all two-body correlations are degraded uniformly.
+
+\medskip
+
+This behavior differs conceptually from coherent phase evolution. A local phase shift modifies the orientation of the correlation structure relative to a fixed measurement basis, while isotropic depolarization reduces the overall correlation amplitude.
+
+\medskip
+
+\paragraph{Operational consequences.}
+
+For arbitrary local measurement directions \( \mathbf{a} \) and \( \mathbf{b} \), the correlation function is
+
+\[
+E(\mathbf{a},\mathbf{b})
+=
+\mathbf{a}^{T}
+T
+\mathbf{b}.
+\]
+
+Using Eq.~\eqref{eq:correlation_tensor_contraction_law}, the corresponding output correlation function becomes
+
+\begin{equation}
+E_{\mathrm{out}}(\mathbf{a},\mathbf{b})
+=
+\eta
+E_{\mathrm{in}}(\mathbf{a},\mathbf{b}).
+\label{eq:arbitrary_axis_correlation_contraction}
+\end{equation}
+
+Therefore, within the isotropic local-depolarization model, every two-arm polarization correlation is suppressed by the same multiplicative factor \( \eta \).
+
+\medskip
+
+Since Bell-inequality parameters such as the CHSH quantity are constructed from linear combinations of these correlation functions, the same contraction factor directly affects the corresponding nonlocality indicators.
+
+\medskip
+
+The tensor-contraction law established in this section constitutes the key analytical ingredient for the composite phase--depolarization fiber model developed in the following section.
+
+%========================================================
+% Section 5.4 —  Composite Effective Fiber Channel
+%========================================================
+
+\section{Composite Effective Fiber Channel}
+\label{sec:composite_effective_fiber_channel}
+
+The models introduced in the previous sections describe two complementary physical mechanisms affecting polarization-entangled photon propagation in optical fibers.
+
+\medskip
+
+On one hand, coherent phase evolution modifies the orientation of the bipartite correlation structure through local unitary transformations. On the other hand, local depolarizing channels reduce the magnitude of polarization correlations through effective non-unitary dynamics.
+
+\medskip
+
+A realistic reduced fiber model should therefore combine both effects simultaneously. This motivates the introduction of a composite effective channel in which coherent phase evolution and local depolarization act together on the bipartite polarization state.
+
+\medskip
+
+%--------------------------------------------------------
+% 5.4.1 — Definition of the Composite Channel
+%--------------------------------------------------------
+
+\subsection{Definition of the Composite Channel}
+
+The effective evolution is modeled through the composition
+
+\begin{equation}
+\rho_{AB}^{\mathrm{out}}
+=
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left[
+U_{\theta}
+\rho_{AB}^{\mathrm{in}}
+U_{\theta}^{\dagger}
+\right],
+\label{eq:composite_fiber_channel}
+\end{equation}
+
+where
+
+\[
+U_{\theta}
+=
+U_A(\theta)
+\otimes
+U_B,
+\]
+
+with
+
+\[
+U_A(\theta)
+=
+\begin{pmatrix}
+1 & 0 \\
+0 & e^{i\theta}
+\end{pmatrix},
+\]
+
+and
+
+\[
+U_B
+=
+I.
+\]
+
+\medskip
+
+The parameter \( \theta \) represents the residual coherent phase shift accumulated during propagation, while the depolarization parameters \( p_A \) and \( p_B \) quantify the effective incoherent polarization degradation occurring independently in the two fiber arms.
+
+\medskip
+
+Using the operator-map representation of the local depolarizing channel introduced previously in~\eqref{eq:single_qubit_depolarizing_operator_map}, the composite channel admits the explicit form
+
+\begin{equation}
+\begin{aligned}
+\mathcal{E}_{\theta,p_A,p_B}
+\left(
+\rho_{AB}^{\mathrm{in}}
+\right)
+=
+&\,
+(1-p_A)(1-p_B)
+U_{\theta}
+\rho_{AB}^{\mathrm{in}}
+U_{\theta}^{\dagger}
+\\
+&+
+p_A(1-p_B)
+\left(
+\frac{I_2}{2}
+\otimes
+\mathrm{Tr}_A
+\left[
+U_{\theta}
+\rho_{AB}^{\mathrm{in}}
+U_{\theta}^{\dagger}
+\right]
+\right)
+\\
+&+
+(1-p_A)p_B
+\left(
+\mathrm{Tr}_B
+\left[
+U_{\theta}
+\rho_{AB}^{\mathrm{in}}
+U_{\theta}^{\dagger}
+\right]
+\otimes
+\frac{I_2}{2}
+\right)
+\\
+&+
+p_Ap_B
+\frac{I_4}{4}.
+\end{aligned}
+\label{eq:explicit_composite_channel_map}
+\end{equation}
+
+\medskip
+
+The first contribution preserves the coherently evolved bipartite state, while the remaining terms progressively replace local subsystems with maximally mixed states through independent depolarization processes acting on the two propagation arms.
+
+\medskip
+
+As demonstrated in Appendix~\ref{app:Commutation_local_phase_evolution_isotropic_local_depolarization}, isotropic local depolarization commutes with the reduced phase-evolution model considered here. Explicitly,
+
+\begin{equation}
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left[
+U_{\theta}
+\rho
+U_{\theta}^{\dagger}
+\right]
+=
+U_{\theta}
+\left[
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+(\rho)
+\right]
+U_{\theta}^{\dagger}.
+\label{eq:explicit_channel_commutation}
+\end{equation}
+
+Therefore, within the isotropic approximation adopted in this work, the ordering of the coherent and incoherent contributions is not relevant.
+
+\medskip
+
+This commutation property is not expected to hold in general for arbitrary noise models. In particular, anisotropic polarization degradation, axis-dependent decoherence mechanisms, or dynamically varying local fiber transformations may break the commutation relation between coherent evolution and non-unitary dynamics.
+
+\medskip
+
+In such cases, the ordering of successive channel contributions becomes physically relevant, and the propagation may require a segmented or infinitesimal description in which coherent and incoherent effects are applied sequentially along the fiber evolution.
+
+\medskip
+
+The isotropic approximation adopted here therefore represents a simplified effective regime in which the analytical structure of the model remains tractable while preserving the essential interplay between coherent phase evolution and bipartite correlation degradation.
+
+\medskip
+
+%--------------------------------------------------------
+% 5.4.2 — Correlation Tensor of the Composite Model
+%--------------------------------------------------------
+
+\subsection{Correlation Tensor of the Composite Model}
+
+For the phase-evolved Bell state
+
+\begin{equation}
+|\psi(\theta)\rangle
+=
+\frac{1}{\sqrt{2}}
+\left(
+|01\rangle
++
+e^{i\theta}|10\rangle
+\right),
+\label{eq:composite_phase_bell_state}
+\end{equation}
+
+the correlation tensor obtained previously is
+
+\begin{equation}
+T(\theta)
+=
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0 \\
+\sin\theta & \cos\theta & 0 \\
+0 & 0 & -1
+\end{pmatrix}.
+\label{eq:composite_phase_tensor}
+\end{equation}
+
+Using the tensor-contraction law derived in Section~\ref{sec:local_depolarization_tensor_contraction}, the output tensor under local two-arm depolarization becomes
+
+\begin{equation}
+T_{\mathrm{out}}(\theta,p_A,p_B)
+=
+\eta
+T(\theta),
+\qquad
+\eta=(1-p_A)(1-p_B).
+\label{eq:composite_tensor_contraction}
+\end{equation}
+
+Explicitly,
+
+\begin{equation}
+T_{\mathrm{out}}(\theta,p_A,p_B)
+=
+\eta
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0 \\
+\sin\theta & \cos\theta & 0 \\
+0 & 0 & -1
+\end{pmatrix}.
+\label{eq:explicit_composite_tensor}
+\end{equation}
+
+Therefore,
+
+\begin{align}
+T_{xx}^{\mathrm{out}} &= \eta\cos\theta, \\
+T_{xy}^{\mathrm{out}} &= -\eta\sin\theta, \\
+T_{yx}^{\mathrm{out}} &= \eta\sin\theta, \\
+T_{yy}^{\mathrm{out}} &= \eta\cos\theta, \\
+T_{zz}^{\mathrm{out}} &= -\eta.
+\end{align}
+
+All remaining tensor components vanish within the reduced phase model considered here.
+
+\medskip
+
+Equation~\eqref{eq:explicit_composite_tensor} separates clearly the coherent and incoherent contributions of the effective fiber channel. The phase parameter \( \theta \) rotates the transverse \( xy \)-correlation structure, while the depolarization factor \( \eta \) contracts the magnitude of the full bipartite tensor uniformly.
+
+\medskip
+
+Thus, coherent phase evolution changes the orientation of the polarization correlations, whereas local depolarization suppresses their amplitude.
+
+\medskip
+
+%--------------------------------------------------------
+% 5.4.3 — State Metrics Under the Composite Channel
+%--------------------------------------------------------
+
+\subsection{State Metrics Under the Composite Channel}
+
+The composite channel introduced above allows the simultaneous study of coherent phase mismatch and genuine non-unitary correlation degradation through quantitative state metrics.
+
+\medskip
+
+\paragraph{Purity.}
+
+For the composite phase--depolarization model, the global purity becomes
+
+\begin{equation}
+\gamma_{AB}
+=
+\mathrm{Tr}
+\left(
+\rho_{AB}^{2}
+\right)
+=
+\frac{1+3\eta^{2}}{4},
+\label{eq:composite_channel_purity}
+\end{equation}
+
+where
+
+\[
+\eta=(1-p_A)(1-p_B).
+\]
+
+\medskip
+
+The purity depends only on the depolarization strength and is independent of the phase parameter \( \theta \). This reflects the fact that coherent unitary evolution preserves the eigenvalue spectrum of the density operator, while depolarization introduces genuine mixedness.
+
+\medskip
+
+For maximally entangled Bell-state inputs, the reduced density operators remain maximally mixed:
+
+\begin{equation}
+\rho_A
+=
+\rho_B
+=
+\frac{I}{2},
+\end{equation}
+
+so that
+
+\begin{equation}
+\gamma_A
+=
+\gamma_B
+=
+\frac{1}{2}.
+\end{equation}
+
+\medskip
+
+\paragraph{Bell-state fidelity.}
+
+The fidelity with respect to the reference Bell state \( |\Psi^{+}\rangle \) becomes
+
+\begin{equation}
+F_{\Psi^{+}}
+=
+\frac{1-\eta}{4}
++
+\eta
+\frac{1+\cos\theta}{2},
+\label{eq:composite_channel_fidelity}
+\end{equation}
+
+\medskip
+
+The first contribution originates from the isotropic mixed component introduced by local depolarization, while the second term corresponds to the coherent overlap of the phase-evolved Bell state with the chosen Bell reference basis.
+
+\medskip
+
+The phase parameter \( \theta \) modifies the relative orientation of the state with respect to the reference Bell basis and may therefore reduce fidelity even in the absence of entanglement degradation. In contrast, the depolarization factor \( \eta \) reduces the strength of the bipartite quantum correlations themselves.
+
+\medskip
+
+Consequently, reduced Bell-state fidelity does not necessarily imply reduced entanglement.
+
+\paragraph{Concurrence.}
+
+For the locally depolarized Bell-state family considered here, the concurrence is
+
+\begin{equation}
+C
+=
+\max
+\left[
+0,
+\frac{3\eta-1}{2}
+\right].
+\label{eq:composite_channel_concurrence}
+\end{equation}
+
+The concurrence is independent of the phase parameter \( \theta \), since local unitary transformations do not modify entanglement.
+
+\medskip
+
+Therefore, coherent phase evolution changes the observed correlation structure while preserving bipartite entanglement, whereas local depolarization produces genuine entanglement degradation.
+
+\medskip
+
+Entanglement disappears when
+
+\begin{equation}
+\eta
+=
+\frac{1}{3}.
+\label{eq:entanglement_threshold_eta}
+\end{equation}
+
+For symmetric local depolarization,
+
+\[
+p_A=p_B=p,
+\]
+
+this condition becomes
+
+\begin{equation}
+(1-p)^2
+=
+\frac{1}{3},
+\end{equation}
+
+which gives
+
+\begin{equation}
+p
+=
+1-\frac{1}{\sqrt{3}}
+\approx
+0.423.
+\end{equation}
+
+\medskip
+
+\paragraph{CHSH nonlocality.}
+
+Since arbitrary-axis correlation functions scale according to
+
+\[
+E_{\mathrm{out}}
+=
+\eta
+E_{\mathrm{in}},
+\]
+
+the maximal CHSH parameter also contracts linearly:
+
+\begin{equation}
+S_{\max}^{\mathrm{out}}
+=
+\eta
+S_{\max}^{\mathrm{in}}.
+\label{eq:composite_channel_chsh}
+\end{equation}
+
+For a maximally entangled Bell state,
+
+\[
+S_{\max}^{\mathrm{in}}
+=
+2\sqrt{2},
+\]
+
+so that
+
+\begin{equation}
+S_{\max}^{\mathrm{out}}
+=
+2\sqrt{2}\,\eta.
+\end{equation}
+
+Bell-inequality violation requires
+
+\begin{equation}
+S_{\max}^{\mathrm{out}}
+>
+2,
+\end{equation}
+
+which implies
+
+\begin{equation}
+\eta
+>
+\frac{1}{\sqrt{2}}.
+\label{eq:chsh_threshold_eta}
+\end{equation}
+
+For symmetric local depolarization,
+
+\begin{equation}
+p
+<
+1-2^{-1/4}
+\approx
+0.159.
+\end{equation}
+
+Therefore, CHSH nonlocality disappears before entanglement vanishes completely, showing that Bell-inequality violation is more fragile than concurrence under local depolarization.
+
+\medskip
+
+%--------------------------------------------------------
+% 5.4.4 — Physical Interpretation
+%--------------------------------------------------------
+
+\subsection{Physical Interpretation}
+
+The composite channel developed in this section provides the first unified effective fiber model introduced in this work.
+
+\medskip
+
+Within this framework, the phase parameter \( \theta \) represents residual coherent birefringent evolution, while the depolarization parameters \( p_A \) and \( p_B \) describe effective incoherent polarization degradation occurring independently in the two propagation arms.
+
+\medskip
+
+The correlation tensor acts as the bridge between the abstract density-operator description and experimentally accessible polarization measurements. Coherent phase evolution rotates the tensor structure relative to a fixed laboratory basis, whereas local depolarization contracts the tensor magnitude and progressively suppresses bipartite correlations.
+
+\medskip
+
+The resulting model combines coherent polarization rotation and genuine non-unitary correlation degradation within a single analytically tractable framework.
+
+\medskip
+
+This composite description constitutes the theoretical foundation for the numerical investigations developed in the following chapter, where the analytical predictions derived above are validated through simulation.
+
+%========================================================
+% Section 5.5 — Statistical Composite Fiber Channel
+%========================================================
+
+\section{Statistical Composite Fiber Channel}
+\label{sec:statistical_composite_fiber_channel}
+
+The composite fiber model introduced in the previous section describes the simultaneous action of coherent phase evolution and local isotropic depolarization for a fixed phase parameter \( \theta \).
+
+\medskip
+
+In realistic propagation scenarios, however, the relative phase accumulated during transmission may fluctuate statistically between different realizations. Consequently, the effective propagated state must combine both statistical phase averaging and local depolarizing degradation within a unified reduced description.
+
+\medskip
+
+The purpose of this section is to extend the composite coherent-phase channel toward a statistical effective model capable of describing simultaneous coherent uncertainty and incoherent polarization degradation.
+
+\medskip
+
+%--------------------------------------------------------
+% 5.5.1 — Ensemble-Averaged Composite Channel
+%--------------------------------------------------------
+
+\subsection{Ensemble-Averaged Composite Channel}
+
+Consider a statistical ensemble of phase realizations \( \theta_k \) with associated probabilities \( p_k \). The corresponding ensemble-averaged propagated state is
+
+\begin{equation}
+\rho_{AB}^{(\mathrm{ens})}
+=
+\sum_k
+p_k
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left[
+U_{\theta_k}
+\rho_{AB}^{(\mathrm{in})}
+U_{\theta_k}^{\dagger}
+\right].
+\label{eq:ensemble_composite_channel}
+\end{equation}
+
+\medskip
+
+Using the commutation property established previously, the local depolarizing channel may be moved outside the statistical average:
+
+\begin{equation}
+\rho_{AB}^{(\mathrm{ens})}
+=
+\left(
+\mathcal{D}_{p_A}
+\otimes
+\mathcal{D}_{p_B}
+\right)
+\left[
+\sum_k
+p_k
+U_{\theta_k}
+\rho_{AB}^{(\mathrm{in})}
+U_{\theta_k}^{\dagger}
+\right].
+\label{eq:ensemble_channel_reordered}
+\end{equation}
+
+Therefore, the statistical phase averaging and the isotropic local depolarization remain analytically separable within the effective model adopted in this work.
+
+\medskip
+
+Following the notation introduced previously, define the phase-coherence parameter
+
+\begin{equation}
+\mu
+=
+\left\langle
+e^{i\theta}
+\right\rangle
+=
+\sum_k
+p_k
+e^{i\theta_k}.
+\label{eq:ensemble_mu_definition}
+\end{equation}
+
+Its real and imaginary parts satisfy
+
+\begin{equation}
+\mathrm{Re}(\mu)
+=
+\left\langle
+\cos\theta
+\right\rangle,
+\qquad
+\mathrm{Im}(\mu)
+=
+\left\langle
+\sin\theta
+\right\rangle.
+\label{eq:ensemble_mu_components}
+\end{equation}
+
+\medskip
+
+The quantity \( |\mu| \) therefore measures the residual phase coherence surviving the ensemble averaging process.
+
+\medskip
+
+%--------------------------------------------------------
+% 5.5.2 — Correlation Tensor of the Statistical Composite Model
+%--------------------------------------------------------
+
+\subsection{Correlation Tensor of the Statistical Composite Model}
+
+For the random-phase ensemble considered previously, the phase averaging modifies only the transverse correlation structure. Including local isotropic depolarization yields the effective tensor
+
+\begin{equation}
+T_{\mathrm{out}}^{(\mathrm{ens})}
+=
+\eta
+\begin{pmatrix}
+\mathrm{Re}(\mu)
+&
+-\mathrm{Im}(\mu)
+&
+0
+\\
+\mathrm{Im}(\mu)
+&
+\mathrm{Re}(\mu)
+&
+0
+\\
+0
+&
+0
+&
+-1
+\end{pmatrix}.
+\label{eq:ensemble_composite_tensor}
+\end{equation}
+
+Explicitly,
+
+\begin{align}
+T_{xx}^{(\mathrm{ens})}
+&=
+\eta\,\mathrm{Re}(\mu),
+\\
+T_{xy}^{(\mathrm{ens})}
+&=
+-\eta\,\mathrm{Im}(\mu),
+\\
+T_{yx}^{(\mathrm{ens})}
+&=
+\eta\,\mathrm{Im}(\mu),
+\\
+T_{yy}^{(\mathrm{ens})}
+&=
+\eta\,\mathrm{Re}(\mu),
+\\
+T_{zz}^{(\mathrm{ens})}
+&=
+-\eta.
+\end{align}
+
+All remaining tensor components vanish.
+
+\medskip
+
+Equation~\eqref{eq:ensemble_composite_tensor} separates clearly the effects of the two physical mechanisms entering the model.
+
+\medskip
+
+The statistical phase distribution modifies the transverse coherence structure through the parameter \( \mu \), while the local depolarizing channel contracts all bipartite correlations uniformly through the factor \( \eta \).
+
+\medskip
+
+An important consequence is that the longitudinal anticorrelation term \( T_{zz} \) is unaffected by phase averaging itself and is reduced only through local depolarization.
+
+\medskip
+
+Therefore, phase fluctuations and isotropic depolarization leave distinct signatures on the correlation tensor structure.
+
+\medskip
+
+%--------------------------------------------------------
+% 5.5.3 — State Metrics of the Statistical Composite Model
+%--------------------------------------------------------
+
+\subsection{State Metrics of the Statistical Composite Model}
+
+The statistical composite channel allows coherent uncertainty and incoherent polarization degradation to contribute simultaneously to the observable state metrics.
+
+\medskip
+
+\paragraph{Purity.}
+
+For the random-phase ensemble without local depolarization, the purity satisfies
+
+\[
+\gamma
+\left(
+\rho_{AB}^{(\mathrm{ens})}
+\right)
+=
+\frac{1+|\mu|^2}{2}.
+\]
+
+Including local isotropic depolarization yields
+
+\begin{equation}
+\gamma
+\left(
+\rho_{AB}^{(\mathrm{ens})}
+\right)
+=
+\frac{1+\eta^2\left(1+2|\mu|^2\right)}{4}.
+\label{eq:ensemble_composite_purity}
+\end{equation}
+
+\medskip
+
+The purity therefore decreases both when the phase coherence parameter \( |\mu| \) is reduced and when the depolarization factor \( \eta \) decreases.
+
+\medskip
+
+\paragraph{Bell-state fidelity.}
+
+The Bell-state fidelity with respect to \( |\Psi^+\rangle \) becomes
+
+\begin{equation}
+F_{\Psi^+}
+=
+\frac{1-\eta}{4}
++
+\eta
+\frac{1+\mathrm{Re}(\mu)}{2},
+\label{eq:ensemble_composite_fidelity}
+\end{equation}
+
+\medskip
+
+The first contribution originates from the isotropic mixed component introduced by local depolarization, while the second term represents the coherent overlap associated with the residual ensemble phase coherence.
+
+\medskip
+
+Therefore, the fidelity depends simultaneously on \( \mathrm{Re}(\mu) \), which quantifies residual phase alignment with the reference Bell basis, and on the depolarization factor \( \eta \), which globally contracts the bipartite correlations.
+
+\medskip
+
+Consequently, reduced Bell-state fidelity may originate either from statistical phase fluctuations, from incoherent depolarization, or from both simultaneously.
+
+\medskip
+
+\paragraph{Concurrence.}
+
+For the statistical composite model, the concurrence becomes
+
+\begin{equation}
+C
+=
+\max
+\left[
+0,
+\eta|\mu|
+-
+\frac{1-\eta}{2}
+\right].
+\label{eq:ensemble_composite_concurrence}
+\end{equation}
+
+Therefore, both statistical phase averaging and local depolarization contribute to entanglement degradation.
+
+\medskip
+
+Phase averaging suppresses the coherence amplitude through \( |\mu| \), while local depolarization contracts the bipartite correlations globally through the factor \( \eta \).
+
+\medskip
+
+\paragraph{CHSH nonlocality.}
+
+Since the correlation tensor is globally contracted by \( \eta \), the maximal CHSH parameter scales according to
+
+\begin{equation}
+S_{\max}^{(\mathrm{ens})}
+=
+2\eta
+\sqrt{
+1+|\mu|^2
+}.
+\label{eq:ensemble_composite_chsh}
+\end{equation}
+
+Bell-inequality violation therefore requires
+
+\begin{equation}
+\eta
+\sqrt{
+1+|\mu|^2
+}
+>
+1.
+\label{eq:ensemble_composite_chsh_threshold}
+\end{equation}
+
+Consequently, both reduced phase coherence and local depolarization suppress nonlocal quantum correlations.
+
+\medskip
+
+%--------------------------------------------------------
+% 5.5.4 — Physical Interpretation
+%--------------------------------------------------------
+
+\subsection{Physical Interpretation}
+
+The statistical composite channel developed in this section provides the most general effective fiber model considered in the present work.
+
+\medskip
+
+Within this framework, two physically distinct mechanisms contribute simultaneously to the degradation of bipartite polarization correlations.
+
+\medskip
+
+The statistical phase distribution suppresses transverse coherence through ensemble averaging, reducing the effective phase-coherence parameter \( |\mu| \). In contrast, isotropic local depolarization contracts the full correlation tensor uniformly through the factor \( \eta \).
+
+\medskip
+
+These mechanisms therefore affect the correlation structure differently. Phase averaging primarily modifies the coherent transverse interference structure, whereas local depolarization reduces the global magnitude of bipartite polarization correlations.
+
+\medskip
+
+The resulting tensor structure provides a direct connection between microscopic propagation fluctuations and experimentally observable polarization-correlation measurements.
+
+\medskip
+
+Most importantly, the model shows that coherent uncertainty and incoherent polarization degradation leave distinguishable signatures on entanglement, Bell-state fidelity, correlation tensors, and CHSH nonlocality.
+
+\medskip
+
+This statistical composite framework provides the most complete polarization-only fiber model developed in this chapter. Its physical limitations and its relation to a frequency-dependent propagation description are examined in the following section.
+
+%========================================================
+% Section 5.6 — Limitations of the Effective Fiber Models
+%========================================================
+
+\section{Limitations of the Effective Fiber Models}
+\label{sec:limitations_effective_fiber_models}
+
+The effective models developed in this chapter provide a controlled description of coherent phase evolution, statistical phase fluctuations, and local polarization degradation. Their main advantage is that they act directly on the reduced polarization state and admit analytical expressions for the correlation tensor, purity, fidelity, concurrence, and maximal CHSH parameter.
+
+\medskip
+
+These models are intentionally phenomenological. They describe the observable action of the fiber on the polarization qubits without explicitly resolving the spatial, spectral, and temporal mechanisms responsible for that action. Consequently, although they provide useful benchmarks and compact channel descriptions, they cannot reproduce every physical feature of polarization propagation in an optical fiber.
+
+\medskip
+
+\paragraph{Frequency-independent polarization evolution.}
+
+The local unitary operators introduced so far are assumed to be independent of the optical frequency. Each photon is therefore treated as an effectively monochromatic excitation whose polarization undergoes a single transformation in \( \mathbb{C}^2 \).
+
+For example, the reduced phase model employs the frequency-independent unitary operator introduced in Eq.~\eqref{eq:single_qubit_phase_unitary}.
+
+
+where the same phase parameter \( \theta \) is applied to the entire photon state.
+
+\medskip
+
+A physical photon generated through spontaneous parametric down-conversion, however, is characterized by a finite spectral bandwidth. If the fiber transformation varies appreciably across this bandwidth, different frequency components experience different polarization rotations and relative phase shifts. The appropriate local transformation must then be written as
+
+\begin{equation}
+U
+\longrightarrow
+U(\omega).
+\label{eq:frequency_dependent_extension_ch5}
+\end{equation}
+
+This frequency dependence is not represented explicitly by the effective models considered in the present chapter.
+
+\medskip
+
+\paragraph{Phenomenological character of isotropic depolarization.}
+
+The local depolarizing channel acts isotropically on the single-qubit Bloch vector:
+
+\begin{equation}
+\mathbf{r}
+\longmapsto
+(1-p)\mathbf{r}.
+\label{eq:isotropic_bloch_contraction_limitation}
+\end{equation}
+
+All polarization components are therefore contracted by the same factor, independently of their orientation. At the bipartite level, the two-arm model similarly contracts the full correlation tensor through the scalar factor
+
+\begin{equation}
+\eta
+=
+(1-p_A)(1-p_B).
+\label{eq:isotropic_tensor_factor_limitation}
+\end{equation}
+
+This isotropic contraction provides a useful noise baseline, but it does not identify a preferred polarization axis and does not distinguish between polarization components that may be differently affected by fiber birefringence.
+
+\medskip
+
+In particular, the parameters \(p_A\) and \(p_B\) are not directly determined by specific physical quantities such as the photon bandwidth, the fiber birefringence, the propagation length, or the differential group delay. Their values characterize the effective strength of polarization degradation but do not, by themselves, explain its physical origin.
+
+\medskip
+
+\paragraph{Absence of explicit polarization--frequency coupling.}
+
+The statistical phase model introduces mixedness by averaging over an ensemble of phase realizations,
+
+\begin{equation}
+\rho_{AB}^{(\mathrm{ens})}
+=
+\sum_k
+p_k
+\rho_{AB}(\theta_k).
+\label{eq:phase_ensemble_limitation}
+\end{equation}
+
+This construction captures the loss of observable coherence produced by an unresolved distribution of phase values. Nevertheless, the phase realizations \( \theta_k \) are introduced statistically rather than derived from the spectral structure of the photon and the frequency-dependent response of the fiber.
+
+\medskip
+
+The model therefore does not distinguish between mixedness caused by fluctuations across repeated photon-pair realizations and mixedness produced within each individual wave packet by correlations between polarization and frequency. These mechanisms can lead to mathematically related reduced polarization states, but they correspond to different physical descriptions.
+
+\medskip
+
+In a frequency-resolved model, an ideal lossless fiber remains unitary on the enlarged polarization--frequency Hilbert space. Effective polarization decoherence appears only when the unobserved frequency degree of freedom is removed through a partial trace:
+
+\begin{equation}
+\rho_{\mathrm{pol}}^{\mathrm{out}}
+=
+\operatorname{Tr}_{\omega}
+\left[
+\rho_{\mathrm{pol},\omega}^{\mathrm{out}}
+\right].
+\label{eq:frequency_trace_limitation_ch5}
+\end{equation}
+
+This mechanism cannot be represented explicitly within a polarization-only model.
+
+\medskip
+
+\paragraph{Absence of principal states and differential group delay.}
+
+A birefringent fiber generally possesses two orthogonal polarization modes that propagate with different phase and group velocities. In the first-order polarization-mode-dispersion description, these modes define the principal states of polarization of the complete fiber, while their relative propagation time defines the differential group delay.
+
+\medskip
+
+The effective isotropic channel does not contain information about these preferred states or their temporal separation. It consequently cannot predict the dependence of polarization degradation on the orientation of the input state relative to the principal states.
+
+For example, a state aligned with a principal state may remain fully polarized, while a coherent superposition of the two principal states may separate into temporally displaced components and exhibit reduced polarization coherence. Such direction-dependent behavior is incompatible with a uniform Bloch-sphere contraction.
+
+\medskip
+
+\paragraph{Need for a spatially and spectrally resolved model.}
+
+A real optical fiber is not generally characterized by a single uniform birefringence axis. Mechanical stress, bending, twisting, temperature variations, and manufacturing imperfections may cause the local birefringence to vary along the propagation direction.
+
+A more physical representation therefore divides the fiber into locally uniform segments and describes the complete frequency-dependent transformation as the ordered product
+
+\begin{equation}
+U_{\mathrm{tot}}(\omega)
+=
+U_N(\omega)
+U_{N-1}(\omega)
+\cdots
+U_2(\omega)
+U_1(\omega),
+\label{eq:concatenated_model_transition_ch5}
+\end{equation}
+
+where the photon encounters segment \(1\) first and segment \(N\) last. Since transformations associated with different birefringence axes do not generally commute, their order affects the resulting polarization evolution.
+
+\medskip
+
+The global principal states, accumulated differential group delay, and effective polarization-mode dispersion must therefore be obtained from the complete frequency-dependent transformation rather than assigned independently to each polarization component through a single isotropic parameter.
+
+\medskip
+
+\paragraph{Transition to the frequency-dependent framework.}
+
+The limitations identified above do not invalidate the effective models developed in this chapter. The reduced phase, statistical ensemble, and isotropic depolarizing channels remain useful as analytical benchmarks and as compact descriptions of experimentally observed polarization degradation.
+
+Their role is instead clarified by recognizing the distinction between an effective polarization-only channel and a physical propagation model retaining additional optical degrees of freedom.
+
+\medskip
+
+Chapter~\ref{ch:frequency_dependent_fiber_propagation} therefore extends the present framework by introducing finite-bandwidth photon states, frequency-dependent fiber operators, concatenated birefringent segments, principal states of polarization, differential group delay, and polarization-mode dispersion.
+
+The resulting description will show how an anisotropic effective polarization channel can emerge from an underlying unitary evolution when the spectral and temporal degrees of freedom are not resolved.

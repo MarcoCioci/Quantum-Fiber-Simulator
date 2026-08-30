@@ -13,6 +13,8 @@ function test_tangle_entanglement_of_formation()
     % Test setup
     % =========================
 
+    fprintf('Running test_tangle_entanglement_of_formation...\n');
+
     tolerance = 1e-12;
 
 

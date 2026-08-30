@@ -1,0 +1,347 @@
+%========================================================
+% APPENDIX A.3 - Concurrence and Reduced Density Operators
+%========================================================
+
+\section{Derivations for Concurrence and Reduced Density Operators}
+\label{app:concurrence_reduced_density_operators}
+
+This appendix derives the relations connecting concurrence, reduced density operators, and subsystem purity for pure bipartite two-qubit states.
+
+\medskip
+
+The derivation clarifies how bipartite entanglement is encoded in the mixedness of the reduced subsystems, providing the theoretical foundation for the relations used throughout Chapter~4.
+
+%--------------------------------------------------------
+% Coefficient-Matrix Representation
+%--------------------------------------------------------
+
+\subsection*{Coefficient-Matrix Representation}
+
+Consider a normalized two-qubit pure state written in the computational basis as
+
+\begin{equation}
+|\psi\rangle
+=
+a|00\rangle
++
+b|01\rangle
++
+c|10\rangle
++
+d|11\rangle.
+\label{eq:generic_two_qubit_state}
+\end{equation}
+
+Introduce the coefficient matrix
+
+\begin{equation}
+A_\psi
+=
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix},
+\label{eq:coefficient_matrix_definition}
+\end{equation}
+
+so that the state can be expressed compactly as
+
+\begin{equation}
+|\psi\rangle
+=
+\sum_{i,j=0}^{1}
+(A_\psi)_{ij}
+\,|i\rangle \otimes |j\rangle.
+\label{eq:state_coefficient_matrix_expansion}
+\end{equation}
+
+This matrix representation provides a convenient bridge between the bipartite wavefunction and the reduced density operators.
+
+%--------------------------------------------------------
+% Reduced Density Operators
+%--------------------------------------------------------
+
+\subsection*{Reduced Density Operators}
+
+The global density operator is
+
+\begin{equation}
+\rho_{AB}
+=
+|\psi\rangle\langle\psi|.
+\label{eq:global_density_operator_appendix}
+\end{equation}
+
+Expanding Eq.~\eqref{eq:state_coefficient_matrix_expansion} yields
+
+\begin{equation}
+\rho_{AB}
+=
+\sum_{i,j,k,l}
+(A_\psi)_{ij}
+(A_\psi)^*_{kl}
+\,
+|i\rangle\langle k|
+\otimes
+|j\rangle\langle l|.
+\label{eq:expanded_global_density_operator}
+\end{equation}
+
+The reduced density operator on subsystem \(A\) is defined by the partial trace
+
+\begin{equation}
+\rho_A
+=
+\operatorname{Tr}_B(\rho_{AB}).
+\label{eq:partial_trace_appendix}
+\end{equation}
+
+Applying the partial trace to Eq.~\eqref{eq:expanded_global_density_operator} gives
+
+\begin{equation}
+\rho_A
+=
+\sum_{i,j,k,l}
+(A_\psi)_{ij}
+(A_\psi)^*_{kl}
+\left(
+\sum_v
+\langle v|j\rangle
+\langle l|v\rangle
+\right)
+|i\rangle\langle k|.
+\label{eq:partial_trace_expansion}
+\end{equation}
+
+Using the orthogonality relation
+
+\begin{equation}
+\sum_v
+\langle v|j\rangle
+\langle l|v\rangle
+=
+\delta_{jl},
+\label{eq:orthogonality_relation_appendix}
+\end{equation}
+
+one obtains
+
+\begin{equation}
+\rho_A
+=
+\sum_{i,k,j}
+(A_\psi)_{ij}
+(A_\psi)^*_{kj}
+\,|i\rangle\langle k|.
+\label{eq:reduced_density_operator_expanded}
+\end{equation}
+
+Therefore, in matrix form,
+
+\begin{equation}
+\rho_A
+=
+A_\psi A_\psi^\dagger.
+\label{eq:rhoA_coefficient_matrix_relation}
+\end{equation}
+
+Similarly,
+
+\begin{equation}
+\rho_B
+=
+A_\psi^\dagger A_\psi.
+\label{eq:rhoB_coefficient_matrix_relation}
+\end{equation}
+
+%--------------------------------------------------------
+% Pure-State Concurrence
+%--------------------------------------------------------
+
+\subsection*{Pure-State Concurrence}
+
+For pure two-qubit states, concurrence is defined as
+
+\begin{equation}
+C(|\psi\rangle)
+=
+\left|
+\langle \psi |
+(\sigma_y \otimes \sigma_y)
+|\psi^*\rangle
+\right|.
+\label{eq:pure_state_concurrence_definition}
+\end{equation}
+
+Using the computational-basis representation,
+
+\begin{equation}
+|\psi\rangle
+=
+\begin{pmatrix}
+a\\
+b\\
+c\\
+d
+\end{pmatrix},
+\qquad
+|\psi^*\rangle
+=
+\begin{pmatrix}
+a^*\\
+b^*\\
+c^*\\
+d^*
+\end{pmatrix},
+\label{eq:computational_basis_state_vectors}
+\end{equation}
+
+one finds
+
+\begin{equation}
+(\sigma_y \otimes \sigma_y)
+|\psi^*\rangle
+=
+\begin{pmatrix}
+- d^*\\
+c^*\\
+b^*\\
+- a^*
+\end{pmatrix}.
+\label{eq:spin_flip_action}
+\end{equation}
+
+Taking the inner product yields
+
+\begin{equation}
+\langle \psi |
+(\sigma_y \otimes \sigma_y)
+|\psi^*\rangle
+=
+2(ad-bc)^*.
+\label{eq:spin_flip_inner_product}
+\end{equation}
+
+Therefore,
+
+\begin{equation}
+C(|\psi\rangle)
+=
+2|ad-bc|.
+\label{eq:pure_state_concurrence_closed_form}
+\end{equation}
+
+Using
+
+\begin{equation}
+\det(A_\psi)=ad-bc,
+\label{eq:coefficient_matrix_determinant}
+\end{equation}
+
+the concurrence becomes
+
+\begin{equation}
+C(|\psi\rangle)
+=
+2|\det(A_\psi)|.
+\label{eq:concurrence_determinant_relation}
+\end{equation}
+
+%--------------------------------------------------------
+% Relation with Reduced Density Operators
+%--------------------------------------------------------
+
+\subsection*{Relation with Reduced Density Operators}
+
+Using Eq.~\eqref{eq:rhoA_coefficient_matrix_relation},
+
+\begin{equation}
+\rho_A
+=
+A_\psi A_\psi^\dagger,
+\end{equation}
+
+one obtains
+
+\begin{equation}
+\det(\rho_A)
+=
+\det(A_\psi)
+\det(A_\psi^\dagger)
+=
+|\det(A_\psi)|^2.
+\label{eq:determinant_reduced_density_operator}
+\end{equation}
+
+\medskip
+Substituting into Eq.~\eqref{eq:concurrence_determinant_relation} gives
+
+\begin{equation}
+C(|\psi\rangle)
+=
+2\sqrt{\det(\rho_A)}.
+\end{equation}
+
+This reproduces the relation introduced in Chapter~4 [see Eq.~\eqref{eq:concurrence_reduced_density_relation}].
+
+\medskip
+
+An identical relation holds for subsystem \( B \):
+
+\begin{equation}
+C(|\psi\rangle)
+=
+2\sqrt{\det(\rho_B)}.
+\end{equation}
+
+These expressions show that bipartite entanglement is directly encoded in the reduced density operators.
+
+%--------------------------------------------------------
+% Relation with Purity
+%--------------------------------------------------------
+
+\subsection*{Relation with Purity}
+
+For a single-qubit density operator \( \rho \), one has
+
+\begin{equation}
+\operatorname{Tr}(\rho)=1,
+\label{eq:single_qubit_trace_condition}
+\end{equation}
+
+and purity
+
+\begin{equation}
+\gamma(\rho)
+=
+\operatorname{Tr}(\rho^2).
+\label{eq:single_qubit_purity_definition}
+\end{equation}
+
+For \(2\times2\) density operators, the determinant satisfies
+
+\begin{equation}
+\det(\rho)
+=
+\frac{1-\gamma(\rho)}{2}.
+\label{eq:determinant_purity_relation}
+\end{equation}
+
+Substituting Eq.~\eqref{eq:determinant_purity_relation} into Eq.~\eqref{eq:concurrence_reduced_density_relation} yields
+
+\begin{equation}
+C(|\psi\rangle)
+=
+\sqrt{
+2\left(
+1-\gamma(\rho_A)
+\right)
+}.
+\label{eq:concurrence_purity_relation}
+\end{equation}
+
+Therefore, for pure bipartite states, the mixedness of the reduced subsystem provides a direct quantitative measure of entanglement.
+
+\medskip
+
+Separable states produce pure reduced density operators and therefore zero concurrence, whereas maximally entangled states produce maximally mixed reduced states and maximal concurrence.

@@ -1,46 +1,44 @@
-function psi_out = apply_unitary(U_A, U_B, psi_in)
+function state_out = apply_unitary(U_A, U_B, state_in)
 % APPLY_UNITARY  Apply local single-qubit unitaries to a two-qubit state.
 %
 % Objective:
-%   Compute the output state of a bipartite two-qubit system under
-%   independent local unitary evolution on subsystems A and B.
+%   Evolve a two-qubit pure state |ψ_in⟩ or density matrix ρ_in under
+%   independent local unitary transformations on subsystems A and B:
 %
-%   Given:
-%       U_A    - single-qubit unitary acting on subsystem A
-%       U_B    - single-qubit unitary acting on subsystem B
-%       psi_in - input pure state of the two-qubit system
+%       U_AB = U_A ⊗ U_B.
 %
-%   the function returns:
+%   For a pure-state input:
 %
-%       |ψ_out⟩ = (U_A ⊗ U_B) |ψ_in⟩
+%       |ψ_out⟩ = U_AB |ψ_in⟩.
 %
-%   where ⊗ denotes the tensor (Kronecker) product.
+%   For a density-matrix input:
+%
+%       ρ_out = U_AB ρ_in U_AB†.
 %
 % Input:
-%   U_A    - 2x2 complex unitary matrix acting on subsystem A
-%   U_B    - 2x2 complex unitary matrix acting on subsystem B
-%   psi_in - 4x1 complex column vector representing the input two-qubit state
+%   U_A      - 2x2 unitary matrix acting on subsystem A.
+%   U_B      - 2x2 unitary matrix acting on subsystem B.
+%   state_in - Either:
+%              - 4x1 complex column vector representing |ψ_in⟩, or
+%              - 4x4 complex matrix representing ρ_in.
 %
 % Output:
-%   psi_out - 4x1 complex column vector representing the evolved state
+%   state_out - Evolved state in the same representation as state_in:
+%               - 4x1 pure-state vector |ψ_out⟩;
+%               - 4x4 density matrix ρ_out.
 %
 % Notes:
-%   The basis ordering is assumed to be fixed as
+%   The fixed computational basis ordering is:
 %
-%       {|00>, |01>, |10>, |11>}
+%       {|00⟩, |01⟩, |10⟩, |11⟩}.
 %
-%   throughout the simulator.
+%   The tensor-product order follows the subsystem ordering:
 %
-%   The tensor-product order must remain consistent with subsystem labeling:
+%       U_AB = U_A ⊗ U_B.
 %
-%       U_A ⊗ U_B
-%
-%   and not:
-%
-%       U_B ⊗ U_A
-%
-%   This function does not renormalize the state. If psi_in is normalized
-%   and U_A, U_B are unitary, then psi_out is automatically normalized.
+%   No normalization or physical-state validation is performed on state_in.
+%   If |ψ_in⟩ is normalized, or if ρ_in is a valid density matrix, these
+%   properties are preserved by the unitary evolution.
 
     % =========================
     % Robustness checks
@@ -48,37 +46,28 @@ function psi_out = apply_unitary(U_A, U_B, psi_in)
 
     if nargin ~= 3
         error('apply_unitary:InvalidNumInputs', ...
-            'Expected exactly 3 input arguments: U_A, U_B, psi_in.');
+            'Expected exactly 3 input arguments: U_A, U_B, state_in.');
     end
 
-    if ~isnumeric(U_A) || ~ismatrix(U_A)
-        error('apply_unitary:InvalidTypeUA', ...
-            'U_A must be a numeric 2x2 matrix.');
+    if ~isnumeric(U_A) || ~isequal(size(U_A), [2, 2]) || ...
+            any(~isfinite(U_A), 'all')
+        error('apply_unitary:InvalidUA', ...
+            'U_A must be a finite numeric 2x2 matrix.');
     end
 
-    if ~isnumeric(U_B) || ~ismatrix(U_B)
-        error('apply_unitary:InvalidTypeUB', ...
-            'U_B must be a numeric 2x2 matrix.');
+    if ~isnumeric(U_B) || ~isequal(size(U_B), [2, 2]) || ...
+            any(~isfinite(U_B), 'all')
+        error('apply_unitary:InvalidUB', ...
+            'U_B must be a finite numeric 2x2 matrix.');
     end
 
-    if ~isnumeric(psi_in) || ~ismatrix(psi_in)
-        error('apply_unitary:InvalidTypePsi', ...
-            'psi_in must be a numeric 4x1 column vector.');
-    end
-
-    if ~isequal(size(U_A), [2 2])
-        error('apply_unitary:InvalidSizeUA', ...
-            'U_A must be a 2x2 matrix.');
-    end
-
-    if ~isequal(size(U_B), [2 2])
-        error('apply_unitary:InvalidSizeUB', ...
-            'U_B must be a 2x2 matrix.');
-    end
-
-    if ~isequal(size(psi_in), [4 1])
-        error('apply_unitary:InvalidSizePsi', ...
-            'psi_in must be a 4x1 column vector.');
+    if ~isnumeric(state_in) || ...
+            (~isequal(size(state_in), [4, 1]) && ...
+             ~isequal(size(state_in), [4, 4])) || ...
+            any(~isfinite(state_in), 'all')
+        error('apply_unitary:InvalidInputState', ...
+            ['state_in must be a finite 4x1 pure-state vector or ', ...
+             'a finite 4x4 density matrix.']);
     end
 
     if ~is_unitary(U_A)
@@ -91,18 +80,16 @@ function psi_out = apply_unitary(U_A, U_B, psi_in)
             'U_B must be unitary.');
     end
 
-    if exist('is_normalized', 'file') == 2 && ~is_normalized(psi_in)
-        warning('apply_unitary:InputStateNotNormalized', ...
-            ['psi_in does not appear to be normalized. ' ...
-             'The output will still be computed, but may not represent a valid quantum state.']);
-    end
-
-    
     % =========================
     % Main computation
     % =========================
 
-    U_global = kron(U_A, U_B);
-    psi_out = U_global * psi_in;
+    U_AB = tensor_product(U_A, U_B);
+
+    if isequal(size(state_in), [4, 1])
+        state_out = U_AB * state_in;
+    else
+        state_out = U_AB * state_in * U_AB';
+    end
 
 end
