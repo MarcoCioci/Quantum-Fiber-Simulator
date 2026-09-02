@@ -4,28 +4,29 @@
 
 The mathematical framework introduced in
 Chapter~\ref{ch:01_mathematical_and_physical_framework}
-provides the tools required to describe bipartite polarization states, local
-unitary evolution, quantum channels, polarization correlations, and entanglement
-metrics. The purpose of the present chapter is to apply those tools to the
-progressive construction of models for the propagation of polarization-entangled
-photon pairs through optical fibers.
+provides the tools required to describe the evolution and characterization of
+bipartite polarization states. The purpose of the present chapter is to apply
+these tools to the progressive construction of models for the propagation of
+polarization-entangled photon pairs through optical fibers.
 
 The modeling strategy proceeds from analytically controlled effective
-descriptions toward a frequency-dependent representation of the underlying fiber
-physics. The first models retain only the polarization degree of freedom and
-isolate coherent phase evolution, statistical phase fluctuations, and
-depolarization. These mechanisms are subsequently combined into a two-arm
-effective fiber channel.
+descriptions toward a more physically accurate frequency-dependent representation of fiber
+propagation. The first models retain only the polarization degree of freedom and
+separately describe coherent phase evolution, statistical phase fluctuations,
+and depolarization. These mechanisms are then combined into an effective
+polarization channel for the two-arm fiber configuration.
 
-The monochromatic approximation is then relaxed by explicitly introducing the
+The monochromatic approximation is subsequently relaxed by introducing the
 spectral structure of the photons and the frequency dependence of birefringent
 fiber propagation. This leads to a polarization-mode-dispersion (PMD) model in
 which the complete polarization--frequency evolution remains unitary for an ideal
 lossless fiber, while an effectively mixed polarization state can emerge after
-unresolved spectral and temporal degrees of freedom are traced out.
+the unresolved spectral degree of freedom is traced out.
 
-Figure~\ref{fig:fiber_modeling_hierarchy} summarizes the progressive hierarchy
-adopted throughout the chapter.
+Figure~\ref{fig:fiber_modeling_hierarchy} summarizes the modeling hierarchy
+adopted throughout the chapter. The different levels represent increasing
+modeling scope rather than a strict physical derivation from one model to the
+next.
 
 \begin{figure}[htbp]
     \centering
@@ -56,7 +57,7 @@ adopted throughout the chapter.
         {Independent local depolarization in arms \(A\) and \(B\)};
 
         \node[model] (composite) at (0,-5.2)
-        {Composite polarization-only fiber channel};
+        {Composite effective polarization channel};
 
         \node[model] (pmd) at (0,-6.5)
         {Frequency-dependent birefringent propagation and PMD};
@@ -71,19 +72,18 @@ adopted throughout the chapter.
 
     \caption{
         Modeling hierarchy adopted in this work. The first levels provide
-        analytically controlled polarization-only descriptions, whereas the
-        final level explicitly retains the spectral dependence of birefringent
-        propagation.
+        effective polarization-only descriptions of the relevant propagation
+        mechanisms, while the final level explicitly includes the spectral
+        dependence of birefringent fiber propagation.
     }
     \label{fig:fiber_modeling_hierarchy}
 \end{figure}
 
-
 %========================================================
-% SECTION 2.1 — Reduced Phase Model
+% SECTION 2.1 — Residual Phase Model
 %========================================================
 
-\section{Reduced Phase Model}
+\section{Residual Phase Model}
 \label{sec:reduced_phase_model}
 
 A general lossless optical fiber may produce an arbitrary unitary transformation
@@ -94,13 +94,26 @@ polarization-compensation procedure employed in the experimental setup.
 Polarization compensation is used to realign the dominant output polarization
 basis with the reference basis of the measurement system. Such compensation does
 not, however, imply a complete reconstruction or inversion of the full fiber Jones
-operator. In particular, a residual rotation around the stabilized polarization
+operator\footnote{The Jones matrix is the \(2\times2\) complex matrix describing
+the transformation of the polarization amplitudes through an optical element or
+fiber.}. In particular, a residual rotation around the stabilized polarization
 axis may remain.
 
-Within the computational basis adopted in this thesis, this residual coherent
-effect is represented by a relative phase between the horizontal and vertical
-polarization components. The general polarization transformation is therefore
-reduced to a single physically relevant phase parameter.
+A limitation of this compensation procedure arises when the polarization state is
+monitored primarily through measured populations. Since these measurements provide
+information on the polarization populations but not directly on their relative
+phase, a residual phase \(e^{i\theta}\) may remain unresolved.
+
+A more complete compensation may be achieved by extending the monitoring system
+to additional polarization bases, since phase-sensitive measurements can provide
+information on residual transformations that cannot be inferred from
+computational-basis populations alone.
+
+Within the computational basis adopted in this thesis, the stabilized polarization
+axis is identified with the \(z\)-axis of the Bloch sphere. The remaining coherent
+transformation can therefore be represented by a relative phase between the
+horizontal and vertical polarization components, reducing the general polarization
+transformation to a single phase parameter.
 
 For one polarization qubit, the corresponding unitary operator is
 
@@ -111,7 +124,7 @@ U(\theta)
 1 & 0\\
 0 & e^{i\theta}
 \end{pmatrix},
-\label{eq:single_qubit_reduced_phase_unitary}
+\label{eq:single_qubit_residual_phase_unitary}
 \end{equation}
 
 defined up to an irrelevant global phase. Equivalently, this transformation
@@ -119,7 +132,7 @@ corresponds, up to a global phase factor, to a rotation around the \(z\)-axis of
 the Bloch sphere.
 
 At this modeling level, the phase is assumed to be fixed for each propagation
-realization. Statistical fluctuations of the same reduced phase parameter are
+realization. Statistical fluctuations of the same residual phase parameter are
 introduced separately in the following model.
 
 If the two fiber arms introduce residual phases \( \theta_A \) and \( \theta_B \),
@@ -127,7 +140,7 @@ respectively, their joint action is
 
 \begin{equation}
 U_A(\theta_A)\otimes U_B(\theta_B).
-\label{eq:two_arm_reduced_phase_unitary}
+\label{eq:two_arm_residual_phase_unitary}
 \end{equation}
 
 Applying this transformation to the reference Bell state gives
@@ -141,7 +154,7 @@ e^{i\theta_B}|01\rangle
 +
 e^{i\theta_A}|10\rangle
 \right).
-\label{eq:two_arm_reduced_phase_bell_state}
+\label{eq:two_arm_residual_phase_bell_state}
 \end{equation}
 
 Factoring out the global phase \(e^{i\theta_B}\) yields
@@ -157,42 +170,41 @@ e^{i\theta}|10\rangle
 \right),
 \qquad
 \theta=\theta_A-\theta_B.
-\label{eq:reduced_phase_bell_state}
+\label{eq:residual_phase_bell_state}
 \end{equation}
 
-Only the relative phase between the two arms therefore affects polarization
-observables. The two independent local phase parameters can consequently be
-reduced to the single effective parameter \(\theta\).
+The two independent local phase parameters can therefore be reduced to the single
+effective parameter \(\theta\). This relative phase does not modify the
+computational-basis populations, but it affects phase-sensitive polarization
+correlations.
 
 With the convention adopted throughout this work, the same state may be generated
 by assigning the complete relative transformation to arm \(A\),
 
 \begin{equation}
-U^{red}_\theta
+U_\theta
 =
 U_A(\theta)\otimes I_B.
-\label{eq:reduced_phase_single_arm_convention}
+\label{eq:residual_phase_single_arm_convention}
 \end{equation}
 
 This convention simplifies the analytical and numerical representation without
-changing any observable prediction. The physical quantity represented by
-\(\theta\) remains the differential phase accumulated between the two
-propagation arms.
+changing any observable prediction. The parameter \(\theta\) represents the
+effective differential residual polarization phase between the two arms.
 
-The term \emph{reduced phase model} will be used throughout this work for this
+The term \emph{residual phase model} will be used throughout this work for this
 one-parameter effective description. Its relation to the more general
 fixed-frequency birefringent transformation is derived explicitly in
-Section~\ref{subsec:fixed_frequency_birefringence_reduced_phase}.
-
+Section~\ref{subsec:fixed_frequency_birefringence_residual_phase}.
 
 %--------------------------------------------------------
 % Subsection 2.1.1 — Correlation Structure
 %--------------------------------------------------------
 
 \subsection{Correlation Structure}
-\label{subsec:reduced_phase_correlation_structure}
+\label{subsec:residual_phase_correlation_structure}
 
-For the state in Eq.~\eqref{eq:reduced_phase_bell_state}, the correlation tensor
+For the state in Eq.~\eqref{eq:residual_phase_bell_state}, the correlation tensor
 defined in Chapter~\ref{ch:01_mathematical_and_physical_framework} is
 
 \begin{equation}
@@ -203,7 +215,7 @@ T(\theta)
 \sin\theta & \cos\theta & 0\\
 0 & 0 & -1
 \end{pmatrix}.
-\label{eq:reduced_phase_correlation_tensor}
+\label{eq:residual_phase_correlation_tensor}
 \end{equation}
 
 The phase therefore rotates the transverse correlation structure in the
@@ -217,7 +229,7 @@ T_{xy}=-\sin\theta,
 T_{yx}=\sin\theta,
 \qquad
 T_{zz}=-1.
-\label{eq:reduced_phase_tensor_components}
+\label{eq:residual_phase_tensor_components}
 \end{equation}
 
 The transformation is local and unitary. Consequently,
@@ -230,7 +242,7 @@ C=1,
 \tau=1,
 \qquad
 E_F=1
-\label{eq:reduced_phase_invariant_metrics}
+\label{eq:residual_phase_invariant_metrics}
 \end{equation}
 
 for every value of \( \theta \).
@@ -241,25 +253,14 @@ The fidelity with respect to the original Bell state is instead
 F_{\Psi^+}
 =
 \frac{1+\cos\theta}{2}.
-\label{eq:reduced_phase_fidelity}
+\label{eq:residual_phase_fidelity}
 \end{equation}
 
 Thus, a reduction in fixed-reference Bell-state fidelity does not by itself imply
 entanglement degradation. It may result entirely from a coherent change in the
 orientation of the state relative to the selected reference basis.
 
-The same distinction appears in Bell tests. A CHSH parameter evaluated using
-fixed laboratory axes may vary with \( \theta \), whereas optimization over all
-local measurement directions gives
-
-\begin{equation}
-S_{\max}=2\sqrt{2},
-\label{eq:reduced_phase_chsh_max}
-\end{equation}
-
-independently of the phase.
-
-The reduced phase model therefore establishes the first important reference case
+The residual phase model therefore establishes the first important reference case
 of this thesis: coherent changes in fixed-basis measurements must be distinguished
 from genuine decoherence and entanglement degradation.
 
@@ -327,7 +328,7 @@ It is useful to write
 
 The magnitude \( |\mu| \) quantifies the coherence surviving the statistical
 averaging, while the argument \( \phi_\mu \) represents the residual coherent
-orientation of the state in the transverse polarization plane.
+phase component of the state.
 
 In the computational basis, the resulting state is
 
@@ -348,7 +349,6 @@ The diagonal populations remain unchanged, whereas the off-diagonal coherence
 terms are multiplied by \( \mu \). The model therefore corresponds to a
 random-unitary dephasing process together with a possible residual coherent phase
 rotation when \( \arg(\mu)\neq0 \).
-
 
 %--------------------------------------------------------
 % Subsection 2.2.1 — Correlations and State Metrics
@@ -420,29 +420,17 @@ h
 where \(h(x)\) is the binary entropy introduced in
 Chapter~\ref{ch:01_mathematical_and_physical_framework}.
 
-The maximal CHSH value is
-
-\begin{equation}
-S_{\max}
-=
-2\sqrt{1+|\mu|^2}.
-\label{eq:random_phase_chsh_max}
-\end{equation}
-
 The limiting cases provide a direct physical interpretation. For a deterministic
 phase,
-
-\begin{equation}
+\(
 |\mu|=1,
-\end{equation}
+\)
+and the state remains pure and maximally entangled. 
 
-and the state remains pure and maximally entangled. For a phase uniformly
-distributed over \( [0,2\pi] \),
-
-\begin{equation}
+For a phase uniformly distributed over \( [0,2\pi] \),
+\(
 \mu=0,
-\end{equation}
-
+\)
 and the transverse coherences vanish completely. The resulting state is
 
 \begin{equation}
@@ -467,7 +455,6 @@ not yet specify the microscopic physical mechanism responsible for the unresolve
 phase distribution. A frequency-resolved mechanism producing related losses of
 polarization coherence is introduced later in this chapter.
 
-
 %========================================================
 % SECTION 2.3 — Depolarizing Reference Models
 %========================================================
@@ -484,7 +471,6 @@ The depolarizing models introduced here are phenomenological. They do not
 represent a microscopic model of PMD. Their purpose is to provide analytically
 controlled descriptions of polarization degradation before the physical origin of
 decoherence is treated explicitly through frequency-dependent propagation.
-
 
 %--------------------------------------------------------
 % Subsection 2.3.1 — Global Depolarizing Baseline
@@ -558,19 +544,9 @@ T_{\mathrm{out}}
 \label{eq:global_depolarizing_tensor}
 \end{equation}
 
-For a Bell-state input,
-
-\begin{equation}
-S_{\max}
-=
-2\sqrt{2}(1-p).
-\label{eq:global_depolarizing_chsh}
-\end{equation}
-
 The global channel is useful as a validation benchmark, but it is not directly
 aligned with the geometry of the physical system considered in this thesis, where
 the two photons propagate through separate fibers.
-
 
 %--------------------------------------------------------
 % Subsection 2.3.2 — Local Depolarization
@@ -579,8 +555,8 @@ the two photons propagate through separate fibers.
 \subsection{Local Two-Arm Depolarization}
 \label{subsec:local_two_arm_depolarization}
 
-A physically more appropriate effective description assigns an independent
-depolarizing channel to each propagation arm.
+A description more closely aligned with the two-arm geometry 
+description assigns an independent depolarizing channel to each propagation arm.
 
 The parameter convention adopted throughout this work is defined directly by the
 Bloch-vector contraction. A single-qubit depolarizing channel is written as
@@ -661,7 +637,6 @@ Although the effective noise acts locally, the channel acts on the complete
 bipartite density operator. The entanglement and two-photon correlations are
 properties of the joint state and cannot be reconstructed from the two reduced
 states alone.
-
 
 %--------------------------------------------------------
 % Subsection 2.3.3 — Correlation-Survival Factor
@@ -772,7 +747,6 @@ Thus, within this isotropic model, the order of phase evolution and
 depolarization does not affect the final state. This property is specific to the
 adopted channel and does not hold for arbitrary anisotropic noise mechanisms.
 
-
 %--------------------------------------------------------
 % Subsection 2.4.1 — Fixed-Phase Composite Model
 %--------------------------------------------------------
@@ -841,40 +815,9 @@ C
 \left(
 0,\,
 \frac{3\eta-1}{2}
-\right),
+\right).
 \label{eq:fixed_composite_concurrence}
 \end{equation}
-
-and the maximal CHSH parameter is
-
-\begin{equation}
-S_{\max}
-=
-2\sqrt{2}\,\eta.
-\label{eq:fixed_composite_chsh}
-\end{equation}
-
-Entanglement disappears when
-
-\begin{equation}
-\eta
-\leq
-\frac{1}{3},
-\label{eq:fixed_composite_entanglement_threshold}
-\end{equation}
-
-whereas CHSH violation requires
-
-\begin{equation}
-\eta
->
-\frac{1}{\sqrt{2}}.
-\label{eq:fixed_composite_chsh_threshold}
-\end{equation}
-
-The separation between these thresholds illustrates that entanglement can survive
-after CHSH nonlocality is no longer observable.
-
 
 %--------------------------------------------------------
 % Subsection 2.4.2 — Statistical Composite Model
@@ -1002,47 +945,27 @@ C
 \label{eq:statistical_composite_concurrence}
 \end{equation}
 
-The maximal CHSH parameter is
+At the level of transverse polarization correlations, the progression of the
+effective models can therefore be summarized as
 
 \begin{equation}
-S_{\max}
-=
-2\eta
-\sqrt{
-1+|\mu|^2
-}.
-\label{eq:statistical_composite_chsh}
-\end{equation}
-
-Bell-inequality violation therefore requires
-
-\begin{equation}
-\eta
-\sqrt{
-1+|\mu|^2
-}
->
-1.
-\label{eq:statistical_composite_chsh_threshold}
-\end{equation}
-
-At the level of transverse correlations, the progression can therefore be
-summarized schematically as
-
-\[
+\boxed{
 e^{i\theta}
 \quad\longrightarrow\quad
-\mu=\langle e^{i\theta}\rangle
+\mu=\left\langle e^{i\theta}\right\rangle
 \quad\longrightarrow\quad
-\eta\mu.
-\]
+\eta\mu
+}
+\label{eq:effective_model_progression}
+\end{equation}
 
+corresponding respectively to coherent phase evolution, statistical dephasing,
+and the additional suppression produced by isotropic depolarization.
 The effective model is analytically transparent and useful for distinguishing
 coherent phase evolution, statistical dephasing, and isotropic polarization
 degradation. Its main limitation is that the parameters
-\(\mu\), \(p_A\), and \(p_B\) describe reduced behavior rather than being derived
+\(\mu\), \(p_A\), and \(p_B\) describe phenomenological behavior rather than being derived
 directly from the spectral and birefringent properties of the physical fibers.
-
 
 %========================================================
 % SECTION 2.5 — From Effective Channels to
@@ -1805,10 +1728,10 @@ poon_law_stochastic_pmd_2008}.
 
 
 %--------------------------------------------------------
-% Subsection 2.6.3 — Nature of the Reduced Polarization Decoherence
+% Subsection 2.6.3 — Nature of the ResidualPolarization Decoherence
 %--------------------------------------------------------
 
-\subsection{Nature of the Reduced Polarization Decoherence}
+\subsection{Nature of the ResidualPolarization Decoherence}
 \label{subsec:nature_reduced_polarization_decoherence}
 
 The reduced evolution in
@@ -2357,7 +2280,7 @@ explicit in the following subsection.
 % Subsection 2.8.1 — Fixed-Frequency Limit
 %--------------------------------------------------------
 
-\subsection{Fixed-Frequency Limit and Connection to the Reduced Phase Model}
+\subsection{Fixed-Frequency Limit and Connection to the ResidualPhase Model}
 \label{subsec:fixed_frequency_birefringence_reduced_phase}
 
 Consider first a monochromatic component at the carrier frequency

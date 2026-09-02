@@ -1,0 +1,64 @@
+%========================================================
+% ABSTRACT IN ENGLISH
+%========================================================
+
+As quantum technologies progress toward distributed architectures, optical
+quantum links are becoming increasingly important for both interconnecting
+remote quantum processing nodes and enabling secure quantum communication.
+Polarization-encoded photonic qubits are particularly suited to fiber-based
+transmission, since polarization can be prepared, manipulated, and measured
+using well-established optical and quantum-optical components.
+
+Among the applications considered in this thesis, particular attention is
+devoted to entanglement-based quantum key distribution, with the BBM92 protocol
+providing the main operational reference. In this context, the preservation of
+high-quality entanglement is directly related to the suitability of the
+distributed state for secure quantum communication.
+
+This thesis develops a progressive and unified framework for studying the
+propagation of polarization-entangled photon pairs through optical fibers,
+connecting physical descriptions commonly treated separately at different
+levels of approximation. The main objective is to relate fiber and source
+parameters to the quality of the distributed entanglement and to the operational
+requirements of BBM92-based communication. To this purpose, the framework
+connects the physical parameters of the optical link with state-quality metrics
+and protocol-relevant quantities, particularly the quantum bit error rate
+(QBER). This provides a practical procedure for identifying operating regions
+of the physical parameter space in which the distributed state satisfies an
+adopted BBM92 QBER criterion, without assuming a universal concurrence threshold.
+
+The modeling hierarchy starts from the residual polarization evolution after
+partial compensation. A fixed relative phase first distinguishes coherent
+changes in measured correlations from genuine entanglement degradation. The
+model is then extended to unresolved phase fluctuations through the coherence
+parameter \(\mu=\langle e^{i\theta}\rangle\), with \(C=|\mu|\), and to independent
+depolarizing effects in the two fiber arms through
+\(\eta=(1-p_A)(1-p_B)\). Finally, these effective descriptions are connected to
+polarization-mode dispersion (PMD), where finite-bandwidth photons undergo
+frequency-dependent birefringent transformations and polarization mixedness
+emerges after tracing over unresolved spectral degrees of freedom.
+
+The framework is implemented in a modular MATLAB simulator for quantum state
+preparation, fiber-channel composition, statistical averaging, spectral
+tracing, and polarization-correlation analysis. Analytical and numerical
+results are used to study how source properties, fiber parameters, PMD, and
+compensation conditions affect the surviving entanglement. The numerical
+framework is also structured to relate these physical parameters to QBER-based
+operational requirements and to identify the corresponding BBM92 operating
+regions.
+
+The theoretical and numerical analysis is complemented by a preliminary
+laboratory study of a simplified BBM92-oriented polarization-entanglement
+platform, representing a first step toward evaluating practical conditions and
+requirements for entanglement-based quantum communication over optical fibers.
+
+\medskip
+
+\noindent
+\textbf{Keywords:}
+Polarization Entanglement,
+Optical Fibers,
+BBM92,
+Quantum Channels,
+Decoherence,
+Depolarization.

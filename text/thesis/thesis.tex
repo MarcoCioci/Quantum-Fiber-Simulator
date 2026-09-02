@@ -99,8 +99,8 @@
 % ADD THESIS-SPECIFIC DEFINITIONS AND COMMANDS HERE
 %------------------------------------------------------------------------------
 
-% Example:
-% \newcommand{\Tr}{\operatorname{Tr}}
+% Define a compact trace operator for density-matrix diagnostics.
+\newcommand{\Tr}{\operatorname{Tr}}
 
 %------------------------------------------------------------------------------
 % BEGIN OF DOCUMENT
@@ -124,7 +124,7 @@
 \frontmatter
 
 \puttitle{
-    title={Study of Depolarization Effects on\\Polarization Entanglement Distribution through Optical Fibers},
+    title={Study of Decoherence Effects on\\Polarization Entanglement Distribution through Optical Fibers},
     name={Marco Cioci},
     course={High Performance Computing Engineering},
     ID={252488},
@@ -147,17 +147,7 @@
 
 \chapter*{Abstract}
 
-\input{abstract/abstract_EN}
-
-\medskip
-
-\noindent
-\textbf{Keywords:}
-Polarization Entanglement,
-Optical Fibers,
-Quantum Channels,
-Decoherence,
-Depolarization.
+\input{chapters/abstract/abstract_EN}
 
 %------------------------------------------------------------------------------
 % ABSTRACT IN ITALIAN
@@ -165,17 +155,7 @@ Depolarization.
 
 \chapter*{Abstract in lingua italiana}
 
-\input{abstract/abstract_IT}
-
-\medskip
-
-\noindent
-\textbf{Parole chiave:}
-Entanglement di Polarizzazione,
-Fibre Ottiche,
-Canali Quantistici,
-Decoerenza,
-Depolarizzazione.
+\input{chapters/abstract/abstract_IT}
 
 %------------------------------------------------------------------------------
 % TABLE OF CONTENTS
@@ -210,7 +190,9 @@ Depolarizzazione.
 % MATHEMATICAL AND PHYSICAL FRAMEWORK
 %------------------------------------------------------------------------------
 \chapter{Mathematical and Physical Framework}
+
 \label{ch:01_mathematical_and_physical_framework}
+
 \input{chapters/01_mathematical_and_physical_representation}
 
 %------------------------------------------------------------------------------
@@ -218,7 +200,9 @@ Depolarizzazione.
 % FIBER-CHANNEL MODELING
 %------------------------------------------------------------------------------
 \chapter{Fiber-Channel Modeling}
+
 \label{ch:02_fiber_channel_modeling}
+
 \input{chapters/02_fiber_channel_modeling}
 % \input{chapters/06_frequency_dependent_fiber_propagation_and_pmd}
 
@@ -228,7 +212,9 @@ Depolarizzazione.
 %------------------------------------------------------------------------------
 
 \chapter{Numerical Experiments and Results}
+
 \label{ch:03_numerical_experiments_results}
+
 \input{chapters/03_numerical_experiments_and_results}
 
 %------------------------------------------------------------------------------
@@ -237,8 +223,9 @@ Depolarizzazione.
 %------------------------------------------------------------------------------
 
 % \chapter{Experimental Activity}
+
 % \label{ch:04_experimental_activity}
-%
+
 % \input{chapters/04_experimental_activity}
 
 %------------------------------------------------------------------------------
@@ -246,9 +233,10 @@ Depolarizzazione.
 %------------------------------------------------------------------------------
 
 % \chapter{Conclusions and Future Developments}
+
 % \label{ch:05_conclusions}
-%
-% \input{chapters/09_conclusions}
+
+% \input{chapters/05_conclusions}
 
 %------------------------------------------------------------------------------
 % BIBLIOGRAPHY
@@ -256,8 +244,6 @@ Depolarizzazione.
 
 \addtocontents{toc}{\vspace{2em}}
 
-% Uncomment once active citations are present.
-%
 \bibliography{bibliography/Thesis_bibliography}
 
 %------------------------------------------------------------------------------
@@ -270,7 +256,7 @@ Depolarizzazione.
 
 \appendix
 
-\input{appendices/appendices}
+% \input{appendices/appendices}
 
 %------------------------------------------------------------------------------
 % LIST OF FIGURES

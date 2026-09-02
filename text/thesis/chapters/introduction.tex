@@ -5,179 +5,100 @@
 As quantum computing technologies continue to advance and quantum communication
 links become increasingly relevant for interconnecting remote quantum systems, the
 reliable transmission of quantum states between distant nodes is becoming an
-increasingly important technological requirement. Optical fibers represent the
+increasingly important technological requirement. Optical fibers represent a
 natural transmission medium for many such applications because of their
 compatibility with existing telecommunications infrastructure and their suitability
 for long-distance photonic links
-~\cite{wehner_elkouss_hanson_quantum_internet_2018}.
+~\cite{wehner_elkouss_hanson_quantum_internet_2018, abadal2024electromagnetic}.
 
 Among the different photonic degrees of freedom, polarization provides a
 particularly convenient encoding for quantum information. Polarization-entangled
 photon pairs can be generated, manipulated, and measured using established optical
 components, making them attractive resources for entanglement distribution and
 entanglement-based quantum communication protocols
-~\cite{bennett_brassard_BB84_1984,
-bennett_brassard_mermin_BBM92_1992}. Propagation through real optical fibers,
-however, modifies the polarization state through birefringence, polarization
-rotations, phase accumulation, temporal effects, and environmental fluctuations
-~\cite{dowling_2023_polarization_control}.
-
-Some of these transformations remain coherent and therefore preserve the
-entanglement of the state, whereas unresolved fluctuations or coupling to
-additional degrees of freedom can lead to effective decoherence and degradation
-of the observed polarization correlations
+~\cite{bennett_brassard_mermin_BBM92_1992}. Their transmission through real optical
+fibers, however, is affected by birefringence, polarization rotations, phase
+accumulation, temporal effects, and environmental fluctuations
+~\cite{dowling_2023_polarization_control}. While deterministic local
+transformations can remain coherent and preserve entanglement, unresolved
+fluctuations or coupling to additional degrees of freedom can produce effective
+decoherence and degrade the polarization correlations accessible at the receiver
 ~\cite{poon_law_stochastic_pmd_2008,
 brodsky_loss_polarization_entanglement_2011}.
 
-In this work, the term \emph{polarization decoherence} is used in a general sense
-to describe the effective loss of coherence of the polarization degree of freedom
-when information becomes inaccessible to the polarization measurement. This may
-occur either because different experimental realizations undergo unresolved
-fluctuating transformations or because polarization becomes coupled to additional
-degrees of freedom, such as frequency or arrival time, which are subsequently
-traced out. Although the complete physical evolution may remain unitary, the
-resulting reduced polarization state can therefore become mixed.
+The preservation of polarization entanglement is particularly relevant to
+entanglement-based quantum key distribution. In the BBM92 protocol, an entangled
+photon pair is distributed between two distant parties, Alice and Bob, who
+independently choose between alternative polarization measurement bases to
+establish a secure key
+~\cite{bennett_brassard_mermin_BBM92_1992}. Fiber propagation and environmental
+perturbations can degrade the distributed correlations, increasing the quantum bit
+error rate (QBER) and ultimately limiting the suitability of the link for secure
+quantum communication.
 
-Two more specific forms of polarization degradation are distinguished within this
-general framework. \emph{Dephasing} denotes the suppression of relative phase
-coherence between selected polarization components while leaving their populations
-unchanged. In the density-operator representation, this appears as a reduction of
-the corresponding off-diagonal matrix elements. Random fluctuations of a relative
-phase provide the simplest example considered in this thesis. By contrast,
-\emph{depolarization} denotes a reduction of the degree of polarization without
-selecting a particular phase relation. For a single qubit, this corresponds
-geometrically to a contraction of the Bloch vector toward the center of the Bloch
-ball. In the effective channel models developed here, depolarization is represented
-through isotropic local depolarizing channels acting independently on the two fiber
-arms. Dephasing and depolarization are therefore treated as distinct effective
-processes, although both constitute forms of reduced polarization decoherence and
-both may lead to degradation of bipartite correlations and entanglement.
+BBM92 therefore provides the main operational reference for this thesis, whose
+objective is to investigate how source properties and fiber propagation conditions
+affect the quality of distributed polarization entanglement and its suitability for
+quantum communication. The reference configuration consists of an entangled-photon
+source connected to two spatially separated fiber arms, \(A\) and \(B\), with one
+photon propagating through each arm and polarization used as the qubit degree of
+freedom. The work progressively connects the physical mechanisms affecting this
+configuration with their mathematical modeling, numerical simulation, and
+operational consequences.
 
-It is also important to distinguish these irreversible or effectively irreversible
-processes from deterministic birefringent evolution. A fixed polarization rotation
-or a fixed differential phase modifies the orientation and correlation structure of
-the state but, as a local unitary transformation, does not by itself reduce its
-purity or entanglement. Loss of polarization coherence appears only when the
-underlying transformation is not resolved at the level of the measurement or when
-the polarization degree of freedom becomes correlated with unobserved variables.
-This distinction between coherent evolution and effective decoherence constitutes
-one of the central organizing principles of the modeling strategy adopted in this
-work.
+Chapter~\ref{ch:01_mathematical_and_physical_framework} establishes the physical
+and mathematical framework required for this analysis. It introduces the
+description of polarization qubits and bipartite states, the density-operator
+formalism, reduced states, local measurements, and polarization correlations. The
+chapter also presents the quantities used throughout the thesis to characterize
+state quality, coherence, entanglement, and nonlocality. Particular attention is
+devoted to concurrence as the principal entanglement measure adopted in the
+numerical analysis. A brief description of the BBM92 protocol and of its main
+quantities of interest is also provided, establishing the connection between the
+quantum-state description and the operational perspective used in the subsequent
+chapters.
 
-The aim of this thesis is to study these effects through a framework connecting
-physical modeling, numerical simulation, and laboratory characterization of
-polarization-entangled photon pairs propagating through two independent fiber
-links. Rather than introducing a complete fiber model from the beginning, the
-problem is approached through a progressive modeling strategy. Each physical
-mechanism is first isolated in an analytically tractable description and
-subsequently combined with additional effects, allowing its influence on the
-propagated quantum state to be identified independently and the corresponding
-numerical implementation to be validated.
-
-The physical reference system consists of a source producing
-polarization-entangled photon pairs, whose photons propagate along two spatially
-separated arms, denoted \(A\) and \(B\). The polarization degree of freedom is
-used as the qubit encoding, with
-\( |H\rangle \equiv |0\rangle \) and
-\( |V\rangle \equiv |1\rangle \).
-The ideal input state considered throughout most of the work is the Bell state
-
-\[
-|\Psi^+\rangle
-=
-\frac{1}{\sqrt{2}}
-\left(
-|01\rangle+|10\rangle
-\right).
-\]
-
-Fiber propagation acts locally on the two photons, while the resulting state is
-characterized through its reduced states, polarization correlations, purity,
-fidelity, concurrence, and Bell-nonlocality indicators.
-
-The first level of the propagation model is motivated directly by the
-polarization-compensation procedure available in the experimental setup. After the
-dominant polarization rotation has been compensated, a residual relative phase
-between the two polarization components may remain. This effect is represented
-through the reduced phase model and provides the simplest description for studying
-how coherent fiber evolution modifies the measured two-photon correlations without
-degrading the entanglement itself.
-
-The description is then extended to unresolved phase fluctuations by averaging
-over multiple phase realizations. In this regime, the complex parameter
-
-\[
-\mu=\langle e^{i\theta}\rangle
-\]
-
-summarizes the surviving coherence and provides a direct connection between the
-statistics of the phase fluctuations and the properties of the resulting mixed
-state. This model constitutes a controlled example of polarization dephasing:
-the populations in the selected basis remain unchanged, while the corresponding
-off-diagonal coherence terms are progressively suppressed.
-
-A second modeling level introduces depolarizing effects in the two propagation
-arms. Since the photons travel through physically distinct fibers, these effects
-are treated through independent local channels acting on subsystems \(A\) and
-\(B\). Unlike the reduced-phase and dephasing models, which act primarily on
-relative phase coherence, the depolarizing channel contracts the complete local
-polarization information isotropically. Its combined action with the residual
-phase evolution is then studied through an effective two-arm channel in which
-coherent evolution, statistical dephasing, and local depolarization can be
-distinguished within the same density-operator framework.
-
-The effective description is finally connected to a more physical treatment of
-polarization-mode dispersion (PMD)
+Chapter~\ref{ch:02_fiber_channel_modeling} describes how optical fiber propagation
+modifies the polarization state through a progressive hierarchy of models with
+increasing physical detail. A central distinction is made between coherent
+polarization evolution, which can modify measured correlations without necessarily
+reducing purity or entanglement, and effective decoherence arising from unresolved
+fluctuations or coupling to unobserved degrees of freedom. Reduced models are first
+used to isolate coherent phase evolution, statistical dephasing, and local
+depolarizing effects in the two propagation arms, providing analytically
+interpretable descriptions of the different degradation mechanisms. The analysis
+is then extended to a frequency-dependent treatment of polarization-mode
+dispersion (PMD)
 ~\cite{riccardi_polarization_entanglement_distribution_2021,
 wai_menyuk_random_birefringence_1996,
-antonelli_shtaif_brodsky_pmd_2011}.
-In this case, the finite spectral bandwidth of the photons is taken into account
-explicitly and different frequency components experience different birefringent
-transformations. The resulting evolution can correlate polarization with
-frequency and arrival time. Although the complete polarization--frequency state
-remains pure under lossless unitary propagation, tracing over unresolved spectral
-degrees of freedom can produce an effectively mixed polarization state. PMD
-therefore provides a physical mechanism by which polarization decoherence can
-emerge from an underlying unitary evolution. A segmented birefringent-fiber
-representation is introduced to model this frequency-dependent propagation and to
-connect the reduced channel descriptions with the physical origin of polarization
-decoherence in optical fibers.
+antonelli_shtaif_brodsky_pmd_2011}, connecting fiber birefringence and the spectral
+properties of the photon pair to the effective degradation of polarization
+entanglement. The resulting hierarchy therefore provides a continuous path from
+simplified effective channels to a physical description of frequency-dependent
+fiber propagation.
 
-These models are implemented in a standalone modular MATLAB library. The
-computational framework follows the same hierarchy as the theoretical development:
-state preparation, operator construction, propagation, statistical averaging,
-quantum-channel application, measurement evaluation, and computation of state
-metrics are implemented as separate reusable components. Numerical experiments
-are then constructed by combining these validated modules. Analytical predictions
-are used whenever available as reference solutions, so that increasingly complex
-models are introduced only after their constituent components have been
-independently verified.
+Chapter~\ref{ch:03_numerical_experiments_results} implements the developed models
+in a modular MATLAB simulation framework and investigates through numerical
+experiments how source properties, fiber parameters, PMD, and compensation
+conditions affect the distributed entanglement. The analysis aims to identify
+regions of parameter space in which a prescribed entanglement quality is
+maintained, assess the validity of reduced models against the physical
+frequency-dependent description, and relate the resulting entanglement
+degradation to BBM92-oriented operational requirements.
 
-The theoretical and computational activity is complemented by the development of
-a two-arm experimental platform for polarization-entanglement distribution. The
-setup combines controllable polarization transformations with single-photon
-detection and coincidence measurements, allowing the correlations predicted by the
-models to be related to directly accessible laboratory quantities. The experimental
-activity is intended both as a first comparison between the developed framework and
-a physical fiber link and as a basis for subsequent applications to
-entanglement-based quantum communication, including a future BBM92
-implementation.
+Chapter~\ref{ch:04_experimental_activity} complements the theoretical and numerical
+work with a preliminary laboratory study of polarization-entanglement
+distribution. A simplified two-arm platform based on entangled-photon propagation,
+polarization control, single-photon detection, and coincidence measurements is
+considered. The objective of this activity is to provide a first laboratory
+approach to the measurement conditions and practical requirements relevant to
+BBM92-oriented quantum communication over optical fibers. At the present stage,
+the experimental activity is therefore intended as an initial exploration of the
+physical platform rather than as a complete BBM92 implementation.
 
-The thesis is organized as follows.
-Chapter~\ref{ch:01_mathematical_and_physical_framework} introduces the physical
-and mathematical framework used throughout the work, including the bipartite
-polarization system, density-operator formalism, reduced states, correlation
-tensors, local measurements, and the metrics used to quantify state quality,
-entanglement, and nonlocality.
-Chapter~\ref{ch:02_fiber_channel_modeling} develops the fiber-propagation models,
-progressing from reduced phase evolution and statistical phase fluctuations to
-local depolarizing channels, composite effective channels, and the
-frequency-dependent description of polarization-mode dispersion.
-Chapter~\ref{ch:03_numerical_framework_results} presents the MATLAB simulation
-framework and the numerical experiments used to validate the analytical models and
-investigate their predictions.
-Chapter~\ref{ch:04_experimental_activity} describes the experimental platform,
-measurement procedure, and laboratory activity developed for the distribution and
-characterization of polarization-entangled photon pairs.
-The final chapter~\ref{ch:05_conclusions} summarizes the main results and discusses
-possible extensions of the modeling, simulation, and experimental framework.
+Finally, Chapter~\ref{ch:05_conclusions} summarizes the main theoretical,
+numerical, and experimental results and discusses the possible extensions of the
+developed framework. Particular attention is given to the connection between
+physical fiber-channel modeling, the numerical identification of
+entanglement-quality regions, and their operational interpretation in the context
+of entanglement-based quantum communication.
