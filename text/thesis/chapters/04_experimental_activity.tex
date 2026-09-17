@@ -1,0 +1,353 @@
+%========================================================
+% CHAPTER 4 — Experimental Activity and Polarization
+%             Control in Fiber-Based Quantum Links
+%========================================================
+
+This chapter presents the experimental activity carried out at the POLICOM
+laboratory of the Department of Electronics, Information and Bioengineering
+(DEIB) at Politecnico di Milano.
+
+
+%========================================================
+% SECTION 4.1 — Experimental Objectives and Development
+%               Strategy
+%========================================================
+
+\section{Experimental Objectives and Development Strategy}
+\label{sec:experimental_objectives}
+
+The main objective of the experimental work is to investigate, characterize, and
+control the polarization behavior of light transmitted through a two-arm
+fiber-optic system, with particular attention to the mechanisms that may affect
+the transmission of polarization-encoded quantum states. The experimental
+activity therefore complements the analytical and numerical framework developed
+in the previous chapters by providing a laboratory-based study of the same
+physical phenomena.
+
+The adopted architecture is intentionally simplified. Rather than implementing
+a complete quantum-communication protocol, the setup reproduces a representative
+subsystem of a future entanglement-based BBM92 architecture. In this
+context, the objective is to study the behavior of the optical components and
+polarization-control stages that would be required in a realistic fiber-based
+installation, and to identify the experimentally accessible observables that can
+be used to monitor their operation.
+
+The experimental platform combines several optical and electronic components
+previously characterized and calibrated in the laboratory, including a
+spontaneous-parametric-down-conversion source, polarization-control elements,
+polarization beam splitters, polarization-maintaining fiber sections,
+single-photon avalanche detectors, time-tagging electronics, and, in the later
+development stages, an electronically controlled polarization controller. These
+components are progressively integrated into a common measurement and control
+framework.
+
+The experimental activity was developed according to three main stages:
+
+\begin{enumerate}
+    \item \textbf{Manual polarization control.}
+    The first stage establishes the basic two-arm detection architecture using
+    four single-photon avalanche detectors and manually adjusted polarization
+    control. This configuration provides the reference measurement platform for
+    the characterization of single-photon count rates and coincidence
+    observables.
+
+    \item \textbf{Automatic polarization control.}
+    The second stage introduces electronic polarization control and
+    the corresponding software-based feedback system. The controller is first
+    calibrated and then used to investigate automatic polarization alignment.
+    Different feedback and optimization strategies are tested in order to
+    evaluate their ability to recover and maintain a desired polarization
+    condition from experimentally measured coincidence observables.
+
+    \item \textbf{Controlled PM-fiber propagation experiment.}
+    The final stage combines the four-detector analysis, automatic polarization
+    control, and polarization-maintaining (PM) fiber sections in a single
+    experimental setup. The PM fiber is used to introduce a controlled
+    birefringent propagation mechanism and to investigate the resulting
+    polarization degradation under experimentally reproducible conditions.
+\end{enumerate}
+
+The final PM-fiber experiment is performed using a non-entangled input polarization state. 
+Consequently, it does not directly measure entanglement degradation, 
+but it allows the polarization-decoherence and depolarization mechanisms 
+induced by controlled birefringent propagation to be experimentally characterized.
+The measured coincidence observables are then interpreted
+through the calibrated physical PM-fiber model developed in the previous
+chapters.
+
+More generally, the scope of the experimental activity is not to reconstruct the
+microscopic evolution of each individual photon inside the fiber. The objective
+is instead to determine how the available optical components, polarization
+controllers, detectors, and fiber sections behave when assembled into a realistic
+quantum-communication link. In this sense, the laboratory platform provides an
+engineering-level validation environment connecting the theoretical fiber models
+with experimentally accessible quantities and with the requirements of a future
+BBM92-oriented implementation.
+
+%========================================================
+% SECTION 4.2 — Experimental Platform and Instrumentation
+%========================================================
+
+\section{Experimental Platform and Instrumentation}
+\label{sec:experimental_platform}
+
+This section describes the common hardware and acquisition infrastructure used
+throughout the experimental activity.
+
+The presentation includes the SPDC source and the optical architecture inherited
+from the previously developed laboratory platform, manual polarization
+controllers, the electronic polarization controller, polarizing beam splitters,
+polarization-maintaining fibers, SPAD detectors, and the time-tagging system.
+
+The software developed for detector configuration, real-time singles monitoring,
+coincidence-histogram acquisition, timing-delay compensation, EPC control, and
+experimental data storage is also introduced.
+
+The description focuses on the role played by each component in the experiments
+performed in this work, while detailed characterization of instrumentation already
+documented in previous laboratory work is only recalled where necessary.
+
+
+%========================================================
+% SECTION 4.3 — Phase I: Manual Polarization Control and
+%               Four-SPAD Measurements
+%========================================================
+
+\section{Phase I: Manual Polarization Control and Four-SPAD Measurements}
+\label{sec:phase1_manual_control}
+
+The first experimental phase establishes the reference measurement configuration
+using four SPAD detectors and two manually operated polarization controllers.
+
+The purpose of this stage is to validate the complete acquisition chain, including
+single-photon count-rate measurements, coincidence-peak identification, timing
+alignment between detector channels, and polarization-dependent redistribution
+of coincidence events.
+
+Manual polarization control is used to align the polarization states with the
+measurement basis and to investigate how changes in the optical configuration
+modify the observed coincidence channels.
+
+This phase provides the experimental baseline required before introducing
+automatic polarization compensation.
+
+
+%========================================================
+% SECTION 4.4 — Phase II: Automatic Electronic
+%               Polarization Control
+%========================================================
+
+\section{Phase II: Automatic Electronic Polarization Control}
+\label{sec:phase2_epc}
+
+The second phase introduces an electronic polarization controller into a reduced
+experimental configuration without PM fiber.
+
+One photon provides the reference detection event, while the polarization of the
+second optical arm is controlled by the EPC before being analyzed by a PBS and
+two SPAD detectors.
+
+The polarization-compensation problem is formulated as a closed-loop,
+derivative-free optimization problem in which the EPC control voltages are
+updated according to experimentally measured coincidence observables.
+
+This section introduces the feedback architecture, the EPC control variables,
+the measurement cycle, and the general optimization framework used throughout
+the automatic-control experiments.
+
+
+%========================================================
+% SECTION 4.5 — Coincidence-Based Objective Functions
+%========================================================
+
+\section{Coincidence-Based Objective Functions}
+\label{sec:epc_objective_functions}
+
+This section defines the experimental quantities used to provide feedback to the
+electronic polarization controller.
+
+The principal observables are the net coincidence counts associated with the two
+outputs of the polarization analyzer. These quantities are extracted from the
+measured correlation histograms through coincidence-peak localization,
+integration, and background estimation.
+
+The main objective functions used in the experiments are introduced and compared,
+including optimization of a selected coincidence channel and combined objective
+functions constructed from both polarization outputs.
+
+Particular attention is given to the physical meaning of the objective functions
+and to the distinction between single-photon count rates and coincidence-based
+feedback.
+
+
+%========================================================
+% SECTION 4.6 — EPC Optimization Algorithms
+%========================================================
+
+\section{EPC Optimization Algorithms}
+\label{sec:epc_optimization_algorithms}
+
+This section presents the principal optimization algorithms implemented for
+automatic EPC control.
+
+The first method is sequential coordinate search, in which the EPC control
+parameters are optimized one at a time while retaining configurations that
+improve the measured objective function.
+
+The second method is a stochastic coarse-to-fine optimization based on simulated
+annealing. A coarse exploration of the EPC voltage space is followed by a finer
+local search, while probabilistic acceptance of non-improving configurations
+provides a mechanism for escaping unfavorable local solutions.
+
+The algorithms are discussed in terms of convergence behavior, measurement cost,
+repeatability, sensitivity to photon-counting fluctuations, and suitability for
+closed-loop polarization control.
+
+
+%========================================================
+% SECTION 4.7 — Phase III: Controlled Propagation Through
+%               PM Fiber
+%========================================================
+
+\section{Phase III: Controlled Propagation Through PM Fiber}
+\label{sec:phase3_pm_fiber}
+
+The final experimental phase introduces a controlled polarization-maintaining
+fiber section into the optical path.
+
+The experimental configuration is
+
+\begin{equation}
+\text{SPDC OUT 1}
+\rightarrow
+\text{Manual PC}
+\rightarrow
+\text{PBS}_{45^\circ}
+\rightarrow
+\text{PM}_{45^\circ}
+\rightarrow
+[\text{PM}_{0^\circ}]^{N}
+\rightarrow
+\text{EPC}
+\rightarrow
+\text{PBS}
+\rightarrow
+\{\text{SPAD 3},\text{SPAD 4}\},
+\end{equation}
+
+while the reference arm is
+
+\begin{equation}
+\text{SPDC OUT 2}
+\rightarrow
+\text{SPAD 1}.
+\end{equation}
+
+Unlike the entanglement-distribution models developed in the theoretical part of
+the thesis, this experiment uses a non-entangled input polarization state.
+
+Its purpose is to experimentally isolate and characterize the effect of
+controlled birefringent propagation and differential group delay on the measured
+polarization observables.
+
+
+%========================================================
+% SECTION 4.8 — Role of the Rotated and Aligned PM-Fiber
+%               Sections
+%========================================================
+
+\section{Role of the Rotated and Aligned PM-Fiber Sections}
+\label{sec:pm_fiber_configuration}
+
+This section explains the physical motivation for the sequence composed of an
+initial PM-fiber section rotated by approximately \(45^\circ\), followed by
+additional aligned PM-fiber sections.
+
+The rotated section couples the prepared input polarization to both principal
+polarization modes of the PM fiber, allowing the fast and slow components to
+propagate simultaneously.
+
+The subsequent aligned PM-fiber sections increase the accumulated differential
+group delay while preserving, to first approximation, the same principal-axis
+orientation.
+
+The number of aligned sections, or equivalently the total PM-fiber length, is
+therefore used as the main experimental control parameter governing the strength
+of the polarization--temporal separation.
+
+
+%========================================================
+% SECTION 4.9 — Measured Coincidence Observables Under
+%               PM-Fiber Propagation
+%========================================================
+
+\section{Measured Coincidence Observables Under PM-Fiber Propagation}
+\label{sec:pm_fiber_observables}
+
+This section presents the quantities directly accessible with the current
+experimental instrumentation.
+
+Since the available setup performs polarization analysis in a single measurement
+basis, full quantum-state tomography is not carried out. Consequently, quantities
+such as the complete density operator, concurrence, and state fidelity are not
+directly reconstructed from the experimental measurements.
+
+The experimental analysis instead focuses on the coincidence observables
+associated with the two PBS output channels and on their evolution as the
+PM-fiber configuration is modified.
+
+The measurements are used to quantify the redistribution and loss of polarization
+contrast produced by increasing differential propagation between the principal
+fiber modes.
+
+
+%========================================================
+% SECTION 4.10 — Comparison with a Calibrated Physical
+%                PM-Fiber Model
+%========================================================
+
+\section{Comparison with a Calibrated Physical PM-Fiber Model}
+\label{sec:pm_fiber_model_comparison}
+
+The experimental results are interpreted through a calibrated physical model of
+the PM-fiber propagation rather than through complete quantum-state tomography.
+
+The model incorporates the relevant properties of the PM-fiber sections, such as
+their length, principal-axis orientation, birefringence, differential group delay,
+and the spectral characteristics of the propagating photons.
+
+From these parameters, the expected polarization evolution and the corresponding
+measurement probabilities at the PBS outputs are calculated and compared with
+the experimentally measured coincidence observables.
+
+This model-assisted approach allows the physical origin of the observed
+polarization degradation to be investigated within the limitations imposed by
+the available measurement basis.
+
+
+%========================================================
+% SECTION 4.11 — Connection with the Theoretical and
+%                Numerical Framework
+%========================================================
+
+\section{Connection with the Theoretical and Numerical Framework}
+\label{sec:experimental_theoretical_connection}
+
+The final section connects the experimental observations with the physical
+fiber-propagation framework developed in the previous chapters.
+
+The PM-fiber experiment provides a controlled realization of
+frequency-dependent birefringent propagation, in which polarization becomes
+coupled to temporal or spectral degrees of freedom through differential group
+delay.
+
+When these additional degrees of freedom are not resolved by the measurement,
+the resulting polarization dynamics can be represented through an effective
+reduced-state description.
+
+The experiment therefore provides a physical test of the propagation mechanism
+underlying the numerical PMD model. The distinction between theory and experiment
+is maintained explicitly: the numerical framework treats both single-photon and
+entangled two-photon states, whereas the final laboratory experiment investigates
+the same physical mechanism using a non-entangled input state and a restricted
+set of coincidence observables.

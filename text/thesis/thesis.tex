@@ -37,7 +37,7 @@
 \usepackage{eso-pic}
 \usepackage{subfig}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning,calc,fit,arrows.meta}
 \graphicspath{{./Images/}}
 \usepackage{caption}
 \usepackage{xcolor}
@@ -98,6 +98,15 @@
 %------------------------------------------------------------------------------
 % ADD THESIS-SPECIFIC DEFINITIONS AND COMMANDS HERE
 %------------------------------------------------------------------------------
+%========================================================
+% DIRAC NOTATION
+%========================================================
+
+\newcommand{\ket}[1]{\left|#1\right\rangle}
+\newcommand{\bra}[1]{\left\langle#1\right|}
+\newcommand{\braket}[2]{\left\langle#1\,\middle|\,#2\right\rangle}
+\newcommand{\ketbra}[2]{\left|#1\right\rangle\left\langle#2\right|}
+
 
 % Define a compact trace operator for density-matrix diagnostics.
 \newcommand{\Tr}{\operatorname{Tr}}
@@ -211,22 +220,20 @@
 % NUMERICAL FRAMEWORK AND RESULTS
 %------------------------------------------------------------------------------
 
-\chapter{Numerical Experiments and Results}
+\chapter{Numerical Simulations and Results}
 
-\label{ch:03_numerical_experiments_results}
+\label{ch:03_numerical_simulations_results}
 
-\input{chapters/03_numerical_experiments_and_results}
+\input{chapters/03_numerical_simulations_and_results}
 
 %------------------------------------------------------------------------------
 % CHAPTER 4
 % EXPERIMENTAL ACTIVITY
 %------------------------------------------------------------------------------
 
-% \chapter{Experimental Activity}
-
-% \label{ch:04_experimental_activity}
-
-% \input{chapters/04_experimental_activity}
+\chapter{Experimental Activity for Polarization Control}
+\label{ch:04_experimental_activity}
+\input{chapters/04_experimental_activity}
 
 %------------------------------------------------------------------------------
 % CONCLUSIONS AND FUTURE DEVELOPMENTS

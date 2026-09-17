@@ -5,33 +5,28 @@
 As quantum computing technologies continue to advance and quantum communication
 links become increasingly relevant for interconnecting remote quantum systems, the
 reliable transmission of quantum states between distant nodes is becoming an
-increasingly important technological requirement. Optical fibers represent a
+increasingly important requirement in information technology. Optical fibers represent a
 natural transmission medium for many such applications because of their
 compatibility with existing telecommunications infrastructure and their suitability
-for long-distance photonic links
-~\cite{wehner_elkouss_hanson_quantum_internet_2018, abadal2024electromagnetic}.
+for long-distance photonic links~\cite{wehner_elkouss_hanson_quantum_internet_2018, abadal2024electromagnetic}.
 
 Among the different photonic degrees of freedom, polarization provides a
 particularly convenient encoding for quantum information. Polarization-entangled
 photon pairs can be generated, manipulated, and measured using established optical
 components, making them attractive resources for entanglement distribution and
-entanglement-based quantum communication protocols
-~\cite{bennett_brassard_mermin_BBM92_1992}. Their transmission through real optical
+entanglement-based quantum communication protocols~\cite{bennett_brassard_mermin_BBM92_1992}. Their transmission through real optical
 fibers, however, is affected by birefringence, polarization rotations, phase
-accumulation, temporal effects, and environmental fluctuations
-~\cite{dowling_2023_polarization_control}. While deterministic local
+accumulation, temporal effects, and environmental fluctuations~\cite{dowling_2023_polarization_control}. While deterministic local
 transformations can remain coherent and preserve entanglement, unresolved
 fluctuations or coupling to additional degrees of freedom can produce effective
-decoherence and degrade the polarization correlations accessible at the receiver
-~\cite{poon_law_stochastic_pmd_2008,
+decoherence and degrade the polarization correlations accessible at the receiver~\cite{poon_law_stochastic_pmd_2008,
 brodsky_loss_polarization_entanglement_2011}.
 
 The preservation of polarization entanglement is particularly relevant to
 entanglement-based quantum key distribution. In the BBM92 protocol, an entangled
 photon pair is distributed between two distant parties, Alice and Bob, who
 independently choose between alternative polarization measurement bases to
-establish a secure key
-~\cite{bennett_brassard_mermin_BBM92_1992}. Fiber propagation and environmental
+establish a secure key~\cite{bennett_brassard_mermin_BBM92_1992}. Fiber propagation and environmental
 perturbations can degrade the distributed correlations, increasing the quantum bit
 error rate (QBER) and ultimately limiting the suitability of the link for secure
 quantum communication.
@@ -51,7 +46,7 @@ and mathematical framework required for this analysis. It introduces the
 description of polarization qubits and bipartite states, the density-operator
 formalism, reduced states, local measurements, and polarization correlations. The
 chapter also presents the quantities used throughout the thesis to characterize
-state quality, coherence, entanglement, and nonlocality. Particular attention is
+state quality, coherence, entanglement. Particular attention is
 devoted to concurrence as the principal entanglement measure adopted in the
 numerical analysis. A brief description of the BBM92 protocol and of its main
 quantities of interest is also provided, establishing the connection between the
@@ -68,8 +63,7 @@ used to isolate coherent phase evolution, statistical dephasing, and local
 depolarizing effects in the two propagation arms, providing analytically
 interpretable descriptions of the different degradation mechanisms. The analysis
 is then extended to a frequency-dependent treatment of polarization-mode
-dispersion (PMD)
-~\cite{riccardi_polarization_entanglement_distribution_2021,
+dispersion (PMD)~\cite{riccardi_polarization_entanglement_distribution_2021,
 wai_menyuk_random_birefringence_1996,
 antonelli_shtaif_brodsky_pmd_2011}, connecting fiber birefringence and the spectral
 properties of the photon pair to the effective degradation of polarization
@@ -77,14 +71,15 @@ entanglement. The resulting hierarchy therefore provides a continuous path from
 simplified effective channels to a physical description of frequency-dependent
 fiber propagation.
 
-Chapter~\ref{ch:03_numerical_experiments_results} implements the developed models
-in a modular MATLAB simulation framework and investigates through numerical
+Chapter~\ref{ch:03_numerical_simulations_results} describes the implementation of the developed 
+models in a modular MATLAB simulation framework. It investigates through numerical
 experiments how source properties, fiber parameters, PMD, and compensation
 conditions affect the distributed entanglement. The analysis aims to identify
-regions of parameter space in which a prescribed entanglement quality is
-maintained, assess the validity of reduced models against the physical
-frequency-dependent description, and relate the resulting entanglement
-degradation to BBM92-oriented operational requirements.
+regions of parameter space in which the distributed state satisfies selected
+state-quality and BBM92-oriented operational criteria, assess the validity of
+reduced models against the physical frequency-dependent description, and relate
+the resulting entanglement degradation to protocol-relevant quantities such as
+the QBER.
 
 Chapter~\ref{ch:04_experimental_activity} complements the theoretical and numerical
 work with a preliminary laboratory study of polarization-entanglement
@@ -93,8 +88,8 @@ polarization control, single-photon detection, and coincidence measurements is
 considered. The objective of this activity is to provide a first laboratory
 approach to the measurement conditions and practical requirements relevant to
 BBM92-oriented quantum communication over optical fibers. At the present stage,
-the experimental activity is therefore intended as an initial exploration of the
-physical platform rather than as a complete BBM92 implementation.
+the experimental activity is therefore intended as an exploration of the
+conditions of propagation in the fiber links rather than as a complete BBM92 implementation.
 
 Finally, Chapter~\ref{ch:05_conclusions} summarizes the main theoretical,
 numerical, and experimental results and discusses the possible extensions of the

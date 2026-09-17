@@ -62,12 +62,23 @@ function test_pmd()
     dgd = 2e-12;
     axis_z = [0, 0, 1];
 
-    U_segment = pmd_segment_unitary(omega_offset, phase, dgd, axis_z);
+    U_segment = pmd_segment_unitary( ...
+        omega_offset, phase, dgd, axis_z);
 
     alpha = phase + dgd * omega_offset;
 
-    U_expected = [exp(-1i * alpha / 2), 0; ...
-                  0, exp(1i * alpha / 2)];
+    % Adopted convention:
+    %
+    %   U = exp(+i alpha n.sigma / 2).
+    %
+    % For n = z:
+    %
+    %   U = diag(exp(+i alpha/2), exp(-i alpha/2)).
+
+    U_expected = [ ...
+        exp(1i * alpha / 2), 0; ...
+        0, exp(-1i * alpha / 2) ...
+    ];
 
     assert(norm(U_segment - U_expected, 'fro') < tolerance, ...
         'test_pmd:SegmentUnitaryZAxis', ...
@@ -84,8 +95,11 @@ function test_pmd()
         'test_pmd:SegmentAxisNormalization', ...
         'The PMD segment must internally normalize its axis.');
 
-    U_no_dgd_1 = pmd_segment_unitary(-5e12, phase, 0, axis_z);
-    U_no_dgd_2 = pmd_segment_unitary(7e12, phase, 0, axis_z);
+    U_no_dgd_1 = pmd_segment_unitary( ...
+        -5e12, phase, 0, axis_z);
+
+    U_no_dgd_2 = pmd_segment_unitary( ...
+        7e12, phase, 0, axis_z);
 
     assert(norm(U_no_dgd_1 - U_no_dgd_2, 'fro') < tolerance, ...
         'test_pmd:ZeroDGDLimit', ...
@@ -112,7 +126,10 @@ function test_pmd()
 
     phases = [0.2; -0.5];
     dgds = [1e-12; 2e-12];
-    axes = [1, 0, 0; 0, 1, 0];
+    axes = [ ...
+        1, 0, 0; ...
+        0, 1, 0 ...
+    ];
 
     U_1 = pmd_segment_unitary( ...
         omega_offset, phases(1), dgds(1), axes(1, :));
@@ -120,7 +137,8 @@ function test_pmd()
     U_2 = pmd_segment_unitary( ...
         omega_offset, phases(2), dgds(2), axes(2, :));
 
-    U_fiber = pmd_fiber_unitary(omega_offset, phases, dgds, axes);
+    U_fiber = pmd_fiber_unitary( ...
+        omega_offset, phases, dgds, axes);
 
     assert(norm(U_fiber - U_2 * U_1, 'fro') < tolerance, ...
         'test_pmd:FiberConcatenationOrder', ...
@@ -142,7 +160,8 @@ function test_pmd()
     sigma_difference = 5e12;
 
     spectral_weights = pmd_joint_spectral_weights( ...
-        omega_offsets_A, omega_offsets_B, sigma_sum, sigma_difference);
+        omega_offsets_A, omega_offsets_B, ...
+        sigma_sum, sigma_difference);
 
     assert(isequal(size(spectral_weights), [3, 4]), ...
         'test_pmd:SpectralWeightsSize', ...
@@ -186,7 +205,9 @@ function test_pmd()
         'The frequency-resolved state array has incorrect dimensions.');
 
     for k = 1:numel(omega_offsets_A)
+
         for l = 1:numel(omega_offsets_B)
+
             rho_k_l = frequency_states(:, :, k, l);
 
             assert(norm(rho_k_l - rho_input, 'fro') < tolerance, ...
@@ -200,7 +221,9 @@ function test_pmd()
             assert(norm(rho_k_l - rho_k_l', 'fro') < tolerance, ...
                 'test_pmd:FrequencyResolvedHermiticity', ...
                 'Each frequency-resolved state must be Hermitian.');
+
         end
+
     end
 
 

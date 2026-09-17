@@ -199,8 +199,8 @@ states,
 \label{eq:pure_state_separability}
 \end{equation}
 
-If such a factorization is not possible, the state is entangled
-~\cite{nielsen_chuang_qcqi}. Entanglement therefore describes correlations
+If such a factorization is not possible, the state is entangled~\cite{nielsen_chuang_qcqi}. 
+Entanglement therefore describes correlations
 belonging to the joint quantum state that cannot be reduced to independent
 descriptions of the two subsystems.
 
@@ -214,13 +214,12 @@ This makes \( |\Psi^{+}\rangle \) particularly suitable for investigating fiber
 propagation: coherent local transformations may modify the observed correlation
 pattern without changing the amount of entanglement, whereas decoherence
 mechanisms can progressively reduce the shared correlations and eventually degrade
-the distributed entanglement. Monitoring the evolution of \( |\Psi^{+}\rangle \)
+the distributed entanglement. Monitoring the evolution of the state, initially \( |\Psi^{+}\rangle \),
 therefore provides a direct way to distinguish reversible polarization
 transformations from genuine loss of entanglement quality in the fiber link.
 
 Although the theoretical and numerical frameworks apply to arbitrary two-qubit states,
-\( |\Psi^{+}\rangle \) is used as the reference state throughout most of the
-simulations and laboratory analysis.
+\( |\Psi^{+}\rangle \) is used as the reference state throughout most of the work.
 
 %========================================================
 % SECTION 1.3 — Density-Operator Description
@@ -270,7 +269,7 @@ p_k\geq0,
 Such states arise naturally when different physical realizations are averaged
 statistically or when degrees of freedom correlated with the system are not
 resolved experimentally. 
-Importantly, a density operator does not in general
+Considerably, a density operator does not in general
 possess a unique ensemble decomposition; different statistical ensembles may
 represent the same physical state~\cite{nielsen_chuang_qcqi}.
 
@@ -376,10 +375,120 @@ operators are
 \label{eq:bell_reduced_states}
 \end{equation}
 
-Thus, each photon is locally maximally mixed even though the complete two-photon
-state is pure and maximally entangled. The information distinguishing the Bell
-state from an uncorrelated local mixture is therefore contained in the joint
-correlations rather than in the individual reduced states.
+Thus, each single-photon state is locally maximally mixed even though the complete
+two-photon state is pure and maximally entangled. The reduced density operators
+alone therefore do not determine the nature of the global bipartite state; the
+distinguishing information is contained in the joint correlations and coherences.
+
+\paragraph{Entangled State vs Incoherent Mixture}
+
+This distinction can be made explicit by comparing the Bell state
+\(|\Psi^+\rangle\) with the corresponding incoherent mixture having the same
+computational-basis populations,
+
+\begin{equation}
+\rho_{\Psi^+}
+=
+|\Psi^+\rangle\langle\Psi^+|
+=
+\frac{1}{2}
+\left(
+|01\rangle\langle01|
++
+|01\rangle\langle10|
++
+|10\rangle\langle01|
++
+|10\rangle\langle10|
+\right),
+\end{equation}
+
+and
+
+\begin{equation}
+\rho_{\mathrm{mix}}
+=
+\frac{1}{2}
+\left(
+|01\rangle\langle01|
++
+|10\rangle\langle10|
+\right).
+\end{equation}
+
+Both states yield identical reduced density operators,
+
+\begin{equation}
+\rho_A=\rho_B=\frac{I_2}{2},
+\end{equation}
+
+but they differ fundamentally at the global level. Their main properties are
+summarized in Table~\ref{tab:bell_vs_incoherent_mixture}.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison between the Bell state \(|\Psi^+\rangle\) and the
+corresponding incoherent mixture with identical computational-basis populations.}
+\label{tab:bell_vs_incoherent_mixture}
+\begin{tabular}{p{6.4cm}p{4.5cm}p{3cm}}
+\hline
+Property
+&
+\(\rho_{\Psi^+}\)
+&
+\(\rho_{\mathrm{mix}}\)
+\\
+\hline
+Global state
+&
+Pure
+&
+Mixed
+\\
+
+Reduced states
+&
+\(\rho_A=\rho_B=I_2/2\)
+&
+\(\rho_A=\rho_B=I_2/2\)
+\\
+
+Off-diagonal coherence
+&
+Present
+&
+Absent
+\\
+
+Entanglement
+&
+Maximal
+&
+None
+\\
+
+Concurrence
+&
+\(C=1\)
+&
+\(C=0\)
+\\
+
+Computational-basis populations
+&
+\(P_{01}=P_{10}=1/2\)
+&
+\(P_{01}=P_{10}=1/2\)
+\\
+
+\hline
+\end{tabular}
+\end{table}
+
+The comparison shows that identical local density operators, and even \\identical
+computational-basis populations, do not determine the global quantum state. The
+distinguishing information is contained in the off-diagonal coherence terms and
+in the resulting joint correlations.
 
 %--------------------------------------------------------
 % Subsection 1.3.3 — Bloch Representation
@@ -429,8 +538,7 @@ state corresponds to
 \]
 
 Unitary transformations rotate the Bloch vector while preserving its norm.
-Effective decohering processes may instead reduce its magnitude, corresponding
-to motion toward the interior of the Bloch ball.
+Decohering processes may reduce its magnitude, with motion toward the interior of the Bloch ball.
 
 \begin{figure}[!t]
     \centering
@@ -513,8 +621,7 @@ channel,
 
 which is a completely positive and trace-preserving linear map.
 
-A general channel may be written in operator-sum form as
-~\cite{nielsen_chuang_qcqi,kraus1971general}
+A general channel may be written in operator-sum form as~\cite{nielsen_chuang_qcqi,kraus1971general}
 
 \begin{equation}
 \mathcal{E}(\rho)
@@ -663,8 +770,7 @@ the \(3\times3\) block \(S_{ij}\) coincides with the correlation tensor \(T\).
 
 This representation is particularly useful in polarization experiments because
 the density operator can be reconstructed from expectation values of local Pauli
-measurements, as in standard two-qubit quantum-state tomography
-~\cite{altepeter_james_kwiat_quantum_state_tomography}.
+measurements, as in standard two-qubit quantum-state tomography~\cite{altepeter_james_kwiat_quantum_state_tomography}.
 
 The reconstruction follows from the orthogonality relation
 
@@ -692,7 +798,7 @@ temporal window and is interpreted as originating from a single emission of phot
 After normalization, the measured coincidence counts provide experimental
 estimates of the joint probabilities required to evaluate the polarization
 correlations. The practical implementation of this procedure is discussed in 
-chapter \ref{ch:04_experimental_activity} about experimental activity.
+chapter \ref{ch:04_experimental_activity}, concerning experimental activity.
 
 %--------------------------------------------------------
 % Subsection 1.5.2 — Arbitrary Local Measurement Axes
@@ -833,7 +939,7 @@ Eq.~\eqref{eq:bloch_density_representation} gives
 \label{eq:single_qubit_purity_bloch}
 \end{equation}
 
-For the two-qubit polarization system considered throughout this work, \(d=4\),
+For the bipartite two-qubit polarization system considered throughout this work, \(d=4\),
 and therefore
 
 \begin{equation}
@@ -1104,30 +1210,279 @@ with the requirements of entanglement-based quantum communication.
 %========================================================
 
 \section{BBM92 and Operational Requirements}
+
 \label{sec:bbm92_operational_requirements}
 
-The main operational reference considered in this thesis is the BBM92
-entanglement-based quantum key distribution protocol
-~\cite{bennett_brassard_mermin_BBM92_1992}. In its polarization implementation,
-a source distributes the two photons of an entangled pair to two spatially
-separated parties, conventionally denoted Alice and Bob. Each party independently
-selects between alternative polarization measurement bases. Measurements
-performed using compatible bases provide correlated outcomes that can be used
-for key generation and for estimating the disturbance introduced along the
-communication link.
+The main operational reference considered in this thesis is the BBM92 entanglement-based
+quantum key distribution protocol~\cite{bennett_brassard_mermin_BBM92_1992}.
+In its polarization implementation, a source distributes the two photons of an entangled
+pair to two spatially separated parties, conventionally denoted Alice and Bob. Each party
+independently selects between alternative polarization measurement bases. Measurements
+performed using compatible bases provide correlated outcomes that can be used for key
+generation and for estimating the disturbance introduced along the communication link.
+
+A conceptual representation of the polarization-encoded BBM92 architecture adopted as
+operational reference throughout this work is shown in
+Fig.~\ref{fig:bbm92_reference_architecture}.
+
+\begin{figure}[htbp]
+    \centering
+
+    \resizebox{0.95\textwidth}{!}{%
+    \begin{tikzpicture}[
+        >=Latex,
+        line width=0.8pt,
+        font=\small,
+        source/.style={
+            draw,
+            rectangle,
+            rounded corners=1pt,
+            minimum width=4.2cm,
+            minimum height=0.8cm,
+            align=center
+        },
+        bs/.style={
+            draw,
+            fill=blue!20,
+            minimum width=0.16cm,
+            minimum height=0.85cm,
+            rotate=45
+        },
+        hwp/.style={
+            draw,
+            fill=blue!20,
+            minimum width=0.75cm,
+            minimum height=0.16cm
+        },
+        pbs/.style={
+            draw,
+            fill=blue!8,
+            minimum width=0.70cm,
+            minimum height=0.70cm,
+            path picture={
+                \draw
+                (path picture bounding box.south west)
+                --
+                (path picture bounding box.north east);
+            }
+        },
+        detector/.style={
+            draw,
+            rounded corners=3pt,
+            fill=blue!15,
+            minimum width=1.20cm,
+            minimum height=0.55cm,
+            align=center
+        },
+        link/.style={
+            -{Latex[length=2mm]}
+        }
+    ]
+
+    %----------------------------------------------------
+    % Entangled-photon source
+    %----------------------------------------------------
+
+    \node[source] (source) at (0,5.7)
+    {Entangled Photons Source};
+
+    %----------------------------------------------------
+    % Alice
+    %----------------------------------------------------
+
+    \node[bs] (aBS) at (-3.5,4.0) {};
+
+    % Z-basis branch
+    \node[pbs] (aPBSZ) at (-5.6,4.0) {};
+    \node[detector] (aH) at (-7.5,4.0) {SPAD$_H$};
+    \node[detector] (aV) at (-5.6,2.8) {SPAD$_V$};
+
+    % X-basis branch
+    \node[hwp] (aHWP) at (-3.5,3.15) {};
+    \node[pbs] (aPBSX) at (-3.5,2.00) {};
+    \node[detector] (aD) at (-1.8,2.00) {SPAD$_D$};
+    \node[detector] (aA) at (-3.5,0.80) {SPAD$_A$};
+
+    % Alice optical paths
+    \draw[link]
+    (source.south west)
+    --
+    (aBS);
+
+    \draw
+    (aBS)
+    --
+    node[above, font=\scriptsize]
+    {\(Z\) basis}
+    (aPBSZ);
+
+    \draw[link]
+    (aPBSZ)
+    --
+    (aH);
+
+    \draw[link]
+    (aPBSZ)
+    --
+    (aV);
+
+    \draw
+    (aBS)
+    --
+    (aHWP);
+
+    \draw
+    (aHWP)
+    --
+    node[right, font=\scriptsize]
+    {\(X\) basis}
+    (aPBSX);
+
+    \draw[link]
+    (aPBSX)
+    --
+    (aD);
+
+    \draw[link]
+    (aPBSX)
+    --
+    (aA);
+
+    % Labels
+    \node[font=\scriptsize, right=1mm of aBS]
+    {50:50 BS};
+
+    \node[font=\scriptsize, right=1mm of aHWP]
+    {HWP \(22.5^\circ\)};
+
+    \node[font=\scriptsize, above=1mm of aPBSZ]
+    {PBS};
+
+    \node[font=\scriptsize, left=1mm of aPBSX]
+    {PBS};
+
+    % Alice box
+    \node[
+        draw,
+        dashed,
+        rounded corners,
+        fit=(aBS)(aPBSZ)(aH)(aV)(aHWP)(aPBSX)(aD)(aA),
+        inner sep=6mm,
+        label={[font=\bfseries]above:Alice}
+    ] {};
+
+    %----------------------------------------------------
+    % Bob — specular configuration with respect to Alice
+    %----------------------------------------------------
+
+    \node[bs] (bBS) at (3.5,4.0) {};
+
+    % Z-basis branch
+    \node[pbs] (bPBSZ) at (5.6,4.0) {};
+    \node[detector] (bH) at (7.5,4.0) {SPAD$_H$};
+    \node[detector] (bV) at (5.6,2.8) {SPAD$_V$};
+
+    % X-basis branch
+    \node[hwp] (bHWP) at (3.5,3.15) {};
+    \node[pbs] (bPBSX) at (3.5,2.00) {};
+    \node[detector] (bD) at (1.8,2.00) {SPAD$_D$};
+    \node[detector] (bA) at (3.5,0.80) {SPAD$_A$};
+
+    % Bob optical paths
+    \draw[link]
+    (source.south east)
+    --
+    (bBS);
+
+    \draw
+    (bBS)
+    --
+    node[above, font=\scriptsize]
+    {\(Z\) basis}
+    (bPBSZ);
+
+    \draw[link]
+    (bPBSZ)
+    --
+    (bH);
+
+    \draw[link]
+    (bPBSZ)
+    --
+    (bV);
+
+    \draw
+    (bBS)
+    --
+    (bHWP);
+
+    \draw
+    (bHWP)
+    --
+    node[left, font=\scriptsize]
+    {\(X\) basis}
+    (bPBSX);
+
+    \draw[link]
+    (bPBSX)
+    --
+    (bD);
+
+    \draw[link]
+    (bPBSX)
+    --
+    (bA);
+
+    % Labels
+    \node[font=\scriptsize, left=1mm of bBS]
+    {50:50 BS};
+
+    \node[font=\scriptsize, left=1mm of bHWP]
+    {HWP \(22.5^\circ\)};
+
+    \node[font=\scriptsize, above=1mm of bPBSZ]
+    {PBS};
+
+    \node[font=\scriptsize, right=1mm of bPBSX]
+    {PBS};
+
+    % Bob box
+    \node[
+        draw,
+        dashed,
+        rounded corners,
+        fit=(bBS)(bPBSZ)(bH)(bV)(bHWP)(bPBSX)(bD)(bA),
+        inner sep=6mm,
+        label={[font=\bfseries]above:Bob}
+    ] {};
+
+    \end{tikzpicture}
+    }
+
+    \caption{
+    Conceptual polarization-encoded BBM92 architecture used as the operational
+    reference in this work. The entangled-photon source distributes one photon
+    through fiber arm \(A\) to Alice and the second through fiber arm \(B\) to
+    Bob. At each receiver, a 50:50 beam splitter (BS) provides passive basis
+    selection. The direct polarization beam splitter (PBS) analyzes the
+    computational \(Z=\{H,V\}\) basis, whereas a half-wave plate (HWP) followed
+    by a PBS enables measurement in the diagonal \(X=\{D,A\}\) basis.
+    The resulting polarization components are detected by single-photon
+    avalanche diodes (SPADs).
+    }
+    \label{fig:bbm92_reference_architecture}
+
+\end{figure}
 
 For the polarization encoding adopted throughout this work, the computational
 basis has already been identified with
-
 \begin{equation}
 |0\rangle\equiv|H\rangle,
 \qquad
 |1\rangle\equiv|V\rangle,
 \nonumber
 \end{equation}
-
 while the complementary diagonal basis is
-
 \begin{equation}
 |D\rangle
 =
@@ -1139,36 +1494,69 @@ while the complementary diagonal basis is
 \label{eq:bbm92_diagonal_basis}
 \end{equation}
 
-For an ideal entangled state, Alice and Bob obtain the expected correlations in
-both measurement bases. Propagation through the optical link may modify these
-correlations and introduce errors. Their magnitude is described by the
-basis-dependent quantum bit error rates
-
+For an ideal entangled state, Alice and Bob obtain the expected correlations in both measurement bases. Propagation through the optical link may modify these correlations and introduce errors. Their magnitude is described by the basis-dependent quantum bit error rates
 \begin{equation}
 Q_Z,
 \qquad
 Q_X,
 \label{eq:bbm92_basis_qber}
 \end{equation}
+associated with measurements in the computational and diagonal bases, respectively. These quantities can be obtained from the joint measurement probabilities of the propagated two-photon state.
 
-associated with measurements in the computational and diagonal bases,
-respectively. These quantities can be obtained from the joint measurement
-probabilities of the propagated two-photon state.
+The QBER provides the first operational connection between the quantum state distributed through the fiber and the BBM92 protocol. Degradation or misalignment of the expected polarization correlations increases the measured error rates and therefore increases the amount of information that must be removed during the classical post-processing stages required to obtain a secure key. However, QBER alone does not quantify the rate at which secure key bits can ultimately be generated. A complete protocol-level characterization is instead provided by the Secure Key Rate (SKR), which combines the quality of the measured correlations with the detected coincidence rate and the classical costs associated with error correction and privacy amplification.
 
-The QBER provides the main operational connection between the state distributed
-through the fiber and the BBM92 protocol. Degradation or misalignment of the
-expected polarization correlations can increase the measured error rates. If
-the QBER exceeds the admissible value associated with the adopted security
-model, the corresponding configuration is no longer considered suitable for
-secure key distribution.
+In the asymptotic BBM92 description~\cite{dinardo_thesis}, the secure key rate can be expressed in the general form
+\begin{equation}
+R_{\mathrm{SK}}
+=
+q\,R_{\mathrm{cc}}
+\left[
+1
+-
+f(E_{\mathrm{bit}})
+H_2(E_{\mathrm{bit}})
+-
+H_2(E_{\mathrm{ph}})
+\right],
+\label{eq:bbm92_skr_general}
+\end{equation}
+where \(R_{\mathrm{cc}}\) denotes the measured coincidence rate, \(q\) is the basis-sifting factor, \(f(E_{\mathrm{bit}})\geq1\) accounts for the inefficiency of practical error-correction procedures, and
+\begin{equation}
+H_2(x)
+=
+-x\log_2x
+-
+(1-x)\log_2(1-x)
+\label{eq:binary_entropy_bbm92}
+\end{equation}
+is the binary entropy. The quantity \(E_{\mathrm{bit}}\) represents the error rate associated with the basis used for key generation, whereas \(E_{\mathrm{ph}}\) represents the corresponding phase-error rate inferred from measurements in the complementary basis.
 
-The objective of this work is therefore not only to quantify the degradation of
-the distributed entanglement, but also to determine which physical configurations
-of the optical link remain compatible with the BBM92 operational requirement.
+For example, when the \(Z\) basis is used for key generation, one may identify
+\begin{equation}
+E_{\mathrm{bit}}=Q_Z,
+\qquad
+E_{\mathrm{ph}}=Q_X.
+\label{eq:bbm92_bit_phase_errors}
+\end{equation}
+The roles are exchanged if the \(X\) basis is instead used for key generation. In the symmetric case \(Q_Z=Q_X=Q\), Eq.~\eqref{eq:bbm92_skr_general} reduces to
+\begin{equation}
+R_{\mathrm{SK}}
+=
+q\,R_{\mathrm{cc}}
+\left[
+1
+-
+\left(
+1+f(Q)
+\right)
+H_2(Q)
+\right].
+\label{eq:bbm92_skr_symmetric}
+\end{equation}
 
-For this purpose, the physical configuration is represented by the parameter
-vector
+Equation~\eqref{eq:bbm92_skr_general} clarifies the distinction between the different modeling levels considered in this thesis. The propagated density operator determines the ideal polarization measurement probabilities and therefore the state-induced contributions to \(Q_Z\) and \(Q_X\). The complete experimentally achievable SKR additionally depends on quantities that are not determined by the polarization density operator alone, such as source brightness, optical transmission losses, detector efficiencies, dark-count rates, timing jitter, the coincidence-window duration, and the adopted classical post-processing scheme. These additional contributions are therefore treated as system-level parameters rather than intrinsic properties of the propagated quantum state.
 
+The objective of this work is consequently not only to quantify degradation of the distributed entanglement, but also to determine which physical configurations of the optical link remain compatible with useful BBM92 operation. For this purpose, the physical configuration is represented by the parameter vector
 \begin{equation}
 \boldsymbol{\xi}
 =
@@ -1177,14 +1565,9 @@ vector
 \},
 \label{eq:physical_parameter_vector}
 \end{equation}
+which collects the relevant source and fiber parameters. Depending on the model, these may include photon spectral bandwidth, spectral correlation, differential group delay, birefringence orientation, and compensation parameters.
 
-which collects the relevant source and fiber parameters. Depending on the model,
-these may include photon spectral bandwidth, spectral correlation, differential
-group delay, birefringence orientation, and compensation parameters.
-
-For each physical configuration \(\boldsymbol{\xi}\), the propagated state is
-characterized by a corresponding set of quantities
-
+For each physical configuration \(\boldsymbol{\xi}\), the propagated state is characterized by a corresponding set of quantities
 \begin{equation}
 \boldsymbol{\lambda}(\boldsymbol{\xi})
 =
@@ -1198,31 +1581,39 @@ Q_X,\,
 \},
 \label{eq:state_metric_vector}
 \end{equation}
+where \(\gamma\), \(F\), and \(C\) characterize the state in terms of mixedness, similarity to the reference state, and entanglement, while \(Q_Z\) and \(Q_X\) provide the direct interface with the BBM92 security analysis.
 
-where \(\gamma\), \(F\), and \(C\) characterize the state in terms of mixedness,
-similarity to the reference state, and entanglement, while \(Q_Z\) and \(Q_X\)
-provide the direct connection with BBM92 performance.
-
-The relation between the physical link and its resulting performance can
-therefore be summarized as
-
+The relation between the physical fiber model, the resulting state, and the protocol-level performance can therefore be summarized as
 \begin{equation}
 \boxed{
 \boldsymbol{\xi}
 \longrightarrow
+\rho_{AB}(\boldsymbol{\xi})
+\longrightarrow
 \boldsymbol{\lambda}(\boldsymbol{\xi})
+\longrightarrow
+R_{\mathrm{SK}}
 }
 \label{eq:physical_to_operational_mapping}
 \end{equation}
+where the final step additionally depends on the remaining source, detection, and post-processing parameters required by the complete BBM92 system model.
 
-where variations of the physical parameters \(\boldsymbol{\xi}\) produce
-corresponding variations of the state and operational quantities contained in
-\(\boldsymbol{\lambda}\).
+A first operational region can be defined directly from the QBER by requiring the relevant error quantities to remain below an adopted security threshold \(Q_{\mathrm{th}}\),
+\begin{equation}
+\mathcal{R}_{Q}
+=
+\left\{
+\boldsymbol{\xi}
+:
+Q_Z(\boldsymbol{\xi})<Q_{\mathrm{th}},
+\;
+Q_X(\boldsymbol{\xi})<Q_{\mathrm{th}}
+\right\}.
+\label{eq:bbm92_qber_operating_region}
+\end{equation}
+Here, \(Q_{\mathrm{th}}\) is not an arbitrary state-quality threshold, but follows from the adopted security model and post-processing assumptions.
 
-A BBM92 operating region can then be defined directly in the physical parameter
-space by requiring the relevant QBER to remain below an adopted threshold
-\(Q_{\mathrm{th}}\),
-
+At the complete system level, a more direct definition of useful BBM92 operation is obtained from the condition that a positive secure key rate can be extracted,
 \begin{equation}
 \boxed{
 \mathcal{R}_{\mathrm{BBM92}}
@@ -1230,42 +1621,18 @@ space by requiring the relevant QBER to remain below an adopted threshold
 \left\{
 \boldsymbol{\xi}
 :
-Q(\boldsymbol{\xi})
-<
-Q_{\mathrm{th}}
+R_{\mathrm{SK}}(\boldsymbol{\xi})>0
 \right\}.
 }
 \label{eq:bbm92_operating_region}
 \end{equation}
+More restrictive requirements may be introduced when a minimum useful key throughput \(R_{\mathrm{SK,th}}>0\) is required for a specific application.
 
-Here, \(Q_{\mathrm{th}}\) is not an arbitrary state-quality threshold, but is
-determined by the security assumptions adopted for the BBM92 protocol. When the
-two measurement bases are considered separately, the same criterion can be
-applied to the corresponding basis-dependent quantities \(Q_Z\) and \(Q_X\).
+Concurrence plays a complementary role in this analysis. It provides a compact measure of the surviving bipartite entanglement and is therefore used extensively to characterize the effect of fiber propagation. However, concurrence, QBER, and SKR quantify different properties and are not generally equivalent. In particular, a coherent polarization rotation may change the QBER measured in fixed bases without changing the amount of entanglement, while two systems producing the same quantum state and the same QBER may yield very different secure key rates because of different optical losses, detector efficiencies, dark counts, or coincidence rates.
 
-Concurrence plays a complementary role in this analysis. It provides a compact
-measure of the surviving bipartite entanglement and is therefore used extensively
-to characterize the effect of fiber propagation. However, concurrence and QBER
-are not generally equivalent quantities. In particular, a coherent polarization
-rotation may change the QBER measured in fixed bases without changing the amount
-of entanglement.
+For this reason, a universal concurrence threshold for BBM92 operation is not assumed. Instead, the numerical analysis investigates how concurrence and the basis-dependent QBERs vary together for the specific families of states produced by the considered fiber models. When a clear correspondence exists for a particular model, an operational QBER boundary can then be associated with a corresponding value of concurrence. The subsequent inclusion of the remaining experimental parameters allows the same framework to be extended from state-quality maps to SKR-based communication-performance maps.
 
-For this reason, a universal concurrence threshold for BBM92 operation is not
-assumed. Instead, the numerical analysis investigates how concurrence and QBER
-vary together for the specific families of states produced by the considered
-fiber models. When a clear correspondence exists for a particular model, the
-QBER boundary \(Q_{\mathrm{th}}\) can then be associated with a corresponding
-value of concurrence.
-
-The resulting framework has a direct practical interpretation:
-\(\boldsymbol{\xi}\) describes the physical source and fiber configuration,
-\(\boldsymbol{\lambda}\) describes the resulting state and its relevant
-performance quantities, and \(\mathcal{R}_{\mathrm{BBM92}}\) identifies the
-region of physical parameter space compatible with the adopted BBM92 criterion.
-This perspective is used in the numerical experiments of
-Chapter~\ref{ch:03_numerical_experiments_results} to construct operational maps
-and investigate how the boundaries of acceptable entanglement distribution
-depend on the physical parameters of the optical link.
+The resulting hierarchy has a direct practical interpretation: \(\boldsymbol{\xi}\) describes the physical source and fiber configuration, \(\rho_{AB}\) describes the resulting distributed quantum state, \(\boldsymbol{\lambda}\) contains its state-quality and QBER diagnostics, and \(R_{\mathrm{SK}}\) quantifies the final secure-key throughput once the complete source, link, detector, and post-processing model is specified. This perspective is used in Chapter~\ref{ch:03_numerical_simulations_results} to construct operational maps and investigate how the boundaries of useful entanglement distribution depend on the physical parameters of the optical link.
 
 %========================================================
 % END OF CHAPTER 1

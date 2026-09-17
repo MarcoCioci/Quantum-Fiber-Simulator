@@ -60,7 +60,7 @@ The simulator is intentionally modular and structured as a reusable research-ori
 * Reduced density operators
 * Bloch-vector evaluation
 
-## Numerical Experiments
+## Numerical Simulations
 
 Implemented experiments currently include:
 

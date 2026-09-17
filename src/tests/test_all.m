@@ -25,6 +25,10 @@ test_concurrence();
 test_tangle_entanglement_of_formation();
 test_channels();
 test_pmd();
+test_joint_measurement_probabilities();
+test_bbm92_qber();
+test_bbm92_operation();
+test_operating_boundary();
 
 fprintf('\n')
 disp('======================================');

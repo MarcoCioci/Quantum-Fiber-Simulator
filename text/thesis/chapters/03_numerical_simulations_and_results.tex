@@ -1,0 +1,250 @@
+%========================================================
+% CHAPTER 3 — Numerical Simulations and Results
+%========================================================
+
+The fiber-channel models developed in the previous chapter are investigated
+numerically in this chapter with the objective of determining how the physical
+properties of the source and optical link affect the operational suitability of
+the distributed polarization-entangled state.
+
+The numerical analysis is organized around the mapping
+
+\begin{equation}
+\boxed{
+\boldsymbol{\xi}
+\longrightarrow
+\boldsymbol{\lambda}(\boldsymbol{\xi}),
+}
+\label{eq:chapter3_physical_operational_mapping}
+\end{equation}
+
+where \(\boldsymbol{\xi}\) collects the relevant source, fiber, and compensation
+parameters, while \(\boldsymbol{\lambda}\) contains the quantities used to
+characterize the resulting two-photon polarization state. In the present
+analysis, particular attention is given to purity, fidelity, concurrence, and
+the basis-dependent quantum bit error rates \(Q_Z\) and \(Q_X\).
+
+The central objective is to determine the combinations of physical parameters
+for which the optical link remains compatible with the adopted BBM92
+requirement. The numerical simulations therefore focus on the identification
+and interpretation of the operating region
+
+\begin{equation}
+\boxed{
+\mathcal{R}_{\mathrm{BBM92}}
+=
+\left\{
+\boldsymbol{\xi}
+:
+Q(\boldsymbol{\xi})
+<
+Q_{\mathrm{th}}
+\right\},
+}
+\label{eq:chapter3_bbm92_operating_region}
+\end{equation}
+
+where \(Q_{\mathrm{th}}\) denotes the QBER threshold associated with the security
+assumptions adopted for the analysis.
+
+The study follows the modeling hierarchy introduced in
+Chapter~\ref{ch:02_fiber_channel_modeling}. Effective polarization-only models
+are first used to isolate the relation between different degradation mechanisms,
+state-quality metrics, and BBM92 errors. The analysis is then extended to
+frequency-dependent birefringent propagation, allowing the operating region to
+be expressed directly in terms of source and fiber parameters such as spectral
+bandwidth, differential group delay, spectral correlation, and the relative
+properties of the two propagation arms.
+
+Particular attention is devoted to the distinction between state-quality and
+operational quantities. Concurrence characterizes the surviving bipartite
+entanglement, while purity and fidelity provide complementary information on the
+propagated state. BBM92 operation, however, depends directly on the correlations
+observed in the protocol measurement bases and is therefore assessed through the
+corresponding QBER. The numerical analysis consequently investigates both the
+relation and the differences between these descriptions.
+
+The experiments progressively examine the effects of individual channel
+mechanisms, source--fiber parameter combinations, two-arm propagation,
+compensation errors, and modeling approximations. The final objective is to
+construct operating maps that identify the physical configurations belonging to
+\(\mathcal{R}_{\mathrm{BBM92}}\) and quantify how its boundary changes with the
+properties and modeling of the optical link.
+
+
+%========================================================
+% SECTION 3.1 — Computational Framework
+%========================================================
+
+\section{Computational Framework and Numerical Methodology}
+\label{sec:computational_framework_matlab}
+
+All numerical models presented in this chapter are implemented in MATLAB using a
+modular library that reproduces the mathematical structure introduced in the
+theoretical framework. Quantum states, density operators, polarization
+transformations, quantum channels, and measurement observables are represented
+directly through complex vectors and matrices.
+
+Reusable numerical routines provide the common operations required throughout
+the analysis, including state preparation, local evolution, quantum-channel
+application, frequency-dependent fiber propagation, spectral averaging,
+polarization measurements, and state characterization. The numerical simulations
+are constructed from these common components, ensuring that different physical
+configurations and modeling assumptions are evaluated using the same underlying
+computational framework.
+
+For a specified physical configuration \(\boldsymbol{\xi}\), the numerical
+workflow is summarized by
+
+\begin{equation}
+\boxed{
+\boldsymbol{\xi}
+\longrightarrow
+\rho_{AB}(\boldsymbol{\xi})
+\longrightarrow
+\boldsymbol{\lambda}(\boldsymbol{\xi})
+\longrightarrow
+\mathcal{R}_{\mathrm{BBM92}}.
+}
+\label{eq:numerical_workflow_chapter3}
+\end{equation}
+
+For effective polarization channels, the propagated density operator is obtained
+directly from the corresponding channel action. For frequency-dependent fiber
+models, the two-photon state is propagated over the joint spectrum and the
+unresolved spectral degree of freedom is subsequently traced out to obtain the
+reduced polarization density operator.
+
+The resulting state is characterized using a common set of quantities throughout
+the numerical study. Purity, fidelity, and concurrence describe complementary
+properties of the distributed quantum state, while the polarization measurement
+statistics determine \(Q_Z\) and \(Q_X\). The latter provide the direct criterion
+used to classify each simulated physical configuration with respect to the
+adopted BBM92 operating condition.
+
+The numerical simulations presented below therefore use the simulator primarily
+as a parameter-space analysis tool. Rather than considering isolated propagation
+examples, each experiment is designed to determine how a specific physical
+mechanism or modeling assumption modifies the boundary between operational and
+non-operational regions of the optical link.
+
+
+%========================================================
+% SECTION 3.2 — Experiment 1
+%========================================================
+
+\section{Effective Fiber Models and BBM92 Performance}
+\label{sec:effective_models_bbm92_performance}
+
+\input{chapters/numerical_simulations/03_1_effective_models_bbm92_performance}
+
+%========================================================
+% SECTION 3.3 — Experiment 2
+%========================================================
+
+\section{Source--Fiber Operating Region under Single-Arm PMD}
+\label{sec:single_arm_pmd_operating_region}
+\input{chapters/numerical_simulations/03_2_single_arm_pmd_operating_region}
+
+%========================================================
+% SECTION 3.4 — Experiment 3
+%========================================================
+
+\section{Two-Arm PMD and Spectral-Correlation Operating Regions}
+\label{sec:two_arm_pmd_spectral_operating_regions}
+\input{chapters/numerical_simulations/03_3_two_arm_pmd_spectral_operating_regions}
+
+%========================================================
+% SECTION 3.5 — Experiment 4
+%========================================================
+
+\section{Compensation Robustness and Operational Tolerances}
+\label{sec:compensation_robustness_operational_tolerances}
+
+The previous experiments characterize the BBM92 operating region under idealized
+and controlled PMD configurations. In a practical compensated link, however, the
+parameters of the compensating transformation cannot in general be expected to
+match the propagation channel exactly.
+
+This experiment will therefore investigate the robustness of the BBM92 operating
+region against imperfect PMD compensation. In particular, the analysis will
+consider errors in the compensation DGD and misalignment between the relevant
+polarization axes. The objective will be to translate these imperfections into
+operational tolerances by determining the combinations of compensation errors
+for which
+
+\begin{equation}
+Q_{\mathrm{worst}}
+<
+Q_{\mathrm{th}}.
+\end{equation}
+
+The resulting maps will provide a direct measure of how accurately the
+compensation parameters must reproduce the fiber transformation in order to
+maintain the link inside the adopted BBM92 operating region.
+
+% \input{chapters/numerical_simulations/03_4_compensation_robustness_operational_tolerances}
+
+
+%========================================================
+% SECTION 3.6 — Experiment 5
+%========================================================
+
+\section{Dependence of the Operating Region on the Fiber Model}
+\label{sec:operating_region_model_comparison}
+
+The effective polarization channels introduced in
+Chapter~\ref{ch:02_fiber_channel_modeling} provide compact descriptions of
+dephasing and depolarization, while the PMD model explicitly includes the
+frequency dependence of birefringent propagation and the subsequent spectral
+trace.
+
+This experiment will compare the BBM92 operating regions predicted by these
+different levels of description. The objective will not be to require the
+effective and frequency-dependent models to be physically identical, but rather
+to determine under which conditions a reduced polarization-only model provides
+an adequate approximation of the operational degradation predicted by the more
+detailed PMD description.
+
+The comparison will therefore focus on the displacement of the
+\(Q_{\mathrm{worst}}=Q_{\mathrm{th}}\) boundary and will identify parameter
+regimes in which the simplified description reproduces the relevant BBM92
+operating region, as well as regimes in which the explicit spectral dependence
+of the fiber can no longer be neglected.
+
+% \input{chapters/numerical_simulations/03_5_operating_region_model_comparison}
+
+
+%========================================================
+% SECTION 3.7 — Experiment 6
+%========================================================
+
+\section{Combined BBM92 Fiber Operating Maps}
+\label{sec:combined_bbm92_fiber_operating_maps}
+
+The final numerical experiment will combine the principal physical dependencies
+identified throughout the preceding analyses into a unified operational
+description of the optical link.
+
+Rather than isolating one propagation mechanism at a time, selected source,
+fiber, and compensation parameters will be varied jointly in order to construct
+BBM92 operating maps representative of the complete modeling framework developed
+in this thesis. The objective will be to identify the regions of the resulting
+multidimensional parameter space satisfying
+
+\begin{equation}
+\boldsymbol{\xi}
+\in
+\mathcal{R}_{\mathrm{BBM92}},
+\end{equation}
+
+and to determine which physical parameters most strongly constrain the boundary
+of this region.
+
+This final analysis will therefore synthesize the results of the preceding
+experiments into a set of source--fiber operating conditions, providing the
+numerical connection between the physical parameters of the modeled optical link
+and its predicted suitability for polarization-entanglement distribution under
+the adopted BBM92 criterion.
+
+% \input{chapters/numerical_simulations/03_6_combined_bbm92_fiber_operating_maps}
